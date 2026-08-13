@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latte Art · Bài 3 · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+</head>
+<body>
+<a class="skip" href="#stage"><span data-vi>Tới bài học</span><span data-en>Skip to lesson</span></a>
+
+<div class="app" style="grid-template-columns:1fr;grid-template-rows:auto 1fr">
+  <!-- ═══ APP TOP BAR ═══ -->
+  <div class="app-top on-dark">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot" style="color:var(--accent-dark)">·</span></span><span class="sub"><span data-vi>Học trực tuyến</span><span data-en>Learning</span></span></a>
+    <div class="app-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" placeholder="Tìm bài học, tài liệu…" aria-label="Tìm kiếm" />
+    </div>
+    <div class="app-top-actions">
+      <div class="role-pick" role="navigation" aria-label="Prototype role switcher">
+        <a href="learn.html" aria-current="page"><span data-vi>Học viên</span><span data-en>Student</span></a>
+        <a href="teach.html"><span data-vi>Giảng viên</span><span data-en>Teacher</span></a>
+        <a href="admin.html"><span data-vi>Quản trị</span><span data-en>Admin</span></a>
+      </div>
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      <div class="avatar">LN</div>
+    </div>
+  </div>
+
+  <!-- ═══ LEARN LAYOUT ═══ -->
+  <div class="learn">
+
+    <!-- outline -->
+    <aside class="outline">
+      <div style="padding:0 18px 14px">
+        <div class="lbl acc"><span data-vi>Khoá học</span><span data-en>Course</span></div>
+        <h3 style="font-size:18px;font-weight:600;margin-top:7px">Latte Art</h3>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);margin-top:6px">
+          <span data-vi>3 / 9 bài · 33%</span><span data-en>3 of 9 lessons · 33%</span>
+        </div>
+      </div>
+      <div class="prog"><i style="width:33%"></i></div>
+
+      <div class="mod"><span data-vi>Phần 1 · Nền tảng</span><span data-en>Module 1 · Foundations</span></div>
+      <a class="les" href="#stage"><span class="n">01</span><span><span class="t"><span data-vi>Sữa và bọt sữa</span><span data-en>Milk and microfoam</span></span><span class="m"><span class="tick">✓</span> 12:40</span></span></a>
+      <a class="les" href="#stage"><span class="n">02</span><span><span class="t"><span data-vi>Rót cơ bản</span><span data-en>The basic pour</span></span><span class="m"><span class="tick">✓</span> 09:18</span></span></a>
+      <a class="les" href="#stage" aria-current="true"><span class="n">03</span><span><span class="t"><span data-vi>Trái tim</span><span data-en>The heart</span></span><span class="m"><span data-vi>Đang xem · 4:12 / 11:05</span><span data-en>Playing · 4:12 / 11:05</span></span></span></a>
+      <a class="les" href="#stage"><span class="n">04</span><span><span class="t"><span data-vi>Rosetta</span><span data-en>The rosetta</span></span><span class="m">14:22</span></span></a>
+
+      <div class="mod"><span data-vi>Phần 2 · Hình nâng cao</span><span data-en>Module 2 · Advanced figures</span></div>
+      <a class="les" href="#stage"><span class="n">05</span><span><span class="t">Tulip</span><span class="m">10:51</span></span></a>
+      <a class="les" href="#stage"><span class="n">06</span><span><span class="t"><span data-vi>Thiên nga</span><span data-en>The swan</span></span><span class="m">16:03</span></span></a>
+      <a class="les" href="#stage"><span class="n">07</span><span><span class="t"><span data-vi>Sửa lỗi thường gặp</span><span data-en>Fixing common faults</span></span><span class="m">12:30</span></span></a>
+
+      <div class="mod"><span data-vi>Phần 3 · Thi cuối khoá</span><span data-en>Module 3 · Final</span></div>
+      <a class="les" href="#stage"><span class="n">08</span><span><span class="t"><span data-vi>Chuẩn bị bài thi</span><span data-en>Preparing your submission</span></span><span class="m">08:44</span></span></a>
+      <a class="les" href="#stage"><span class="n">09</span><span><span class="t"><span data-vi>Nộp ảnh &amp; nhận chứng chỉ</span><span data-en>Submit &amp; get certified</span></span><span class="m"><span data-vi>Bài tập</span><span data-en>Assignment</span></span></span></a>
+    </aside>
+
+    <!-- stage -->
+    <section class="stage" id="stage">
+      <div class="video">
+        <img src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=1400&q=70" width="1400" height="787" alt="Latte art being poured" />
+        <button class="play" type="button" aria-label="Phát / Play">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="stage-bd">
+        <div class="lbl acc"><span data-vi>Phần 1 · Bài 03</span><span data-en>Module 1 · Lesson 03</span></div>
+        <h1 style="margin-top:9px"><span data-vi>Trái tim — rót chậm, dứt khoát</span><span data-en>The heart — pour slow, finish clean</span></h1>
+
+        <div class="tabs">
+          <button type="button" data-tab="about" aria-selected="true"><span data-vi>Tổng quan</span><span data-en>Overview</span></button>
+          <button type="button" data-tab="docs" aria-selected="false"><span data-vi>Tài liệu</span><span data-en>Documents</span></button>
+          <button type="button" data-tab="notes" aria-selected="false"><span data-vi>Ghi chú của tôi</span><span data-en>My notes</span></button>
+        </div>
+
+        <div data-panel="about">
+          <p><span data-vi>Trái tim là hình đầu tiên vì nó dạy bạn ba thứ cùng lúc: độ cao khi rót, tốc độ dòng sữa, và thời điểm cắt. Nếu tim bị lệch, gần như luôn là do bạn hạ ca quá muộn. Xem đoạn 4:10 để thấy sự khác biệt giữa hai lần rót.</span><span data-en>The heart comes first because it teaches three things at once: pour height, flow speed, and when to cut through. A lopsided heart is nearly always a jug lowered too late. Watch from 4:10 to see the two pours side by side.</span></p>
+          <p style="margin-top:16px"><span data-vi>Bài tập tuần này: rót 20 ly, chụp ảnh 3 ly đẹp nhất và đăng vào phần thảo luận. Anh Minh sẽ nhận xét từng ảnh trong 24 giờ.</span><span data-en>This week's practice: pour twenty cups, photograph your best three, and post them in the discussion. Anh Minh comments on every submission within 24 hours.</span></p>
+          <div style="display:flex;gap:10px;margin-top:26px;flex-wrap:wrap">
+            <button class="btn" type="button"><span data-vi>Đánh dấu đã học</span><span data-en>Mark complete</span></button>
+            <button class="btn ghost" type="button"><span data-vi>Bài tiếp theo</span><span data-en>Next lesson</span> →</button>
+          </div>
+        </div>
+
+        <div data-panel="docs" hidden>
+          <a class="doc" href="#"><span class="ic">PDF</span><span><span class="t"><span data-vi>Bảng tỉ lệ sữa &amp; nhiệt độ</span><span data-en>Milk ratio &amp; temperature chart</span></span><span class="d">PDF · 240 KB</span></span></a>
+          <a class="doc" href="#"><span class="ic">PDF</span><span><span class="t"><span data-vi>Checklist 20 ly luyện tập</span><span data-en>Twenty-cup practice checklist</span></span><span class="d">PDF · 88 KB</span></span></a>
+          <a class="doc" href="#"><span class="ic">JPG</span><span><span class="t"><span data-vi>Ảnh mẫu — tim đạt và tim lệch</span><span data-en>Reference photos — good vs lopsided</span></span><span class="d">JPG · 1.2 MB</span></span></a>
+        </div>
+
+        <div data-panel="notes" hidden>
+          <textarea class="inp" style="background:var(--dark-2);border-color:var(--dark-line);color:var(--on-dark)" placeholder="Ghi chú riêng của bạn cho bài này…"></textarea>
+          <p style="font-family:var(--mono);font-size:10px;color:var(--on-dark-faint);margin-top:9px;letter-spacing:.1em;text-transform:uppercase"><span data-vi>Chỉ mình bạn thấy · tự lưu</span><span data-en>Private to you · saves automatically</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- discussion -->
+    <aside class="chat">
+      <div class="chat-hd">
+        <span class="live" aria-hidden="true"></span>
+        <span class="t"><span data-vi>Thảo luận</span><span data-en>Discussion</span></span>
+        <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-faint)">18</span>
+      </div>
+      <div class="chat-bd" id="chatBody">
+        <div class="msg teacher">
+          <div class="av">AM</div>
+          <div>
+            <div class="who">Anh Minh<span class="tag"><span data-vi>Giảng viên</span><span data-en>Teacher</span></span><span class="when">09:12</span></div>
+            <div class="txt"><span data-vi>Nhắc cả lớp: sữa 60–65 °C thôi nhé. Nóng quá thì bọt vỡ trước khi các bạn rót xong.</span><span data-en>Reminder for everyone: milk at 60–65 °C only. Any hotter and the foam collapses before you finish the pour.</span></div>
+          </div>
+        </div>
+        <div class="msg">
+          <div class="av">TH</div>
+          <div>
+            <div class="who">Thu Hà<span class="when">09:31</span></div>
+            <div class="txt"><span data-vi>Em rót tim toàn bị lệch sang phải ạ. Có phải do em cầm ca nghiêng không?</span><span data-en>My hearts keep leaning to the right. Is that because I'm tilting the jug?</span></div>
+          </div>
+        </div>
+        <div class="msg teacher">
+          <div class="av">AM</div>
+          <div>
+            <div class="who">Anh Minh<span class="tag"><span data-vi>Giảng viên</span><span data-en>Teacher</span></span><span class="when">09:38</span></div>
+            <div class="txt"><span data-vi>Thường là do ly nghiêng chứ không phải ca. Xem lại 6:05 — anh có quay cận cảnh góc ly.</span><span data-en>Usually it's the cup angle, not the jug. Rewatch from 6:05 — there's a close-up of the cup tilt.</span></div>
+          </div>
+        </div>
+        <div class="msg">
+          <div class="av">DK</div>
+          <div>
+            <div class="who">Đức Khôi<span class="when">10:02</span></div>
+            <div class="txt"><span data-vi>Em vừa nộp 3 ảnh vào bài 09. Cảm ơn thầy ạ!</span><span data-en>Just submitted my three photos to lesson 09. Thank you!</span></div>
+          </div>
+        </div>
+      </div>
+      <form class="chat-ft" id="chatForm">
+        <input type="text" placeholder="Hỏi giảng viên hoặc cả lớp…" aria-label="Nhắn tin" />
+        <button class="chat-send" type="submit" aria-label="Gửi / Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+        </button>
+      </form>
+    </aside>
+
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
