@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tất cả khoá học · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+<style>
+  .cc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(18px,2.4vw,28px);padding:24px 0 80px}
+  .cc-card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:border-color .16s}
+  .cc-card:hover{border-color:var(--line-strong)}
+  .cc-card .img{aspect-ratio:16/10;overflow:hidden;background:var(--sunk)}
+  .cc-card .img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .cc-card:hover .img img{transform:scale(1.02)}
+  .cc-card .bd{padding:18px 20px;flex:1;display:flex;flex-direction:column;gap:8px}
+  .cc-card h2{font-size:21px;font-weight:600;line-height:1.16}
+  .cc-card .desc{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .cc-card .meta{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .cc-card .price{font-family:var(--mono);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .cc-card .price .usd{color:var(--ink-faint);font-weight:400;font-size:11.5px;margin-left:6px}
+  .public-gate{background:var(--accent-tint);border:1px solid var(--accent);border-radius:var(--r);
+    padding:14px 18px;display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin:24px 0 0}
+  .public-gate svg{width:17px;height:17px;color:var(--accent);flex:none}
+  .public-gate .t{font-weight:600;font-size:14px}
+  .public-gate .d{font-size:13px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
+
+<div class="board"><div class="wrap board-row">
+  <span><span data-vi>Tất cả khoá học</span><span data-en>All courses</span> · <b>4</b></span>
+  <span class="dot">·</span><span><span data-vi>Bài 1 miễn phí</span><span data-en>First lesson free</span></span>
+  <span class="dot">·</span><span><span data-vi>Chứng chỉ khi hoàn thành</span><span data-en>Certificate on completion</span></span>
+</div></div>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-row">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
+    <ul class="nav">
+      <li><a class="nav-link" href="shop.html"><span data-vi>Cà phê &amp; Bánh</span><span data-en>Coffee &amp; Bakery</span></a></li>
+      <li><a class="nav-link" href="courses.html" style="color:var(--ink);border-bottom-color:var(--accent)"><span data-vi>Khoá học</span><span data-en>Workshops</span></a></li>
+      <li><a class="nav-link" href="index.html#sites"><span data-vi>Quán</span><span data-en>Cafés</span></a></li>
+      <li><a class="nav-link" href="story.html"><span data-vi>Gia đình</span><span data-en>Our family</span></a></li>
+    </ul>
+    <div class="hdr-actions">
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      <button class="icon-btn" type="button" data-open="cartDrawer" aria-label="Giỏ hàng / Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l2.5 12h11l2-8H6"/></svg></button>
+      <div class="acct">
+        <button class="btn ghost sm" type="button" data-open-auth aria-haspopup="true"><span data-vi>Đăng nhập</span><span data-en>Log in</span></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="crumb"><a href="index.html"><span data-vi>Trang chủ</span><span data-en>Home</span></a> / <span data-vi>Khoá học</span><span data-en>Workshops</span></div>
+
+  <div style="padding:30px 0 0">
+    <div class="lbl acc"><span data-vi>Học cùng người rang, học cùng người nướng</span><span data-en>Taught by the roaster and the baker</span></div>
+    <h1 style="font-size:clamp(32px,4.4vw,46px);margin-top:8px;max-width:18ch"><span data-vi>Tất cả khoá học</span><span data-en>All courses</span></h1>
+    <p style="color:var(--ink-soft);max-width:56ch;margin-top:14px;font-size:16px"><span data-vi>Xem miễn phí bài một của mỗi khoá online. Khi đăng ký, video đều có chữ ký riêng và lưu tiến độ của bạn.</span><span data-en>Watch the first lesson of every online course free. Enrol and your videos are signed and your progress is saved.</span></p>
+
+    <!-- Public gate — anyone can browse; sign in only to watch paid lessons -->
+    <div class="public-gate">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      <div style="flex:1;min-width:200px">
+        <div class="t"><span data-vi>Khách xem được — không cần đăng nhập để duyệt</span><span data-en>Public — no sign-in needed to browse</span></div>
+        <div class="d"><span data-vi>Đăng nhập chỉ khi bạn muốn xem full video hoặc lưu tiến độ.</span><span data-en>Sign in only when you want to watch paid video or save your progress.</span></div>
+      </div>
+      <button class="btn sm" type="button" data-open-auth><span data-vi>Đăng nhập</span><span data-en>Log in</span></button>
+      <a class="btn ghost sm" href="me.html"><span data-vi>Tới trang học viên</span><span data-en>To student page</span> →</a>
+    </div>
+  </div>
+
+  <div class="filters-bar" style="margin-top:24px">
+    <div class="seg">
+      <button type="button" aria-pressed="true"><span data-vi>Tất cả</span><span data-en>All</span></button>
+      <button type="button" aria-pressed="false"><span data-vi>Online</span><span data-en>Online</span></button>
+      <button type="button" aria-pressed="false"><span data-vi>Tại quán</span><span data-en>In-person</span></button>
+      <button type="button" aria-pressed="false"><span data-vi>Lai (hybrid)</span><span data-en>Hybrid</span></button>
+    </div>
+    <select class="inp" style="width:auto"><option><span data-vi>Sắp xếp: phổ biến</span><span data-en>Sort: popular</span></option><option><span data-vi>Giá thấp → cao</span><span data-en>Price low → high</span></option><option><span data-vi>Khởi gần nhất</span><span data-en>Soonest start</span></option></select>
+  </div>
+
+  <div class="cc-grid">
+    <article class="cc-card">
+      <a class="img" href="learn.html?preview=1"><img src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=620&q=72" width="620" height="387" alt="" loading="lazy" /></a>
+      <div class="bd">
+        <span class="lbl acc">Online · <span data-vi>9 bài</span><span data-en>9 lessons</span></span>
+        <h2>Latte Art</h2>
+        <p class="desc"><span data-vi>Video kèm thảo luận trực tiếp với giảng viên, thi bằng ảnh. Học ở nhà, hoàn thành tại quán.</span><span data-en>Video lessons with live discussion, a photo-based exam. Learn at home, finish at a café.</span></p>
+        <div class="meta">
+          <span class="fresh"><span data-vi>Xem bài 1 miễn phí</span><span data-en>Lesson 1 free</span></span>
+          <span class="price" style="margin-left:auto">790.000 ₫<span class="usd">· $32</span></span>
+          <a class="add" href="me.html"><span data-vi>Đăng ký</span><span data-en>Enrol</span> →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cc-card">
+      <a class="img" href="learn.html?preview=1"><img src="https://images.unsplash.com/photo-1509446152067-d56c2e1cde3a?auto=format&fit=crop&w=620&q=72" width="620" height="387" alt="" loading="lazy" /></a>
+      <div class="bd">
+        <span class="lbl acc"><span data-vi>Tại Hội An · cuối tuần</span><span data-en>In Hội An · weekend</span></span>
+        <h2>Viennoiserie</h2>
+        <p class="desc"><span data-vi>Hai ngày tại Phố cổ Hội An, tám người, bơ Pháp. Cán tay, ủ lạnh, nướng.</span><span data-en>Two days in Hội An's old town, eight people, French butter. Hand-laminated, cold-proofed, baked.</span></p>
+        <div class="meta">
+          <span class="fresh low"><span data-vi>Còn 3 ghế · 21–22.09</span><span data-en>3 seats left · 21–22 Sep</span></span>
+          <span class="price" style="margin-left:auto">3.200.000 ₫<span class="usd">· $130</span></span>
+          <a class="add" href="me.html"><span data-vi>Giữ chỗ</span><span data-en>Book a seat</span> →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cc-card">
+      <a class="img" href="learn.html?preview=1"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=620&q=72" width="620" height="387" alt="" loading="lazy" /></a>
+      <div class="bd">
+        <span class="lbl acc">Online · <span data-vi>cảm quan</span><span data-en>sensory</span></span>
+        <h2>Cupping &amp; Origin</h2>
+        <p class="desc"><span data-vi>Cà phê nguyên bản Sơn La và Đà Lạt; đánh giá bằng cảm quan. Học bất kỳ lúc nào.</span><span data-en>Sơn La and Đà Lạt origins; a sensory-based final. Start whenever.</span></p>
+        <div class="meta">
+          <span class="fresh"><span data-vi>Bắt đầu bất kỳ</span><span data-en>Start any time</span></span>
+          <span class="price" style="margin-left:auto">1.290.000 ₫<span class="usd">· $52</span></span>
+          <a class="add" href="me.html"><span data-vi>Đăng ký</span><span data-en>Enrol</span> →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="cc-card">
+      <a class="img" href="learn.html?preview=1"><img src="https://images.unsplash.com/photo-1445116572660-236099ec47a3?auto=format&fit=crop&w=620&q=72" width="620" height="387" alt="" loading="lazy" /></a>
+      <div class="bd">
+        <span class="lbl acc"><span data-vi>Lai · 6 tuần online + thi tại quán</span><span data-en>Hybrid · 6 weeks online + final at a café</span></span>
+        <h2><span data-vi>Căn bản Pha chế</span><span data-en>Barista Foundations</span></h2>
+        <p class="desc"><span data-vi>24 bài online; thi cuối khoá tại Hội An. Khoá nền для nhân viên hoặc chủ quán.</span><span data-en>24 online lessons; final exam on-site in Hội An. A foundation course for staff and shop owners.</span></p>
+        <div class="meta">
+          <span class="fresh low"><span data-vi>Còn 1 ghế · khai giảng 01.10</span><span data-en>1 seat left · starts 1 Oct</span></span>
+          <span class="price" style="margin-left:auto">1.890.000 ₫<span class="usd">· $77</span></span>
+          <a class="add" href="me.html"><span data-vi>Đăng ký</span><span data-en>Enrol</span> →</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer class="ftr"><div class="wrap"><div class="ftr-bottom" style="margin-top:0;border-top:0">
+  <p>© 2026 Bacama · <span data-vi>Đà Nẵng</span><span data-en>Da Nang</span></p><p>ZaloPay · MoMo · VNPay · COD · GHN</p>
+</div></div></footer>
+
+<script src="app.js"></script>
+</body>
+</html>

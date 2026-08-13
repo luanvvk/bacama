@@ -7,32 +7,32 @@
 <link rel="stylesheet" href="app.css" />
 </head>
 <body>
-<a class="skip" href="#main">Tới nội dung</a>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
 
 <header class="hdr" id="hdr">
   <div class="wrap hdr-row">
     <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
     <div class="hdr-actions">
       <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
-      <span class="lbl">Kết nối an toàn <span class="gl">a secure connection</span></span></div>
+      <span class="lbl"><span data-vi>Kết nối an toàn</span><span data-en>Secure connection</span> <span class="gl">a secure connection</span></span></div>
   </div>
 </header>
 
 <main id="main" class="co">
   <div class="co-steps">
-    <b class="done">01 · Chọn cách trả ✓</b><i></i>
-    <b class="on">02 · Xác nhận</b><i></i>
-    <b>03 · Xong</b>
+    <b class="done">01 · <span data-vi>Chọn cách trả ✓</span><span data-en>Choose payment ✓</span></b><i></i>
+    <b class="on">02 · <span data-vi>Xác nhận</span><span data-en>Confirm</span></b><i></i>
+    <b>03 · <span data-vi>Xong</span><span data-en>Done</span></b>
   </div>
 
   <div class="co-grid">
     <div>
-      <h1>Quét mã để hoàn tất.
+      <h1><span data-vi>Quét mã để hoàn tất.</span><span data-en>Scan to finish.</span>
         <span class="gl">One scan, and it's done.</span></h1>
-      <p style="color:var(--ink-soft);max-width:52ch">Mở app <b>ZaloPay</b> trên điện thoại, quét mã bên dưới và xác nhận. Trang này sẽ tự chuyển khi chúng tôi nhận được xác nhận từ ZaloPay.</p>
+      <p style="color:var(--ink-soft);max-width:52ch"><span data-vi>Mở app <b>ZaloPay</b> trên điện thoại, quét mã bên dưới và xác nhận. Trang này sẽ tự chuyển khi chúng tôi nhận được xác nhận từ ZaloPay.</span><span data-en>Open <b>ZaloPay</b> on your phone, scan the code below and confirm. This page moves on as soon as ZaloPay confirms.</span></p>
 
       <div class="qrbox" style="margin-top:24px">
-        <div class="qr" aria-label="Mã QR thanh toán">
+        <div class="qr" aria-label="Mã QR thanh toán / Payment QR">
           <!-- placeholder pattern — the gateway returns the real payload -->
           <svg viewBox="0 0 33 33" shape-rendering="crispEdges" role="img" aria-label="QR">
             <rect width="33" height="33" fill="#FBF8F2"/>
@@ -56,37 +56,37 @@
           </svg>
         </div>
         <div style="margin-top:22px;font-family:var(--display);font-size:29px;font-weight:600;letter-spacing:-.02em">510.000 ₫</div>
-        <div class="lbl" style="margin-top:7px">Mã đơn · BCM-2419</div>
+        <div class="lbl" style="margin-top:7px"><span data-vi>Mã đơn</span><span data-en>Order ref</span> · BCM-2419</div>
 
         <div id="waiting" style="margin-top:28px;padding-top:22px;border-top:1px solid var(--line)">
           <div class="spin" role="status" aria-live="polite"></div>
-          <p style="margin-top:15px;font-size:14.5px;color:var(--ink-soft)">Đang chờ xác nhận từ ZaloPay…</p>
-          <p class="hint" style="max-width:40ch;margin:8px auto 0">Đừng đóng trang này. Nếu quá 30 giây chưa xong, chúng tôi vẫn ghi nhận đơn và nhắn lại cho bạn qua Zalo.</p>
+          <p style="margin-top:15px;font-size:14.5px;color:var(--ink-soft)"><span data-vi>Đang chờ xác nhận từ ZaloPay…</span><span data-en>Waiting for ZaloPay to confirm…</span></p>
+          <p class="hint" style="max-width:40ch;margin:8px auto 0"><span data-vi>Đừng đóng trang này. Nếu quá 30 giây chưa xong, chúng tôi vẫn ghi nhận đơn và nhắn lại cho bạn qua Zalo.</span><span data-en>Don't close this page. If 30 seconds pass without a confirmation, your order is still recorded and we'll message you on Zalo.</span></p>
         </div>
       </div>
 
       <div style="display:flex;gap:11px;margin-top:20px;flex-wrap:wrap">
-        <a href="checkout.html" class="btn ghost sm">← Đổi cách thanh toán</a>
-        <a href="#" class="btn ghost sm">Mở app ZaloPay trên máy này</a>
+        <a href="checkout.html" class="btn ghost sm">← <span data-vi>Đổi cách thanh toán</span><span data-en>Change payment method</span></a>
+        <a href="#" class="btn ghost sm"><span data-vi>Mở app ZaloPay trên máy này</span><span data-en>Open ZaloPay on this device</span></a>
       </div>
     </div>
 
     <aside class="osum">
-      <div class="osum-hd">Đơn của bạn</div>
+      <div class="osum-hd"><span data-vi>Đơn của bạn</span><span data-en>Your order</span></div>
       <div class="osum-bd">
         <div class="oline">
           <img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=120&q=70" alt="" />
-          <div><div class="t">Đà Lạt Washed</div><div class="o">250 g · xay phin · × 1</div></div>
+          <div><div class="t">Đà Lạt Washed</div><div class="o">250 g · <span data-vi>xay phin · × 1</span><span data-en>phin grind · × 1</span></div></div>
           <span class="p">280.000 ₫</span>
         </div>
         <div class="oline">
           <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=120&q=70" alt="" />
-          <div><div class="t">Blend Nhà</div><div class="o">250 g · nguyên hạt · × 1</div></div>
+          <div><div class="t"><span data-vi>Blend Nhà</span><span data-en>House Blend</span></div><div class="o">250 g · <span data-vi>nguyên hạt · × 1</span><span data-en>whole bean · × 1</span></div></div>
           <span class="p">230.000 ₫</span>
         </div>
         <div style="padding-top:14px">
-          <div class="sumrow"><span>Giao tới</span><span class="v" style="font-family:var(--body);font-weight:400;font-size:13px;text-align:right;max-width:60%">27 Ngô Quyền, Hải Châu, Đà Nẵng</span></div>
-          <div class="sumrow total"><span>Tổng cộng</span><span class="v">510.000 ₫</span></div>
+          <div class="sumrow"><span><span data-vi>Giao tới</span><span data-en>Ship to</span></span><span class="v" style="font-family:var(--body);font-weight:400;font-size:13px;text-align:right;max-width:60%">27 Ngô Quyền, Hải Châu, Đà Nẵng</span></div>
+          <div class="sumrow total"><span><span data-vi>Tổng cộng</span><span data-en>Total</span></span><span class="v">510.000 ₫</span></div>
         </div>
       </div>
     </aside>

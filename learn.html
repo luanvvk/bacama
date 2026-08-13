@@ -60,6 +60,14 @@
 
     <!-- stage -->
     <section class="stage" id="stage">
+      <!-- Guest gate: shown when URL has ?preview=1 (or no signed-in token in production) -->
+      <div class="banner" style="background:var(--accent-tint);border-bottom:1px solid var(--accent);padding:8px 18px;font-size:12.5px;display:flex;align-items:center;gap:11px;flex-wrap:wrap" id="guestGate" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" style="width:15px;height:15px;color:var(--accent);flex:none"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <span style="color:var(--ink-soft)"><b><span data-vi>Bạn đang xem bài miễn phí.</span><span data-en>You're watching the free preview.</span></b> <span data-vi>Đăng nhập để lưu tiến độ và mở các bài trả phí.</span><span data-en>Sign in to save your progress and unlock paid lessons.</span></span>
+        <button class="btn sm" type="button" data-open-auth style="margin-left:auto"><span data-vi>Đăng nhập</span><span data-en>Log in</span></button>
+        <a class="btn ghost sm" href="courses.html"><span data-vi>Tất cả khoá</span><span data-en>All courses</span> →</a>
+      </div>
+
       <div class="video">
         <img src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=1400&q=70" width="1400" height="787" alt="Latte art being poured" />
         <button class="play" type="button" aria-label="Phát / Play">
@@ -147,5 +155,14 @@
   </div>
 </div>
 <script src="app.js"></script>
+<script>
+/* Prototype guest gate: ?preview=1 shows the free-preview banner.
+   In Phase 2 this is replaced by a server-side gate on the session. */
+(function () {
+  if (/[?&]preview=1\b/.test(location.search) || !/[?&]signedin=1\b/.test(location.search)) {
+    var g = document.getElementById('guestGate'); if (g) g.hidden = false;
+  }
+})();
+</script>
 </body>
 </html>
