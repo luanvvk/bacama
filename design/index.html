@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bacama · Cà phê rang mộc &amp; bánh tây, Đà Nẵng</title>
+<meta name="description" content="Lò roastery nhỏ ở Đà Nẵng. Cà phê rang theo lô ngày, bánh tây ra lò từ 5 giờ sáng, khoá học barista." />
+<link rel="stylesheet" href="app.css" />
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung chính</span><span data-en>Skip to content</span></a>
+
+<!-- ═══════════ ENTRANCE OVERLAY ═══════════
+     Shows once per browser session — close the tab and it greets
+     you again. Add ?enter to the URL to force it any time.
+     Drop your loop at media/entrance.mp4 (muted, ~8 s, under 2 MB);
+     until then the poster carries the drift.                      -->
+<div class="enter" id="enter" role="dialog" aria-modal="true" aria-label="Bacama">
+  <div class="enter-media">
+    <img src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=1500&q=68" width="1500" height="1000" alt="" />
+    <video data-src="media/entrance.mp4" poster="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=1500&q=68" muted loop playsinline preload="none" aria-hidden="true"></video>
+  </div>
+  <div class="enter-inner">
+    <div class="enter-mark">Bacama<span class="dot">·</span></div>
+    <div class="enter-sub"><span data-vi>Cà phê và nhiều hơn nữa</span><span data-en>Coffee and more</span></div>
+    <p class="enter-tag">
+      <span data-vi>Lò roastery nhỏ ở Đà Nẵng. Bánh tây ra lò từ 5 giờ sáng, cà phê rang theo lô ngày.</span>
+      <span data-en>A small roastery in Đà Nẵng. Bread before the light, coffee by the day's batch.</span>
+      <span class="gl">A small roastery in Đà Nẵng. Bread before the light, coffee by the day's batch.</span>
+    </p>
+    <button class="enter-btn" type="button" data-enter>
+      <span data-vi>Vào quán</span><span data-en>Enter the shop</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <button class="enter-skip" type="button" data-enter><span data-vi>Bỏ qua</span><span data-en>Skip</span></button>
+</div>
+
+<!-- ═══════════ TODAY'S BOARD ═══════════ -->
+<div class="board">
+  <div class="wrap board-row">
+    <span><span data-vi>Rang hôm nay</span><span data-en>Today's roast</span> · <b>Đà Lạt Washed</b></span>
+    <span class="dot">·</span>
+    <span><span data-vi>Bánh ra lò</span><span data-en>Fresh bake</span> · <b>05:14</b></span>
+    <span class="dot">·</span>
+    <span><span data-vi>Giao toàn quốc 2–3 ngày</span><span data-en>Nationwide in 2–3 days</span></span>
+    <span class="dot">·</span>
+    <span><span data-vi>Site 3 mở tháng 9</span><span data-en>Site 3 opens in September</span></span>
+    <span class="gl">— everything here was made this morning</span>
+  </div>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-row">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
+
+    <ul class="nav">
+      <li>
+        <a class="nav-link" href="shop.html"><span data-vi>Cà phê &amp; Bánh</span><span data-en>Coffee &amp; Bakery</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+        <div class="mega">
+          <div class="mega-col">
+            <h4><span data-vi>Cà phê rang</span><span data-en>Coffee</span> <span class="gl">from the drum</span></h4>
+            <a href="product.html">Đà Lạt Washed<small><span data-vi>Rang vừa · mận khô, mật ong</span><span data-en>Medium · plum, honey</span></small></a>
+            <a href="product.html">Sơn La Natural<small><span data-vi>Rang đậm · cacao, mạch nha</span><span data-en>Dark · cocoa, malt</span></small></a>
+            <a href="product.html"><span data-vi>Blend Nhà</span><span data-en>House Blend</span><small><span data-vi>Cho phin và espresso</span><span data-en>For phin and espresso</span></small></a>
+            <a href="shop.html"><span data-vi>Gói 1 kg cho quán</span><span data-en>1 kg wholesale bags</span></a>
+          </div>
+          <div class="mega-col">
+            <h4><span data-vi>Bánh tây</span><span data-en>Bakery</span> <span class="gl">out at five</span></h4>
+            <a href="shop.html">Croissant<small><span data-vi>Bơ, hạnh nhân, sô-cô-la</span><span data-en>Plain, almond, chocolate</span></small></a>
+            <a href="shop.html">Kouign-amann</a>
+            <a href="shop.html">Carrot cake</a>
+            <a href="shop.html"><span data-vi>Đặt bánh sinh nhật</span><span data-en>Order a whole cake</span></a>
+          </div>
+          <div class="mega-feat">
+            <img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=160&q=70" width="160" height="160" alt="" loading="lazy" />
+            <div>
+              <div class="t"><span data-vi>Rang của tuần</span><span data-en>Roast of the week</span></div>
+              <div class="d"><span data-vi>Đà Lạt Washed · rang 11.08 · giảm 10% gói 1 kg</span><span data-en>Đà Lạt Washed · roasted 11 Aug · 10% off 1 kg</span></div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <a class="nav-link" href="courses.html"><span data-vi>Khoá học</span><span data-en>Workshops</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+        <div class="mega">
+          <div class="mega-col">
+            <h4><span data-vi>Học online</span><span data-en>Online</span> <span class="gl">at your own table</span></h4>
+            <a href="courses.html"><span data-vi>Căn bản pha chế</span><span data-en>Barista Foundations</span><small><span data-vi>6 tuần · 24 bài</span><span data-en>6 weeks · 24 lessons</span></small></a>
+            <a href="courses.html">Latte Art<small><span data-vi>9 bài · xem bài 1 miễn phí</span><span data-en>9 lessons · first one free</span></small></a>
+            <a href="courses.html">Cupping &amp; Origin</a>
+          </div>
+          <div class="mega-col">
+            <h4><span data-vi>Học tại quán</span><span data-en>In person</span> <span class="gl">beside the machine</span></h4>
+            <a href="courses.html">Viennoiserie<small><span data-vi>Hội An · còn 3 ghế</span><span data-en>Hội An · 3 seats left</span></small></a>
+            <a href="courses.html"><span data-vi>Rang thử cuối tuần</span><span data-en>Weekend roasting</span></a>
+            <a href="courses.html"><span data-vi>Lịch khai giảng</span><span data-en>Class calendar</span></a>
+          </div>
+        </div>
+      </li>
+      <li><a class="nav-link" href="index.html#sites"><span data-vi>Quán</span><span data-en>Cafés</span></a></li>
+      <li><a class="nav-link" href="story.html"><span data-vi>Gia đình</span><span data-en>Our family</span></a></li>
+    </ul>
+
+    <div class="hdr-actions">
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      <button class="icon-btn" type="button" data-open="cartDrawer" aria-label="Giỏ hàng / Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l2.5 12h11l2-8H6"/></svg>
+        <i class="pip" data-cart-count>2</i>
+      </button>
+      <div class="acct">
+        <button class="btn ghost sm" type="button" data-acct aria-haspopup="true" aria-expanded="false"><span data-vi>Đăng nhập</span><span data-en>Log in</span></button>
+        <div class="acct-menu">
+          <div class="acct-head"><div class="n"><span data-vi>Chào bạn</span><span data-en>Welcome</span></div><div class="r"><span data-vi>Chưa đăng nhập</span><span data-en>Not signed in</span></div></div>
+          <a href="#" data-open-auth><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg><span data-vi>Đăng nhập / Tạo tài khoản</span><span data-en>Sign in / Create account</span></a>
+          <div class="sep"></div>
+          <a href="me.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><span data-vi>Khoá học của tôi</span><span data-en>My learning</span></a>
+          <a href="account.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 2h12l1 7H5l1-7zM5 9h14v13H5z"/></svg><span data-vi>Đơn hàng của tôi</span><span data-en>My orders</span></a>
+          <div class="sep"></div>
+          <div class="foot"><span data-vi>Dành cho nhân viên</span><span data-en>Staff access</span></div>
+          <a href="teach.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v12H4zM9 21h6M12 17v4"/></svg><span data-vi>Trang giảng viên</span><span data-en>Teacher console</span></a>
+          <a href="admin.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"/></svg><span data-vi>Quản trị</span><span data-en>Admin console</span></a>
+        </div>
+      </div>
+      <button class="burger icon-btn" type="button" data-open="navDrawer" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="lbl acc"><span data-vi>Lò roastery · Đà Nẵng · từ 2017</span><span data-en>Roastery · Đà Nẵng · since 2017</span> <span class="gl">a small roastery, since 2017</span></div>
+      <h1><span data-vi>Rang mộc, <em>nướng từ 5 giờ sáng.</em></span><span data-en>Roasted by hand, <em>baked before the light.</em></span>
+        <span class="gl">Roasted by hand. Baked before the light.</span></h1>
+      <p class="hero-lede">
+        <span data-vi>Một lò nhỏ ngoài Đà Nẵng. Cà phê rang theo lô ngày, dán ngày rang lên từng gói. Bánh tây nướng bằng bơ Pháp.</span>
+        <span data-en>A small roastery outside Đà Nẵng. Coffee roasted in daily batches, a roast date on every bag. Western pastries made with French butter.</span>
+        <span class="gl-line">Shipped anywhere in Việt Nam — or come and sit a while.</span>
+      </p>
+      <div class="hero-cta-row">
+        <a href="shop.html" class="btn"><span data-vi>Mua cà phê rang</span><span data-en>Shop the roast</span><span class="gl">shop the roast</span></a>
+        <a href="courses.html" class="btn ghost"><span data-vi>Học làm barista</span><span data-en>Take a workshop</span><span class="gl">learn with us</span></a>
+      </div>
+      <div class="hero-rule">
+        <span><span data-vi>Ba quán</span><span data-en>Three cafés</span> · <b>Đà Nẵng, Hội An</b></span>
+        <span><span data-vi>Rang theo lô ngày</span><span data-en>Daily batch roasting</span></span>
+        <span>ZaloPay · MoMo · COD</span>
+      </div>
+    </div>
+    <div class="plate">
+      <img src="https://images.unsplash.com/photo-1555507036-ab1f40a8ed90?auto=format&fit=crop&w=900&q=72" width="900" height="1125" alt="Croissant hạnh nhân vừa ra lò" fetchpriority="high" decoding="async" />
+      <div class="stamp"><div class="t"><span data-vi>Ngày rang</span><span data-en>Roasted</span></div><div class="d">11.08</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 01 ═══════════ -->
+<section class="section" id="shop">
+  <div class="wrap">
+    <div class="sec-hd rv">
+      <div>
+        <div class="sec-no"><span class="lbl acc">01</span><i></i><span class="lbl"><span data-vi>Hôm nay</span><span data-en>Today's stock</span> <span class="gl">chosen this morning</span></span></div>
+        <h2><span data-vi>Ba thứ chúng tôi muốn gửi bạn trước.</span><span data-en>Three things, picked before the shop opened.</span>
+          <span class="gl">Three things, picked before the shop opened.</span></h2>
+      </div>
+      <div class="sec-lk"><a href="shop.html"><span data-vi>Xem tất cả</span><span data-en>Browse all</span> →</a></div>
+    </div>
+
+    <div class="feat rv">
+      <article class="pcard lead">
+        <a href="product.html" class="img"><img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=820&q=72" width="820" height="902" alt="Gói cà phê Đà Lạt Washed" loading="lazy" decoding="async" /></a>
+        <div class="body">
+          <span class="lbl acc"><span data-vi>Cà phê rang</span><span data-en>Coffee blend</span></span>
+          <h3>Đà Lạt Washed</h3>
+          <p class="desc"><span data-vi>Hương mận khô, mật ong, hậu bạc hà. Rang vừa. Gói 250 g hoặc 1 kg, xay theo cách pha của bạn.</span><span data-en>Dried plum, honey, a cool mint finish. Medium roast. 250 g or 1 kg, ground for your brew method.</span>
+            <span class="gl-line">Plum, honey, a cool finish.</span></p>
+          <span class="fresh"><span data-vi>Rang 3 ngày trước</span><span data-en>Roasted 3 days ago</span></span>
+          <div class="meta"><span class="price">280.000 ₫<span class="usd">· $11.50</span></span><a class="add" href="product.html"><span data-vi>Thêm vào giỏ</span><span data-en>Add to cart</span></a></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <a href="shop.html" class="img"><img src="https://images.unsplash.com/photo-1555507036-ab1f40a8ed90?auto=format&fit=crop&w=620&q=72" width="620" height="775" alt="Croissant hạnh nhân" loading="lazy" decoding="async" /></a>
+        <div class="body">
+          <span class="lbl acc"><span data-vi>Bánh tây</span><span data-en>Bakery</span></span>
+          <h3><span data-vi>Croissant hạnh nhân</span><span data-en>Croissant aux amandes</span></h3>
+          <p class="desc"><span data-vi>Bơ Pháp, hạnh nhân nghiền, đường mía.</span><span data-en>French butter, ground almond, cane sugar.</span></p>
+          <span class="fresh low"><span data-vi>Ra lò 05:00 · hết trưa</span><span data-en>Baked 05:00 · gone by noon</span></span>
+          <div class="meta"><span class="price">45.000 ₫<span class="usd">· $1.85</span></span><a class="add" href="#">GrabFood →</a></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <a href="courses.html" class="img"><img src="https://images.unsplash.com/photo-1445116572660-236099ec47a3?auto=format&fit=crop&w=620&q=72" width="620" height="775" alt="Barista đang chiết espresso" loading="lazy" decoding="async" /></a>
+        <div class="body">
+          <span class="lbl acc"><span data-vi>Khoá học</span><span data-en>Workshop</span></span>
+          <h3><span data-vi>Căn bản pha chế</span><span data-en>Barista Foundations</span></h3>
+          <p class="desc"><span data-vi>Sáu tuần online, thi cuối khoá tại Hội An.</span><span data-en>Six weeks online, final exam on-site in Hội An.</span></p>
+          <span class="fresh low"><span data-vi>Còn 1 ghế</span><span data-en>1 seat left</span></span>
+          <div class="meta"><span class="price">1.890.000 ₫<span class="usd">· $77</span></span><a class="add" href="courses.html"><span data-vi>Đăng ký</span><span data-en>Enroll</span> →</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 · STORY ═══════════ -->
+<section class="section dark" id="story">
+  <div class="wrap">
+    <div class="hero-grid rv">
+      <div class="plate">
+        <img src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=900&q=72" width="900" height="1125" alt="Lò rang trong nắng sớm" loading="lazy" decoding="async" />
+      </div>
+      <div>
+        <div class="sec-no"><span class="lbl acc">02</span><i></i><span class="lbl"><span data-vi>Gia đình · từ 2017</span><span data-en>Our family · since 2017</span> <span class="gl">one kitchen, one oven</span></span></div>
+        <h2 style="font-size:clamp(26px,3.3vw,40px);max-width:19ch;color:var(--on-dark);margin-top:14px">
+          <span data-vi>Bắt đầu ở bếp nhà, với một chảo rang và một bà nội.</span><span data-en>It began with my grandmother's pan.</span>
+          <span class="gl">It began with my grandmother's pan.</span></h2>
+        <p style="margin-top:20px;color:var(--on-dark-soft);max-width:50ch">
+          <span data-vi>Bà rang cà phê cho cả nhà mỗi sáng. Mẹ nướng bánh cho bà con trong xóm. Chúng tôi mở lò năm 2017 — một bếp, một lò, một gia đình ở ngoại ô Đà Nẵng.</span>
+          <span data-en>She roasted coffee for the family every morning. My mother baked bread for the neighbours. We opened the roastery in 2017 — one kitchen, one oven, one family outside Đà Nẵng.</span></p>
+        <p style="margin-top:26px"><a href="story.html" class="btn ghost"><span data-vi>Đọc chuyện nhà</span><span data-en>Read our story</span><span class="gl">our story</span></a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 03 · WORKSHOPS ═══════════ -->
+<section class="section tint" id="courses">
+  <div class="wrap">
+    <div class="sec-hd rv">
+      <div>
+        <div class="sec-no"><span class="lbl acc">03</span><i></i><span class="lbl"><span data-vi>Khoá học</span><span data-en>Workshops</span> <span class="gl">learn beside the roaster</span></span></div>
+        <h2><span data-vi>Học cùng người rang, học cùng người nướng.</span><span data-en>Taught by the people who bake at five.</span>
+          <span class="gl">Taught by the people who bake at five.</span></h2>
+      </div>
+      <div class="sec-lk"><a href="courses.html"><span data-vi>Tất cả khoá học</span><span data-en>All courses</span> →</a></div>
+    </div>
+    <div class="feat rv">
+      <article class="pcard lead">
+        <a href="courses.html" class="img"><img src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=820&q=72" width="820" height="902" alt="Rót latte art" loading="lazy" decoding="async" /></a>
+        <div class="body">
+          <span class="lbl acc"><span data-vi>Online · 9 bài</span><span data-en>Online · 9 lessons</span></span>
+          <h3>Latte Art</h3>
+          <p class="desc"><span data-vi>Video kèm thảo luận trực tiếp với giảng viên, thi bằng ảnh. Học ở nhà, hoàn thành tại quán.</span><span data-en>Video lessons with live discussion, a photo-based exam. Learn at home, finish at a café.</span></p>
+          <span class="fresh"><span data-vi>Xem bài 1 miễn phí</span><span data-en>Lesson 1 free to watch</span></span>
+          <div class="meta"><span class="price">790.000 ₫<span class="usd">· $32</span></span><a class="add" href="courses.html"><span data-vi>Xem thử</span><span data-en>Free preview</span> →</a></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <a href="courses.html" class="img"><img src="https://images.unsplash.com/photo-1509446152067-d56c2e1cde3a?auto=format&fit=crop&w=620&q=72" width="620" height="775" alt="Thợ bánh tạo hình bột" loading="lazy" decoding="async" /></a>
+        <div class="body">
+          <span class="lbl acc"><span data-vi>Tại chỗ · Hội An</span><span data-en>In person · Hội An</span></span>
+          <h3>Viennoiserie</h3>
+          <p class="desc"><span data-vi>Hai ngày cuối tuần, tám người, bơ Pháp.</span><span data-en>A two-day weekend, eight people, French butter.</span></p>
+          <span class="fresh low"><span data-vi>Còn 3 ghế · 21–22.09</span><span data-en>3 seats left · 21–22 Sep</span></span>
+          <div class="meta"><span class="price">3.200.000 ₫<span class="usd">· $130</span></span><a class="add" href="courses.html"><span data-vi>Giữ chỗ</span><span data-en>Book a seat</span> →</a></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <a href="courses.html" class="img"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=620&q=72" width="620" height="775" alt="Thìa cupping và ly thử" loading="lazy" decoding="async" /></a>
+        <div class="body">
+          <span class="lbl acc">Online</span>
+          <h3>Cupping &amp; Origin</h3>
+          <p class="desc"><span data-vi>Cà phê nguyên bản Sơn La và Đà Lạt; đánh giá bằng cảm quan.</span><span data-en>Sơn La and Đà Lạt origins; a sensory-based final.</span></p>
+          <span class="fresh"><span data-vi>Học bất cứ lúc nào</span><span data-en>Start any time</span></span>
+          <div class="meta"><span class="price">1.290.000 ₫<span class="usd">· $52</span></span><a class="add" href="courses.html"><span data-vi>Đăng ký</span><span data-en>Enroll</span> →</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 04 · CAFÉS ═══════════ -->
+<section class="section" id="sites">
+  <div class="wrap">
+    <div class="sec-hd rv">
+      <div>
+        <div class="sec-no"><span class="lbl acc">04</span><i></i><span class="lbl"><span data-vi>Quán</span><span data-en>Our cafés</span> <span class="gl">three rooms, one drum</span></span></div>
+        <h2><span data-vi>Ba quán, một lò rang.</span><span data-en>Three cafés, one roastery.</span><span class="gl">Come and sit a while.</span></h2>
+      </div>
+      <div class="sec-lk"><a href="#sites"><span data-vi>Bản đồ &amp; giờ mở</span><span data-en>Map &amp; hours</span> →</a></div>
+    </div>
+    <div class="grid-3 rv">
+      <article class="loc-card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1453614512568-c4054b9be2c2?auto=format&fit=crop&w=680&q=72" width="680" height="468" alt="Mặt tiền quán Ngô Quyền" loading="lazy" /></div>
+        <span class="lbl acc">Site 01 · Đà Nẵng</span>
+        <h3>Ngô Quyền</h3>
+        <p class="addr">27 Ngô Quyền, Hải Châu · <span data-vi>Bánh nướng tại chỗ</span><span data-en>Pastries baked on site</span></p>
+        <p class="hours"><span data-vi>T2–CN · </span><span data-en>Mon–Sun · </span><b>07:00 – 19:00</b></p>
+        <div class="foot"><span><span data-vi>Rang hôm nay</span><span data-en>Today's roast</span></span><b>Đà Lạt W.</b></div>
+      </article>
+      <article class="loc-card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1521017432531-fbd62d7a603f?auto=format&fit=crop&w=680&q=72" width="680" height="468" alt="Mặt tiền quán phố cổ Hội An" loading="lazy" /></div>
+        <span class="lbl acc">Site 02 · Hội An</span>
+        <h3><span data-vi>Phố cổ</span><span data-en>Old Town</span></h3>
+        <p class="addr">14 Phan Bội Châu, Minh An · <span data-vi>Cupping cuối tuần</span><span data-en>Weekend cupping</span></p>
+        <p class="hours"><span data-vi>T3–CN · </span><span data-en>Tue–Sun · </span><b>07:30 – 18:00</b></p>
+        <div class="foot"><span><span data-vi>Rang hôm nay</span><span data-en>Today's roast</span></span><b>Sơn La N.</b></div>
+      </article>
+      <article class="loc-card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1559925395-82d087d0fe3c?auto=format&fit=crop&w=680&q=72" width="680" height="468" alt="Mặt bằng An Thuận đang hoàn thiện" loading="lazy" /></div>
+        <span class="lbl acc">Site 03 · Đà Nẵng <span style="color:var(--accent);font-weight:600">· <span data-vi>Mở T9</span><span data-en>Opens Sep</span></span></span>
+        <h3>An Thuận</h3>
+        <p class="addr">8 An Thuận 12, Ngũ Hành Sơn · <span data-vi>Lò rang, phòng học, sân sau</span><span data-en>Roastery, classroom, garden</span></p>
+        <p class="hours"><span data-vi>Khai trương · </span><span data-en>Opening · </span><b>09.2026</b></p>
+        <div class="foot"><span><span data-vi>Sắp mở</span><span data-en>Opening soon</span></span><b>—</b></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 05 · BAND ═══════════ -->
+<section class="band">
+  <div class="wrap">
+    <div class="lbl acc">05 · <span data-vi>Đặt hàng</span><span data-en>Order</span> <span class="gl">to your door</span></div>
+    <h2><span data-vi>Một gói rang hôm nay, <em>gửi tới cửa nhà bạn.</em></span><span data-en>A bag roasted this morning, <em>posted to your door.</em></span>
+      <span class="gl">A bag roasted this morning, posted to your door.</span></h2>
+    <p class="lede"><span data-vi>Thanh toán bằng ZaloPay, MoMo hoặc trả tiền khi nhận. GHN giao toàn quốc trong 2–3 ngày.</span><span data-en>Pay with ZaloPay, MoMo, or cash on delivery. GHN ships nationwide in 2–3 days.</span></p>
+    <div class="row">
+      <a href="product.html" class="btn"><span data-vi>Mua Đà Lạt Washed</span><span data-en>Shop Đà Lạt Washed</span></a>
+      <a href="shop.html" class="btn ghost"><span data-vi>Xem tất cả blend</span><span data-en>Browse all blends</span></a>
+    </div>
+    <div class="pays"><span>ZaloPay</span><span>MoMo</span><span>VNPay QR</span><span>COD</span><span>Visa · MC</span><span>GHN</span></div>
+  </div>
+</section>
+</main>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div>
+        <span class="lockup"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></span>
+        <p class="ftr-found"><span data-vi>Lò nhỏ, rang theo ngày, nướng thật sớm — Đà Nẵng, 2017.</span><span data-en>Small roastery, daily batches, an early bake — Đà Nẵng, 2017.</span></p>
+        <div style="margin-top:24px;opacity:.55" aria-hidden="true">
+          <svg width="200" height="58" viewBox="0 0 200 58" fill="none" stroke="#D9A05B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 40 q8 -7 16 0 t16 0 t16 0"/><path d="M14 31 q8 -5 16 0 t16 0 t16 0" opacity=".55"/>
+            <circle cx="38" cy="48" r="2.6"/><path d="M78 42 h28 a4 4 0 0 1 0 8 h-28 z"/><path d="M78 42 q-2 8 -6 8 m32 -8 q2 6 6 8"/>
+            <path d="M124 50 q6 -4 12 -6 q-4 -6 0 -10 q6 4 6 10 q-2 4 -6 4"/><path d="M166 30 v-9 h6 v9 m-3 0 v7"/><path d="M175 34 q-2 6 -7 9"/>
+          </svg>
+        </div>
+      </div>
+      <div><h4><span data-vi>Cà phê</span><span data-en>Coffee</span></h4><ul><li><a href="product.html">Đà Lạt Washed</a></li><li><a href="product.html">Sơn La Natural</a></li><li><a href="product.html"><span data-vi>Blend Nhà</span><span data-en>House Blend</span></a></li><li><a href="shop.html"><span data-vi>Gói 1 kg</span><span data-en>1 kg bags</span></a></li></ul></div>
+      <div><h4><span data-vi>Khoá học</span><span data-en>Workshops</span></h4><ul><li><a href="courses.html"><span data-vi>Căn bản barista</span><span data-en>Barista foundations</span></a></li><li><a href="courses.html">Latte art</a></li><li><a href="courses.html">Viennoiserie</a></li><li><a href="courses.html">Cupping</a></li></ul></div>
+      <div><h4><span data-vi>Liên hệ</span><span data-en>Contact</span></h4><ul><li>27 Ngô Quyền, Đà Nẵng</li><li>07:00 – 19:00 · 7/7</li><li>hang@bacama.vn</li><li>+84 236 000 0000</li></ul></div>
+    </div>
+    <div class="ftr-bottom">
+      <p>© 2026 Bacama · <span data-vi>GPKD Đà Nẵng</span><span data-en>Đà Nẵng business licence</span> 0300/2026</p>
+      <p>ZaloPay · MoMo · VNPay · COD · GHN</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════ DRAWERS ═══════════ -->
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer left" id="navDrawer" aria-label="Menu">
+  <div class="drawer-hd">
+    <h2>Menu</h2>
+    <button class="close" type="button" data-close aria-label="Đóng / Close"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-bd mnav">
+    <a href="#" data-sub="sub1"><span data-vi>Cà phê &amp; Bánh</span><span data-en>Coffee &amp; Bakery</span><span class="gl">from the drum, and the oven</span></a>
+    <div class="sub" id="sub1" hidden>
+      <a href="product.html">Đà Lạt Washed</a><a href="product.html">Sơn La Natural</a>
+      <a href="product.html"><span data-vi>Blend Nhà</span><span data-en>House Blend</span></a>
+      <a href="shop.html"><span data-vi>Gói 1 kg cho quán</span><span data-en>1 kg wholesale</span></a>
+      <a href="shop.html">Croissant · Kouign-amann</a><a href="shop.html">Carrot cake</a>
+    </div>
+    <a href="#" data-sub="sub2"><span data-vi>Khoá học</span><span data-en>Workshops</span><span class="gl">learn beside the roaster</span></a>
+    <div class="sub" id="sub2" hidden>
+      <a href="courses.html"><span data-vi>Căn bản pha chế</span><span data-en>Barista Foundations</span></a>
+      <a href="courses.html">Latte Art</a><a href="courses.html">Cupping &amp; Origin</a>
+      <a href="courses.html">Viennoiserie · Hội An</a>
+    </div>
+    <a href="index.html#sites"><span data-vi>Quán</span><span data-en>Cafés</span><span class="gl">three rooms, one drum</span></a>
+    <a href="story.html"><span data-vi>Gia đình</span><span data-en>Our family</span><span class="gl">our story</span></a>
+    <div style="margin-top:22px;display:flex;flex-direction:column;gap:9px">
+      <a href="#" class="btn block" data-open-auth><span data-vi>Đăng nhập</span><span data-en>Log in</span></a>
+      <a href="teach.html" class="btn ghost block sm"><span data-vi>Trang giảng viên</span><span data-en>Teacher console</span></a>
+      <a href="admin.html" class="btn ghost block sm"><span data-vi>Quản trị</span><span data-en>Admin console</span></a>
+    </div>
+  </div>
+</aside>
+
+<aside class="drawer" id="cartDrawer" aria-label="Giỏ hàng">
+  <div class="drawer-hd">
+    <h2><span data-vi>Giỏ hàng</span><span data-en>Your basket</span><span class="gl" style="font-size:13px;margin-left:9px">your basket</span></h2>
+    <button class="close" type="button" data-close aria-label="Đóng / Close"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="drawer-bd">
+    <div class="freeship" id="cartFree"><span data-vi>Mua thêm <b>0 ₫</b> để được miễn phí giao hàng.</span><span data-en>Add <b>0 ₫</b> more for free shipping.</span></div>
+
+    <div class="citem" data-price="280000">
+      <img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=160&q=70" alt="" />
+      <div style="flex:1">
+        <div class="t">Đà Lạt Washed</div>
+        <div class="o">250 g · <span data-vi>xay phin · rang 11.08</span><span data-en>phin grind · roasted 11 Aug</span></div>
+        <div class="r">
+          <span class="qty"><button type="button" data-step="-1" aria-label="−">−</button><span>1</span><button type="button" data-step="1" aria-label="+">+</button></span>
+          <button class="crm" type="button" data-remove><span data-vi>Bỏ</span><span data-en>Remove</span></button>
+          <span class="p">280.000 ₫</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="citem" data-price="230000">
+      <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=160&q=70" alt="" />
+      <div style="flex:1">
+        <div class="t"><span data-vi>Blend Nhà</span><span data-en>House Blend</span></div>
+        <div class="o">250 g · <span data-vi>nguyên hạt · rang 12.08</span><span data-en>whole bean · roasted 12 Aug</span></div>
+        <div class="r">
+          <span class="qty"><button type="button" data-step="-1" aria-label="−">−</button><span>1</span><button type="button" data-step="1" aria-label="+">+</button></span>
+          <button class="crm" type="button" data-remove><span data-vi>Bỏ</span><span data-en>Remove</span></button>
+          <span class="p">230.000 ₫</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-ft">
+    <div class="sumrow"><span><span data-vi>Tạm tính</span><span data-en>Subtotal</span></span><span class="v" id="cartSub">510.000 ₫</span></div>
+    <div class="sumrow"><span><span data-vi>Giao hàng · GHN</span><span data-en>Shipping · GHN</span></span><span class="v" id="cartShip">Miễn phí</span></div>
+    <div class="sumrow total"><span><span data-vi>Tổng cộng</span><span data-en>Total</span></span><span class="v" id="cartTotal">510.000 ₫</span></div>
+    <a href="checkout.html" class="btn block lg" style="margin-top:16px"><span data-vi>Thanh toán</span><span data-en>Check out</span><span class="gl">check out</span></a>
+    <p class="hint" style="text-align:center">ZaloPay · MoMo · VNPay QR · COD</p>
+  </div>
+</aside>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="contact">
+  <div class="contact-panel">
+    <div class="contact-hd"><div class="t"><span data-vi>Nhắn cho quán</span><span data-en>Message the shop</span></div><div class="d"><span data-vi>Trả lời trong giờ mở cửa</span><span data-en>We reply during opening hours</span></div></div>
+    <div class="contact-body">
+      <a href="#"><span class="ic">Za</span><span><span class="t">Zalo</span><span class="d">@bacama.danang</span></span></a>
+      <a href="tel:+842360000000"><span class="ic">☎</span><span><span class="t"><span data-vi>Gọi quán</span><span data-en>Call the shop</span></span><span class="d">+84 236 000 0000</span></span></a>
+      <a href="#"><span class="ic">Me</span><span><span class="t">Messenger</span><span class="d">fb.com/bacama</span></span></a>
+      <a href="mailto:hang@bacama.vn"><span class="ic">@</span><span><span class="t">Email</span><span class="d">hang@bacama.vn</span></span></a>
+    </div>
+    <div class="contact-note"><span data-vi>Đơn hàng &amp; khoá học · 07:00–19:00</span><span data-en>Orders &amp; courses · 07:00–19:00</span></div>
+  </div>
+  <button class="contact-fab" type="button" data-contact aria-label="Liên hệ / Contact">
+    <svg class="msg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-4-.9L3 21l1.9-4.5A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>
+    <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

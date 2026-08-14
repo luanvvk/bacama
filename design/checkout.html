@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thanh toán · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-row">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
+    <div class="hdr-actions">
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      
+      <span class="lbl"><span data-vi>Thanh toán an toàn</span><span data-en>A secure checkout</span> <span class="gl">a secure checkout</span></span>
+      <a href="shop.html" class="btn ghost sm"><span data-vi>Tiếp tục mua</span><span data-en>Continue shopping</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="co">
+  <div class="co-steps">
+    <b class="on">01 · <span data-vi>Chọn cách trả</span><span data-en>Choose payment</span></b><i></i>
+    <b>02 · <span data-vi>Xác nhận</span><span data-en>Confirm</span></b><i></i>
+    <b>03 · <span data-vi>Xong</span><span data-en>Done</span></b>
+    <span class="gl" style="margin-left:6px">choose · confirm · done</span>
+  </div>
+
+  <div class="co-grid">
+    <div>
+      <h1><span data-vi>Bạn muốn trả bằng cách nào?</span><span data-en>How would you like to pay?</span>
+        <span class="gl">However is easiest for you.</span></h1>
+      <p style="color:var(--ink-soft);max-width:52ch"><span data-vi>Chọn một cách bên dưới. Chúng tôi không giữ số thẻ của bạn — mọi thanh toán đều diễn ra trên trang của nhà cung cấp.</span><span data-en>Pick one below. We never store your card details — every payment happens on the provider's own page.</span></p>
+
+      <form class="meth" id="methForm">
+        <label>
+          <input type="radio" name="m" value="zalopay" checked data-cta="Thanh toán bằng ZaloPay" data-cta-en="Pay with ZaloPay" />
+          <span class="logo">Zalo</span>
+          <span class="mt"><span class="t">ZaloPay</span><span class="d"><span data-vi>Mở app ZaloPay, xác nhận là xong</span><span data-en>Open ZaloPay, confirm, done</span></span></span>
+          <span class="pop"><span data-vi>Phổ biến</span><span data-en>Popular</span></span>
+        </label>
+        <label>
+          <input type="radio" name="m" value="momo" data-cta="Thanh toán bằng MoMo" data-cta-en="Pay with MoMo" />
+          <span class="logo">MoMo</span>
+          <span class="mt"><span class="t">MoMo</span><span class="d"><span data-vi>Ví MoMo · quét mã hoặc mở app</span><span data-en>MoMo wallet · scan or open the app</span></span></span>
+          <span class="fee"><span data-vi>Miễn phí</span><span data-en>Free</span></span>
+        </label>
+        <label>
+          <input type="radio" name="m" value="vnpay" data-cta="Tạo mã VNPay QR" data-cta-en="Generate a VNPay QR" />
+          <span class="logo">VNPay</span>
+          <span class="mt"><span class="t">VNPay QR</span><span class="d"><span data-vi>Quét bằng app ngân hàng bất kỳ</span><span data-en>Scan with any banking app</span></span></span>
+          <span class="fee"><span data-vi>Miễn phí</span><span data-en>Free</span></span>
+        </label>
+        <label>
+          <input type="radio" name="m" value="bank" data-cta="Xem thông tin chuyển khoản" data-cta-en="Show bank transfer details" />
+          <span class="logo">Bank</span>
+          <span class="mt"><span class="t"><span data-vi>Chuyển khoản ngân hàng</span><span data-en>Bank transfer</span></span><span class="d">Vietcombank · Techcombank · BIDV</span></span>
+          <span class="fee"><span data-vi>Miễn phí</span><span data-en>Free</span></span>
+        </label>
+        <label>
+          <input type="radio" name="m" value="card" data-cta="Thanh toán bằng thẻ" data-cta-en="Pay by card" />
+          <span class="logo">Card</span>
+          <span class="mt"><span class="t"><span data-vi>Thẻ quốc tế</span><span data-en>International card</span></span><span class="d">Visa · Mastercard · JCB</span></span>
+        </label>
+        <label>
+          <input type="radio" name="m" value="cod" data-cta="Đặt hàng · trả khi nhận" data-cta-en="Place order · pay on delivery" />
+          <span class="logo">COD</span>
+          <span class="mt"><span class="t"><span data-vi>Trả tiền khi nhận hàng</span><span data-en>Cash on delivery</span></span><span class="d"><span data-vi>Đưa tiền cho shipper lúc nhận gói</span><span data-en>Pay the courier when the parcel arrives</span></span></span>
+          <span class="pop"><span data-vi>Toàn quốc</span><span data-en>Nationwide</span></span>
+        </label>
+      </form>
+
+      <div class="panel" style="margin-top:26px">
+        <div class="panel-hd"><h3><span data-vi>Giao tới đâu?</span><span data-en>Where should it go?</span><span class="gl" style="font-size:13px;margin-left:8px">where should it go</span></h3></div>
+        <div class="panel-bd">
+          <div class="field-row">
+            <div class="field"><label class="f" for="n"><span data-vi>Họ và tên</span><span data-en>Full name</span></label><input class="inp" id="n" value="Lê Thị Ngọc" /></div>
+            <div class="field"><label class="f" for="p"><span data-vi>Số điện thoại</span><span data-en>Phone</span></label><input class="inp" id="p" value="0905 123 456" /></div>
+          </div>
+          <div class="field"><label class="f" for="a"><span data-vi>Địa chỉ</span><span data-en>Address</span></label><input class="inp" id="a" value="27 Ngô Quyền, Hải Châu, Đà Nẵng" /></div>
+          <div class="field-row">
+            <div class="field" style="margin-bottom:0"><label class="f" for="c"><span data-vi>Tỉnh / Thành phố</span><span data-en>Province / City</span></label>
+              <select class="inp" id="c"><option>Đà Nẵng</option><option>Hà Nội</option><option>TP. Hồ Chí Minh</option><option>Quảng Nam</option></select></div>
+            <div class="field" style="margin-bottom:0"><label class="f" for="s"><span data-vi>Cách nhận</span><span data-en>How to receive</span></label>
+              <select class="inp" id="s"><option><span data-vi>GHN giao tận nhà · 2–3 ngày</span><span data-en>GHN home delivery · 2–3 days</span></option><option><span data-vi>Nhận tại quán · trong 2 giờ</span><span data-en>Collect at a café · within 2 hours</span></option></select></div>
+          </div>
+          <div class="field" style="margin:15px 0 0"><label class="f" for="nt"><span data-vi>Ghi chú cho quán</span><span data-en>Note for the shop</span></label>
+            <input class="inp" id="nt" placeholder="Ví dụ: xay cho phin, giao buổi chiều…" /></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="osum">
+      <div class="osum-hd"><span data-vi>Đơn của bạn</span><span data-en>Your order</span> <span class="gl" style="text-transform:none;letter-spacing:0;margin-left:6px">your order</span></div>
+      <div class="osum-bd">
+        <div class="oline">
+          <img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=120&q=70" alt="" />
+          <div><div class="t">Đà Lạt Washed</div><div class="o">250 g · <span data-vi>xay phin · × 1</span><span data-en>phin grind · × 1</span></div></div>
+          <span class="p">280.000 ₫</span>
+        </div>
+        <div class="oline">
+          <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=120&q=70" alt="" />
+          <div><div class="t"><span data-vi>Blend Nhà</span><span data-en>House Blend</span></div><div class="o">250 g · <span data-vi>nguyên hạt · × 1</span><span data-en>whole bean · × 1</span></div></div>
+          <span class="p">230.000 ₫</span>
+        </div>
+        <div style="padding-top:14px">
+          <div class="sumrow"><span><span data-vi>Tạm tính</span><span data-en>Subtotal</span></span><span class="v">510.000 ₫</span></div>
+          <div class="sumrow"><span><span data-vi>Giao hàng · GHN</span><span data-en>Shipping · GHN</span></span><span class="v" style="color:var(--ok)"><span data-vi>Miễn phí</span><span data-en>Free</span></span></div>
+          <div class="sumrow total"><span><span data-vi>Tổng cộng</span><span data-en>Total</span></span><span class="v">510.000 ₫</span></div>
+        </div>
+        <p class="hint" style="margin-top:14px"><span data-vi>Cà phê được rang trước khi gửi. Đơn đặt hôm nay đi cùng mẻ rang ngày mai.</span><span data-en>Your coffee is roasted before it ships. Today's order rides tomorrow's batch.</span>
+          <span class="gl-line" style="font-size:13px">Roasted, then posted — never the other way round.</span></p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="paybar-sticky">
+  <div class="in">
+    <div><div class="k"><span data-vi>Tổng cộng</span><span data-en>Total</span></div><div class="v">510.000 ₫</div></div>
+    <a class="btn lg" id="payGo" href="checkout-pay.html?m=zalopay"><span id="payLabel">Thanh toán bằng ZaloPay</span></a>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

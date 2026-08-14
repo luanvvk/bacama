@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trang giảng viên · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+<style>
+  .edit{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+  .lesrow{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);
+    border-radius:var(--r);margin-bottom:8px;background:var(--paper);transition:border-color .16s}
+  .lesrow:hover{border-color:var(--line-strong)}
+  .lesrow .grip{color:var(--ink-faint);cursor:grab;font-family:var(--mono);font-size:12px}
+  .lesrow .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);width:20px}
+  .lesrow .t{font-size:14px;font-weight:600;flex:1}
+  .lesrow .d{font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+  .qa{padding:14px 0;border-bottom:1px solid var(--line)}
+  .qa:last-child{border-bottom:0}
+  .qa .top{display:flex;gap:9px;align-items:center;margin-bottom:6px}
+  .qa .av{width:26px;height:26px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;
+    font-family:var(--mono);font-size:9.5px;font-weight:700;flex:none}
+  .qa .who{font-size:13px;font-weight:650}
+  .qa .when{font-family:var(--mono);font-size:9.5px;color:var(--ink-faint);margin-left:auto}
+  .qa .txt{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .qa .lesson{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);margin-top:6px}
+  .qa .reply{margin-top:9px;display:flex;gap:7px}
+  .qa .reply input{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+    padding:8px 11px;font-size:13px}
+  @media(max-width:1100px){.edit{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
+
+<div class="app">
+  <div class="app-top on-dark">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot" style="color:var(--accent-dark)">·</span></span><span class="sub"><span data-vi>Giảng viên</span><span data-en>Teaching</span></span></a>
+    <div class="app-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" placeholder="Tìm bài học, học viên…" aria-label="Tìm kiếm" />
+    </div>
+    <div class="app-top-actions">
+      <div class="role-pick" role="navigation" aria-label="Prototype role switcher">
+        <a href="me.html"><span data-vi>Học viên</span><span data-en>Student</span></a>
+        <a href="teach.html" aria-current="page"><span data-vi>Giảng viên</span><span data-en>Teacher</span></a>
+        <a href="admin.html"><span data-vi>Quản trị</span><span data-en>Admin</span></a>
+      </div>
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      <div class="avatar">AM</div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <h5><span data-vi>Giảng dạy</span><span data-en>Teaching</span></h5>
+    <a href="#" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v12H4zM9 21h6M12 17v4"/></svg><span data-vi>Khoá học của tôi</span><span data-en>My courses</span><span class="count">3</span></a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-vi>Câu hỏi chưa trả lời</span><span data-en>Unanswered</span><span class="count">6</span></a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg><span data-vi>Học viên</span><span data-en>Students</span><span class="count">84</span></a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg><span data-vi>Bài nộp chờ chấm</span><span data-en>To review</span><span class="count">11</span></a>
+
+    <h5><span data-vi>Lớp tại quán</span><span data-en>In-person</span></h5>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span data-vi>Lịch dạy</span><span data-en>Schedule</span></a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M4 4h9v16H4z"/></svg><span data-vi>Điểm danh</span><span data-en>Attendance</span></a>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="page-hd">
+      <div>
+        <div class="lbl acc">Latte Art · <span data-vi>Phần 1 · Bài 03</span><span data-en>Module 1 · Lesson 03</span></div>
+        <h1 style="margin-top:8px"><span data-vi>Soạn bài học</span><span data-en>Edit lesson</span></h1>
+        <div class="sub"><span data-vi>Lưu lần cuối 09:42 · chưa xuất bản</span><span data-en>Last saved 09:42 · not published</span></div>
+      </div>
+      <div style="display:flex;gap:9px">
+        <button class="btn ghost sm" type="button"><span data-vi>Xem thử</span><span data-en>Preview</span></button>
+        <button class="btn sm" type="button"><span data-vi>Xuất bản</span><span data-en>Publish</span></button>
+      </div>
+    </div>
+
+    <div class="edit">
+      <div style="display:flex;flex-direction:column;gap:18px">
+
+        <div class="panel">
+          <div class="panel-hd"><h3><span data-vi>Nội dung bài</span><span data-en>Lesson content</span></h3>
+            <span class="badge acc"><span data-vi>Nháp</span><span data-en>Draft</span></span></div>
+          <div class="panel-bd">
+            <div class="field">
+              <label class="f" for="t-vi"><span data-vi>Tiêu đề (Tiếng Việt)</span><span data-en>Title (Vietnamese)</span></label>
+              <input class="inp" id="t-vi" value="Trái tim — rót chậm, dứt khoát" />
+            </div>
+            <div class="field">
+              <label class="f" for="t-en"><span data-vi>Tiêu đề (English)</span><span data-en>Title (English)</span></label>
+              <input class="inp" id="t-en" value="The heart — pour slow, finish clean" />
+              <p class="hint"><span data-vi>Cả hai ngôn ngữ đều bắt buộc — trang mặc định tiếng Việt.</span><span data-en>Both languages are required — the site defaults to Vietnamese.</span></p>
+            </div>
+            <div class="field">
+              <label class="f" for="d-vi"><span data-vi>Mô tả</span><span data-en>Description</span></label>
+              <textarea class="inp" id="d-vi">Trái tim là hình đầu tiên vì nó dạy bạn ba thứ cùng lúc: độ cao khi rót, tốc độ dòng sữa, và thời điểm cắt.</textarea>
+            </div>
+            <div class="field-row">
+              <div class="field" style="margin-bottom:0">
+                <label class="f"><span data-vi>Thời lượng</span><span data-en>Duration</span></label>
+                <input class="inp" value="11:05" readonly />
+              </div>
+              <div class="field" style="margin-bottom:0">
+                <label class="f"><span data-vi>Xem thử miễn phí</span><span data-en>Free preview</span></label>
+                <select class="inp"><option data-vi>Không</option><option data-en>No</option><option data-vi>Có — hiện trên trang chủ</option><option data-en>Yes — show on the home page</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hd"><h3><span data-vi>Video</span><span data-en>Video</span></h3>
+            <span class="badge ok"><span data-vi>Đã xử lý</span><span data-en>Processed</span></span></div>
+          <div class="panel-bd">
+            <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
+              <img src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=240&q=70" width="240" height="135" style="width:150px;aspect-ratio:16/9;object-fit:cover;border-radius:2px" alt="" />
+              <div>
+                <div style="font-weight:650;font-size:14px">latte-art-03-heart.mp4</div>
+                <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:4px">1080p · 11:05 · 412 MB</div>
+                <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:6px;letter-spacing:.1em;text-transform:uppercase"><span data-vi>Phát bằng liên kết ký · hết hạn 2 giờ</span><span data-en>Signed playback · 2-hour expiry</span></div>
+              </div>
+            </div>
+            <button class="drop" type="button" style="width:100%">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M20 16v4H4v-4"/></svg>
+              <div class="t"><span data-vi>Thay video</span><span data-en>Replace video</span></div>
+              <div class="d"><span data-vi>Tải thẳng lên Cloudflare — không qua máy chủ của mình</span><span data-en>Uploads direct to Cloudflare — never through our server</span></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hd"><h3><span data-vi>Tài liệu đính kèm</span><span data-en>Attachments</span></h3>
+            <button class="btn ghost sm" type="button">+ <span data-vi>Thêm</span><span data-en>Add</span></button></div>
+          <div class="panel-bd">
+            <div class="lesrow"><span class="grip">⠿</span><span class="t">Bảng tỉ lệ sữa &amp; nhiệt độ.pdf</span><span class="d">240 KB</span></div>
+            <div class="lesrow"><span class="grip">⠿</span><span class="t">Checklist 20 ly luyện tập.pdf</span><span class="d">88 KB</span></div>
+            <div class="lesrow" style="margin-bottom:0"><span class="grip">⠿</span><span class="t">Ảnh mẫu — tim đạt và tim lệch.jpg</span><span class="d">1.2 MB</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hd"><h3><span data-vi>Thứ tự bài trong phần 1</span><span data-en>Lesson order · Module 1</span></h3></div>
+          <div class="panel-bd">
+            <div class="lesrow"><span class="grip">⠿</span><span class="n">01</span><span class="t"><span data-vi>Sữa và bọt sữa</span><span data-en>Milk and microfoam</span></span><span class="badge ok"><span data-vi>Đã đăng</span><span data-en>Live</span></span></div>
+            <div class="lesrow"><span class="grip">⠿</span><span class="n">02</span><span class="t"><span data-vi>Rót cơ bản</span><span data-en>The basic pour</span></span><span class="badge ok"><span data-vi>Đã đăng</span><span data-en>Live</span></span></div>
+            <div class="lesrow" style="border-color:var(--accent)"><span class="grip">⠿</span><span class="n">03</span><span class="t"><span data-vi>Trái tim</span><span data-en>The heart</span></span><span class="badge acc"><span data-vi>Nháp</span><span data-en>Draft</span></span></div>
+            <div class="lesrow" style="margin-bottom:0"><span class="grip">⠿</span><span class="n">04</span><span class="t">Rosetta</span><span class="badge"><span data-vi>Chưa có video</span><span data-en>No video</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right rail: questions to answer -->
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="panel">
+          <div class="panel-hd"><h3><span data-vi>Chờ bạn trả lời</span><span data-en>Waiting on you</span></h3><span class="badge crit">6</span></div>
+          <div class="panel-bd" style="padding-top:4px">
+            <div class="qa">
+              <div class="top"><span class="av">TH</span><span class="who">Thu Hà</span><span class="when">09:31</span></div>
+              <div class="txt"><span data-vi>Em rót tim toàn bị lệch sang phải ạ. Có phải do em cầm ca nghiêng không?</span><span data-en>My hearts keep leaning right. Is that the jug tilt?</span></div>
+              <div class="lesson"><span data-vi>Bài 03 · Trái tim</span><span data-en>Lesson 03 · The heart</span></div>
+              <div class="reply"><input placeholder="Trả lời…" aria-label="Trả lời" /><button class="btn sm" type="button"><span data-vi>Gửi</span><span data-en>Send</span></button></div>
+            </div>
+            <div class="qa">
+              <div class="top"><span class="av">NP</span><span class="who">Ngọc Phương</span><span class="when"><span data-vi>Hôm qua</span><span data-en>Yesterday</span></span></div>
+              <div class="txt"><span data-vi>Sữa hạt có làm bọt được không thầy?</span><span data-en>Can I get microfoam with oat milk?</span></div>
+              <div class="lesson"><span data-vi>Bài 01 · Sữa và bọt sữa</span><span data-en>Lesson 01 · Milk and microfoam</span></div>
+              <div class="reply"><input placeholder="Trả lời…" aria-label="Trả lời" /><button class="btn sm" type="button"><span data-vi>Gửi</span><span data-en>Send</span></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hd"><h3><span data-vi>Lớp sắp tới</span><span data-en>Next in-person class</span></h3></div>
+          <div class="panel-bd">
+            <div style="font-family:var(--display);font-size:19px;font-weight:600">Viennoiserie</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:6px">21–22.09 · Site 02 Hội An</div>
+            <div style="display:flex;align-items:baseline;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+              <span style="font-family:var(--display);font-size:26px;font-weight:600">5</span>
+              <span style="font-size:13px;color:var(--ink-faint)">/ 8 <span data-vi>đã đăng ký</span><span data-en>enrolled</span></span>
+            </div>
+            <button class="btn ghost block sm" style="margin-top:14px" type="button"><span data-vi>Mở điểm danh</span><span data-en>Open attendance</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Đà Lạt Washed · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+<style>
+  .pdp{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,60px);
+    padding:30px 0 80px;align-items:start}
+  .gal{display:grid;grid-template-columns:72px 1fr;gap:12px}
+  .thumbs{display:flex;flex-direction:column;gap:10px}
+  .thumbs button{border:1px solid var(--line);border-radius:2px;overflow:hidden;padding:0;
+    transition:border-color .16s}
+  .thumbs button[aria-pressed="true"]{border-color:var(--accent)}
+  .thumbs img{width:100%;aspect-ratio:1;object-fit:cover}
+  .gal-main{position:relative;overflow:hidden;border-radius:var(--r);background:var(--sunk)}
+  .gal-main img{width:100%;aspect-ratio:4/5;object-fit:cover}
+  .buy{position:sticky;top:96px}
+  .buy h1{font-size:clamp(28px,3.4vw,40px);margin:12px 0 10px}
+  .notes{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px}
+  .note{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid var(--line-strong);border-radius:20px;padding:5px 12px;color:var(--ink-soft)}
+  .opt{margin-bottom:18px}
+  .opt .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .opt button{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid var(--line-strong);border-radius:var(--r);padding:10px 14px;color:var(--ink-soft);
+    transition:border-color .16s,color .16s,background .16s}
+  .opt button:hover{border-color:var(--accent);color:var(--accent)}
+  .opt button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .opt button[disabled]{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+  .buy-price{display:flex;align-items:baseline;gap:12px;padding:18px 0;margin:4px 0 18px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .buy-price .p{font-family:var(--display);font-size:34px;font-weight:600;letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums}
+  .buy-price .u{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint)}
+  .qty{display:inline-flex;align-items:center;border:1px solid var(--line-strong);border-radius:var(--r)}
+  .qty button{width:38px;height:42px;font-size:17px;color:var(--ink-soft)}
+  .qty button:hover{color:var(--accent)}
+  .qty span{width:40px;text-align:center;font-family:var(--mono);font-weight:600;
+    font-variant-numeric:tabular-nums}
+  .buy-row{display:flex;gap:10px;margin-bottom:14px}
+  .buy-row .btn{flex:1;padding:15px 20px}
+  .assure{display:flex;flex-direction:column;gap:9px;padding:16px 0 0;border-top:1px solid var(--line);
+    margin-top:18px}
+  .assure div{display:flex;gap:9px;font-size:13px;color:var(--ink-soft);align-items:flex-start}
+  .assure svg{width:15px;height:15px;color:var(--accent);flex:none;margin-top:3px}
+  .paybar{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+  .paybar span{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:2px;padding:5px 9px;color:var(--ink-faint)}
+  .crumb{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-faint);padding:22px 0 0}
+  .tabwrap{border-top:1px solid var(--line);padding-top:0}
+  .tabs.light{border-bottom:1px solid var(--line)}
+  .tabs.light button{color:var(--ink-faint)}
+  .tabs.light button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+  .brew{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:22px 0}
+  .brew div{border:1px solid var(--line);border-radius:var(--r);padding:15px 17px}
+  .brew .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent)}
+  .brew .v{font-family:var(--mono);font-size:15px;font-weight:600;margin-top:7px}
+  .brew .d{font-size:12.5px;color:var(--ink-faint);margin-top:4px}
+  @media(max-width:980px){.pdp{grid-template-columns:1fr}.buy{position:static}
+    .gal{grid-template-columns:1fr}.thumbs{flex-direction:row;order:2}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
+
+<div class="board"><div class="wrap board-row">
+  <span><span data-vi>Rang hôm nay</span><span data-en>Today's roast</span> · <b>Đà Lạt Washed</b></span>
+  <span class="dot">·</span><span><span data-vi>Gửi hàng trong 24 giờ sau khi rang</span><span data-en>Shipped within 24h of roasting</span></span>
+</div></div>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-row">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
+    <ul class="nav">
+      <li><a class="nav-link" href="shop.html"><span data-vi>Cà phê &amp; Bánh</span><span data-en>Coffee &amp; Bakery</span></a></li>
+      <li><a class="nav-link" href="courses.html"><span data-vi>Khoá học</span><span data-en>Workshops</span></a></li>
+      <li><a class="nav-link" href="index.html#sites"><span data-vi>Quán</span><span data-en>Cafés</span></a></li>
+      <li><a class="nav-link" href="story.html"><span data-vi>Gia đình</span><span data-en>Our family</span></a></li>
+    </ul>
+    <div class="hdr-actions">
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      
+      <button class="icon-btn" type="button" data-open="cartDrawer" aria-label="Giỏ hàng"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l2.5 12h11l2-8H6"/></svg><i class="pip" data-cart-count>2</i></button>
+      <div class="acct">
+        <button class="btn ghost sm" type="button" data-acct aria-haspopup="true" aria-expanded="false"><span data-vi>Đăng nhập</span><span data-en>Log in</span></button>
+        <div class="acct-menu">
+          <div class="acct-head"><div class="n"><span data-vi>Chào bạn</span><span data-en>Welcome</span></div><div class="r"><span data-vi>Chưa đăng nhập</span><span data-en>Not signed in</span></div></div>
+          <a href="#" data-open-auth><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg><span data-vi>Đăng nhập / Tạo tài khoản</span><span data-en>Sign in / Create account</span></a>
+          <div class="sep"></div>
+          <a href="me.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><span data-vi>Khoá học của tôi</span><span data-en>My learning</span></a>
+          <a href="account.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 2h12l1 7H5l1-7zM5 9h14v13H5z"/></svg><span data-vi>Đơn hàng của tôi</span><span data-en>My orders</span></a>
+          <div class="sep"></div><div class="foot"><span data-vi>Dành cho nhân viên</span><span data-en>Staff access</span></div>
+          <a href="teach.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v12H4zM9 21h6M12 17v4"/></svg><span data-vi>Trang giảng viên</span><span data-en>Teacher console</span></a>
+          <a href="admin.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"/></svg><span data-vi>Quản trị</span><span data-en>Admin console</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="crumb"><a href="index.html"><span data-vi>Trang chủ</span><span data-en>Home</span></a> / <a href="shop.html"><span data-vi>Cà phê</span><span data-en>Coffee</span></a> / Đà Lạt Washed</div>
+
+  <div class="pdp">
+    <div class="gal">
+      <div class="thumbs">
+        <button type="button" aria-pressed="true"><img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=160&q=70" width="160" height="160" alt="" /></button>
+        <button type="button" aria-pressed="false"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=160&q=70" width="160" height="160" alt="" /></button>
+        <button type="button" aria-pressed="false"><img src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=160&q=70" width="160" height="160" alt="" /></button>
+        <button type="button" aria-pressed="false"><img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=160&q=70" width="160" height="160" alt="" /></button>
+      </div>
+      <div class="gal-main">
+        <img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=900&q=74" width="900" height="1125" alt="A bag of Đà Lạt Washed" fetchpriority="high" />
+        <div class="stamp"><div class="t"><span data-vi>Ngày rang</span><span data-en>Roasted</span></div><div class="d">11.08</div></div>
+      </div>
+    </div>
+
+    <div class="buy">
+      <span class="lbl acc">Đà Lạt, Lâm Đồng · 1.500 m · <span data-vi>Sơ chế ướt</span><span data-en>Washed</span></span>
+      <h1>Đà Lạt Washed</h1>
+      <p style="color:var(--ink-soft);font-size:15.5px"><span data-vi>Ngọt sạch và trong. Rang vừa để giữ hương mận khô và mật ong, hậu bạc hà nhẹ khi nguội.</span><span data-en>Clean and sweet. Roasted medium to keep the dried plum and honey, with a light mint finish as it cools.</span></p>
+      <div class="notes">
+        <span class="note"><span data-vi>Mận khô</span><span data-en>Dried plum</span></span>
+        <span class="note"><span data-vi>Mật ong</span><span data-en>Honey</span></span>
+        <span class="note"><span data-vi>Bạc hà</span><span data-en>Mint</span></span>
+        <span class="note"><span data-vi>Rang vừa</span><span data-en>Medium roast</span></span>
+      </div>
+
+      <div class="opt">
+        <span class="lbl"><span data-vi>Khối lượng</span><span data-en>Weight</span></span>
+        <div class="row">
+          <button type="button" aria-pressed="true">250 g</button>
+          <button type="button" aria-pressed="false">500 g</button>
+          <button type="button" aria-pressed="false">1 kg</button>
+        </div>
+      </div>
+      <div class="opt">
+        <span class="lbl"><span data-vi>Xay theo cách pha</span><span data-en>Grind for</span></span>
+        <div class="row">
+          <button type="button" aria-pressed="true"><span data-vi>Nguyên hạt</span><span data-en>Whole bean</span></button>
+          <button type="button" aria-pressed="false">Phin</button>
+          <button type="button" aria-pressed="false">Espresso</button>
+          <button type="button" aria-pressed="false">Pour-over</button>
+          <button type="button" aria-pressed="false" disabled>Cold brew</button>
+        </div>
+      </div>
+
+      <div class="buy-price">
+        <span class="p">280.000 ₫</span><span class="u">· $11.50 · 250 g</span>
+      </div>
+
+      <div class="buy-row">
+        <div class="qty"><button type="button" aria-label="−">−</button><span>1</span><button type="button" aria-label="+">+</button></div>
+        <a href="#" class="btn"><span data-vi>Thêm vào giỏ</span><span data-en>Add to cart</span></a>
+      </div>
+      <a href="#" class="btn ghost block"><span data-vi>Mua ngay với ZaloPay</span><span data-en>Buy now with ZaloPay</span></a>
+
+      <div class="assure">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.4 9-8 10-4.6-1-8-5-8-10V6z"/></svg><span><span data-vi><b>Rang xong mới gửi.</b> Hàng đi trong 24 giờ kể từ mẻ rang.</span><span data-en><b>Roasted, then posted.</b> Ships within 24 hours of the batch.</span></span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M1 3h13v13H1zM14 8h5l3 3v5h-8z"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg><span><span data-vi>GHN giao toàn quốc 2–3 ngày. Miễn phí từ 500.000 ₫.</span><span data-en>GHN nationwide in 2–3 days. Free over 500,000 ₫.</span></span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 6h18v12H3zM3 10h18"/></svg><span><span data-vi>Trả tiền khi nhận (COD) có ở mọi tỉnh.</span><span data-en>Cash on delivery available nationwide.</span></span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><span data-vi>Hoặc nhận tại quán trong 2 giờ.</span><span data-en>Or collect at a café within 2 hours.</span></span></div>
+      </div>
+      <div class="paybar"><span>ZaloPay</span><span>MoMo</span><span>VNPay QR</span><span data-vi>Chuyển khoản</span><span data-en>Bank transfer</span><span>Visa · MC</span><span>COD</span></div>
+    </div>
+  </div>
+
+  <div class="tabwrap">
+    <div class="tabs light">
+      <button type="button" data-tab="brew" aria-selected="true"><span data-vi>Cách pha</span><span data-en>How to brew</span></button>
+      <button type="button" data-tab="origin" aria-selected="false"><span data-vi>Vùng trồng</span><span data-en>Origin</span></button>
+      <button type="button" data-tab="ship" aria-selected="false"><span data-vi>Giao hàng &amp; đổi trả</span><span data-en>Shipping &amp; returns</span></button>
+    </div>
+    <div data-panel="brew">
+      <div class="brew">
+        <div><div class="k">Phin</div><div class="v">25 g · 120 ml</div><div class="d"><span data-vi>Xay vừa thô · 4–5 phút</span><span data-en>Medium-coarse · 4–5 min</span></div></div>
+        <div><div class="k">Espresso</div><div class="v">18 g → 36 g</div><div class="d"><span data-vi>26–30 giây · 93 °C</span><span data-en>26–30 s · 93 °C</span></div></div>
+        <div><div class="k">Pour-over</div><div class="v">15 g · 250 ml</div><div class="d"><span data-vi>Xay vừa · 2:45</span><span data-en>Medium grind · 2:45</span></div></div>
+        <div><div class="k">Cold brew</div><div class="v">70 g · 1 L</div><div class="d"><span data-vi>Ủ lạnh 16 giờ</span><span data-en>16 hours, cold</span></div></div>
+      </div>
+    </div>
+    <div data-panel="origin" hidden>
+      <p style="padding:22px 0;color:var(--ink-soft);max-width:66ch"><span data-vi>Hạt từ ba vườn nhỏ quanh Cầu Đất, độ cao 1.450–1.600 m. Sơ chế ướt, phơi nhà kính 14 ngày. Chúng tôi mua trực tiếp từ nhà vườn từ 2019.</span><span data-en>From three smallholder plots around Cầu Đất at 1,450–1,600 m. Washed, then dried under greenhouse for 14 days. We have bought direct from these farms since 2019.</span></p>
+    </div>
+    <div data-panel="ship" hidden>
+      <p style="padding:22px 0;color:var(--ink-soft);max-width:66ch"><span data-vi>GHN giao toàn quốc 2–3 ngày, miễn phí từ 500.000 ₫. Nhận tại quán trong 2 giờ. Cà phê đã mở gói không đổi trả, nhưng nếu mẻ rang có vấn đề, nhắn Zalo cho chúng tôi và chúng tôi gửi lại gói mới.</span><span data-en>GHN nationwide in 2–3 days, free over 500,000 ₫. Collect at a café within 2 hours. Opened bags cannot be returned, but if a batch is off, message us on Zalo and we will send a fresh bag.</span></p>
+    </div>
+  </div>
+</main>
+
+<footer class="ftr"><div class="wrap"><div class="ftr-bottom" style="margin-top:0;border-top:0">
+  <p>© 2026 Bacama · <span data-vi>Đà Nẵng</span><span data-en>Da Nang</span></p><p>ZaloPay · MoMo · VNPay · COD · GHN</p>
+</div></div></footer>
+
+<div class="contact">
+  <div class="contact-panel">
+    <div class="contact-hd"><div class="t"><span data-vi>Hỏi về gói này</span><span data-en>Ask about this bag</span></div><div class="d"><span data-vi>Chúng tôi trả lời trên Zalo</span><span data-en>We answer on Zalo</span></div></div>
+    <div class="contact-body">
+      <a href="#"><span class="ic">Za</span><span><span class="t">Zalo</span><span class="d">@bacama.danang</span></span></a>
+      <a href="tel:+842360000000"><span class="ic">☎</span><span><span class="t"><span data-vi>Gọi quán</span><span data-en>Call the shop</span></span><span class="d">+84 236 000 0000</span></span></a>
+    </div>
+    <div class="contact-note"><span data-vi>07:00–19:00 · 7/7</span><span data-en>07:00–19:00 · daily</span></div>
+  </div>
+  <button class="contact-fab" type="button" data-contact aria-label="Contact">
+    <svg class="msg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-4-.9L3 21l1.9-4.5A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>
+    <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<!-- ═══════════ DRAWERS ═══════════ -->
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer left" id="navDrawer" aria-label="Menu">
+  <div class="drawer-hd"><h2>Menu</h2>
+    <button class="close" type="button" data-close aria-label="Đóng"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <div class="drawer-bd mnav">
+    <a href="#" data-sub="sub1">Cà phê &amp; Bánh<span class="gl">from the drum, and the oven</span></a>
+    <div class="sub" id="sub1" hidden>
+      <a href="product.html">Đà Lạt Washed</a><a href="product.html">Sơn La Natural</a>
+      <a href="product.html">Blend Nhà</a><a href="shop.html">Gói 1 kg cho quán</a>
+      <a href="shop.html">Croissant · Kouign-amann</a><a href="shop.html">Carrot cake</a>
+    </div>
+    <a href="#" data-sub="sub2">Khoá học<span class="gl">learn beside the roaster</span></a>
+    <div class="sub" id="sub2" hidden>
+      <a href="courses.html">Căn bản pha chế</a><a href="courses.html">Latte Art</a>
+      <a href="courses.html">Cupping &amp; Origin</a><a href="courses.html">Viennoiserie · Hội An</a>
+    </div>
+    <a href="index.html#sites">Quán<span class="gl">three rooms, one drum</span></a>
+    <a href="story.html">Gia đình<span class="gl">our story</span></a>
+    <div style="margin-top:22px;display:flex;flex-direction:column;gap:9px">
+      <a href="#" class="btn block">Đăng nhập</a>
+      <a href="teach.html" class="btn ghost block sm">Trang giảng viên</a>
+      <a href="admin.html" class="btn ghost block sm">Quản trị</a>
+    </div>
+  </div>
+</aside>
+
+<aside class="drawer" id="cartDrawer" aria-label="Giỏ hàng">
+  <div class="drawer-hd"><h2>Giỏ hàng<span class="gl" style="font-size:13px;margin-left:9px">your basket</span></h2>
+    <button class="close" type="button" data-close aria-label="Đóng"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <div class="drawer-bd">
+    <div class="freeship" id="cartFree">Mua thêm <b>0 ₫</b> để được miễn phí giao hàng.</div>
+    <div class="citem" data-price="280000">
+      <img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=160&q=70" alt="" />
+      <div style="flex:1"><div class="t">Đà Lạt Washed</div><div class="o">250 g · xay phin · rang 11.08</div>
+        <div class="r"><span class="qty"><button type="button" data-step="-1" aria-label="Bớt">−</button><span>1</span><button type="button" data-step="1" aria-label="Thêm">+</button></span>
+          <button class="crm" type="button" data-remove>Bỏ</button><span class="p">280.000 ₫</span></div></div>
+    </div>
+    <div class="citem" data-price="230000">
+      <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=160&q=70" alt="" />
+      <div style="flex:1"><div class="t">Blend Nhà</div><div class="o">250 g · nguyên hạt · rang 12.08</div>
+        <div class="r"><span class="qty"><button type="button" data-step="-1" aria-label="Bớt">−</button><span>1</span><button type="button" data-step="1" aria-label="Thêm">+</button></span>
+          <button class="crm" type="button" data-remove>Bỏ</button><span class="p">230.000 ₫</span></div></div>
+    </div>
+  </div>
+  <div class="drawer-ft">
+    <div class="sumrow"><span>Tạm tính</span><span class="v" id="cartSub">510.000 ₫</span></div>
+    <div class="sumrow"><span>Giao hàng · GHN</span><span class="v" id="cartShip">Miễn phí</span></div>
+    <div class="sumrow total"><span>Tổng cộng</span><span class="v" id="cartTotal">510.000 ₫</span></div>
+    <a href="checkout.html" class="btn block lg" style="margin-top:16px">Thanh toán<span class="gl">check out</span></a>
+    <p class="hint" style="text-align:center">ZaloPay · MoMo · VNPay QR · COD</p>
+  </div>
+</aside>
+
+<script src="app.js"></script>
+</body>
+</html>
