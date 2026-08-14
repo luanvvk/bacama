@@ -34,16 +34,18 @@ markup verbatim (no Tailwind classes, no component structure).
 
 ## Stack
 
-- **Framework:** Next.js (App Router) + React + TypeScript
-- **Styling:** Tailwind CSS v4 (CSS-first config in `src/app/globals.css`, no `tailwind.config.js`), `class-variance-authority` for variant components, `clsx` + `tailwind-merge` via the `cn()` helper in `src/lib/utils.ts`
+- **Framework:** Next.js (App Router) + React 19 + TypeScript
+- **Components:** [shadcn/ui](https://ui.shadcn.com) (Radix-based, `components.json`) for interactive primitives (Button, Dialog, Select, DropdownMenu, Sheet, Tabs, Card, Avatar, Badge, Breadcrumb, Toaster, ...), plus custom primitives with no shadcn equivalent (`Typography` — `Heading`/`Text`, `Rating`) — all under `src/components/ui/<PascalName>/index.tsx`, barrel-exported from `src/components/ui/index.ts`. See `.claude/skills/conventions/patterns/component-variants.md` for the exact workflow to add a new one.
+- **Styling:** Tailwind CSS v4 (CSS-first config in `src/app/globals.css`, no `tailwind.config.js`) with the brand's "paper & ink" design tokens as CSS variables (`--primary`, `--success`, `--ink-faint`, etc.) — see `globals.css` `:root`/`.dark`. `class-variance-authority` for variant components, `clsx` + `tailwind-merge` via the `cn()` helper in `src/lib/utils.ts`.
+- **Fonts:** Fraunces (`--font-heading`, display/serif) + Be Vietnam Pro (`--font-sans`, body), loaded via `next/font/google` in `src/app/layout.tsx`.
+- **Toasts:** `sonner`, wrapped by `src/lib/toast.ts` (`import { toast } from '@/lib/toast'`) — don't import `sonner` directly in feature code.
 - **Testing:** Jest + React Testing Library (`pnpm test`, `pnpm test:watch`, `pnpm test:coverage`)
 - **Package manager:** pnpm (`packageManager` field + `.npmrc engine-strict=true` — don't use npm/yarn commands or lockfiles)
 - **Linting/formatting:** ESLint (flat config, `eslint-config-next` + `eslint-config-prettier`), Prettier (`prettier-plugin-tailwindcss` sorts classes — don't hand-sort)
 
-This is a fresh app — no state management, data-fetching, forms, or auth
-library is chosen yet. **Don't add one speculatively.** When a task needs
-one, ask, then add it here once decided so future agents don't re-litigate
-the choice.
+No state management, data-fetching, forms, or auth library is chosen yet.
+**Don't add one speculatively.** When a task needs one, ask, then add it
+here once decided so future agents don't re-litigate the choice.
 
 ## Commands
 

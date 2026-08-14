@@ -1,26 +1,169 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, 'Liberation Mono', monospace;
+  --font-heading: var(--font-heading);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --shadow-brand: 0 6px 26px rgb(30 26 23 / 9%);
+  --shadow-brand-lg: 0 18px 50px rgb(30 26 23 / 16%);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* "Paper & ink" brand palette — see design/app.css for the source of truth. */
+  --background: #f2efe7; /* paper */
+  --foreground: #1e1a17; /* ink */
+  --card: #fbf8f2;
+  --card-foreground: #1e1a17;
+  --popover: #fbf8f2;
+  --popover-foreground: #1e1a17;
+  --primary: #96521f; /* accent */
+  --primary-foreground: #fbf8f2;
+  --secondary: #e8e3d7; /* sunk */
+  --secondary-foreground: #1e1a17;
+  --muted: #e8e3d7; /* sunk */
+  --muted-foreground: #736a5e; /* ink-faint */
+  --accent: #f2e4d5; /* accent-tint, used as hover background */
+  --accent-foreground: #1e1a17;
+  --destructive: #8f3324; /* crit */
+  --destructive-foreground: #fbf8f2;
+  --border: #ded6c8; /* line */
+  --input: #c7bca8; /* line-strong */
+  --ring: #96521f;
+  --success: #3f6b3c; /* ok */
+  --success-foreground: #fbf8f2;
+  --warning: #8a6212; /* warn */
+  --warning-foreground: #fbf8f2;
+  --info: #1e1a17; /* the palette has no blue/info hue — falls back to ink */
+  --info-foreground: #fbf8f2;
+  --ink-soft: #544c42;
+  --ink-faint: #736a5e;
+  --chart-1: #96521f;
+  --chart-2: #3f6b3c;
+  --chart-3: #8a6212;
+  --chart-4: #8f3324;
+  --chart-5: #544c42;
+  --radius: 0.1875rem; /* 3px — the single sharp radius used almost everywhere */
+  --sidebar: #17130f; /* dark */
+  --sidebar-foreground: #f0e9de; /* on-dark */
+  --sidebar-primary: #d9a05b; /* accent-dark */
+  --sidebar-primary-foreground: #17130f;
+  --sidebar-accent: #332b23; /* dark-line */
+  --sidebar-accent-foreground: #f0e9de;
+  --sidebar-border: #332b23;
+  --sidebar-ring: #d9a05b;
+}
+
+/*
+ * Scoped dark sections (footer, CTA bands, admin shell) — not a page-wide
+ * dark-mode toggle. Apply the `dark` class to the section wrapper, not
+ * `<html>`; `@custom-variant dark` below matches on ancestor, not root.
+ */
+.dark {
+  --background: #17130f;
+  --foreground: #f0e9de;
+  --card: #211b15; /* dark-2 */
+  --card-foreground: #f0e9de;
+  --popover: #211b15;
+  --popover-foreground: #f0e9de;
+  --primary: #d9a05b; /* accent-dark */
+  --primary-foreground: #17130f;
+  --secondary: #2a231c; /* dark-3 */
+  --secondary-foreground: #f0e9de;
+  --muted: #2a231c;
+  --muted-foreground: #9a8d7c; /* on-dark-faint */
+  --accent: #332b23; /* dark-line, used as hover background */
+  --accent-foreground: #f0e9de;
+  --destructive: #e08878; /* crit-dark */
+  --destructive-foreground: #17130f;
+  --border: #332b23;
+  --input: #332b23;
+  --ring: #d9a05b;
+  --success: #8fbf86; /* ok-dark */
+  --success-foreground: #17130f;
+  --warning: #8a6212; /* no dark-specific value in the source palette */
+  --warning-foreground: #f0e9de;
+  --info: #f0e9de;
+  --info-foreground: #17130f;
+  --ink-soft: #bcaf9c; /* on-dark-soft */
+  --ink-faint: #9a8d7c; /* on-dark-faint */
+  --chart-1: #d9a05b;
+  --chart-2: #8fbf86;
+  --chart-3: #8a6212;
+  --chart-4: #e08878;
+  --chart-5: #bcaf9c;
+  --sidebar: #17130f;
+  --sidebar-foreground: #f0e9de;
+  --sidebar-primary: #d9a05b;
+  --sidebar-primary-foreground: #17130f;
+  --sidebar-accent: #332b23;
+  --sidebar-accent-foreground: #f0e9de;
+  --sidebar-border: #332b23;
+  --sidebar-ring: #d9a05b;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading leading-[1.12] font-normal tracking-[-0.018em];
+  }
 }

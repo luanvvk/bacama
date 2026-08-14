@@ -8,7 +8,7 @@ description: Coding conventions for this repo — naming, file layout, component
 - **Formatting, imports, `console.log`, `any`:** enforced live by ESLint + Prettier (`eslint.config.mjs`, `.prettierrc.json`) and auto-fixed by the pre-commit hook — run `pnpm lint` on changed files before finishing rather than checking against a restated list here.
 - **File layout:**
   - Pages/routes: `src/app/**` (App Router; route groups use `(parentheses)`)
-  - Reusable UI primitives: `src/components/ui/`
+  - Reusable UI primitives (shadcn/ui + custom): `src/components/ui/`
   - Feature/layout components: `src/components/<Area>/` — check `src/components/` before adding a new area
   - Hooks: `src/hooks/`
   - API clients / data access: `src/services/`
@@ -16,9 +16,17 @@ description: Coding conventions for this repo — naming, file layout, component
   - Constants: `src/constants/`
   - Shared types: `src/types/`, or colocated with the feature that owns them
   - Global styles / Tailwind theme: `src/app/globals.css` (Tailwind v4 is configured via `@theme` in CSS, not `tailwind.config.js`)
-- **Components:** function components, named exports (`export const X = (props) => ...`). Use an implicit-return arrow body when the component is pure prop-in/JSX-out; only drop to a block body with an explicit `return` when a hook call, derived value, or early-return guard has to run first — see [patterns/component.md](./patterns/component.md).
+- **File naming:**
+  - Every component gets its own folder, named `PascalCase` after the component, with the component itself in `index.tsx` and its test(s) in a `__tests__/` subfolder — e.g. `src/components/ui/Button/index.tsx` + `src/components/ui/Button/__tests__/Button.test.tsx`. This applies everywhere components live (`src/components/ui/`, `src/components/<Area>/`). Import by folder name (`@/components/ui/Button`) — module resolution finds `index.tsx` automatically, no `/index` suffix needed.
+  - `src/components/ui/index.ts` is a barrel that re-exports every component in that folder (`export * from './Button'`, etc.) — add the new line whenever a component is added.
+  - This project intentionally restructures shadcn/ui's generated `kebab-case.tsx` files into this folder-per-component shape after every `pnpm dlx shadcn add <name>` — do that restructure (and fix the resulting imports) as part of adding a component, not as a separate cleanup step.
+  - Utilities, constants, types: `kebab-case.ts` (`format-price.ts`, `query-keys.ts`).
+  - Hooks: `camelCase.ts` matching the hook name (`useMediaQuery.ts`).
+- **Components:** arrow functions only, never `function Name() {}`. Either `export const Name = (props) => ...` directly, or `const Name = (props) => ...` with a single `export { Name, otherThing }` at the bottom of the file (shadcn's own convention — keep it when editing shadcn-generated files). Never an unnamed/inline arrow function as a default export. Use an implicit-return arrow body when the component is pure prop-in/JSX-out; only drop to a block body with an explicit `return` when a hook call, derived value, or early-return guard has to run first — see [patterns/component.md](./patterns/component.md). If a component forwards a ref (`forwardRef`), always set `Component.displayName = 'Component'` right after it — devtools and error stacks can't infer a name from an anonymous forwardRef callback.
 - **Variants:** when a component has more than 2-3 visual variants, use `class-variance-authority` (`cva`) rather than branching template strings — see [patterns/component-variants.md](./patterns/component-variants.md).
 - **Styling:** Tailwind first, composed via the `cn()` helper (`src/lib/utils.ts`, `clsx` + `tailwind-merge`) so conditional/override classes merge correctly. Let `prettier-plugin-tailwindcss` sort class lists — don't hand-sort.
+  - Prefer Tailwind's native scale (`rounded-lg`, `text-xs`, `tracking-widest`, `p-3`) over an arbitrary-value class (`rounded-[3px]`, `text-[13.5px]`, `p-[12px]`) — pick the closest native step rather than hand-matching a design file's exact pixel value. A design mockup is a reference, not a spec to reproduce pixel-for-pixel.
+  - Never hardcode a color (`bg-[#96521F]`, `text-[#1E1A17]`) in a className. Define it as a CSS variable in `src/app/globals.css` (`:root` / `.dark`) and expose it through `@theme inline` as a `--color-*` token, then reference it by semantic name (`bg-primary`, `text-ink-faint`). This keeps theming (including dark-scoped sections) working from one place instead of scattered literals.
 - **Client vs. server components:** default to server components; add `'use client'` only when the component actually needs state, effects, browser APIs, or event handlers.
 - **Data/services:** any function that talks to an external API or backend lives in `src/services/<feature>/`, not inline in a component — see [patterns/service.md](./patterns/service.md).
 - **Hooks:** shared stateful logic used by 2+ components goes in `src/hooks/`, named `use*` — see [patterns/hook.md](./patterns/hook.md).
