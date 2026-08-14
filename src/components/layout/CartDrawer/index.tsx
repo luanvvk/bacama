@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { X } from 'lucide-react';
 
@@ -56,10 +57,11 @@ export const CartDrawer = () => {
             {items.map((item) => (
               <li key={item.id} className="flex gap-3">
                 {item.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element -- external, unoptimized mock imagery
-                  <img
+                  <Image
                     src={item.imageUrl}
                     alt=""
+                    width={64}
+                    height={64}
                     className="size-16 shrink-0 rounded-lg object-cover"
                   />
                 )}

@@ -21,7 +21,7 @@ export type NewsletterSignupValues = z.infer<typeof newsletterSignupSchema>;
       the same file — never hand-write a parallel interface that can drift
       from the schema.
 - [ ] Validation messages are user-facing copy (`'Enter a valid email
-    address'`), not the zod default (`'Invalid email'`) or a raw code.
+address'`), not the zod default (`'Invalid email'`) or a raw code.
 - [ ] One schema per form/resource shape — don't share a schema between two
       forms that happen to have similar fields today; they'll diverge.
 - [ ] Pass the schema to `react-hook-form` via `zodResolver` (see
