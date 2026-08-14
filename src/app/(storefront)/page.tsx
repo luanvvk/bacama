@@ -1,8 +1,11 @@
+import { Suspense } from 'react';
+
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Footer } from '@/components/layout/Footer';
 
 import { CafesSection } from './_components/CafesSection';
 import { CtaBandSection } from './_components/CtaBandSection';
+import { EntranceOverlay } from './_components/EntranceOverlay';
 import { HeroSection } from './_components/HeroSection';
 import { StorySection } from './_components/StorySection';
 import { TodaysStockSection } from './_components/TodaysStockSection';
@@ -17,6 +20,9 @@ const ANNOUNCEMENTS = [
 
 const Home = () => (
   <>
+    <Suspense fallback={null}>
+      <EntranceOverlay />
+    </Suspense>
     <AnnouncementBar items={ANNOUNCEMENTS} />
     <main>
       <HeroSection />
