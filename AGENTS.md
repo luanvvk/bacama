@@ -1,0 +1,94 @@
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
+
+# Bacama — Agent Rules
+
+This file is the single source of truth for AI coding agents on this repo,
+regardless of tool (Claude Code, Cursor, GitHub Copilot, Windsurf, Codex CLI,
+Aider, etc. all discover `AGENTS.md` natively). `CLAUDE.md` just imports this
+file (`@AGENTS.md`) — don't duplicate rules there.
+
+## Project overview
+
+Bacama is a bakery & online-courses e-commerce platform: a public shop
+(product catalog, cart, checkout), a courses/learning area, and an admin
+back office (catalog, orders, shipments, staff, students, announcements).
+The original static HTML/CSS design mockups live on the
+`feature/design-mockups` branch under `design/` — use them as the visual
+reference when building the equivalent React pages, but don't copy their
+markup verbatim (no Tailwind classes, no component structure).
+
+## Branches
+
+- `main` — stable/production, protected. Only receives merges from `staging`.
+- `staging` — pre-production validation.
+- `dev` — active development. Feature branches fork from and merge back here.
+- `feature/design-mockups` — frozen; holds the original static mockups.
+
+## Stack
+
+- **Framework:** Next.js (App Router) + React + TypeScript
+- **Styling:** Tailwind CSS v4 (CSS-first config in `src/app/globals.css`, no `tailwind.config.js`), `class-variance-authority` for variant components, `clsx` + `tailwind-merge` via the `cn()` helper in `src/lib/utils.ts`
+- **Testing:** Jest + React Testing Library (`pnpm test`, `pnpm test:watch`, `pnpm test:coverage`)
+- **Package manager:** pnpm (`packageManager` field + `.npmrc engine-strict=true` — don't use npm/yarn commands or lockfiles)
+- **Linting/formatting:** ESLint (flat config, `eslint-config-next` + `eslint-config-prettier`), Prettier (`prettier-plugin-tailwindcss` sorts classes — don't hand-sort)
+
+This is a fresh app — no state management, data-fetching, forms, or auth
+library is chosen yet. **Don't add one speculatively.** When a task needs
+one, ask, then add it here once decided so future agents don't re-litigate
+the choice.
+
+## Commands
+
+- `pnpm dev` — dev server
+- `pnpm build` — production build
+- `pnpm lint` / `pnpm lint:fix` — ESLint
+- `pnpm typecheck` — `tsc --noEmit`
+- `pnpm format` / `pnpm format:check` — Prettier
+- `pnpm test` / `pnpm test:watch` / `pnpm test:coverage` — Jest
+
+A pre-commit hook (husky + lint-staged) already runs `eslint --fix` and
+`prettier --write` on staged `.ts/.tsx/.js/.jsx`, and `prettier --write` on
+staged `.json/.css/.md` — no need to hand-run formatting the hook will redo.
+Commit messages are linted by commitlint (`@commitlint/config-conventional`)
+via the `commit-msg` hook — use Conventional Commits (`feat:`, `fix:`,
+`chore:`, etc.).
+
+## What to do before saying a task is done
+
+1. `pnpm typecheck` — must pass
+2. `pnpm lint` on changed files — must pass (0 errors; warnings OK unless trivial)
+3. `pnpm test` — must pass for any touched component/hook/util with existing or new tests
+4. For UI work, state explicitly that you have not verified the UI in a browser unless you actually have.
+
+## What NOT to do
+
+- Don't add dependencies without asking — especially a state/data/form/auth library (see Stack above).
+- Don't create new top-level `src/` folders without asking.
+- Don't mass-refactor unrelated code during a feature or bug fix.
+- Don't add backward-compat shims, feature flags, or defensive checks for scenarios that can't happen.
+- Don't edit `pnpm-lock.yaml` by hand.
+- Don't copy markup/classes from the `design/` mockups verbatim — they're a visual reference, not source.
+
+## Conventions
+
+All coding conventions (naming, file layout, component/hook/service patterns,
+comments policy) are defined in the `conventions` skill
+([.claude/skills/conventions/SKILL.md](.claude/skills/conventions/SKILL.md)).
+Read it before writing or reviewing code under `src/**`.
+
+## Additional reference files
+
+| File                                                                         | Covers                                                                                                     |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [.claude/skills/conventions/SKILL.md](.claude/skills/conventions/SKILL.md)   | Coding conventions (naming, file layout, component/hook/service patterns, comments policy)                 |
+| [.claude/skills/conventions/patterns/](.claude/skills/conventions/patterns/) | Annotated per-pattern reference docs                                                                       |
+| [.claude/skills/open-pr/SKILL.md](.claude/skills/open-pr/SKILL.md)           | `/open-pr` — PR template and checklist rules                                                               |
+| [.claude/agents/](.claude/agents/)                                           | Subagent definitions — delegate matching tasks via the Agent tool instead of duplicating their work inline |
