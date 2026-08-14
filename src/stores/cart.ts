@@ -3,9 +3,10 @@ import { create } from 'zustand';
 export interface CartItem {
   id: string;
   name: string;
-  priceCents: number;
+  priceVnd: number;
   quantity: number;
   imageUrl?: string;
+  options?: string;
 }
 
 interface CartState {
@@ -52,7 +53,7 @@ export const useCartStore = create<CartState>((set) => ({
 export const useCartCount = () =>
   useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));
 
-export const useCartTotalCents = () =>
+export const useCartTotalVnd = () =>
   useCartStore((state) =>
-    state.items.reduce((total, item) => total + item.priceCents * item.quantity, 0),
+    state.items.reduce((total, item) => total + item.priceVnd * item.quantity, 0),
   );

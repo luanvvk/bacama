@@ -8,7 +8,7 @@ import { create } from 'zustand';
 export interface CartItem {
   id: string;
   name: string;
-  priceCents: number;
+  priceVnd: number;
   quantity: number;
 }
 
@@ -58,7 +58,7 @@ export const useCartCount = () =>
 - [ ] Components call `useCartStore((state) => state.items)` (a selector),
       not `useCartStore()` (the whole store) — the latter re-renders on
       every unrelated state change.
-- [ ] Export a dedicated selector hook (`useCartCount`, `useCartTotalCents`)
+- [ ] Export a dedicated selector hook (`useCartCount`, `useCartTotalVnd`)
       for any derived value read by more than one component, instead of
       recomputing the same `reduce`/`filter` in each call site.
 - [ ] Updates go through `set((state) => ({ ... }))` with the updater form

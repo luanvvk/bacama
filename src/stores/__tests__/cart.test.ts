@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { useCartStore, useCartCount, useCartTotalCents } from '../cart';
+import { useCartStore, useCartCount, useCartTotalVnd } from '../cart';
 
-const CROISSANT = { id: 'croissant', name: 'Croissant', priceCents: 350 };
-const BAGUETTE = { id: 'baguette', name: 'Baguette', priceCents: 450 };
+const CROISSANT = { id: 'croissant', name: 'Croissant', priceVnd: 45000 };
+const BAGUETTE = { id: 'baguette', name: 'Baguette', priceVnd: 55000 };
 
 afterEach(() => {
   useCartStore.setState({ items: [], isOpen: false });
@@ -65,14 +65,14 @@ describe('useCartCount', () => {
   });
 });
 
-describe('useCartTotalCents', () => {
+describe('useCartTotalVnd', () => {
   it('sums price * quantity across items', () => {
     act(() => {
       useCartStore.getState().addItem(CROISSANT, 2);
       useCartStore.getState().addItem(BAGUETTE, 1);
     });
 
-    const { result } = renderHook(() => useCartTotalCents());
-    expect(result.current).toBe(CROISSANT.priceCents * 2 + BAGUETTE.priceCents);
+    const { result } = renderHook(() => useCartTotalVnd());
+    expect(result.current).toBe(CROISSANT.priceVnd * 2 + BAGUETTE.priceVnd);
   });
 });
