@@ -10,6 +10,7 @@ export * from './DropdownMenu';
 export * from './Input';
 export * from './Label';
 export * from './NavigationMenu';
+export * from './RadioGroup';
 export * from './Rating';
 export * from './Select';
 export * from './Separator';

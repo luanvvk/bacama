@@ -15,6 +15,7 @@ interface CartState {
   addItem: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
   open: () => void;
   close: () => void;
 }
@@ -46,6 +47,7 @@ export const useCartStore = create<CartState>((set) => ({
         cartItem.id === id ? { ...cartItem, quantity } : cartItem,
       ),
     })),
+  clearCart: () => set({ items: [] }),
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),
 }));

@@ -110,7 +110,7 @@ export const CartDrawer = () => {
               Check out
             </Button>
           ) : (
-            <Button asChild size="lg" className="mt-2 w-full">
+            <Button asChild size="lg" className="mt-2 w-full" onClick={close}>
               <Link href="/checkout">Check out</Link>
             </Button>
           )}
