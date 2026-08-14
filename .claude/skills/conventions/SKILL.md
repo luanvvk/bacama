@@ -9,6 +9,9 @@ description: Coding conventions for this repo — naming, file layout, component
 - **File layout:**
   - Pages/routes: `src/app/**` (App Router; route groups use `(parentheses)`)
   - Reusable UI primitives (shadcn/ui + custom): `src/components/ui/`
+  - Controlled form fields (`ControlledInput`, `ControlledSelect`, ...): `src/components/form/` — see [patterns/form.md](./patterns/form.md)
+  - Zustand stores: colocated with the feature they belong to (e.g. `src/stores/cart.ts`) — see [patterns/zustand-store.md](./patterns/zustand-store.md)
+  - Zod schemas: colocated with the form/service that uses them, or `src/lib/schemas/` if shared — see [patterns/zod-schema.md](./patterns/zod-schema.md)
   - Feature/layout components: `src/components/<Area>/` — check `src/components/` before adding a new area
   - Hooks: `src/hooks/`
   - API clients / data access: `src/services/`
@@ -30,6 +33,8 @@ description: Coding conventions for this repo — naming, file layout, component
 - **Client vs. server components:** default to server components; add `'use client'` only when the component actually needs state, effects, browser APIs, or event handlers.
 - **Data/services:** any function that talks to an external API or backend lives in `src/services/<feature>/`, not inline in a component — see [patterns/service.md](./patterns/service.md).
 - **Hooks:** shared stateful logic used by 2+ components goes in `src/hooks/`, named `use*` — see [patterns/hook.md](./patterns/hook.md).
+- **Forms:** always `react-hook-form` + a `zod` schema via `zodResolver`. Build the field UI from `src/components/form/Controlled*` components (`ControlledInput`, `ControlledSelect`, `ControlledTextarea`, `ControlledCheckbox`) rather than wiring `Controller` inline in a page/feature component — see [patterns/form.md](./patterns/form.md). Don't roll custom validation when a zod schema can express it.
+- **Client state shared across components:** Zustand (`src/stores/`). Local, single-component state stays `useState`. Don't introduce a Context when a prop or a Zustand selector would do — see [patterns/zustand-store.md](./patterns/zustand-store.md).
 
 ## Comments
 
@@ -50,6 +55,9 @@ relevant one(s) load for the file you're editing:
 - [patterns/component-variants.md](./patterns/component-variants.md) — `cva`-based variant components
 - [patterns/hook.md](./patterns/hook.md) — custom hooks
 - [patterns/service.md](./patterns/service.md) — `src/services/<feature>/` data-access modules
+- [patterns/form.md](./patterns/form.md) — `react-hook-form` + zod forms built from `Controlled*` components
+- [patterns/zod-schema.md](./patterns/zod-schema.md) — zod schemas and inferred types
+- [patterns/zustand-store.md](./patterns/zustand-store.md) — `use*Store.ts` Zustand stores
 
 These are a living reference — update the relevant doc (not just the code)
 whenever a pattern changes materially, so the sample doesn't drift from what
