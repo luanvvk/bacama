@@ -1,17 +1,17 @@
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 
-import { LoginForm } from './_components/LoginForm';
+import { RegisterForm } from './_components/RegisterForm';
 
-const LoginPage = () => (
+const RegisterPage = () => (
   <>
     <main>
       <Container>
-        <LoginForm />
+        <RegisterForm />
       </Container>
     </main>
     <Footer variant="simple" />
   </>
 );
 
-export default LoginPage;
+export default RegisterPage;

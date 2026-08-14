@@ -44,10 +44,11 @@ markup verbatim (no Tailwind classes, no component structure).
 - **Testing:** Jest + React Testing Library (`pnpm test`, `pnpm test:watch`, `pnpm test:coverage`) — `jest.setup.ts` polyfills the browser APIs Radix primitives need in jsdom (`hasPointerCapture`, `scrollIntoView`, `ResizeObserver`).
 - **Package manager:** pnpm (`packageManager` field + `.npmrc engine-strict=true` — don't use npm/yarn commands or lockfiles)
 - **Linting/formatting:** ESLint (flat config, `eslint-config-next` + `eslint-config-prettier`), Prettier (`prettier-plugin-tailwindcss` sorts classes — don't hand-sort)
+- **Auth:** [Clerk](https://clerk.com) is the chosen provider, but **not wired up yet** — `@clerk/nextjs` isn't installed, and there's no `<ClerkProvider>`, middleware, or real session anywhere. `/login` and `/register` are UI/UX only: real-looking forms (our usual `react-hook-form` + zod + `Controlled*` stack, not Clerk's own components) whose submit handlers just `toast()` instead of calling Clerk. When the real integration lands, these get swapped for Clerk's actual components/hooks — don't build any other page as if a session exists (see `src/components/auth/GuestGate`, used everywhere a signed-in state would otherwise be assumed) until then.
 
-No data-fetching library or auth library is chosen yet. **Don't add one
-speculatively.** When a task needs one, ask, then add it here once decided
-so future agents don't re-litigate the choice.
+No data-fetching library is chosen yet. **Don't add one speculatively.**
+When a task needs one, ask, then add it here once decided so future agents
+don't re-litigate the choice.
 
 ## Commands
 
