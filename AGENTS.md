@@ -39,13 +39,15 @@ markup verbatim (no Tailwind classes, no component structure).
 - **Styling:** Tailwind CSS v4 (CSS-first config in `src/app/globals.css`, no `tailwind.config.js`) with the brand's "paper & ink" design tokens as CSS variables (`--primary`, `--success`, `--ink-faint`, etc.) — see `globals.css` `:root`/`.dark`. `class-variance-authority` for variant components, `clsx` + `tailwind-merge` via the `cn()` helper in `src/lib/utils.ts`.
 - **Fonts:** Fraunces (`--font-heading`, display/serif) + Be Vietnam Pro (`--font-sans`, body), loaded via `next/font/google` in `src/app/layout.tsx`.
 - **Toasts:** `sonner`, wrapped by `src/lib/toast.ts` (`import { toast } from '@/lib/toast'`) — don't import `sonner` directly in feature code.
-- **Testing:** Jest + React Testing Library (`pnpm test`, `pnpm test:watch`, `pnpm test:coverage`)
+- **Client state shared across components:** Zustand, one store per domain concept under `src/stores/` (e.g. `src/stores/cart.ts`). Local, single-component state stays `useState`. See `.claude/skills/conventions/patterns/zustand-store.md`.
+- **Forms:** `react-hook-form` + `zod` via `@hookform/resolvers/zod`, built from the `Controlled*` components in `src/components/form/` (`ControlledInput`, `ControlledSelect`, `ControlledTextarea`, `ControlledCheckbox`) — don't wire `Controller` directly in a page. See `.claude/skills/conventions/patterns/form.md` and `patterns/zod-schema.md`.
+- **Testing:** Jest + React Testing Library (`pnpm test`, `pnpm test:watch`, `pnpm test:coverage`) — `jest.setup.ts` polyfills the browser APIs Radix primitives need in jsdom (`hasPointerCapture`, `scrollIntoView`, `ResizeObserver`).
 - **Package manager:** pnpm (`packageManager` field + `.npmrc engine-strict=true` — don't use npm/yarn commands or lockfiles)
 - **Linting/formatting:** ESLint (flat config, `eslint-config-next` + `eslint-config-prettier`), Prettier (`prettier-plugin-tailwindcss` sorts classes — don't hand-sort)
 
-No state management, data-fetching, forms, or auth library is chosen yet.
-**Don't add one speculatively.** When a task needs one, ask, then add it
-here once decided so future agents don't re-litigate the choice.
+No data-fetching library or auth library is chosen yet. **Don't add one
+speculatively.** When a task needs one, ask, then add it here once decided
+so future agents don't re-litigate the choice.
 
 ## Commands
 
