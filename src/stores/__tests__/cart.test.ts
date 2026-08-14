@@ -44,6 +44,16 @@ describe('useCartStore', () => {
     expect(useCartStore.getState().items[0].quantity).toBe(5);
   });
 
+  it('clears all items', () => {
+    act(() => {
+      useCartStore.getState().addItem(CROISSANT);
+      useCartStore.getState().addItem(BAGUETTE);
+      useCartStore.getState().clearCart();
+    });
+
+    expect(useCartStore.getState().items).toEqual([]);
+  });
+
   it('opens and closes the cart drawer', () => {
     act(() => useCartStore.getState().open());
     expect(useCartStore.getState().isOpen).toBe(true);
