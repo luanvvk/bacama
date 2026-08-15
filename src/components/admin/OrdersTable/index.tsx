@@ -1,6 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import {
@@ -220,25 +221,27 @@ export const OrdersTable = () => {
                     <Badge variant={order.variant}>{order.status}</Badge>
                   </TableCell>
                   <TableCell>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() =>
-                        toast(
-                          order.status === 'Payment failed'
-                            ? `Refund request for ${order.ref} is not wired up yet.`
-                            : `${order.ref} actions are not wired up yet.`,
-                        )
-                      }
-                    >
-                      {order.status === 'Payment failed'
-                        ? 'Refund'
-                        : order.status === 'To acknowledge'
-                          ? 'Open'
-                          : order.payment === 'COD'
-                            ? 'Confirm COD'
-                            : 'View'}
-                    </Button>
+                    {order.status === 'Payment failed' ? (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() =>
+                          toast(`Refund request for ${order.ref} is not wired up yet.`)
+                        }
+                      >
+                        Refund
+                      </Button>
+                    ) : (
+                      <Button asChild size="sm" variant="ghost">
+                        <Link href={`/admin/orders/${order.ref.slice(1)}`}>
+                          {order.status === 'To acknowledge'
+                            ? 'Open'
+                            : order.payment === 'COD'
+                              ? 'Confirm COD'
+                              : 'View'}
+                        </Link>
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

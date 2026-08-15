@@ -6,3 +6,5 @@ export * from './OrdersTable';
 export * from './ShipmentsTable';
 export * from './AdminDirectory';
 export * from './AdminMobileNav';
+export * from './OrderDetail';
+export * from './ShipmentDetail';

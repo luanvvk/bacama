@@ -1,6 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import {
@@ -202,12 +203,8 @@ export const ShipmentsTable = () => {
                   </TableCell>
                   <TableCell className="font-mono">{shipment.updated}</TableCell>
                   <TableCell>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => toast(`${shipment.tracking} tracking is not wired up yet.`)}
-                    >
-                      Track
+                    <Button asChild size="sm" variant="ghost">
+                      <Link href={`/admin/shipments/${shipment.tracking}`}>Track</Link>
                     </Button>
                   </TableCell>
                 </TableRow>
