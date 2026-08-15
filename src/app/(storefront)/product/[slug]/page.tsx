@@ -19,7 +19,7 @@ import { ProductTabs } from './_components/ProductTabs';
 
 const ANNOUNCEMENTS = ["Today's roast · Đà Lạt Washed", 'Shipped within 24h of roasting'];
 
-const ProductPage = async ({ params }: PageProps<'/product/[slug]'>) => {
+const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const product = getProductBySlug(slug);
 

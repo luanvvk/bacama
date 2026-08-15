@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: 'Bakery & online courses e-commerce platform',
 };
 
-const RootLayout = ({ children }: LayoutProps<'/'>) => (
+const RootLayout = ({ children }: { children: React.ReactNode }) => (
   <html lang="en" className={`${fraunces.variable} ${beVietnamPro.variable} h-full antialiased`}>
     <body className="flex min-h-full flex-col">
       {children}

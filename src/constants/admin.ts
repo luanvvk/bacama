@@ -37,9 +37,9 @@ export const ADMIN_NAV: AdminNavSection[] = [
   {
     heading: 'Catalogue',
     items: [
-      { label: 'Coffee & blends', icon: Coffee },
-      { label: 'Bakery', icon: Croissant },
-      { label: 'Café menu', icon: UtensilsCrossed },
+      { label: 'Coffee & blends', icon: Coffee, href: '/admin/catalog' },
+      { label: 'Bakery', icon: Croissant, href: '/admin/bakery' },
+      { label: 'Café menu', icon: UtensilsCrossed, href: '/admin/menu' },
     ],
   },
   {
