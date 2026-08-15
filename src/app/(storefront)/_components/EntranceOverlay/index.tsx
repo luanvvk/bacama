@@ -14,6 +14,9 @@ const getSnapshot = () => sessionStorage.getItem(SESSION_KEY) === '1';
 // SSR has no session to check — default to "already seen" so nothing flashes before hydration corrects it.
 const getServerSnapshot = () => true;
 
+const POSTER_IMAGE =
+  'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1500&q=68';
+
 export const EntranceOverlay = () => {
   const searchParams = useSearchParams();
   const [dismissed, setDismissed] = useState(false);
@@ -38,13 +41,19 @@ export const EntranceOverlay = () => {
           </DialogPrimitive.Description>
 
           <div className="bg-background relative h-full w-full overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1500&q=68"
-              alt=""
-              fill
-              priority
-              className="object-cover"
-            />
+            <Image src={POSTER_IMAGE} alt="" fill priority className="object-cover" />
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster={POSTER_IMAGE}
+              className="absolute inset-0 h-full w-full object-cover"
+              aria-hidden="true"
+            >
+              <source src="/media/entrance.mp4" type="video/mp4" />
+            </video>
             <div className="bg-background/75 absolute inset-0" aria-hidden="true" />
 
             <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 px-6 text-center">

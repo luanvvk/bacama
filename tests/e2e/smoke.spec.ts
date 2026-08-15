@@ -7,6 +7,18 @@ const publicRoutes = [
   ['/story', 'One kitchen, one oven, one family.'],
   ['/login', 'Welcome back'],
   ['/register', 'Create your account'],
+  ['/faq', 'Frequently asked questions.'],
+  ['/contact', 'Come by, call, or write.'],
+  ['/subscribe', 'The good stuff, occasionally.'],
+  ['/shipping-returns', 'From our oven to your door.'],
+  ['/terms', 'Terms & conditions.'],
+  ['/privacy', 'Privacy policy.'],
+  ['/wholesale', 'Coffee that fits your counter.'],
+  ['/gift-cards', 'Give them a morning at Bacama.'],
+  ['/accessibility', 'A shop made to be used.'],
+  ['/careers', 'Good work is made by good people.'],
+  ['/press', 'A small story, told accurately.'],
+  ['/cookies', 'Cookie policy.'],
 ] as const;
 
 const adminRoutes = [
@@ -51,8 +63,37 @@ test.describe('admin routes', () => {
   }
 });
 
+test('not-found page is branded', async ({ page }) => {
+  const response = await page.goto('/page-that-does-not-exist');
+
+  expect(response?.status()).toBe(404);
+  await expect(page.locator('main')).toBeVisible();
+  await expect(page.getByText('That page has gone missing.', { exact: true })).toBeVisible();
+});
+
+test('500 page is branded', async ({ page }) => {
+  const response = await page.goto('/500');
+
+  expect(response?.status()).toBe(500);
+  await expect(page.locator('main')).toBeVisible();
+  await expect(page.getByText('The oven needs a minute.', { exact: true })).toBeVisible();
+});
+
+test('robots and sitemap metadata routes are available', async ({ request }) => {
+  const [robots, sitemap] = await Promise.all([
+    request.get('/robots.txt'),
+    request.get('/sitemap.xml'),
+  ]);
+
+  expect(robots.ok()).toBeTruthy();
+  expect(sitemap.ok()).toBeTruthy();
+  expect(await robots.text()).toContain('Disallow: /admin/');
+  expect(await sitemap.text()).toContain('/wholesale');
+});
+
 test('catalog search filters products', async ({ page }) => {
   await page.goto('/admin/catalog');
+  await page.waitForTimeout(500);
   const search = page.getByRole('textbox', { name: 'Search catalogue' });
 
   await search.fill('Sơn La');
@@ -65,6 +106,7 @@ test('mobile admin menu opens and navigates', async ({ page }) => {
   test.skip(test.info().project.name !== 'mobile', 'Mobile-only interaction');
 
   await page.goto('/admin');
+  await page.waitForTimeout(500);
 
   await page.getByRole('button', { name: 'Open admin menu' }).click();
   const navigation = page.getByRole('navigation', { name: 'Admin navigation' });
@@ -78,6 +120,7 @@ test('mobile storefront menu opens', async ({ page }) => {
   test.skip(test.info().project.name !== 'mobile', 'Mobile-only interaction');
 
   await page.goto('/story');
+  await page.waitForTimeout(500);
 
   await page.getByRole('button', { name: 'Open menu' }).click();
   const dialog = page.getByRole('dialog');
