@@ -30,8 +30,8 @@ export const ADMIN_NAV: AdminNavSection[] = [
     heading: 'Today',
     items: [
       { label: 'Overview', icon: LayoutDashboard, href: '/admin' },
-      { label: 'Online orders', icon: Package, count: 14 },
-      { label: 'Shipments', icon: Truck, count: 9 },
+      { label: 'Online orders', icon: Package, href: '/admin/orders', count: 14 },
+      { label: 'Shipments', icon: Truck, href: '/admin/shipments', count: 9 },
     ],
   },
   {

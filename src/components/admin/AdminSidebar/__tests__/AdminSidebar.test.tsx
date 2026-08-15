@@ -9,12 +9,17 @@ describe('AdminSidebar', () => {
     expect(screen.getByRole('link', { name: /Overview/ })).toHaveAttribute('href', '/admin');
   });
 
-  it('renders not-yet-built sections as non-interactive with a Soon badge', () => {
+  it('links the implemented operations sections', () => {
     render(<AdminSidebar />);
 
-    expect(screen.queryByRole('link', { name: /Online orders/ })).not.toBeInTheDocument();
-    expect(screen.getByText('Online orders')).toBeInTheDocument();
-    expect(screen.getAllByText('Soon').length).toBeGreaterThan(0);
+    expect(screen.getByRole('link', { name: /Online orders/ })).toHaveAttribute(
+      'href',
+      '/admin/orders',
+    );
+    expect(screen.getByRole('link', { name: /Shipments/ })).toHaveAttribute(
+      'href',
+      '/admin/shipments',
+    );
   });
 
   it('shows counts where provided', () => {
