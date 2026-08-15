@@ -4,3 +4,4 @@ export * from './CatalogBrowser';
 export * from './ProductEditor';
 export * from './OrdersTable';
 export * from './ShipmentsTable';
+export * from './AdminDirectory';

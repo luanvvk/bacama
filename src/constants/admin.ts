@@ -45,16 +45,16 @@ export const ADMIN_NAV: AdminNavSection[] = [
   {
     heading: 'Content',
     items: [
-      { label: 'Announcements', icon: Megaphone },
-      { label: 'Sites', icon: MapPin, count: 3 },
-      { label: 'Courses', icon: GraduationCap },
+      { label: 'Announcements', icon: Megaphone, href: '/admin/announcements' },
+      { label: 'Sites', icon: MapPin, href: '/admin/sites', count: 3 },
+      { label: 'Courses', icon: GraduationCap, href: '/admin/courses' },
     ],
   },
   {
     heading: 'People',
     items: [
-      { label: 'Staff', icon: Users },
-      { label: 'Students', icon: UserRound, count: 84 },
+      { label: 'Staff', icon: Users, href: '/admin/staff' },
+      { label: 'Students', icon: UserRound, href: '/admin/students', count: 84 },
     ],
   },
 ];
