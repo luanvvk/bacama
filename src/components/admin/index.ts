@@ -5,3 +5,4 @@ export * from './ProductEditor';
 export * from './OrdersTable';
 export * from './ShipmentsTable';
 export * from './AdminDirectory';
+export * from './AdminMobileNav';

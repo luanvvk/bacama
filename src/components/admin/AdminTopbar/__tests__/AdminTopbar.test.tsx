@@ -13,6 +13,12 @@ describe('AdminTopbar', () => {
     expect(screen.getByRole('link', { name: /Bacama/ })).toHaveAttribute('href', '/admin');
   });
 
+  it('provides a mobile admin navigation trigger', () => {
+    render(<AdminTopbar />);
+
+    expect(screen.getByRole('button', { name: 'Open admin menu' })).toBeInTheDocument();
+  });
+
   it('shows a toast instead of performing a real search', async () => {
     render(<AdminTopbar />);
 

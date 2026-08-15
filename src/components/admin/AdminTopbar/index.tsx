@@ -2,11 +2,13 @@
 
 import { type FormEvent } from 'react';
 import Link from 'next/link';
-import { Search, UserRound } from 'lucide-react';
+import { Menu, Search, UserRound } from 'lucide-react';
 
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/Sheet';
+import { AdminMobileNav } from '@/components/admin/AdminMobileNav';
 
 export const AdminTopbar = () => {
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -16,6 +18,26 @@ export const AdminTopbar = () => {
 
   return (
     <div className="dark bg-background text-foreground flex h-14 shrink-0 items-center gap-4 border-b px-4">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Open admin menu"
+            className="lg:hidden"
+          >
+            <Menu />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>Admin menu</SheetTitle>
+          </SheetHeader>
+          <AdminMobileNav />
+        </SheetContent>
+      </Sheet>
+
       <Link href="/admin" className="flex flex-col leading-none">
         <span className="font-heading text-lg">
           Bacama<span className="text-primary">·</span>
