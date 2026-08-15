@@ -51,7 +51,7 @@ export const COURSES: Course[] = [
     description:
       'Video lessons with live discussion, a photo-based exam. Learn at home, finish at a café.',
     imageUrl:
-      'https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=620&q=72',
     priceVnd: 790000,
     availability: 'Lesson 1 free',
     ctaLabel: 'Enrol',
@@ -104,7 +104,7 @@ export const COURSES: Course[] = [
     description:
       "Two days in Hội An's old town, eight people, French butter. Hand-laminated, cold-proofed, baked.",
     imageUrl:
-      'https://images.unsplash.com/photo-1509446152067-d56c2e1cde3a?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=620&q=72',
     priceVnd: 3200000,
     availability: '3 seats left · 21–22 Sep',
     lowAvailability: true,
@@ -118,7 +118,7 @@ export const COURSES: Course[] = [
     meta: 'sensory',
     description: 'Sơn La and Đà Lạt origins; a sensory-based final. Start whenever.',
     imageUrl:
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=620&q=72',
     priceVnd: 1290000,
     availability: 'Start any time',
     ctaLabel: 'Enrol',
@@ -132,7 +132,7 @@ export const COURSES: Course[] = [
     description:
       '24 online lessons; final exam on-site in Hội An. A foundation course for staff and shop owners.',
     imageUrl:
-      'https://images.unsplash.com/photo-1445116572660-236099ec47a3?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=620&q=72',
     priceVnd: 1890000,
     availability: '1 seat left · starts 1 Oct',
     lowAvailability: true,

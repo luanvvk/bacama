@@ -10,7 +10,7 @@ export const StorySection = () => (
     <Container className="grid gap-10 py-16 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div className="relative aspect-4/5 overflow-hidden rounded-lg">
         <Image
-          src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=900&q=72"
+          src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=900&q=72"
           alt="The roastery in early morning light"
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"

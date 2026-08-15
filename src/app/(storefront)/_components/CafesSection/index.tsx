@@ -24,7 +24,7 @@ const CAFE_LOCATIONS: CafeLocation[] = [
     hours: 'Mon–Sun · 07:00 – 19:00',
     todaysRoast: 'Đà Lạt W.',
     imageUrl:
-      'https://images.unsplash.com/photo-1453614512568-c4054b9be2c2?auto=format&fit=crop&w=680&q=72',
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=680&q=72',
   },
   {
     id: 'old-town',
@@ -34,7 +34,7 @@ const CAFE_LOCATIONS: CafeLocation[] = [
     hours: 'Tue–Sun · 07:30 – 18:00',
     todaysRoast: 'Sơn La N.',
     imageUrl:
-      'https://images.unsplash.com/photo-1521017432531-fbd62d7a603f?auto=format&fit=crop&w=680&q=72',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=680&q=72',
   },
   {
     id: 'an-thuan',
@@ -44,7 +44,7 @@ const CAFE_LOCATIONS: CafeLocation[] = [
     hours: 'Opening · 09.2026',
     todaysRoast: '—',
     imageUrl:
-      'https://images.unsplash.com/photo-1559925395-82d087d0fe3c?auto=format&fit=crop&w=680&q=72',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=680&q=72',
     comingSoon: true,
   },
 ];

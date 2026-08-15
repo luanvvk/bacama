@@ -164,7 +164,7 @@ export const STOCK_ITEMS: AdminStockItem[] = [
     id: 'dalat-washed',
     name: 'Đà Lạt Washed',
     imageUrl:
-      'https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=120&q=70',
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=120&q=70',
     detail: '250 g · roasted 11 Aug',
     quantity: 42,
   },
@@ -172,7 +172,7 @@ export const STOCK_ITEMS: AdminStockItem[] = [
     id: 'sonla-natural',
     name: 'Sơn La Natural',
     imageUrl:
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=120&q=70',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=120&q=70',
     detail: '250 g · roasted 09 Aug',
     quantity: 6,
     low: true,
@@ -181,7 +181,7 @@ export const STOCK_ITEMS: AdminStockItem[] = [
     id: 'house-blend',
     name: 'House Blend',
     imageUrl:
-      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=120&q=70',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=120&q=70',
     detail: '250 g · roasted 12 Aug',
     quantity: 31,
   },

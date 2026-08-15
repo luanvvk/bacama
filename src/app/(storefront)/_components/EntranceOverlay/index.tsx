@@ -39,7 +39,7 @@ export const EntranceOverlay = () => {
 
           <div className="bg-background relative h-full w-full overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=1500&q=68"
+              src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1500&q=68"
               alt=""
               fill
               priority

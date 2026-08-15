@@ -37,7 +37,7 @@ export const HeroSection = () => (
       </div>
       <div className="relative aspect-4/5 overflow-hidden rounded-lg">
         <Image
-          src="https://images.unsplash.com/photo-1555507036-ab1f40a8ed90?auto=format&fit=crop&w=900&q=72"
+          src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=72"
           alt="Freshly baked almond croissant"
           fill
           priority

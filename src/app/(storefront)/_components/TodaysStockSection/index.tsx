@@ -35,7 +35,7 @@ export const TodaysStockSection = () => (
             className="bg-muted relative block aspect-4/5 overflow-hidden rounded-lg"
           >
             <Image
-              src="https://images.unsplash.com/photo-1445116572660-236099ec47a3?auto=format&fit=crop&w=620&q=72"
+              src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=620&q=72"
               alt="Barista pulling an espresso shot"
               fill
               sizes="(min-width: 1024px) 33vw, 100vw"

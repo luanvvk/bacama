@@ -43,7 +43,7 @@ const CHAPTERS = [
       'It began as a Tuesday afternoon, four people, one espresso machine. Now it is an online course for people far away and a weekend class in Hội An for people who want to stand at the machine. We teach exactly how we work — nothing held back.',
     ],
     image:
-      'https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=900&q=72',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=72',
     alt: 'A latte art class',
     caption: 'Latte art class, Hội An',
   },
@@ -80,19 +80,19 @@ const PEOPLE = [
     'Cô Hằng',
     'Owner & roaster',
     'Has roasted every batch since 2017. Still listens for first crack before checking the timer.',
-    'https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=620&q=72',
+    'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=620&q=72',
   ],
   [
     'Chị Mai',
     'Head baker',
     'In at three in the morning. Her croissants are laminated by hand, never by machine.',
-    'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=620&q=72',
+    'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=620&q=72',
   ],
   [
     'Anh Minh',
     'Instructor',
     'Teaches barista and cupping. Answers every student question within 24 hours.',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=620&q=72',
+    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=620&q=72',
   ],
 ];
 
@@ -114,7 +114,7 @@ const StoryPage = () => (
           </Text>
           <div className="relative mt-10 aspect-[21/9] overflow-hidden rounded-lg">
             <Image
-              src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=1600&q=72"
+              src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1600&q=72"
               alt="The roastery in morning light"
               fill
               priority

@@ -10,7 +10,7 @@ const config = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/*.{spec,test}.[jt]s?(x)'],
-  testPathIgnorePatterns: ['/node_modules/', '/.next/', '<rootDir>/design/'],
+  testPathIgnorePatterns: ['/node_modules/', '/.next/', '<rootDir>/design/', '<rootDir>/tests/e2e/'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',

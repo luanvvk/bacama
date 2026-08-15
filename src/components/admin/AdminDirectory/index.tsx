@@ -131,7 +131,7 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
               '27 Ngô Quyền, Hải Châu',
               '07:00–19:00',
               'Open',
-              'https://images.unsplash.com/photo-1453614512568-c4054b9be2c2?auto=format&fit=crop&w=240&q=70',
+              'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=240&q=70',
             ],
             [
               'Site 02 · Hội An',
@@ -139,7 +139,7 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
               '14 Phan Bội Châu, Minh An',
               '07:30–18:00',
               'Open',
-              'https://images.unsplash.com/photo-1521017432531-fbd62d7a603f?auto=format&fit=crop&w=240&q=70',
+              'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=240&q=70',
             ],
             [
               'Site 03 · Da Nang',
@@ -147,7 +147,7 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
               '8 An Thuận 12, Ngũ Hành Sơn',
               'Opens 09.2026',
               'Opens Sep',
-              'https://images.unsplash.com/photo-1559925395-82d087d0fe3c?auto=format&fit=crop&w=240&q=70',
+              'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=240&q=70',
             ],
           ].map(([name, area, address, hours, status, image]) => (
             <Card key={name}>

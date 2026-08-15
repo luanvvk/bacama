@@ -28,7 +28,7 @@ const WORKSHOPS: WorkshopTeaser[] = [
     priceVnd: '790.000 ₫',
     ctaLabel: 'Free preview →',
     imageUrl:
-      'https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=820&q=72',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=820&q=72',
     featured: true,
   },
   {
@@ -40,7 +40,7 @@ const WORKSHOPS: WorkshopTeaser[] = [
     priceVnd: '3.200.000 ₫',
     ctaLabel: 'Book a seat →',
     imageUrl:
-      'https://images.unsplash.com/photo-1509446152067-d56c2e1cde3a?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=620&q=72',
   },
   {
     id: 'cupping-origin',
@@ -51,7 +51,7 @@ const WORKSHOPS: WorkshopTeaser[] = [
     priceVnd: '1.290.000 ₫',
     ctaLabel: 'Enroll →',
     imageUrl:
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=620&q=72',
   },
 ];
 

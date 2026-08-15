@@ -41,12 +41,12 @@ export const PRODUCTS: Product[] = [
     description:
       'Clean and sweet. Roasted medium to keep the dried plum and honey, with a light mint finish as it cools.',
     imageUrl:
-      'https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=620&q=72',
     images: [
-      'https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=900&q=74',
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=160&q=70',
-      'https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=160&q=70',
-      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=160&q=70',
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=74',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=160&q=70',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=160&q=70',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=160&q=70',
     ],
     freshness: 'Roasted 3 days ago',
     swatches: ['250g', '1kg', 'Phin', 'Espresso'],
@@ -77,7 +77,7 @@ export const PRODUCTS: Product[] = [
     priceVnd: 265000,
     description: 'Cocoa, malt, a long sweet finish.',
     imageUrl:
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=620&q=72',
     freshness: 'Roasted yesterday',
     swatches: ['250g', '1kg', 'Phin'],
   },
@@ -90,7 +90,7 @@ export const PRODUCTS: Product[] = [
     priceVnd: 230000,
     description: 'Đà Lạt + Sơn La. Good in a phin and in espresso.',
     imageUrl:
-      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=620&q=72',
     freshness: 'Roasted 2 days ago',
     swatches: ['250g', '1kg'],
   },
@@ -102,7 +102,7 @@ export const PRODUCTS: Product[] = [
     priceVnd: 45000,
     description: 'Out at 05:00. In-store or GrabFood only.',
     imageUrl:
-      'https://images.unsplash.com/photo-1555507036-ab1f40a8ed90?auto=format&fit=crop&w=620&q=72',
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=620&q=72',
     freshness: 'Back tomorrow',
     freshnessLow: true,
     soldOut: true,
