@@ -1,0 +1,3356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      * {
+        margin: 0;
+      }
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <title>Coffee Workshop Build Plan</title>
+    <style>
+      :root {
+        --paper: #f2f1ec;
+        --surface: #fbfaf7;
+        --sunk: #e9e7e0;
+        --ink: #1e1a17;
+        --muted: #6a635b;
+        --faint: #8f887f;
+        --line: #d9d5cc;
+        --accent: #a8642e;
+        --r0: #7e8f66;
+        --r1: #9a9b52;
+        --r2: #b8913f;
+        --r3: #b0762f;
+        --r4: #a8642e;
+        --r5: #8e4e26;
+        --r6: #7b3f22;
+        --r7: #4a2418;
+        --ok: #4e7a4a;
+        --warn: #9a6212;
+        --crit: #9b3327;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --paper: #15120f;
+          --surface: #1d1915;
+          --sunk: #221d18;
+          --ink: #ede8df;
+          --muted: #9b9389;
+          --faint: #7c756c;
+          --line: #322c25;
+          --accent: #d08a4c;
+          --r0: #9bae80;
+          --r1: #b4b36a;
+          --r2: #d4ac5c;
+          --r3: #ce9a55;
+          --r4: #d08a4c;
+          --r5: #be7444;
+          --r6: #b96a3f;
+          --r7: #94553a;
+          --ok: #7fa877;
+          --warn: #d2a045;
+          --crit: #d4705f;
+        }
+      }
+      :root[data-theme="dark"] {
+        --paper: #15120f;
+        --surface: #1d1915;
+        --sunk: #221d18;
+        --ink: #ede8df;
+        --muted: #9b9389;
+        --faint: #7c756c;
+        --line: #322c25;
+        --accent: #d08a4c;
+        --r0: #9bae80;
+        --r1: #b4b36a;
+        --r2: #d4ac5c;
+        --r3: #ce9a55;
+        --r4: #d08a4c;
+        --r5: #be7444;
+        --r6: #b96a3f;
+        --r7: #94553a;
+        --ok: #7fa877;
+        --warn: #d2a045;
+        --crit: #d4705f;
+      }
+
+      :root {
+        --sans:
+          ui-sans-serif, "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+          Arial, sans-serif;
+        --mono:
+          ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono",
+          monospace;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 56px 24px 96px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .eyebrow {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      h1 {
+        font-family: var(--mono);
+        font-size: clamp(28px, 4.6vw, 44px);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        text-wrap: balance;
+        margin: 10px 0 0;
+      }
+      h2 {
+        font-size: clamp(21px, 2.6vw, 27px);
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        line-height: 1.2;
+        text-wrap: balance;
+        margin: 0;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      p {
+        margin: 0;
+        max-width: 68ch;
+      }
+      strong {
+        font-weight: 700;
+      }
+      .lede {
+        color: var(--muted);
+        max-width: 66ch;
+      }
+      .rule {
+        height: 1px;
+        background: var(--line);
+        border: 0;
+        margin: 0;
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.88em;
+        background: var(--sunk);
+        padding: 1px 5px;
+        border-radius: 2px;
+      }
+      pre {
+        margin: 0;
+        background: var(--sunk);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        font-family: var(--mono);
+        font-size: 12.5px;
+        line-height: 1.6;
+        color: var(--ink);
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
+      }
+      pre .c { color: var(--faint); }
+      pre .k { color: var(--accent); }
+      .filetree {
+        margin: 0;
+        background: var(--sunk);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 16px 18px;
+        font-family: var(--mono);
+        font-size: 12.5px;
+        line-height: 1.6;
+        color: var(--ink);
+        white-space: pre;
+        overflow-x: auto;
+      }
+      .filetree .c { color: var(--faint); }
+      .filetree .dir { color: var(--accent); font-weight: 600; }
+
+      section {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .part {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        padding-top: 26px;
+        border-top: 2px solid var(--ink);
+      }
+      .part-hd {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .part-hd .n {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .metastrip {
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+      .metastrip div {
+        flex: 1 1 140px;
+        padding: 12px 16px;
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .metastrip div:last-child {
+        border-right: 0;
+      }
+      .metastrip dt {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .metastrip dd {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .verdict {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--accent);
+        border-radius: 3px;
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .verdict .q {
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+      .verdict .a {
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        line-height: 1.35;
+        max-width: 60ch;
+      }
+
+      figure {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .scroll {
+        overflow-x: auto;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 18px 16px;
+      }
+      .dia {
+        display: block;
+        width: 100%;
+        min-width: 620px;
+        height: auto;
+        color: var(--ink);
+      }
+      .dia text {
+        font-family: var(--mono);
+        fill: currentColor;
+      }
+      .dia .bx {
+        fill: var(--sunk);
+        stroke: currentColor;
+        stroke-width: 1.1;
+      }
+      .dia .bx-o {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.1;
+        stroke-dasharray: 5 4;
+        opacity: 0.65;
+      }
+      .dia .bx-hot {
+        fill: var(--sunk);
+        stroke: var(--accent);
+        stroke-width: 1.8;
+      }
+      .dia .bx-crit {
+        fill: var(--sunk);
+        stroke: var(--crit);
+        stroke-width: 1.5;
+      }
+      .dia .grp {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.1;
+        opacity: 0.35;
+      }
+      .dia .ln {
+        stroke: currentColor;
+        stroke-width: 1.3;
+        fill: none;
+      }
+      .dia .ln-d {
+        stroke: currentColor;
+        stroke-width: 1.3;
+        fill: none;
+        stroke-dasharray: 5 4;
+        opacity: 0.7;
+      }
+      .dia .s-hot {
+        stroke: var(--accent);
+        stroke-width: 1.7;
+        fill: none;
+      }
+      .dia .s-crit {
+        stroke: var(--crit);
+        stroke-width: 1.4;
+        fill: none;
+      }
+      .dia .f-hot {
+        fill: var(--accent);
+      }
+      .dia .f-crit {
+        fill: var(--crit);
+      }
+      .dia .t-lbl {
+        font-size: 10.5px;
+        fill: var(--muted);
+      }
+      .dia .t-hot {
+        font-size: 10.5px;
+        fill: var(--accent);
+      }
+      .dia .t-crit {
+        font-size: 10.5px;
+        fill: var(--crit);
+      }
+      .dia .t-ttl {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .dia .t-sub {
+        font-size: 10.5px;
+        fill: var(--muted);
+      }
+      .dia .t-tag {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        fill: var(--muted);
+      }
+      figcaption {
+        font-size: 13.5px;
+        color: var(--muted);
+        max-width: 72ch;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      thead th {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+        border-bottom: 1px solid var(--ink);
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      td.tool {
+        font-weight: 650;
+        white-space: nowrap;
+      }
+      .tag {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 2px;
+        border: 1px solid currentColor;
+        white-space: nowrap;
+      }
+      .tag.free {
+        color: var(--ok);
+      }
+      .tag.paid {
+        color: var(--warn);
+      }
+
+      /* scenarios */
+      .scn {
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        background: var(--surface);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        overflow: hidden;
+      }
+      .scn + .scn {
+        margin-top: 14px;
+      }
+      .scn.best {
+        border-color: var(--ok);
+      }
+      .scn.bad {
+        border-color: var(--crit);
+      }
+      .scn-hd {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--line);
+        flex-wrap: wrap;
+      }
+      .scn-hd .k {
+        font-family: var(--mono);
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1;
+        color: var(--accent);
+      }
+      .scn.best .scn-hd .k {
+        color: var(--ok);
+      }
+      .scn.bad .scn-hd .k {
+        color: var(--crit);
+      }
+      .scn-hd .t {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .scn-hd .lk {
+        margin-left: auto;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .scn-bd {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      }
+      .scn-bd > div {
+        padding: 15px 20px;
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .scn-bd > div:last-child {
+        border-right: 0;
+      }
+      .scn-bd dt {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      .scn-bd dd {
+        margin: 0;
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      .scn-bd dd b {
+        color: var(--ink);
+        font-weight: 650;
+      }
+      .scn-ft {
+        padding: 13px 20px;
+        border-top: 1px solid var(--line);
+        background: var(--sunk);
+        font-size: 13.5px;
+      }
+      .scn-ft b {
+        font-weight: 700;
+      }
+
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .card li {
+        display: grid;
+        grid-template-columns: 15px 1fr;
+        gap: 10px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .card li span:first-child {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+      }
+      .card li b {
+        font-weight: 650;
+      }
+
+      .phases {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--line);
+      }
+      .phase {
+        display: grid;
+        grid-template-columns: 112px 1fr 120px;
+        gap: 20px;
+        padding: 17px 0;
+        border-bottom: 1px solid var(--line);
+        align-items: start;
+      }
+      .phase .idx {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .phase .swatch {
+        width: 11px;
+        height: 26px;
+        border-radius: 1px;
+        flex: none;
+      }
+      .phase .idx b {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .phase .body {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .phase .body p {
+        font-size: 14px;
+      }
+      .phase .gate {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--crit);
+      }
+      .phase .est {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      .risk {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+        align-items: start;
+      }
+      .risk:last-child {
+        border-bottom: 0;
+      }
+      .risk .no {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--crit);
+        padding-top: 2px;
+      }
+      .risk .rb {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .risk .rb h3 {
+        font-size: 15px;
+      }
+      .risk .rb p {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .mrow {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+        gap: 12px;
+      }
+      .mgroup {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .mgroup > .eyebrow {
+        padding-bottom: 2px;
+        border-bottom: 1px solid var(--line);
+      }
+      .ent {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .ent.key {
+        border-color: var(--accent);
+      }
+      .ent h4 {
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+      .ent ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .ent li {
+        font-family: var(--mono);
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+      .ent li b {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      .first {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--accent);
+        border-radius: 3px;
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .first ol {
+        margin: 0;
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 14.5px;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+      @media (max-width: 720px) {
+        .phase {
+          grid-template-columns: 1fr;
+          gap: 9px;
+        }
+        .phase .est {
+          text-align: left;
+        }
+        .scn-bd > div {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+      }
+    </style>
+
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="eyebrow">
+            Consolidated plan · rev 5 · storefront-first · POS &amp; roastery
+            out of scope · two sites live, third opening
+          </div>
+          <h1>Coffee Workshop Build Plan</h1>
+        </div>
+        <p class="lede">
+          A Vietnamese roastery and café selling western pastries (croissants,
+          carrot cake, kouign-amann) and coffee blends to customers who mostly
+          read it with western eyes. The plan leads with the storefront — the
+          five seconds that decide whether you're credible — then handles bean
+          &amp; blend e-commerce, ZaloPay/MoMo checkout, nationwide shipping,
+          fresh-cake handoff to GrabFood, a teacher-led online school, and a
+          light multi-site admin. The POS owns in-store sales and best-sellers
+          and we leave it alone; the roastery is a separate world. Default
+          language is Vietnamese with a language switch. All heavy services sit
+          behind one swappable interface each, so you start free and upgrade by
+          changing a file, not a refactor.
+        </p>
+        <dl class="metastrip">
+          <div>
+            <dt>Apps to build</dt>
+            <dd>1</dd>
+          </div>
+          <div>
+            <dt>Sites</dt>
+            <dd>2 → 3</dd>
+          </div>
+          <div>
+            <dt>Default locale</dt>
+            <dd>vi (switch → en)</dd>
+          </div>
+          <div>
+            <dt>Provider interfaces</dt>
+            <dd>5</dd>
+          </div>
+          <div>
+            <dt>Full scope</dt>
+            <dd>10–11 weeks</dd>
+          </div>
+          <div>
+            <dt>Live cost (start)</dt>
+            <dd>~$0 / mo</dd>
+          </div>
+          <div>
+            <dt>Live cost (mature)</dt>
+            <dd>~$32 / mo</dd>
+          </div>
+        </dl>
+      </header>
+
+      <!-- ══════════ PART 1 ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part one</div>
+          <h2>What's settled, whatever else happens</h2>
+          <p class="lede">
+            None of this depends on the POS. The POS owns in-store; we own
+            online. It's true for two sites and for five.
+          </p>
+        </div>
+
+        <section>
+          <div class="verdict">
+            <div class="q">Do you need a separate backend service?</div>
+            <div class="a">
+              No — and not because it's small. Because the two heavy jobs,
+              payment and video, both bypass your server entirely.
+            </div>
+            <p class="lede">
+              Students, enrollments, stock, roast batches and sales facts are
+              tables and forms. A NestJS process in front of them adds a network
+              hop and a second deployment while making none of it easier. Card
+              data goes to ZaloPay, MoMo or Stripe's own page; video bytes go
+              browser-to-CDN. Your server moves IDs and short-lived tokens —
+              exactly what Next.js route handlers are good at.
+              <b>
+                Every external provider — payment, courier, video, email, auth —
+                sits behind one small interface
+              </b>
+              (see Part six), so today's free pick and tomorrow's paid pick
+              reach your code through the same call. Revisit only if you pass
+              three developers, need long-lived websockets or heavy CPU, or gain
+              an API consumer that isn't your own product.
+            </p>
+          </div>
+
+          <figure>
+            <div class="scroll">
+              <svg
+                class="dia"
+                viewBox="0 0 900 510"
+                role="img"
+                aria-label="Diagram: one Next.js app on Vercel talks to Clerk, Neon Postgres, a pluggable Payments layer (ZaloPay, MoMo, card), Resend and Cloudflare Stream. Visitors are redirected off-site to the payment gateway to pay and stream video directly from Cloudflare's CDN, so neither card data nor video bytes pass through the app. GrabFood is a plain outbound link."
+              >
+                <defs>
+                  <marker
+                    id="a1"
+                    viewBox="0 0 10 10"
+                    refX="9"
+                    refY="5"
+                    markerWidth="7"
+                    markerHeight="7"
+                    orient="auto-start-reverse"
+                  >
+                    <polygon points="0,1 10,5 0,9" fill="currentColor" />
+                  </marker>
+                  <marker
+                    id="a1h"
+                    viewBox="0 0 10 10"
+                    refX="9"
+                    refY="5"
+                    markerWidth="7"
+                    markerHeight="7"
+                    orient="auto-start-reverse"
+                  >
+                    <polygon class="f-hot" points="0,1 10,5 0,9" />
+                  </marker>
+                </defs>
+                <rect
+                  class="bx"
+                  x="24"
+                  y="172"
+                  width="120"
+                  height="64"
+                  rx="3"
+                />
+                <text class="t-ttl" x="84" y="198" text-anchor="middle">
+                  Customer
+                </text>
+                <text class="t-sub" x="84" y="215" text-anchor="middle">
+                  phone browser
+                </text>
+
+                <rect
+                  class="grp"
+                  x="224"
+                  y="74"
+                  width="300"
+                  height="260"
+                  rx="4"
+                />
+                <text class="t-tag" x="240" y="96">NEXT.JS APP · VERCEL</text>
+                <rect
+                  class="bx"
+                  x="244"
+                  y="112"
+                  width="260"
+                  height="52"
+                  rx="3"
+                />
+                <text class="t-ttl" x="260" y="134">
+                  Pages &amp; course player
+                </text>
+                <text class="t-sub" x="260" y="151">
+                  menu · courses · lessons · shop
+                </text>
+                <rect
+                  class="bx"
+                  x="244"
+                  y="178"
+                  width="260"
+                  height="52"
+                  rx="3"
+                />
+                <text class="t-ttl" x="260" y="200">Route handlers</text>
+                <text class="t-sub" x="260" y="217">
+                  checkout · webhooks · tokens
+                </text>
+                <rect
+                  class="bx"
+                  x="244"
+                  y="244"
+                  width="260"
+                  height="52"
+                  rx="3"
+                />
+                <text class="t-ttl" x="260" y="266">Staff area</text>
+                <text class="t-sub" x="260" y="283">
+                  roastery · stock · roster · reports
+                </text>
+
+                <line
+                  class="ln"
+                  x1="144"
+                  y1="204"
+                  x2="218"
+                  y2="204"
+                  marker-end="url(#a1)"
+                />
+                <text class="t-lbl" x="181" y="194" text-anchor="middle">
+                  browses
+                </text>
+                <line class="ln" x1="524" y1="204" x2="560" y2="204" />
+                <line class="ln" x1="560" y1="103" x2="560" y2="399" />
+
+                <rect
+                  class="bx"
+                  x="680"
+                  y="76"
+                  width="204"
+                  height="54"
+                  rx="3"
+                />
+                <text class="t-ttl" x="696" y="98">Clerk</text>
+                <text class="t-sub" x="696" y="115">
+                  student · staff · admin
+                </text>
+                <line
+                  class="ln"
+                  x1="560"
+                  y1="103"
+                  x2="674"
+                  y2="103"
+                  marker-end="url(#a1)"
+                />
+                <text class="t-lbl" x="617" y="95" text-anchor="middle">
+                  who + role
+                </text>
+
+                <rect
+                  class="bx"
+                  x="680"
+                  y="146"
+                  width="204"
+                  height="54"
+                  rx="3"
+                />
+                <text class="t-ttl" x="696" y="168">Neon Postgres</text>
+                <text class="t-sub" x="696" y="185">everything else</text>
+                <line
+                  class="ln"
+                  x1="560"
+                  y1="173"
+                  x2="674"
+                  y2="173"
+                  marker-end="url(#a1)"
+                  marker-start="url(#a1)"
+                />
+                <text class="t-lbl" x="617" y="165" text-anchor="middle">
+                  app data
+                </text>
+
+                <rect
+                  class="bx"
+                  x="680"
+                  y="216"
+                  width="204"
+                  height="54"
+                  rx="3"
+                />
+                <text class="t-ttl" x="696" y="238">Payments</text>
+                <text class="t-sub" x="696" y="255">ZaloPay · MoMo · card</text>
+                <line
+                  class="ln s-hot"
+                  x1="674"
+                  y1="243"
+                  x2="566"
+                  y2="243"
+                  marker-end="url(#a1h)"
+                />
+                <text class="t-hot" x="620" y="235" text-anchor="middle">
+                  webhook: paid
+                </text>
+
+                <rect
+                  class="bx"
+                  x="680"
+                  y="286"
+                  width="204"
+                  height="54"
+                  rx="3"
+                />
+                <text class="t-ttl" x="696" y="308">Resend</text>
+                <text class="t-sub" x="696" y="325">receipts · reminders</text>
+                <line
+                  class="ln"
+                  x1="560"
+                  y1="313"
+                  x2="674"
+                  y2="313"
+                  marker-end="url(#a1)"
+                />
+                <text class="t-lbl" x="617" y="305" text-anchor="middle">
+                  email
+                </text>
+
+                <rect
+                  class="bx"
+                  x="680"
+                  y="372"
+                  width="204"
+                  height="54"
+                  rx="3"
+                />
+                <text class="t-ttl" x="696" y="394">Cloudflare Stream</text>
+                <text class="t-sub" x="696" y="411">video storage + CDN</text>
+                <line
+                  class="ln"
+                  x1="560"
+                  y1="399"
+                  x2="674"
+                  y2="399"
+                  marker-end="url(#a1)"
+                />
+                <text class="t-lbl" x="617" y="391" text-anchor="middle">
+                  tokens only
+                </text>
+
+                <rect
+                  class="bx-o"
+                  x="680"
+                  y="446"
+                  width="204"
+                  height="48"
+                  rx="3"
+                />
+                <text class="t-ttl" x="696" y="467">GrabFood</text>
+                <text class="t-sub" x="696" y="483">their merchant portal</text>
+
+                <path
+                  class="ln s-hot"
+                  d="M 84 172 L 84 34 L 782 34 L 782 210"
+                  marker-end="url(#a1h)"
+                />
+                <text class="t-hot" x="430" y="26" text-anchor="middle">
+                  pays on the gateway's own page — no card data reaches you
+                </text>
+                <path
+                  class="ln s-hot"
+                  d="M 76 236 L 76 399 L 674 399"
+                  marker-end="url(#a1h)"
+                />
+                <text class="t-hot" x="376" y="390" text-anchor="middle">
+                  video plays straight from the CDN — no bytes reach you
+                </text>
+                <path
+                  class="ln-d"
+                  d="M 112 236 L 112 470 L 674 470"
+                  marker-end="url(#a1)"
+                />
+                <text class="t-lbl" x="392" y="461" text-anchor="middle">
+                  “Order delivery” — a plain link, nothing syncs back
+                </text>
+              </svg>
+            </div>
+            <figcaption>
+              One app, six providers, all behind one interface each. The three
+              highlighted paths all leave your system — payment, video and
+              delivery — that delegation is why the middle stays small enough
+              for one codebase and no dedicated backend team. The POS is shown
+              out of the diagram by design: it owns in-store and we don't
+              touch it.
+            </figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h3>Who owns which truth</h3>
+          <p class="lede">
+            The most important decision in a multi-system setup. Two systems
+            both believing they own stock is how you end up with numbers nobody
+            trusts.
+          </p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>System</th>
+                  <th>Owns — the source of truth</th>
+                  <th>Must never own</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tool">Your POS</td>
+                  <td>
+                    In-store transactions, cash, receipts, tax invoices,
+                    best-sellers, busiest hours, per-site ingredient depletion.
+                    It does all of this well and we don't compete.
+                  </td>
+                  <td>Courses, students, online orders, shipping</td>
+                </tr>
+                <tr>
+                  <td class="tool">GrabFood portal</td>
+                  <td>Delivery orders and the delivery menu for fresh cakes</td>
+                  <td>
+                    Anything you report on directly — it is export-only, forever
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Your app</td>
+                  <td>
+                    Storefront, courses, students, enrollments, online bean &amp;
+                    blend orders, bakery item display, shipping, multi-site
+                    info and announcements
+                  </td>
+                  <td>
+                    In-store transactions, ingredient depletion — the POS owns
+                    those, full stop
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="lede">
+            The app and the POS touch different surfaces of the same business.
+            They never both believe they own the same number.
+          </p>
+        </section>
+
+        <section>
+          <h3>The three flows</h3>
+          <div class="cols">
+            <div class="card">
+              <h3>Money in</h3>
+              <ul>
+                <li>
+                  <span>1</span
+                  ><span
+                    >Walk-in â†’ POS. The app never sees this money.</span>
+                </li>
+                <li>
+                  <span>2</span
+                  ><span
+                    >Fresh pastry delivery â†’ GrabFood portal. Same — out of
+                    scope.</span>
+                </li>
+                <li>
+                  <span>3</span
+                  ><span>Courses â†’ your app â†’ ZaloPay / MoMo / card â†’ Postgres</span>
+                </li>
+                <li>
+                  <span>4</span
+                  ><span
+                    >Online beans &amp; blends â†’ your app â†’ same path â†’ GHN ships
+                    nationwide</span>
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Coffee in the shop</h3>
+              <ul>
+                <li>
+                  <span>1</span
+                  ><span
+                    >Staff shelves N bags of a blend and sets the roast date —
+                    one field on <code>Product</code>.</span>
+                </li>
+                <li>
+                  <span>2</span
+                  ><span
+                    >Customer browses the catalog: origin, roast level, tasting
+                    notes, grind options.</span>
+                </li>
+                <li>
+                  <span>3</span
+                  ><span
+                    >Cart â†’ checkout â†’ paid. <code>stock</code> decrements by the
+                    line quantity, silently capped at zero.</span>
+                </li>
+                <li>
+                  <span>4</span
+                  ><span
+                    >No ledger, no batches, no transfers — just a count and a
+                    date the staff can see and trust.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Learning</h3>
+              <ul>
+                <li>
+                  <span>1</span
+                  ><span>Browse a course, in-person or online</span>
+                </li>
+                <li>
+                  <span>2</span
+                  ><span
+                    >Book a seat <em>or</em> buy access — both create one
+                    <code>Enrollment</code></span
+                  >
+                </li>
+                <li>
+                  <span>3</span
+                  ><span
+                    >Attend and be marked present, or watch and progress</span>
+                </li>
+                <li>
+                  <span>4</span
+                  ><span>Certificate on completion, either way</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- â•â•â•â•â•â•â•â•â•â• PART 2 â•â•â•â•â•â•â•â•â•â• -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part two</div>
+          <h2>The POS — out of scope, by design</h2>
+          <p class="lede">
+            Your POS already handles in-store sales, best-sellers and busiest
+            hours per site, and it does it well. So the app does not extract,
+            store or report on POS data. There is no <code>SalesFact</code>
+            table, no nightly rollup, no cross-channel report, no
+            <code>scenario A/B/C/D</code> decision, and no blocked phase. The
+            one rule that survives: the app is a <em>consumer</em> of the POS,
+            never a competitor to it. If the POS exposes an API and you one day
+            want a combined number, you import into a throwaway analytics table
+            then — never into your operational tables.
+          </p>
+        </div>
+
+        <section>
+          <div class="verdict">
+            <div class="q">What does the app own, then?</div>
+            <div class="a">
+              Only what the POS does not: the storefront, courses, students,
+              online bean and blend orders, bakery items, shipping, and staff
+              tools for those things.
+            </div>
+            <p class="lede">
+              In-store cash, receipts and per-site ingredient depletion stay on
+              the POS. The app never writes a sale, never tracks milk, never
+              ranks best-sellers from the till. Removing the POS integration is
+              roughly a week and a half of work eliminated from the build, and
+              one open question retired before this week's pre-code list.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ══════════ PART 3 ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part three</div>
+          <h2>The smaller branches</h2>
+        </div>
+
+        <section>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>If yes</th>
+                  <th>If no</th>
+                  <th>What you build</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tool">Which payment provider do you lead with?</td>
+                  <td>
+                    Vietnamese gateways — <b>ZaloPay + MoMo</b> — for nearly all
+                    local traffic. Cards via Stripe or PayOS only as a secondary
+                    path for international students buying online courses.
+                  </td>
+                  <td>
+                    Skip the gateways and you lose most Vietnamese customers who
+                    don't carry a card. Skip cards and you lose foreign
+                    students. Run two adapters behind one interface.
+                  </td>
+                  <td>
+                    One <code>PaymentProvider</code> interface, two adapters
+                    (see Part six). The page calls
+                    <code>pay(amount, routing)</code>; it never calls
+                    <code>zaloPay()</code>. Adding a provider is a new file, not
+                    a refactor.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Will classes run at more than one site?</td>
+                  <td>
+                    Later, you say — so put <code>siteId</code> on
+                    <code>Session</code> now and build no UI for it.
+                  </td>
+                  <td>Same answer.</td>
+                  <td>One column today, no migration later. Free insurance.</td>
+                </tr>
+                <tr>
+                  <td class="tool">Will you go past three sites?</td>
+                  <td>
+                    Design holds. What breaks first is a GrabFood CSV per site,
+                    and roastery transfers becoming real logistics.
+                  </td>
+                  <td>&mdash;</td>
+                  <td>Nothing now. Revisit transfers at site five.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- â•â•â•â•â•â•â•â•â•â• PART 4 â•â•â•â•â•â•â•â•â•â• -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part four</div>
+          <h2>The coffee catalog — blends and stock, no roastery</h2>
+          <p class="lede">
+            You sell coffee; you don't track the roaster. So the app keeps
+            only what the shop needs: the blend (name, origin, roast level,
+            tasting notes), the bag (weight, grind options, price in VND and
+            USD), the roast date printed on the bag, and how many bags are in
+            stock. There is no <code>RoastBatch</code>, no
+            <code>GreenLot</code>, no yield, no ledger of movements. Stock is
+            a count the staff update by hand — the same way you count bags on
+            the shelf.
+          </p>
+        </div>
+
+        <section>
+          <div class="cols">
+            <div class="card">
+              <h3>What the catalog holds</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span><code>Product</code> row per blend: name, slug, origin country, roast level (light/medium/dark), tasting notes.</span></li>
+                <li><span>&rsaquo;</span><span>Bag options — weight (250g/1kg), grind (whole / espresso / filter / phin) — stored once, selected at the card.</span></li>
+                <li><span>&rsaquo;</span><span><code>roastDate</code> as a plain date the staff set when they shelf a batch. The card shows "roasted 3 days ago".</span></li>
+                <li><span>&rsaquo;</span><span><code>stock</code> as an integer. Low-stock alert below a threshold. No append-only ledger.</span></li>
+                <li><span>&rsaquo;</span><span><code>featuredUntil</code> timestamp rotates the home card without anyone touching code.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>What it deliberately doesn't hold</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>Green-lot cost, supplier, weight. Out of scope — the roastery is a separate world.</span></li>
+                <li><span>&rsaquo;</span><span>Yield, batch numbers, operator, profile. None of these reach the storefront or the reports.</span></li>
+                <li><span>&rsaquo;</span><span>Inter-site transfers as a ledger. Beans move; you just set the per-site stock count by hand.</span></li>
+                <li><span>&rsaquo;</span><span>True cost-per-kilo calculations. Price is a number the business sets; the app stores it, it doesn't derive it.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Staff touches stock, nothing more</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>One form: "I just shelved N bags of <i>Da Lat washed</i>, roast date X" — sets stock and roastDate.</span></li>
+                <li><span>&rsaquo;</span><span>One drawdown: an online order decreases <code>stock</code> by the line quantity. That's it.</span></li>
+                <li><span>&rsaquo;</span><span>No negative-stock write happens silently — a checkout that would oversell blocks and the staff see the alert.</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="verdict">
+            <div class="q">The cost this removes</div>
+            <div class="a">
+              The roastery module was the longest single phase in rev 3 — about
+              a week and a half of specialised mobile logging, yield maths and
+              a stock ledger. Removing it removes the module, the data model
+              for batches and lots, and the report that justified it. You keep
+              only "shop stock of blends", which is a column on
+              <code>Product</code>.
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ══════════ PART 5 (NEW) ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part five</div>
+          <h2>The storefront — first impression and featured items</h2>
+          <p class="lede">
+            You're a Vietnamese roastery and café selling western pastries to
+            customers who mostly look with western eyes. The home page is the
+            five seconds where they decide whether you're a real bakery or a
+            hobby. Lightweight and photograph-led, not feature-packed — the back
+            office can stay rich, but the public site must stay fast.
+          </p>
+        </div>
+
+        <section>
+          <div class="verdict">
+            <div class="q">What is the homepage actually for?</div>
+            <div class="a">
+              To make a stranger believe, in five seconds, that a real bakery
+              and roastery stands behind it — not to list everything you sell.
+            </div>
+            <p class="lede">
+              Most café sites fail this test by front-loading the menu, the
+              address, the WhatsApp button and a chat widget. Yours should show
+              one strong image, one line of English copy that names the craft
+              ("Roasted in Da Nang. Baked at 5am."), and three featured items.
+              Everything else is a click away. Performance — measured as LCP
+              under 2.5s on a mid-range Android over 4G — is part of the brief,
+              not a polish task.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3>Three jobs the home page must do</h3>
+          <div class="cols">
+            <div class="card">
+              <h3>Show, don't list</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One weighted hero photo — a pour, a croissant stack, or a
+                    roast drum — at most 60 KB WebP.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Three featured cards below it, rotating daily: a coffee
+                    blend, a bakery item, a class.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >No full menu table on the homepage. Menu is its own
+                    <code>/menu</code> page, statically generated.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >No auto-play video anywhere above the fold. Lottie or
+                    subtle CSS only.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Establish the brand</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One tagline, English-first with a Vietnamese accent: place
+                    name, craft verb, time.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One roastery photograph with a caption carrying the roast
+                    date.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One small map or three-dot strip showing the sites — proves
+                    you're physical, not drop-ship.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Restraint is the signal of craft: white space, two type
+                    sizes, one accent color.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Make it easy to do something</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    ><b>One</b> primary call-to-action visible without
+                    scrolling. Pick from: Order beans, Book a class, Find a
+                    café.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Sticky slim header — 48 px — collapsing to a single
+                    word-mark on scroll.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Cart accessible from a header icon, never a full-screen
+                    drawer on first paint.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Order again for returning customers: a recognised device
+                    sees a one-tap reorder.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Featured items — coffee, bakery, blends</h3>
+          <p class="lede">
+            Featured items are curated rows, not a product grid. Four to six
+            cards visible, the rest behind "View all". Each card carries a real
+            photograph, a price in VND and USD, and roast date or bake time —
+            the data points that signal freshness over commodity.
+          </p>
+          <div class="cols">
+            <div class="card">
+              <h3>Coffee blends</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >3–4 featured single-origin or blend
+                    <code>Product</code> rows with roast date on the card.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Roast of the week rotates from a
+                    <code>featured_until</code> timestamp — no manual
+                    swap.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Grind selector (whole / espresso / filter / phin) on the
+                    card, not buried in detail page.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Ships nationwide via in-app checkout + courier (Part
+                    six).</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Bakery — western pastries</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Croissant (plain, almond, chocolate), kouign-amann, pain au
+                    chocolat, carrot cake, cinnamon scroll.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Photograph-led, "baked at 5am", sell-out by noon — urgency
+                    is the brand promise.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Each item carries a <code>bakes_at</code> and
+                    <code>siteId</code>; freshness badge resolves on the
+                    client.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Fresh pastry is pickup-only or GrabFood handoff within the
+                    local hot zone.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Featured class</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One in-person workshop card on home: title, next date,
+                    site, one seat left (real scarcity, not fake).</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One online course card: thumbnail from Cloudflare Stream,
+                    "Watch a free preview" button to lesson 1.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Both deep-link to a single checkout at the same
+                    <code>pay()</code> interface.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Brands to study before you draw a single screen</h3>
+          <p class="lede">
+            Borrow patterns, not pixels. Each of these does one thing you also
+            need to do, better than the field. Look at how they handle the first
+            scroll, the photography crop, and the silence between elements.
+          </p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th>What they do that you also need</th>
+                  <th>Borrow</th>
+                  <th>Don't copy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tool">Onyx Coffee Lab</td>
+                  <td>
+                    Roastery + multi-café + bags + classes, all on one
+                    restrained dark site.
+                  </td>
+                  <td>
+                    One hero Pour photo. "Roast date as headline", not marketing
+                    copy.
+                  </td>
+                  <td>
+                    Their dark palette — too somber for a Vietnamese bakery.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Blue Bottle Coffee</td>
+                  <td>
+                    Minimalist white, single hero, roast-to-order bean
+                    e-commerce.
+                  </td>
+                  <td>
+                    White space. One CTA per fold. Subscriptions are a toggle,
+                    not a page.
+                  </td>
+                  <td>
+                    Their copy voice — too precious for a Da Nang roastery.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Stumptown</td>
+                  <td>
+                    Bean shop flow — bag photography, origin story, weight
+                    grids.
+                  </td>
+                  <td>
+                    Product close-up crop. Brew-method swatches (espresso /
+                    filter / phin).
+                  </td>
+                  <td>
+                    The US-centric shipping tone — localize to VND and GHN.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Tartine Bakery</td>
+                  <td>
+                    Western bakery, croissant and bread photography, locations.
+                  </td>
+                  <td>
+                    Light-on-dark crumb shots. "Baked this morning" framing.
+                  </td>
+                  <td>Their SF address-specific tone — keep "Da Nang 5am".</td>
+                </tr>
+                <tr>
+                  <td class="tool">Square Mile Coffee Roasters</td>
+                  <td>
+                    UK restraint — slashes visual noise, ships beans nationwide.
+                  </td>
+                  <td>
+                    Two-typeface system, no drop shadows, currency-clean
+                    checkout.
+                  </td>
+                  <td>
+                    Their monochrome — add your bakery warmth (cream + tobacco).
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">La Colombe</td>
+                  <td>
+                    Multi-site café + retail + classes + sleek product detail.
+                  </td>
+                  <td>
+                    Product detail page layout — hero image, brew notes, sticky
+                    add-to-cart.
+                  </td>
+                  <td>Heavy motion intros — kills your LCP budget.</td>
+                </tr>
+                <tr>
+                  <td class="tool">Verve Coffee</td>
+                  <td>
+                    Café locations map + classes calendar + bean subscriptions.
+                  </td>
+                  <td>
+                    Locations-as-cards (site photo, hours, today's roast) —
+                    exactly your three-site need.
+                  </td>
+                  <td>
+                    Their class calendar is over-built for one class a week.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="lede">
+            Net pattern across all of them:
+            <b
+              >one hero image, two typefaces, one accent color, no auto-play
+              video, sticky add-to-cart, locations as cards.</b
+            >
+            The build is unglamorous. Trust is earned by restraint and by a
+            roast date on every bag, not by motion.
+          </p>
+        </section>
+
+        <section>
+          <h3>Performance budget — the part that protects traffic</h3>
+          <p class="lede">
+            A slow site loses customers before they see the croissants. You
+            asked for lightweight; this is what that means in numbers a
+            developer can hold the line on.
+          </p>
+          <div class="cols">
+            <div class="card">
+              <h3>Targets (mid-range Android, 4G)</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >LCP &lt; 2.5 s, CLS &lt; 0.1, INP &lt; 200 ms on the home
+                    and product pages.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Initial JS bundle &lt; 150 KB gzipped. No UI kit shipped in
+                    the home route.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Hero image &lt; 60 KB WebP, AVIF with WebP fallback.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Page weight &lt; 600 KB on first paint for any storefront
+                    route.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Mechanics that meet it</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Static storefront routes via Next.js
+                    <code>generateStaticParams</code> + ISR for stock-sensitive
+                    pages.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    ><code>next/image</code> with <code>priority</code> on hero
+                    only; everything else lazy.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Cart is a tiny client island; the page around it is
+                    server-rendered and cached.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >No parallax libraries, no scroll-jacking, no full-bleed
+                    hero video, no chat widget above the fold.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Heavy but isolated</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >The course player route is allowed to be heavy — few visit
+                    it, and they're enrolled already.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Video player (Cloudflare Stream or YouTube unlisted) loads
+                    only on the lesson route.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Admin staff area is a separate segment; never let its heavy
+                    widgets touch the public bundle.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Route-level code splitting is mandatory; see "What goes
+                    wrong" risk 12.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="verdict">
+            <div class="q">The voice problem</div>
+            <div class="a">
+              Vietnamese, written in English, that reads as western craft — not
+              as an apology for being in Vietnam.
+            </div>
+            <p class="lede">
+              Most Vietnamese café sites in English sound either defensive ("we
+              serve authentic…") or generic ("the best coffee in town"). Neither
+              makes a western visitor feel they've found a real roastery. Say
+              where, when, and what's fresh. Show the roast date, the bake time,
+              the origin. Skip superlatives; the photographs are the
+              superlatives. Two typefaces — a clean grotesk for headings, a
+              readable serif or grotesk for body — and one accent in tobacco or
+              terracotta does more for credibility than any mission statement.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3>The mood — authentic, nostalgic, a touch of west in Vietnam</h3>
+          <p class="lede">
+            The brand isn't trying to look like a Saigon startup or a Brooklyn
+            coffee bar. It's a small Da Nang family that roasts and bakes, and
+            that's the feeling every screen should hand a visitor in the first
+            two seconds. Nostalgic, charming, rooted — with a western accent
+            the visitor already recognises (the croissant, the carrot cake),
+            and a current-trending touch so it doesn't feel like a museum.
+            Below is the concrete version of that mood — the colour, the
+            photography, the copy, and how to keep it from sliding either into
+            corporate-neutral or into kitsch.
+          </p>
+          <div class="cols">
+            <div class="card">
+              <h3>Palette — warm paper, not white</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span><b>Paper #F2F1EC</b> as the page background (already in this doc's CSS). Never pure white — pure white reads as SaaS, not bakery.</span></li>
+                <li><span>&rsaquo;</span><span><b>Ink #1E1A17</b> for type — a warm near-black, softer than #000 and warmer than zinc.</span></li>
+                <li><span>&rsaquo;</span><span><b>Terracotta #A8642E</b> as the single accent. Tobacco and roast-crust tones for secondary.</span></li>
+                <li><span>&rsaquo;</span><span>One cool tone allowed only as a success indicator (the ok #4E7A4A) — never as a brand colour.</span></li>
+                <li><span>&rsaquo;</span><span>Gradients forbidden. A flat warm palette is the nostalgic signal.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Photography — film, not phone-corporate</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>Shoot on a 35mm or a film-emulation preset, not on a clean white studio sweep. Slight grain, marginal contrast, real light through a window.</span></li>
+                <li><span>&rsaquo;</span><span>Hands in frame — a baker's hand on a tray, a pour, a scoop of beans. Hands are the family-and-craft signal.</span></li>
+                <li><span>&rsaquo;</span><span>The shop, not a set: worn counter, the roaster, the chalk board menu, a stack of burlap sacks. Imperfection is the point.</span></li>
+                <li><span>&rsaquo;</span><span>Crop tight — the crumb of the croissant, the bloom on a pour, the dust on a sieve. Tight crops read as craft; wide shots read as stock.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Copy — family reunion, not slogan</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>Us, we, our family. "We started roasting in our Da Nang kitchen in 2017" beats "Authentic coffee since 2017." People remember the kitchen.</span></li>
+                <li><span>&rsaquo;</span><span>Specific Vietnamese place names — Da Nang, Hội An, Đà Lạt, the Central Highlands. Specificity is the antidote to "authentic."</span></li>
+                <li><span>&rsaquo;</span><span>One anecdote per page, not a manifesto. The home page gets the founding line; the about page gets three more, never five.</span></li>
+                <li><span>&rsaquo;</span><span>Bilingual respect: Vietnamese comes first, English is the second voice, not the correction of the first. Layout treats them as equal.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>A touch of the west, planted in Vietnam</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>The western items (croissant, kouign-amann, carrot cake) are <em>named in their western names</em>, with a Vietnamese subtitle. Don't rename kouign-amann to "bánhBreton" — the foreign name is part of the charm.</span></li>
+                <li><span>&rsaquo;</span><span>Roast levels in English (light / medium / dark) with the Vietnamese alongside. Origin countries in both.</span></li>
+                <li><span>&rsaquo;</span><span>The English isn't subordinate and the Vietnamese isn't shy. They sit beside each other the way they do on a real Da Nang chalk board.</span></li>
+                <li><span>&rsaquo;</span><span>A tiny detail only a real roaster has — the roast date printed on the bag, the baker's initials on a cake box — anchors the "this is a real place" feeling.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Trending, but grounded</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>Borrow one current trend at a time and make it earn its place. Spring 2025 examples: oversized type set tight, a single hand-drawn illustration in the footer, a "stock-of-the-week" rotating card.</span></li>
+                <li><span>&rsaquo;</span><span>Don't borrow trendy motion — no scroll-triggers, no parallax, no rubber-banding. Motion is exactly where "nostalgic" turns into "gimmick."</span></li>
+                <li><span>&rsaquo;</span><span>Borrow the aesthetic of newsletters / Substack-style typography: a comfortable measure, generous leading, serif display. Quiet, slow, read-not-glanced.</span></li>
+                <li><span>&rsaquo;</span><span>Quarterly: refresh the one trending element. If it stops trending, swap it. The base palette and photography never trend — that's why they last.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>What to avoid — the kitsch line</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>No propagandist Vietnamese iconography (cone hats, red flags, water puppets). Real nostalgia is daily objects — enamel mugs, wooden trays, a tin of beans — not postcardVietnam.</span></li>
+                <li><span>&rsaquo;</span><span>No fake-vintage fonts (no "handwritten" display faces). Fraunces' soft terminals give the warmth without the costume.</span></li>
+                <li><span>&rsaquo;</span><span>No "as featured in" placeholder logos. Credibility comes from the roast date and the photographs, not from invented press strips.</span></li>
+                <li><span>&rsaquo;</span><span>No autoplay, no auto-rotating carousel faster than 8s. Trendy ≠ busy; nostalgic ≠ stuck.</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict">
+            <div class="q">The single feeling the home page should leave</div>
+            <div class="a">
+              "I want to walk into this place on a Sunday morning and sit with
+              my family."
+            </div>
+            <p class="lede">
+              Every decision — paper background, terracotta accent, hands in
+              frame, the founding line in Vietnamese first, the croissant
+              labelled in its own name, the roast date on the bag — is in
+              service of that feeling. If a proposed element doesn't move the
+              visitor closer to it, it's decoration and it doesn't ship.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3>Default Vietnamese, free fonts, one switch</h3>
+          <p class="lede">
+            The app opens in <b>Vietnamese</b> by default and a header toggle
+            flips the whole site to English in one tap. Every string goes
+            through <code>next-intl</code> from the first commit — a
+            hard-coded English word in a component is a bug, not a polish task.
+            The two typefaces are free and both render Vietnamese diacritics
+            correctly out of the box; that is non-negotiable, because broken
+            diacritics destroy trust faster than any other visual defect.
+          </p>
+          <div class="cols">
+            <div class="card">
+              <h3>Two free typefaces</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span><b>Fraunces</b> (Google Fonts, free, SIL) for display — an open-source "soft" serif with full Vietnamese support. Reads as craft bakery, not corporate.</span></li>
+                <li><span>&rsaquo;</span><span><b>Be Vietnam Pro</b> (Google Fonts, free, SIL) for body and UI — designed for Vietnamese diacritics, modern grotesk, light weight on the bundle.</span></li>
+                <li><span>&rsaquo;</span><span>Two weights each, one accent colour. No italic unless a price needs emphasis.</span></li>
+                <li><span>&rsaquo;</span><span>Self-host as <code>.woff2</code> subsetted to Vietnamese + Latin — keeps the bundle under the 150 KB JS budget from the perf section.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>i18n mechanics</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span><code>next-intl</code> middleware sets <code>locale</code> from <code>Accept-Language</code>, defaulting to <code>vi</code> for any VN IP and falling back to <code>vi</code> otherwise.</span></li>
+                <li><span>&rsaquo;</span><span>Strings live in <code>/messages/vi.json</code> and <code>/messages/en.json</code>; nothing else holds copy.</span></li>
+                <li><span>&rsaquo;</span><span>Header toggle sets a cookie and re-renders the route. No reload, no layout shift.</span></li>
+                <li><span>&rsaquo;</span><span>Date and currency format through the i18n layer: VND for vi, USD shown alongside for en.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>What "exotic" means here</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>Not a novelty typeface — a craft typeface. Fraunces' high-contrast curves and soft terminals signal artisanal bake, not gimmick.</span></li>
+                <li><span>&rsaquo;</span><span>The Vietnamese itself is the local accent; the typography is the craft accent. Both support diacritics, both are free.</span></li>
+                <li><span>&rsaquo;</span><span>One display serif + one grotesk + one terracotta accent is the whole system. Adding more is what makes a site feel heavy.</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ══════════ PART 6 (NEW) ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part six</div>
+          <h2>Pluggable providers — pay and ship now, swap later</h2>
+          <p class="lede">
+            Today's budget is zero and tomorrow's will not be. Every external
+            service — payment, courier, video, email, auth — is hidden behind a
+            small interface with one adapter per provider. The first
+            implementation ships on the cheapest credible option; every later
+            upgrade is a new adapter file plus an environment variable, never a
+            rewrite of pages or data flows.
+          </p>
+        </div>
+
+        <section>
+          <div class="verdict">
+            <div class="q">
+              The one rule that makes "start free, upgrade later" actually work?
+            </div>
+            <div class="a">
+              Pages and route handlers call the interface, never the provider.
+              <code>pay()</code>, not <code>zaloPay()</code>.
+              <code>ship()</code>, not <code>ghnShip()</code>.
+            </div>
+            <p class="lede">
+              If the provider's name appears anywhere outside its own adapter
+              file, you've coupled the product to the vendor and a swap becomes
+              a refactor. The interface owns the verb; the adapter owns the
+              noun. A factory reads an env var and returns the active adapter.
+              New provider = new file registered in one place. Existing pages do
+              not change.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3>Five interfaces, one adapter each to start</h3>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concern</th>
+                  <th>Interface</th>
+                  <th>Start now (free / cheap)</th>
+                  <th>Swap to (when it pays)</th>
+                  <th>The function the page calls</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tool">Payment</td>
+                  <td><code>PaymentProvider</code></td>
+                  <td>
+                    <b>ZaloPay + MoMo</b> (local, no monthly fee, per-tx only).
+                    Card taken via PayOS sandbox for international students.
+                  </td>
+                  <td>
+                    Stripe (intl card, payout), VNPay, or a merchant-of-record
+                    like Paddle for courses sold abroad.
+                  </td>
+                  <td>
+                    <code>pay(amount, orderRef, routing)</code> → redirect URL;
+                    webhook decodes provider, writes one <code>Order</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Courier</td>
+                  <td><code>CourierProvider</code></td>
+                  <td>
+                    <b>GHN</b> free API for nationwide bean + blend shipping.
+                    Pickup-only toggle for in-city orders.
+                  </td>
+                  <td>
+                    Ahamove, ViettelPost, GrabExpress for same-day cake zone;
+                    self-ship at high volume.
+                  </td>
+                  <td>
+                    <code>createShipment(order)</code> → tracking number;
+                    <code>trackShipment(id)</code> → status enum.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Fresh-cake delivery</td>
+                  <td><code>LocalHandoff</code></td>
+                  <td>
+                    <b>GrabFood</b> merchant portal — outbound link, nothing
+                    syncs back.
+                  </td>
+                  <td>
+                    GrabExpress on-demand courier from the same
+                    <code>CourierProvider</code> when you own the order
+                    end-to-end.
+                  </td>
+                  <td>
+                    Page renders a deep link for now; later calls
+                    <code>createShipment</code> with
+                    <code>mode: "hot_zone"</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Video</td>
+                  <td><code>VideoProvider</code></td>
+                  <td>
+                    <b>YouTube unlisted</b> for free-preview lessons.
+                    <b>Cloudflare Stream free tier</b> for paid lessons (cheap,
+                    signed playback).
+                  </td>
+                  <td>
+                    Cloudflare Stream paid, or Vimeo OTT if you outgrow Free.
+                  </td>
+                  <td>
+                    <code>getSignedPlayback(videoId, userId)</code> → embedUrl;
+                    <code>isPreview(videoId)</code> for free trailer.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Email</td>
+                  <td><code>EmailProvider</code></td>
+                  <td><b>Resend</b> free 3k/mo with a verified domain.</td>
+                  <td>Postmark, Amazon SES — same interface.</td>
+                  <td>
+                    <code>sendReceipt(order)</code>,
+                    <code>sendReminder(enrollment, at)</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Auth</td>
+                  <td><code>AuthProvider</code></td>
+                  <td>
+                    <b>Clerk</b> free 10k MAU — students, teachers, admins,
+                    roles.
+                  </td>
+                  <td>
+                    Auth.js self-hosted if you outgrow Clerk or want to cut
+                    vendor lock-in.
+                  </td>
+                  <td>
+                    <code>requireRole(role)</code>,
+                    <code>getCurrentUser()</code> — Clerk never named in a page.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h3>What the adapter files look like</h3>
+          <div class="cols">
+            <div class="card">
+              <h3>The interface (one per concern)</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >A TypeScript interface with 2–5 methods. No types from the
+                    provider leak out.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Returns plain types the rest of the app already uses —
+                    <code>PaymentResult</code>, <code>Shipment</code>,
+                    <code>VideoToken</code>.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Lives in
+                    <code>/lib/providers/&lt;concern&gt;/types.ts</code>.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>The adapter (one per provider)</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Implements the interface. The only file that imports the
+                    provider's SDK.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Owns webhook parsing and signature verification — never
+                    lets provider JSON reach a page.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Lives in <code>/lib/providers/payment/zalopay.ts</code>,
+                    <code>…/momo.ts</code>, etc.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>The factory (one line that picks)</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    ><code>getPaymentProvider()</code> reads
+                    <code>process.env.PAYMENT_PROVIDER</code> and returns the
+                    right adapter.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Supports a list for multi-provider — ZaloPay for locale VN,
+                    card for locale EN.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >The only place that knows more than one adapter
+                    exists.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Payment routing — local vs international</h3>
+          <p class="lede">
+            The interface takes a <code>routing</code> hint so you can run two
+            providers in production without a flag day. Vietnamese orders prefer
+            ZaloPay and MoMo; international students buying an online course
+            fall back to card.
+          </p>
+          <div class="cols">
+            <div class="card">
+              <h3>Default routing</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    ><code>locale=vi</code> or shipping address in VN → ZaloPay
+                    then MoMo.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    ><code>locale=en</code> or billing address outside VN → card
+                    (PayOS sandbox now, Stripe later).</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Student can override on checkout — never collapse the
+                    choice.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >One webhook handler per provider, all writing the same
+                    <code>Order</code> row.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>What never changes</h3>
+              <ul>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    ><code>Order.id</code>, <code>Order.status</code>,
+                    <code>Order.total</code> are provider-agnostic.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Receipts and certificates read from <code>Order</code>,
+                    never from provider payloads.</span
+                  >
+                </li>
+                <li>
+                  <span>&rsaquo;</span
+                  ><span
+                    >Refunds go through the same interface —
+                    <code>refund(order, amount, reason)</code>.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>How Vietnamese sites actually pay — and we mimic it</h3>
+          <p class="lede">
+            We don't invent the checkout. We copy what Tiki, Shopee VN, The
+            Coffee House and Phuc Long already trained every Vietnamese phone
+            to expect — because customers who recognise the flow pay without
+            friction, and customers who don't, leave. The pattern below is the
+            default <code>vi</code> checkout; <code>en</code> follows the same
+            shape with one panel swap.
+          </p>
+          <div class="cols">
+            <div class="card">
+              <h3>Page 1 — the method picker</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>A vertical list of <b>tiles</b>, not a dropdown. Each tile: logo, name, "Miễn phí" or the fee in VND.</span></li>
+                <li><span>&rsaquo;</span><span>Order for a VN address shows in this order: <b>ZaloPay</b>, <b>MoMo</b>, <b>VNPay QR</b> (ATM + QR interbank), <b>bank transfer</b> (Vietcombank, Techcombank…), <b>card</b> (Visa/MC/JCB), <b>COD</b>.</span></li>
+                <li><span>&rsaquo;</span><span>One radio per row. A sticky bottom bar shows the total in VND and the CTA "Thanh toán" / "Pay".</span></li>
+                <li><span>&rsaquo;</span><span>No card form on this page — card data is never on our domain. Choosing card moves to step 2.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Page 2 — the redirect or the QR</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span><b>ZaloPay / MoMo on mobile:</b> tap "Thanh toán" → the ZaloPay or MoMo app opens via app-link with the amount prefilled. User confirms in their app, returns to ours.</span></li>
+                <li><span>&rsaquo;</span><span><b>ZaloPay / MoMo on desktop:</b> a QR code renders in-page. User scans with their phone app, pays, the page shows "Đang xử lý…" and auto-advances on webhook.</span></li>
+                <li><span>&rsaquo;</span><span><b>VNPay QR / bank transfer:</b> a static QR with the order amount and reference. Same "Đang xử lý…" polling screen.</span></li>
+                <li><span>&rsaquo;</span><span><b>Card:</b> leaves the site to PayOS / Stripe's hosted page. Returns to our <code>/checkout/return</code> with a session id.</span></li>
+                <li><span>&rsaquo;</span><span><b>COD:</b> no redirect. Order is created with <code>status = awaiting_cod</code>, receipt email goes out, staff see it in the queue.</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Page 3 — the confirmation</h3>
+              <ul>
+                <li><span>&rsaquo;</span><span>A short "Cảm ơn" page: order number, what they bought, when it ships, a track-shipment link for beans, a download-receipt button.</span></li>
+                <li><span>&rsaquo;</span><span>Polling the webhook has a 30s timeout. If it doesn't arrive, the page shows "Đang xử lý — chúng tôi sẽ xác nhận trong ít phút" instead of pretending it's done.</span></li>
+                <li><span>&rsaquo;</span><span>Resend sends the receipt; the "my orders" page reads <code>Order</code>, not the provider payload.</span></li>
+                <li><span>&rsaquo;</span><span>Never own the card number; never own the QR. We render what the gateway hands us and we listen for the webhook.</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict">
+            <div class="q">The one Vietnamese pattern most western sites miss</div>
+            <div class="a">
+              COD — cash on delivery — is the second-most-used online payment
+              method in Vietnam, behind only e-wallets. Skip it and you lose
+              bean customers who trust cash more than an app.
+            </div>
+            <p class="lede">
+              Add a COD lane to <code>getPaymentProvider</code>: it returns a
+              <code>PaymentResult</code> with <code>provider = 'cod'</code>, no
+              redirect, no webhook. <code>Order.status</code> starts
+              <code>awaiting_cod</code> and the staff queue drives it to
+              <code>completed</code> when the courier collects. Same interface,
+              one extra enum value — no new code paths in the storefront.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3>Shipping — two lanes, one interface</h3>
+          <p class="lede">
+            Beans and blends ship nationwide; fresh cakes don't. Each lane uses
+            the same <code>CourierProvider</code> interface where it can, and a
+            narrower <code>LocalHandoff</code> interface where the local partner
+            doesn't talk to your backend yet.
+          </p>
+          <div class="scn best">
+            <div class="scn-hd">
+              <span class="k">∪</span>
+              <span class="t">Lane 1 — Beans &amp; blends (nationwide)</span>
+              <span class="lk">in-app, end to end</span>
+            </div>
+            <div class="scn-bd">
+              <div>
+                <dt>Flow</dt>
+                <dd>
+                  Customer pays in-app (ZaloPay/MoMo) → order is paid →
+                  <code>createShipment</code> via GHN → tracking written back →
+                  customer gets a tracking link + email.
+                </dd>
+              </div>
+              <div>
+                <dt>Why in-app</dt>
+                <dd>
+                  Beans keep, ship anywhere, full control of UX and data. This
+                  is the lane that scales and that you report on.
+                </dd>
+              </div>
+              <div>
+                <dt>Start cost</dt>
+                <dd>GHN API is free per-shipment. No monthly fee.</dd>
+              </div>
+              <div>
+                <dt>Upgrade path</dt>
+                <dd>
+                  Add Ahamove (same-day in HCMC/HN) and ViettelPost (remote
+                  provinces) as new <code>CourierProvider</code> adapters. Pick
+                  by destination postcode.
+                </dd>
+              </div>
+            </div>
+            <div class="scn-ft">
+              <b>Verdict:</b> build the full in-app shipping flow now. It's the
+              revenue lane that's already nationwide.
+            </div>
+          </div>
+          <div class="scn">
+            <div class="scn-hd">
+              <span class="k">∪</span>
+              <span class="t"
+                >Lane 2 — Fresh cakes &amp; pastries (local hot zone)</span
+              >
+              <span class="lk">handoff today, owned later</span>
+            </div>
+            <div class="scn-bd">
+              <div>
+                <dt>Flow now</dt>
+                <dd>
+                  Customer taps "Order for delivery" on a pastry card → deep
+                  link into GrabFood merchant page (or ShopeeFood) where they
+                  finish. You never see payment or address.
+                </dd>
+              </div>
+              <div>
+                <dt>Why handoff</dt>
+                <dd>
+                  Cakes don't keep, the hot zone is small, and Grab owns the
+                  courier network you'd otherwise rebuild.
+                </dd>
+              </div>
+              <div>
+                <dt>What you lose</dt>
+                <dd>
+                  The customer relationship and the data — this lane is
+                  export-only, like the POS in Part two. You live with it
+                  until volume justifies owning the order end-to-end.
+                </dd>
+              </div>
+              <div>
+                <dt>Upgrade path</dt>
+                <dd>
+                  When volume justifies, switch to GrabExpress on-demand under
+                  the same <code>CourierProvider</code> interface. You then own
+                  the order, pay, and ship — full data, same code path.
+                </dd>
+              </div>
+            </div>
+            <div class="scn-ft">
+              <b>Verdict:</b> handoff for the first year. Revisit when you ship
+              more than 30 cakes a day or open a fourth site.
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="verdict">
+            <div class="q">
+              What does "low cost now, open to upgrade" actually cost on day
+              one?
+            </div>
+            <div class="a">
+              Roughly zero recurring, by deferring every paid tier until it pays
+              for itself.
+            </div>
+            <p class="lede">
+              Neon free, Clerk free, Resend free, GHN per-shipment only,
+              ZaloPay/MoMo per-tx only, YouTube unlisted for previews,
+              Cloudflare Stream free tier for paid lessons, Vercel Hobby while
+              you're under commercial-use thresholds, a $12/yr domain as the
+              single unavoidable cost. You cross into paid tiers when traffic
+              forces it — not before — and crossing never changes a page.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ══════════ PART 7 (was 5) ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part seven</div>
+          <h2>Build order</h2>
+          <p class="lede">
+            Reordered again in rev 5 for two reasons: the storefront now leads,
+            and the POS and the roastery have both been cut. The first thing a
+            stranger pays for is the photograph of the croissant — there is no
+            roast-yield report any more. So Phase 1 is the storefront,
+            ZaloPay/MoMo ship behind the interface in Phase 3, bean shipping is
+            wired from day one, and the courses and staff admin follow.
+          </p>
+        </div>
+
+        <section>
+          <div class="phases">
+            <div class="phase">
+              <div class="idx">
+                <i class="swatch" style="background: var(--r0)"></i
+                ><b>Phase 0</b>
+              </div>
+              <div class="body">
+                <h3>Foundation + <code>Site</code> + i18n</h3>
+                <p>
+                  Next.js (App Router), Tailwind, shadcn/ui, Neon via Prisma,
+                  Vercel. <code>Site</code> exists in migration one and
+                  everything references it. <b>Default locale vi, switchable to
+                  en</b> from day one — strings live in
+                  <code>/messages/{vi,en}.json</code> via
+                  <code>next-intl</code>. Type system is the two free fonts in
+                  Part five. No English-only string ever reaches a committed
+                  file.
+                </p>
+              </div>
+              <div class="est">2â€“3 days</div>
+            </div>
+            <div class="phase">
+              <div class="idx">
+                <i class="swatch" style="background: var(--r1)"></i
+                ><b>Phase 1</b>
+              </div>
+              <div class="body">
+                <h3>Storefront — home, featured items, three locations</h3>
+                <p>
+                  Home weighted hero, three rotating featured items (coffee
+                  blend, bakery, class), three locations as cards, sticky slim
+                  header. Menu and per-site pages as static routes with ISR.
+                  Catalog browse — coffee blends with origin/roast/notes,
+                  bakery items with <code>bakes_at</code> freshness, classes.
+                  Hold the performance budget from Part five. GrabFood handoff
+                  links on pastry cards, in-app checkout stub on beans.
+                  Language toggle in the header.
+                </p>
+              </div>
+              <div class="est">2 weeks</div>
+            </div>
+            <div class="phase">
+              <div class="idx">
+                <i class="swatch" style="background: var(--r2)"></i
+                ><b>Phase 2</b>
+              </div>
+              <div class="body">
+                <h3>Course catalogue + accounts</h3>
+                <p>
+                  Clerk with student, instructor and admin roles. The
+                  <code>Enrollment</code> table, course pages for both formats,
+                  a "my learning" page. Enroll people by hand until phase 3.
+                </p>
+              </div>
+              <div class="est">1.5 weeks</div>
+            </div>
+            <div class="phase">
+              <div class="idx">
+                <i class="swatch" style="background: var(--r3)"></i
+                ><b>Phase 3</b>
+              </div>
+              <div class="body">
+                <h3>Payments + nationwide bean shipping</h3>
+                <p>
+                  <code>PaymentProvider</code> interface with ZaloPay and MoMo
+                  adapters, card via PayOS sandbox for international students.
+                  Checkout for both course paths — seat hold for workshops,
+                  straight purchase for online — converging on one
+                  <code>Enrollment</code>. <code>CourierProvider</code> with
+                  the GHN adapter for beans and blends, shipped end-to-end.
+                  Fresh cakes stay on GrabFood handoff links. Webhook, receipt,
+                  release sweep. Test the abandoned-checkout path; it's the one
+                  that breaks.
+                </p>
+              </div>
+              <div class="est">1.5 weeks</div>
+            </div>
+            <div class="phase">
+              <div class="idx">
+                <i class="swatch" style="background: var(--r4)"></i
+                ><b>Phase 4</b>
+              </div>
+              <div class="body">
+                <h3>Course player</h3>
+                <p>
+                  Lessons, video with signed playback, resume position,
+                  handouts, comments limited to enrolled students. The biggest
+                  phase, and the one that makes it feel like a product.
+                </p>
+              </div>
+              <div class="est">2 weeks</div>
+            </div>
+            <div class="phase">
+              <div class="idx">
+                <i class="swatch" style="background: var(--r5)"></i
+                ><b>Phase 5</b>
+              </div>
+              <div class="body">
+                <h3>Staff admin + bakery + bean shop</h3>
+                <p>
+                  Site-scoped admin — set price, stock and roast date on coffee
+                  blends; add and time bakery items; publish announcements;
+                  edit store locations. Course builder with
+                  direct-to-Cloudflare upload, roster and attendance. Teacher
+                  tools to post documents and video, and reply to comments.
+                  Bean shop reuses all the phase-3 plumbing. A simple
+                  "today's online orders and shipments" view for authorized
+                  staff — print-ready; no POS data, no cross-channel rollup.
+                </p>
+              </div>
+              <div class="est">2 weeks</div>
+            </div>
+          </div>
+          <p class="lede">
+            About 10â€“11 weeks total, with the storefront landing by week 3,
+            payments and bean shipping by week 6, and online courses fully
+            playable by week 9. Operational angst around POS and roastery is
+            gone; customer-facing value lands earlier than any prior revision.
+          </p>
+        </section>
+      </div>
+
+      </div>
+
+      <!-- ══════════ PART 8 (was 6) ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part eight</div>
+          <h2>Data model and tools</h2>
+        </div>
+
+        <section>
+          <div style="display: flex; flex-direction: column; gap: 16px">
+            <div class="mgroup">
+              <div class="eyebrow">Core — everything hangs off these</div>
+              <div class="mrow">
+                <div class="ent key">
+                  <h4>Site</h4>
+                  <ul>
+                    <li>name Â· slug Â· timezone</li>
+                    <li>address Â· hours Â· isActive</li>
+                    <li><b>referenced by nearly everything</b></li>
+                  </ul>
+                </div>
+                <div class="ent key">
+                  <h4>Enrollment</h4>
+                  <ul>
+                    <li><b>userId</b> Â· <b>courseId</b></li>
+                    <li>sessionId <em>if in-person</em></li>
+                    <li>status Â· orderId Â· holdExpiresAt</li>
+                  </ul>
+                </div>
+                <div class="ent key">
+                  <h4>Product</h4>
+                  <ul>
+                    <li>slug Â· name (vi/en) Â· price (VND + USD)</li>
+                    <li><b>stock</b> Â· reorderLevel</li>
+                    <li>origin Â· roastLevel Â· tastingNotes Â· weight Â· grindOptions</li>
+                    <li><b>roastDate</b> (plain date staff set) Â· featuredUntil</li>
+                  </ul>
+                </div>
+                <div class="ent key">
+                  <h4>Order / OrderItem</h4>
+                  <ul>
+                    <li>userId Â· total Â· status Â· currency Â· locale</li>
+                    <li><b>paymentProvider</b> Â· <b>providerRef</b></li>
+                    <li>routing hint (locale / address country)</li>
+                  </ul>
+                </div>
+                <div class="ent key">
+                  <h4>Shipment</h4>
+                  <ul>
+                    <li>orderId Â· <b>courierProvider</b> Â· trackingNo</li>
+                    <li>lane: nationwide | hot_zone</li>
+                    <li>status Â· shippedAt Â· deliveredAt</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="mgroup">
+              <div class="eyebrow">Bakery &amp; storefront</div>
+              <div class="mrow">
+                <div class="ent">
+                  <h4>BakeryItem</h4>
+                  <ul>
+                    <li><b>siteId</b> Â· <b>bakesAt</b> Â· sellOutBy</li>
+                    <li>croissant, kouign-amann, carrot cakeâ€¦</li>
+                    <li>handoff = pickup | grabfood | courier</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>MenuItem</h4>
+                  <ul>
+                    <li>display only Â· <b>siteId</b></li>
+                    <li>price may differ per site</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>Announcement</h4>
+                  <ul>
+                    <li>siteId <em>or null for all</em></li>
+                    <li>body (vi/en) Â· startsAt Â· endsAt Â· isActive</li>
+                    <li>shown on home + per-site page</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="mgroup">
+              <div class="eyebrow">Teaching</div>
+              <div class="mrow">
+                <div class="ent">
+                  <h4>Course</h4>
+                  <ul>
+                    <li>slug Â· title Â· topic</li>
+                    <li><b>format</b> in_person | online | hybrid</li>
+                    <li>level Â· price Â· instructorId</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>Session</h4>
+                  <ul>
+                    <li>courseId Â· <b>siteId</b></li>
+                    <li>startsAt <em>UTC</em> Â· capacity Â· seatsBooked</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>Module / Lesson</h4>
+                  <ul>
+                    <li>title Â· order Â· videoId</li>
+                    <li>durationSec Â· isFreePreview</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>Progress / Attendance</h4>
+                  <ul>
+                    <li>enrollmentId Â· lessonId</li>
+                    <li>secondsWatched Â· completedAt</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>Comment / Attachment</h4>
+                  <ul>
+                    <li>lessonId Â· userId Â· body</li>
+                    <li>parentId Â· deletedAt</li>
+                  </ul>
+                </div>
+                <div class="ent">
+                  <h4>Certificate</h4>
+                  <ul>
+                    <li>enrollmentId Â· serial</li>
+                    <li>issuedAt Â· pdfUrl</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="mgroup">
+              <div class="eyebrow">Identity</div>
+              <div class="mrow">
+                <div class="ent">
+                  <h4>User</h4>
+                  <ul>
+                    <li>clerkId Â· email Â· name</li>
+                    <li><b>role</b> Â· homeSiteId <em>staff</em> Â· preferredLocale</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="lede">
+            Deliberately gone from rev 3: <code>SalesFact</code>,
+            <code>StockMovement</code>, <code>RoastBatch</code>,
+            <code>GreenLot</code>, <code>StockItem</code>. They existed to
+            support POS reporting and roast yield, neither of which the app does
+            any more. Stock is now a column on <code>Product</code> the staff
+            update by hand; the roast date that customers see is a plain date,
+            not the output of a ledger.
+          </p>
+        </section>
+
+        <section>
+          <h3>Tools</h3>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>Job</th>
+                  <th>Demo</th>
+                  <th>Live</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tool">Next.js 15 + Vercel</td>
+                  <td>The whole app — pages, API, staff area</td>
+                  <td><span class="tag free">Hobby</span></td>
+                  <td>$20/mo Pro. Hobby forbids commercial use.</td>
+                </tr>
+                <tr>
+                  <td class="tool">Neon + Prisma</td>
+                  <td>Postgres and migrations</td>
+                  <td><span class="tag free">0.5 GB</span></td>
+                  <td>Free for years at this size.</td>
+                </tr>
+                <tr>
+                  <td class="tool">Clerk</td>
+                  <td>Students, instructors, admins, roles</td>
+                  <td><span class="tag free">10k MAU</span></td>
+                  <td>Free well past your first thousand students.</td>
+                </tr>
+                <tr>
+                  <td class="tool">ZaloPay + MoMo <em>(card via PayOS)</em></td>
+                  <td>Course, bean and pastry checkout</td>
+                  <td><span class="tag free">Per-tx only</span></td>
+                  <td>
+                    Lead with local gateways; card via PayOS sandbox for
+                    international students, swap to Stripe later. Behind one
+                    <code>PaymentProvider</code> interface.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">GHN <em>+ GrabFood</em></td>
+                  <td>Nationwide bean shipping · local cake handoff</td>
+                  <td><span class="tag free">Per-ship · free API</span></td>
+                  <td>
+                    GHN ships beans/blends end-to-end. Cakes hand off to
+                    GrabFood for now; swap to GrabExpress under the same
+                    <code>CourierProvider</code> interface later.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">
+                    Cloudflare Stream <em>or YouTube unlisted</em>
+                  </td>
+                  <td>Video transcode, storage, signed delivery</td>
+                  <td>
+                    <span class="tag free">Stream free tier · YT free</span>
+                  </td>
+                  <td>
+                    Start with YouTube unlisted for free-preview lessons,
+                    Cloudflare Stream free tier for paid. Upgrade to Stream paid
+                    or Vimeo OTT behind the <code>VideoProvider</code>
+                    interface when it pays.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tool">Inngest <em>or</em> Vercel Cron</td>
+                  <td>Rollups, reminders, certificates, sweeps</td>
+                  <td><span class="tag free">Free</span></td>
+                  <td>Free at your volume.</td>
+                </tr>
+                <tr>
+                  <td class="tool">Resend</td>
+                  <td>Receipts, reminders, contact form</td>
+                  <td><span class="tag free">3k / mo</span></td>
+                  <td>Needs a verified domain.</td>
+                </tr>
+                <tr>
+                  <td class="tool">UploadThing</td>
+                  <td>Handouts and photos</td>
+                  <td><span class="tag free">2 GB</span></td>
+                  <td>Free at 2 GB.</td>
+                </tr>
+                <tr>
+                  <td class="tool">Domain</td>
+                  <td>Credibility; unblocks Resend</td>
+                  <td><span class="tag paid">~$12/yr</span></td>
+                  <td>The only unavoidable cost.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="lede">
+            Deliberately absent: NestJS, a separate API, Docker, Redis, a
+            message broker, React Native, a CMS, a data warehouse, and any
+            provider-specific SDK imported outside its adapter file. Each is a
+            second thing to deploy and debug before it has earned its place —
+            and the last one is how "start free, upgrade later" quietly turns
+            into a rewrite.
+          </p>
+        </section>
+      </div>
+
+      <!-- ══════════ PART 9 (was 7) ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part nine</div>
+          <h2>What goes wrong</h2>
+          <p class="lede">Roughly in order of damage done.</p>
+        </div>
+
+        <section>
+        <section>
+          <div>
+            <div class="risk">
+              <div class="no">01</div>
+              <div class="rb">
+                <h3>Building anything that assumes two sites</h3>
+                <p>
+                  Every product, bakery item, staff member, menu item and class
+                  session needs a site. Retrofitting that column across a live
+                  schema is the most expensive mistake available to you right
+                  now, and you have a deadline named "site three."
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">02</div>
+              <div class="rb">
+                <h3>Duplicating what the POS already owns</h3>
+                <p>
+                  If the POS already tracks best-sellers, busiest hours, cash
+                  and ingredient depletion, let it. The moment the app also
+                  writes one of those, two systems track it and nobody trusts
+                  either number.
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">03</div>
+              <div class="rb">
+                <h3>Reaching for roastery data the app doesn't need</h3>
+                <p>
+                  You removed the roastery module on purpose. Don't let it creep
+                  back in as a "small" feature — green-lot cost, yield, batch
+                  numbers, operator. Each one re-introduces a ledger, a mobile
+                  log form nobody fills in, and a report that justifies the
+                  ledger. The catalog only needs a roast date on the bag.
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">04</div>
+              <div class="rb">
+                <h3>Hard-coded copy in a component, any component</h3>
+                <p>
+                  A Vietnamese-only string wedged into a JSX file is the slow
+                  death of the language switch. From commit one, every word goes
+                  through <code>next-intl</code> and
+                  <code>/messages/{vi,en}.json</code>. A reviewer should reject
+                  any string not in a message file, even "Add to cart."
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">05</div>
+              <div class="rb">
+                <h3>A font that breaks Vietnamese diacritics</h3>
+                <p>
+                  Vietnamese carries heavy stacking diacritics. A "pretty"
+                  display face without full Vietnamese support renders every
+                  menu item broken — and trust dies before the croissant loads.
+                  Both fonts in the type system must be verified on a real VN
+                  copy paragraph, not only on Latin sample text.
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">06</div>
+              <div class="rb">
+                <h3>Importing a provider's SDK outside its adapter file</h3>
+                <p>
+                  The moment a page calls <code>zaloPay()</code> instead of
+                  <code>pay()</code>, you've coupled the product to ZaloPay.
+                  Adding Stripe, MoMo or anyone else stops being "a new file"
+                  and becomes a refactor that touches pages, tests, and types.
+                  Rule: the provider's name appears in its adapter file and
+                  nowhere else.
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">07</div>
+              <div class="rb">
+                <h3>
+                  A heavy storefront that punishes the traffic it's trying to
+                  earn
+                </h3>
+                <p>
+                  Auto-play hero video, a chat widget above the fold, parallax
+                  libraries, a full UI kit shipped to the home route, and 5 MB
+                  of unoptimized bakery photos — each one steals from LCP, and
+                  customers leave before the croissant loads. Hold the budget
+                  in Part five or pay for it in bounced visitors.
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">08</div>
+              <div class="rb">
+                <h3>
+                  Generic English that reads as "another Vietnamese cafÃ© site"
+                </h3>
+                <p>
+                  "We serve the best coffee in town" and "authentic western
+                  pastries" both signal the opposite of craft to a western
+                  visitor. Lead with place, time, and what's fresh — roast date,
+                  bake time, origin — and let the photographs be the
+                  superlatives.
+                </p>
+              </div>
+            </div>
+            <div class="risk">
+              <div class="no">09</div>
+              <div class="rb">
+                <h3>
+                  Putting the bakery on the same shipping lane as the beans
+                </h3>
+                <p>
+                  A croissant that spends a day with GHN is a soggy croissant.
+                  Nationwide bean shipping and local hot-zone cake handoff are
+                  two lanes belonging to two interfaces — never one shipping
+                  page that pretends they're the same.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      <!-- ══════════ PART 10 (was 8) ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part ten</div>
+          <h2>This week, before any code</h2>
+        </div>
+
+        <section>
+          <div class="first">
+            <ol>
+              <li>
+                <b>Confirm the POS boundary in writing.</b> One line on a sticky
+                note is enough: "POS owns in-store sales and best-sellers; the
+                app never competes." It retires the whole POS-vs-app question
+                before a single table exists, and it's the only "decision" the
+                plan still asks of you.
+              </li>
+              <li>
+                <b>Subscribe to ZaloPay and MoMo merchant accounts.</b> Both are
+                free to register and per-transaction only. While you wait for
+                approval, build checkout against the PayOS sandbox for card so
+                the payment interface is exercised end-to-end.
+              </li>
+              <li>
+                <b>Shoot the bakery and the blends.</b> One weighted hero, one
+                pour, one croissant stack, one bag of beans, three location
+                façades. Natural light, overhead crop, no props. These
+                photographs <em>are</em>
+                the brand. Without them the storefront cannot ship in week 3.
+              </li>
+              <li>
+                <b>Verify the two free typefaces on real Vietnamese copy.</b>
+                Download Fraunces and Be Vietnam Pro, render a paragraph with
+                stacked diacritics (e.g. "Hương vị nghèo — chưa từng hứa
+                hẹn"). If either clippings or drops a mark, swap Be Vietnam Pro
+                for Noto Sans Vietnamese; never ship a font that fails this
+                test.
+              </li>
+              <li>
+                <b>Decide the i18n structure now.</b> Create
+                <code>/messages/vi.json</code> and
+                <code>/messages/en.json</code> with the home page's strings
+                only. Install <code>next-intl</code>. Default <code>vi</code>,
+                header toggle to <code>en</code>. A hard-coded English word in
+                a component should already feel wrong to commit.
+              </li>
+              <li>
+                <b>Provider interfaces — already written for you (Part eleven).</b>
+                The six interfaces in Part eleven are the contract. Copy them
+                into <code>/lib/providers/</code> as-is; the adapters fill in
+                the verbs. You don't sketch anything — the verbs are listed,
+                typed, and paired with the adapter registration rule that keeps
+                ZaloPay's name out of every page that isn't its own file.
+              </li>
+              <li>
+                <b>Buy the domain.</b> $12, and it unblocks transactional email
+                later.
+              </li>
+            </ol>
+            <p class="lede">
+              Nothing here needs code, and all of it removes a risk. The POS
+              boundary retires the biggest open question; the ZaloPay/MoMo
+              registration unblocks paid checkout; the photographs unblock the
+              storefront; the font test and i18n skeleton protect the language
+              switch from day one; and the provider interfaces in Part eleven
+              protect the "swap later" promise that keeps today's budget at
+              zero.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ══════════ PART 11 ══════════ -->
+      <div class="part">
+        <div class="part-hd">
+          <div class="n">Part eleven</div>
+          <h2>The six provider interfaces — the actual contract</h2>
+          <p class="lede">
+            "Write down the six verbs" turned out to be the unclear one — so
+            here they are, written. Copy each interface into
+            <code>/lib/providers/&lt;concern&gt;/types.ts</code> as-is. The
+            adapter files implement them; the pages call them; nobody outside
+            an adapter file imports a provider SDK. That single rule is the
+            whole reason "start free, swap later" survives.
+          </p>
+        </div>
+
+        <section>
+          <h3>Where they live</h3>
+          <div class="filetree"><span class="c">/lib/providers/</span>
+<span class="dir">payment/</span>
+  types.ts         <span class="c"># PaymentProvider interface + PaymentResult, Routing</span>
+  <span class="dir">zalopay.ts</span>      <span class="c"># imports ZaloPay SDK — nowhere else does</span>
+  momo.ts          <span class="c"># imports MoMo SDK</span>
+  payos.ts         <span class="c"># card sandbox, later Stripe</span>
+  index.ts         <span class="c"># getPaymentProvider(routing) → adapter</span>
+<span class="dir">courier/</span>
+  types.ts         <span class="c"># CourierProvider + Shipment</span>
+  ghn.ts           <span class="c"># nationwide bean lane</span>
+  grabexpress.ts   <span class="c"># later — hot-zone cake lane</span>
+  index.ts         <span class="c"># getCourierProvider(lane) → adapter</span>
+<span class="dir">local-handoff/</span>
+  types.ts         <span class="c"># LocalHandoff — the GrabFood deep-link today</span>
+  grabfood.ts
+<span class="dir">video/</span>
+  types.ts         <span class="c"># VideoProvider + VideoToken</span>
+  youtube.ts       <span class="c"># free-preview lessons (unlisted)</span>
+  cloudflare.ts    <span class="c"># paid lessons (Stream signed playback)</span>
+  index.ts
+<span class="dir">email/</span>
+  types.ts         <span class="c"># EmailProvider</span>
+  resend.ts
+<span class="dir">auth/</span>
+  types.ts         <span class="c"># AuthProvider</span>
+  clerk.ts</div>
+          <p class="lede">
+            The folder is the contract. A page that needs to charge writes
+            <code>getPaymentProvider(routing).pay(...)</code>, never
+            <code>zaloPay(...)</code>. A new provider is a new file plus one
+            line in the relevant <code>index.ts</code> — not a refactor.
+          </p>
+        </section>
+
+        <section>
+          <h3>1. PaymentProvider — ZaloPay, MoMo, card, later Stripe</h3>
+          <pre><code><span class="c">// /lib/providers/payment/types.ts</span>
+<span class="k">export type</span> PaymentMethod = <span class="k">'zalopay'</span> | <span class="k">'momo'</span> | <span class="k">'vnpay_qr'</span> | <span class="k">'bank_transfer'</span> | <span class="k">'card'</span> | <span class="k">'cod'</span>
+
+<span class="k">export interface</span> Routing {
+  locale: <span class="k">'vi'</span> | <span class="k">'en'</span>
+  addressCountry: <span class="k">string</span>          <span class="c">// ISO code; gates the default method</span>
+  preferredMethod?: PaymentMethod  <span class="c">// student override on checkout</span>
+}
+
+<span class="k">export interface</span> PaymentResult {
+  provider: PaymentMethod
+  providerRef: <span class="k">string</span>            <span class="c">// the gateway's order id — written to Order.providerRef</span>
+  redirectUrl: <span class="k">string</span>            <span class="c">// browser leaves to the gateway's hosted page</span>
+}
+
+<span class="k">export interface</span> PaymentProvider {
+  <span class="c">// Create a charge on the gateway; return a redirect URL the browser follows.</span>
+  <span class="c">// COD returns an empty redirectUrl and provider='cod'; the page creates the order directly.</span>
+  pay(amountVnd: <span class="k">number</span>, orderRef: <span class="k">string</span>, routing: Routing): Promise&lt;PaymentResult&gt;
+  <span class="c">// Verify a webhook signature and return a normalised status the page can switch on.</span>
+  <span class="c">// COD has no webhook; the page falls through to Order creation immediately.</span>
+  parseWebhook(rawBody: Buffer, headers: Record&lt;string, string&gt;): { providerRef: string; status: <span class="k">'paid'</span> | <span class="k">'failed'</span> | <span class="k">'pending'</span> }
+  <span class="c">// Refund all or part of an order, through the same gateway that took it.</span>
+  refund(providerRef: string, amountVnd: number, reason: string): Promise&lt;void&gt;
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>2. CourierProvider — GHN now, Ahamove / GrabExpress later</h3>
+          <pre><code><span class="c">// /lib/providers/courier/types.ts</span>
+<span class="k">export type</span> Lane = <span class="k">'nationwide'</span> | <span class="k">'hot_zone'</span>
+
+<span class="k">export interface</span> Shipment {
+  courierProvider: <span class="k">string</span>
+  trackingNo: string
+  lane: Lane
+  status: <span class="k">'created'</span> | <span class="k">'picked_up'</span> | <span class="k">'in_transit'</span> | <span class="k">'delivered'</span> | <span class="k">'failed'</span>
+  shippedAt: Date | null
+  deliveredAt: Date | null
+}
+
+<span class="k">export interface</span> CourierProvider {
+  <span class="c">// Book a pickup for a paid order; this lane's only write.</span>
+  createShipment(order: { id: string; address: string; items: { sku: string; qty: number; weightG: number }[]; lane: Lane }): Promise&lt;Shipment&gt;
+  <span class="c">// Poll current status for the "where's my bag?" page and the staff dashboard.</span>
+  trackShipment(trackingNo: string): Promise&lt;Pick&lt;Shipment, <span class="k">'status'</span> | <span class="k">'deliveredAt'</span>&gt;&gt;
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>3. LocalHandoff — the GrabFood deep-link, for now</h3>
+          <pre><code><span class="c">// /lib/providers/local-handoff/types.ts</span>
+<span class="k">export interface</span> LocalHandoff {
+  <span class="c">// Produce the outbound link a pastry card sends the user to today.</span>
+  <span class="c">// Nothing syncs back; this is the only interface that returns a URL, not a result.</span>
+  buildHandoffLink(bakeryItemId: string, siteId: string): string
+}</code></pre>
+          <p class="lede">
+            The narrowest interface on purpose. When you start owning fresh-cake
+            orders end-to-end, this row is replaced by a
+            <code>HotZoneCourierProvider</code> that extends
+            <code>CourierProvider</code> with a <code>pickupWindow</code> —
+            never by overloading the nationwide lane.
+          </p>
+        </section>
+
+        <section>
+          <h3>4. VideoProvider — YouTube unlisted for free preview, Cloudflare Stream for paid</h3>
+          <pre><code><span class="c">// /lib/providers/video/types.ts</span>
+<span class="k">export interface</span> VideoToken {
+  embedUrl: string             <span class="c">// drop into &lt;iframe&gt; on the lesson route only</span>
+  expiresAt: Date
+}
+
+<span class="k">export interface</span> VideoProvider {
+  <span class="c">// Signed playback for paid lessons; userId is bound into the token.</span>
+  getSignedPlayback(videoId: string, userId: string): Promise&lt;VideoToken&gt;
+  <span class="c">// True for the free-preview lesson shown on the home featured card.</span>
+  isPreview(videoId: string): boolean
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>5. EmailProvider — Resend now, Postmark or SES later</h3>
+          <pre><code><span class="c">// /lib/providers/email/types.ts</span>
+<span class="k">export interface</span> EmailProvider {
+  sendReceipt(order: { id: string; total: number; email: string; locale: <span class="k">'vi'</span> | <span class="k">'en'</span> }): Promise&lt;void&gt;
+  sendReminder(enrollment: { id: string; email: string; sessionId: string; startsAt: Date; locale: <span class="k">'vi'</span> | <span class="k">'en'</span> }): Promise&lt;void&gt;
+  sendContact(message: { name: string; email: string; body: string }): Promise&lt;void&gt;
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>6. AuthProvider — Clerk now, Auth.js later</h3>
+          <pre><code><span class="c">// /lib/providers/auth/types.ts</span>
+<span class="k">export type</span> Role = <span class="k">'student'</span> | <span class="k">'instructor'</span> | <span class="k">'admin'</span>
+
+<span class="k">export interface</span> AuthUser {
+  id: string
+  email: string
+  name: string
+  role: Role
+  preferredLocale: <span class="k">'vi'</span> | <span class="k">'en'</span>
+  homeSiteId: string | null       <span class="c">// staff only</span>
+}
+
+<span class="k">export interface</span> AuthProvider {
+  <span class="c">// Throws if the current user lacks the role; the route handler's one guard.</span>
+  requireRole(role: Role | Role[]): Promise&lt;AuthUser&gt;
+  <span class="c">// For pages that show different things to students vs the public, no throw.</span>
+  getCurrentUser(): Promise&lt;AuthUser | null&gt;
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>The factory — one line that picks, in one place</h3>
+          <pre><code><span class="c">// /lib/providers/payment/index.ts</span>
+<span class="k">import</span> { ZaloPayAdapter } <span class="k">from</span> <span class="k">'./zalopay'</span>
+<span class="k">import</span> { MoMoAdapter }   <span class="k">from</span> <span class="k">'./momo'</span>
+<span class="k">import</span> { PayOSAdapter }   <span class="k">from</span> <span class="k">'./payos'</span>
+<span class="k">import type</span> { PaymentProvider, Routing } <span class="k">from</span> <span class="k">'./types'</span>
+
+<span class="k">export function</span> getPaymentProvider(routing: Routing): PaymentProvider {
+  <span class="k">const</span> method = routing.preferredMethod ?? defaultMethod(routing)
+  <span class="k">switch</span> (method) {
+    <span class="k">case</span> <span class="k">'zalopay'</span>: <span class="k">return new</span> ZaloPayAdapter()
+    <span class="k">case</span> <span class="k">'momo'</span>:   <span class="k">return new</span> MoMoAdapter()
+    <span class="k">case</span> <span class="k">'card'</span>:   <span class="k">return new</span> PayOSAdapter()
+  }
+}
+
+<span class="k">function</span> defaultMethod(r: Routing) {
+  <span class="k">if</span> (r.preferredMethod) <span class="k">return</span> r.preferredMethod
+  <span class="c">// Vietnamese addresses and vi locale get ZaloPay; everything else card.</span>
+  <span class="k">return</span> r.addressCountry === <span class="k">'VN'</span> || r.locale === <span class="k">'vi'</span> ? <span class="k">'zalopay'</span> : <span class="k">'card'</span>
+}</code></pre>
+          <p class="lede">
+            That switch is the only place in the codebase that knows two
+            payment providers exist at once. Adding Stripe is a new
+            <code>stripe.ts</code> and a <code>case 'stripe'</code> here.
+            Every page, every webhook handler, every receipt — unchanged.
+          </p>
+        </section>
+
+        <section>
+          <div class="verdict">
+            <div class="q">How a page actually uses this</div>
+            <div class="a">
+              Three lines. The provider's name never appears.
+            </div>
+            <pre><code><span class="c">// app/checkout/route.ts — the only payment code on the page</span>
+<span class="k">const</span> provider = getPaymentProvider(routing)
+<span class="k">const</span> result = <span class="k">await</span> provider.pay(totalVnd, order.id, routing)
+redirect(result.redirectUrl)</code></pre>
+            <p class="lede">
+              A reviewer rejection rule, written once and held forever: if
+              <code>zalopay</code>, <code>momo</code>, <code>ghn</code>,
+              <code>clerk</code>, <code>resend</code>, or
+              <code>cloudflare</code> appears anywhere outside its own adapter
+              file, the PR does not merge. That rule is the contract. The
+              interfaces above are what make it enforceable.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

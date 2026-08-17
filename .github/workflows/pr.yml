@@ -1,0 +1,23 @@
+name: PR Checks
+
+on:
+  push:
+    branches:
+      - dev
+      - staging
+      - main
+  pull_request:
+    branches:
+      - dev
+      - staging
+      - main
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-checks:
+    uses: ./.github/workflows/quality-checks.yml
+    with:
+      node-version: '22'

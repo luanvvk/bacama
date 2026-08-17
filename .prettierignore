@@ -1,0 +1,26 @@
+# Build artifacts
+.next/
+out/
+build/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Lockfiles
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Generated / declaration files
+*.d.ts
+next-env.d.ts
+*.tsbuildinfo
+
+# Design mockups (kept as-is, not part of the app codebase)
+design/
+
+# Misc
+.vscode/
+.idea/
+*.log
