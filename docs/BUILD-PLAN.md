@@ -57,13 +57,12 @@ has misread the situation.
 | Account       | `/me`, `/account`, `/login`, `/register`                                                                                                                                               | `GuestGate` — honest "not signed in"  |
 | Admin         | `/admin` + `orders`, `orders/[ref]`, `shipments`, `shipments/[tracking]`, `catalog`, `catalog/[slug]/edit`, `bakery`, `menu`, `sites`, `staff`, `students`, `courses`, `announcements` | `src/constants/admin.ts`              |
 | Design system | `src/components/ui/*` (shadcn, folder-per-component), `src/components/form/Controlled*`, "paper & ink" tokens in `globals.css`, Fraunces + Be Vietnam Pro                              | —                                     |
-| Data layer    | `prisma/schema.prisma` (validated, **never migrated**), `src/lib/prisma.ts`                                                                                                            | —                                     |
+| Data layer    | Neon Postgres, **migrated and seeded** — 20 tables, 3 sites, 4 products, 2 bakery items, 4 courses / 9 lessons. `prisma/schema.prisma`, `prisma/seed.ts`, `src/lib/prisma.ts`          | Neon (`ap-southeast-1`)               |
 | Providers     | `src/lib/providers/{payment,courier,local-handoff,video,email,auth}/` — interfaces + factories that **throw**                                                                          | —                                     |
 
 ### What does not exist
 
-- **No database.** No `prisma/migrations/`, no Neon project. `DATABASE_URL` in `.env` is Prisma's local placeholder.
-- **No seed script.** `prisma/seed.ts` is not written; `prisma.config.ts` has no `migrations.seed` entry.
+- **Nothing reads the database yet.** The schema is migrated and seeded, but no page, service, or route handler queries it — every screen still renders from `src/constants/*.ts`. `src/services/` doesn't exist.
 - **No i18n.** `next-intl` not installed. Every string is English-only, hardcoded in JSX.
 - **No auth.** `@clerk/nextjs` not installed. No middleware, no session, no roles.
 - **No provider adapters.** All six factories throw `not implemented`.
@@ -98,15 +97,30 @@ These are not phase tasks. They apply to every line written from here on.
 
 ### 3.1 Provider boundary (hard rule)
 
-> If `zalopay`, `momo`, `vnpay`, `ghn`, `grab`, `clerk`, `resend`, `cloudflare`,
-> `payos`, `stripe`, or `uploadthing` appears **anywhere outside its own adapter
-> file** under `src/lib/providers/<concern>/`, the PR does not merge.
+> **No vendor SDK may be imported, and no vendor API called, outside that
+> vendor's own adapter file** under `src/lib/providers/<concern>/`. A PR that
+> does either does not merge.
 
 Pages and route handlers call the interface: `getPaymentProvider(routing).pay(...)`,
 never `zaloPay(...)`. Adding a vendor = a new adapter file + one line in that
 concern's `index.ts`. See `.claude/skills/conventions/patterns/provider-interface.md`.
 
-Verify with: `rg -i 'zalopay|momo|ghn|clerk|resend|cloudflare' src --glob '!src/lib/providers/**'`
+**The rule is about coupling, not about the word.** A vendor's name legitimately
+appears as **display text** (a payment tile reading "ZaloPay", a courier column
+reading "GHN" — the customer has to know which wallet they're choosing) and as
+**stored data** (`Order.paymentProvider`, the `PaymentMethod` enum). Those are
+correct. What's forbidden is importing `@clerk/nextjs` in a page, or calling a
+gateway's HTTP API from a route handler.
+
+Verify with — note this targets **imports**, not mentions:
+
+```bash
+rg -i "^\s*import .*['\"].*(zalopay|momo|vnpay|payos|stripe|ghn|grab|@clerk|resend|cloudflare|uploadthing)" \
+  src --glob '!src/lib/providers/**' --glob '!src/generated/**'
+```
+
+Empty output = clean. A grep for bare vendor names returns ~5 legitimate
+display-string hits and is not the check.
 
 ### 3.2 Database access
 
@@ -358,26 +372,27 @@ contracts in place. No user-visible feature change.
 `prisma.site.findMany()` returns 3 seeded rows from a server component; Vercel
 deploy succeeds; provider-boundary grep clean.
 
-| #    | Task                                                                                                                                                            | Files                                             | Done when                                       |
-| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------- |
-| 0.1  | ✅ Prisma 7 + `@prisma/adapter-pg` + `pg` installed; shared client                                                                                              | `src/lib/prisma.ts`                               | **done**                                        |
-| 0.2  | ✅ Full schema authored and validated                                                                                                                           | `prisma/schema.prisma`                            | **done**                                        |
-| 0.3  | ✅ Six provider interfaces + throwing factories                                                                                                                 | `src/lib/providers/**`                            | **done**                                        |
-| 0.4  | ✅ `postinstall: prisma generate` (keeps Vercel builds working)                                                                                                 | `package.json`                                    | **done**                                        |
-| 0.5  | ✅ Provider-boundary rule in PR template + conventions skill                                                                                                    | `.github/pull_request_template.md`                | **done**                                        |
-| 0.6  | Create Neon project; put connection string in `.env` **and** Vercel env vars                                                                                    | `.env` (never committed)                          | owner                                           |
-| 0.7  | Run first migration (`pnpm db:migrate --name init`); commit `prisma/migrations/`                                                                                | `prisma/migrations/`                              | migration applied, committed                    |
-| 0.8  | Write seed script: 3 Sites, products from `constants/products.ts`, courses from `constants/courses.ts`. Add `migrations.seed` to config. Needs `tsx`.           | `prisma/seed.ts`, `prisma.config.ts`              | `pnpm exec prisma db seed` populates a fresh DB |
-| 0.9  | Install `next-intl`; middleware (default `vi`, cookie toggle, no reload/layout shift); `/messages/{vi,en}.json` seeded with header+footer strings only          | `middleware.ts`, `src/i18n.ts`, `messages/*.json` | Toggle flips header/footer with no reload       |
-| 0.10 | Verify Fraunces + Be Vietnam Pro render stacked diacritics: `"Hương vị nghèo — chưa từng hứa hẹn"`. Swap Be Vietnam Pro → Noto Sans Vietnamese if a mark drops. | `src/app/layout.tsx`                              | Visually confirmed in a browser                 |
-| 0.11 | Confirm Vercel deploy still succeeds with the DB wired                                                                                                          | —                                                 | Deploy green, no 404s                           |
+| #    | Task                                                                                                                                                                  | Files                                             | Done when                                 |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------------- |
+| 0.1  | ✅ Prisma 7 + `@prisma/adapter-pg` + `pg` installed; shared client                                                                                                    | `src/lib/prisma.ts`                               | **done**                                  |
+| 0.2  | ✅ Full schema authored and validated                                                                                                                                 | `prisma/schema.prisma`                            | **done**                                  |
+| 0.3  | ✅ Six provider interfaces + throwing factories                                                                                                                       | `src/lib/providers/**`                            | **done**                                  |
+| 0.4  | ✅ `postinstall: prisma generate` (keeps Vercel builds working)                                                                                                       | `package.json`                                    | **done**                                  |
+| 0.5  | ✅ Provider-boundary rule in PR template + conventions skill                                                                                                          | `.github/pull_request_template.md`                | **done**                                  |
+| 0.6  | ✅ Neon project connected via the Vercel integration (`neondb`, `ap-southeast-1`); `DATABASE_URL` + `DATABASE_URL_UNPOOLED` in `.env`                                 | `.env` (never committed)                          | **done**                                  |
+| 0.7  | ✅ First migration applied (`20260817105206_init`, 20 tables). **Migrations use the unpooled URL** — DDL through Neon's pgbouncer is unreliable                       | `prisma/migrations/`, `prisma.config.ts`          | **done**                                  |
+| 0.8  | ✅ Idempotent seed (3 sites, 4 products + 4 brew guides, 2 bakery items, 4 courses / 3 modules / 9 lessons, 2 announcements). Verified: re-running does not duplicate | `prisma/seed.ts`, `prisma.config.ts`              | **done**                                  |
+| 0.9  | Install `next-intl`; middleware (default `vi`, cookie toggle, no reload/layout shift); `/messages/{vi,en}.json` seeded with header+footer strings only                | `middleware.ts`, `src/i18n.ts`, `messages/*.json` | Toggle flips header/footer with no reload |
+| 0.10 | Verify Fraunces + Be Vietnam Pro render stacked diacritics: `"Hương vị nghèo — chưa từng hứa hẹn"`. Swap Be Vietnam Pro → Noto Sans Vietnamese if a mark drops.       | `src/app/layout.tsx`                              | Visually confirmed in a browser           |
+| 0.11 | Confirm Vercel deploy still succeeds with the DB wired                                                                                                                | —                                                 | Deploy green, no 404s                     |
 
 **Blockers:**
 
-- **B0-a (owner, hard):** Neon project + connection string. Blocks 0.7–0.8, and therefore all later phases. Put it in `.env` directly — do not send it through chat.
-- **B0-b (decision):** seed data — use the three real sites from the mockup (Ngô Quyền/Đà Nẵng, Phố cổ/Hội An, An Thuận/Đà Nẵng opening Sept 2026)? Assumed yes unless told otherwise.
-- **B0-c (owner):** Vietnamese copy for header/footer strings. Small at this stage.
-- **B0-d (risk):** `.env` must never be committed. Verify `git status` shows no `.env` before every commit.
+- ~~**B0-a**~~ **resolved** — Neon connected, migration applied, seed run.
+- ~~**B0-b**~~ **resolved** — seeded with the three real sites from the mockup.
+- **B0-c (owner):** Vietnamese copy. The seed uses `coffee-shop-ui.html`'s Vietnamese verbatim where it exists; the rest (Sơn La / House Blend / gift box descriptions, brew-guide details, course module and lesson titles) is a plain translation that **needs a native-speaker pass** — see B1-b.
+- **B0-d (risk, standing):** `.env` must never be committed. Verify `git status` shows no `.env` before every commit.
+- **B0-e (env parity):** `DATABASE_URL` in Vercel is shared across Production/Preview/Development, and local development currently points at the same database. Harmless now (no real data), but before M3 give local dev its own Neon branch — otherwise a local `migrate reset` destroys production. See R15.
 
 **Do not do in this phase:** any provider adapter, any page rewrite, any auth work.
 
@@ -629,22 +644,23 @@ data loss, with a stated rollback plan.
 Open questions, with the assumption currently in force. Revisit at the phase
 noted; **don't silently resolve one in code.**
 
-| id  | Question                                         | Current assumption                                                                      | Decide by                                                    |
-| --- | ------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Q1  | Client-side data-fetching library?               | None — Server Components + Route Handlers                                               | When a screen needs client cache                             |
-| Q2  | VNPay QR + bank transfer: real or stub?          | Honest stubs behind the interface                                                       | Phase 2                                                      |
-| Q3  | How are `staff`/`instructor`/`admin` granted?    | Manual promotion in Clerk dashboard — **no self-serve path to any non-`customer` role** | Phase 3                                                      |
-| Q4  | Guest orders claimable by a later account?       | No — guest stays guest                                                                  | Phase 3                                                      |
-| Q5  | Signed-video TTL / concurrent-stream abuse?      | Short TTL, no abuse handling                                                            | Phase 4                                                      |
-| Q6  | Comment moderation + reporting?                  | None built; comments enrolled-only                                                      | Phase 4                                                      |
-| Q7  | ~~Full role→permission matrix?~~                 | **Resolved 2026-08-17** — see §4.4                                                      | done                                                         |
-| Q8  | Audit trail for staff writes?                    | Not modelled                                                                            | Phase 5                                                      |
-| Q9  | `/menu` real content?                            | Route ships only when content exists                                                    | Phase 1                                                      |
-| Q10 | Third locale ever?                               | No — `*Vi`/`*En` columns assume exactly two                                             | If a third is wanted, switch to Json or a translations table |
-| Q11 | Nav mega-menu's 4 identical `/shop` links?       | Known issue, unresolved                                                                 | Phase 1                                                      |
-| Q12 | `/teach` authoring console scope?                | Minimal placeholder until Phase 4                                                       | Phase 4                                                      |
-| Q13 | Subscriptions ("Roast of the week")?             | Out of scope, not modelled                                                              | Post-launch                                                  |
-| Q14 | Wholesale ordering (a `/wholesale` page exists)? | Marketing page only, no real flow                                                       | Post-launch                                                  |
+| id  | Question                                                                                                                                                                                                                                                            | Current assumption                                                                                                                                                                 | Decide by                                                    |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Q1  | Client-side data-fetching library?                                                                                                                                                                                                                                  | None — Server Components + Route Handlers                                                                                                                                          | When a screen needs client cache                             |
+| Q2  | VNPay QR + bank transfer: real or stub?                                                                                                                                                                                                                             | Honest stubs behind the interface                                                                                                                                                  | Phase 2                                                      |
+| Q3  | How are `staff`/`instructor`/`admin` granted?                                                                                                                                                                                                                       | Manual promotion in Clerk dashboard — **no self-serve path to any non-`customer` role**                                                                                            | Phase 3                                                      |
+| Q4  | Guest orders claimable by a later account?                                                                                                                                                                                                                          | No — guest stays guest                                                                                                                                                             | Phase 3                                                      |
+| Q5  | Signed-video TTL / concurrent-stream abuse?                                                                                                                                                                                                                         | Short TTL, no abuse handling                                                                                                                                                       | Phase 4                                                      |
+| Q6  | Comment moderation + reporting?                                                                                                                                                                                                                                     | None built; comments enrolled-only                                                                                                                                                 | Phase 4                                                      |
+| Q7  | ~~Full role→permission matrix?~~                                                                                                                                                                                                                                    | **Resolved 2026-08-17** — see §4.4                                                                                                                                                 | done                                                         |
+| Q8  | Audit trail for staff writes?                                                                                                                                                                                                                                       | Not modelled                                                                                                                                                                       | Phase 5                                                      |
+| Q9  | `/menu` real content?                                                                                                                                                                                                                                               | Route ships only when content exists                                                                                                                                               | Phase 1                                                      |
+| Q10 | Third locale ever?                                                                                                                                                                                                                                                  | No — `*Vi`/`*En` columns assume exactly two                                                                                                                                        | If a third is wanted, switch to Json or a translations table |
+| Q11 | Nav mega-menu's 4 identical `/shop` links?                                                                                                                                                                                                                          | Known issue, unresolved                                                                                                                                                            | Phase 1                                                      |
+| Q12 | `/teach` authoring console scope?                                                                                                                                                                                                                                   | Minimal placeholder until Phase 4                                                                                                                                                  | Phase 4                                                      |
+| Q13 | Subscriptions ("Roast of the week")?                                                                                                                                                                                                                                | Out of scope, not modelled                                                                                                                                                         | Post-launch                                                  |
+| Q14 | Wholesale ordering (a `/wholesale` page exists)?                                                                                                                                                                                                                    | Marketing page only, no real flow                                                                                                                                                  | Post-launch                                                  |
+| Q15 | **`ProductCategory.bakery` overlaps `BakeryItem`.** The mock constants treat croissants as `Product`s; the PRD models them as per-site `BakeryItem`s with `bakesAt`/`sellOutBy`/`handoff`. The seed followed the PRD, so the `bakery` enum value is now **unused**. | Either drop `bakery` from the enum and have `/shop` merge two sources, or keep shop-listed bakery as `Product` and treat `BakeryItem` as per-site scheduling. **Not yet decided.** | Phase 1, task 1.4                                            |
 
 ---
 
@@ -729,8 +745,10 @@ pnpm db:generate         # after every schema change
 pnpm db:migrate          # create + apply a migration (dev only)
 pnpm db:studio           # inspect data
 
-# provider-boundary check (must return only adapter files)
-rg -i 'zalopay|momo|ghn|clerk|resend|cloudflare' src --glob '!src/lib/providers/**'
+# provider-boundary check — targets SDK imports, not display strings (§3.1).
+# Empty output = clean.
+rg -i "^\s*import .*['\"].*(zalopay|momo|vnpay|payos|stripe|ghn|grab|@clerk|resend|cloudflare|uploadthing)" \
+  src --glob '!src/lib/providers/**' --glob '!src/generated/**'
 ```
 
 **Never run** `prisma migrate reset`, `prisma db push --force-reset`, or
