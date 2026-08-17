@@ -32,7 +32,7 @@ export const EntranceOverlay = () => {
     <DialogPrimitive.Root open={open} onOpenChange={(next) => !next && dismiss()}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Content
-          className="dark fixed inset-0 z-50 outline-none"
+          className="dark data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 fixed inset-0 z-50 outline-none data-closed:duration-200 data-closed:ease-[cubic-bezier(0.23,1,0.32,1)] data-open:duration-350 data-open:ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:data-closed:duration-150 motion-reduce:data-open:duration-150"
           onEscapeKeyDown={dismiss}
         >
           <DialogPrimitive.Title className="sr-only">Welcome to Bacama</DialogPrimitive.Title>

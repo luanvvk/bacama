@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Badge } from '@/components/ui/Badge';
 import { Heading } from '@/components/ui/Typography';
 import { Container } from '@/components/layout/Container';
+import { cn } from '@/lib/utils';
 
 interface CafeLocation {
   id: string;
@@ -11,7 +13,7 @@ interface CafeLocation {
   address: string;
   hours: string;
   todaysRoast: string;
-  imageUrl: string;
+  imageUrl?: string;
   comingSoon?: boolean;
 }
 
@@ -43,8 +45,6 @@ const CAFE_LOCATIONS: CafeLocation[] = [
     address: '8 An Thuận 12, Ngũ Hành Sơn · Roastery, classroom, garden',
     hours: 'Opening · 09.2026',
     todaysRoast: '—',
-    imageUrl:
-      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=680&q=72',
     comingSoon: true,
   },
 ];
@@ -56,22 +56,28 @@ export const CafesSection = () => (
         <div>
           <p className="text-primary font-mono text-xs tracking-widest uppercase">04 · Our cafés</p>
           <Heading as="h2" size="lg" className="mt-2 max-w-lg">
-            Three cafés, one roastery.
+            Two cafés today, a third on the way.
           </Heading>
         </div>
       </div>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {CAFE_LOCATIONS.map((cafe) => (
-          <article key={cafe.id} className="flex flex-col">
+          <article key={cafe.id} className={cn('flex flex-col', cafe.comingSoon && 'opacity-80')}>
             <div className="bg-muted relative aspect-video overflow-hidden rounded-lg">
-              <Image
-                src={cafe.imageUrl}
-                alt={`${cafe.name} café frontage`}
-                fill
-                sizes="(min-width: 1024px) 33vw, 100vw"
-                className="object-cover"
-              />
+              {cafe.comingSoon || !cafe.imageUrl ? (
+                <div className="bg-secondary flex h-full w-full items-center justify-center">
+                  <Badge variant="warning">Opening · Sep 2026</Badge>
+                </div>
+              ) : (
+                <Image
+                  src={cafe.imageUrl}
+                  alt={`${cafe.name} café frontage`}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  className="object-cover"
+                />
+              )}
             </div>
             <p className="text-primary mt-3 font-mono text-xs tracking-widest uppercase">
               {cafe.site}
@@ -83,7 +89,7 @@ export const CafesSection = () => (
               <b className="text-foreground">{cafe.hours.split(' · ')[1]}</b>
             </p>
             <div className="text-muted-foreground mt-auto flex items-center justify-between border-t pt-3 text-sm">
-              <span>{cafe.comingSoon ? 'Opening soon' : "Today's roast"}</span>
+              <span>{cafe.comingSoon ? 'Opening soon' : 'House roast'}</span>
               <b className="text-foreground">{cafe.todaysRoast}</b>
             </div>
           </article>

@@ -24,7 +24,10 @@ export const CtaBandSection = () => (
           <Link href="/shop">Browse all blends</Link>
         </Button>
       </div>
-      <div className="text-muted-foreground mt-8 flex flex-wrap justify-center gap-x-4 gap-y-1 font-mono text-xs tracking-wide">
+      <p className="text-muted-foreground mt-10 text-sm italic">
+        Small roastery, daily batches, an early bake — Đà Nẵng, 2017.
+      </p>
+      <div className="text-muted-foreground mt-4 flex flex-wrap justify-center gap-x-4 gap-y-1 font-mono text-xs tracking-wide">
         {PAYMENT_METHODS.map((method) => (
           <span key={method}>{method}</span>
         ))}

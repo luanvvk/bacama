@@ -29,7 +29,7 @@ export const HeroSection = () => (
         </div>
         <div className="text-muted-foreground mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t pt-6 text-sm">
           <span>
-            Three cafés · <b className="text-foreground">Đà Nẵng, Hội An</b>
+            Two cafés today · <b className="text-foreground">Đà Nẵng, Hội An</b>
           </span>
           <span>Daily batch roasting</span>
           <span>ZaloPay · MoMo · COD</span>
@@ -48,7 +48,7 @@ export const HeroSection = () => (
           <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
             Roasted
           </p>
-          <p className="font-heading text-sm">11.08</p>
+          <p className="font-heading text-sm">Fresh daily</p>
         </div>
       </div>
     </Container>

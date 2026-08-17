@@ -28,7 +28,7 @@ describe('CourseCard', () => {
   it('flags low availability with the warning badge variant', () => {
     render(<CourseCard course={viennoiserie} />);
 
-    expect(screen.getByText('3 seats left · 21–22 Sep')).toBeInTheDocument();
+    expect(screen.getByText('Limited seats')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Book a seat →' })).toBeInTheDocument();
   });
 });

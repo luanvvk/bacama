@@ -25,6 +25,15 @@ The original static HTML/CSS design mockups live on the
 reference when building the equivalent React pages, but don't copy their
 markup verbatim (no Tailwind classes, no component structure).
 
+## Working principles
+
+Four principles that apply to every task, adapted from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on common LLM coding pitfalls (via [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills), MIT):
+
+1. **Think before coding** — don't silently pick an interpretation when the request is ambiguous; state assumptions, present tradeoffs, and ask rather than guess. Stop and name what's unclear instead of running with a wrong assumption.
+2. **Simplicity first** — minimum code that solves the problem, nothing speculative. No abstractions, flexibility, or error handling for scenarios that weren't asked for and can't happen.
+3. **Surgical changes** — touch only what the task requires. Don't refactor or "improve" adjacent code, comments, or formatting while fixing something unrelated; every changed line should trace back to the request.
+4. **Goal-driven execution** — turn imperative asks ("fix the bug") into verifiable goals ("write a test that reproduces it, then make it pass") so progress can be checked rather than assumed.
+
 ## Branches
 
 - `main` — stable/production, protected. Only receives merges from `staging`.
@@ -89,6 +98,19 @@ comments policy) are defined in the `conventions` skill
 ([.claude/skills/conventions/SKILL.md](.claude/skills/conventions/SKILL.md)).
 Read it before writing or reviewing code under `src/**`.
 
+## Design & UI skills
+
+A set of third-party design/UI skills is vendored under `.claude/skills/` to raise the bar on visual/motion quality — use them alongside `conventions` when building or reviewing UI, not instead of it. All are markdown-only (no bundled scripts unless noted); each `SKILL.md` states when to reach for it.
+
+| Skill(s)                                                                                                                                                                                      | Source                                                                                                | Covers                                                                                                                                                                                                                                                                                                            |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `emil-design-eng`, `animate`, `animation-vocabulary`, `apple-design`, `ask-sonner`, `find-animation-opportunities`, `improve-animations`, `pick-ui-library`, `prototype`, `review-animations` | [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT)                                   | Emil Kowalski's (Vercel/Linear, creator of Sonner/Vaul) taste on animation, component polish, and UI library choice. `ask-sonner` is directly relevant — we already wrap Sonner in `src/lib/toast.ts`.                                                                                                            |
+| `taste-skill`                                                                                                                                                                                 | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) (MIT)                                 | Anti-slop frontend guidance — avoiding templated/generic-looking layout, typography, motion, and spacing.                                                                                                                                                                                                         |
+| `impeccable`                                                                                                                                                                                  | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0)                              | Full toolchain (23 commands, detector engine) for design critique/audit/polish. Installed via its own installer — includes Node scripts, not just markdown. Run `/impeccable init` once (in-session) to set up `PRODUCT.md`/`DESIGN.md` design context before using its other commands.                           |
+| `ui-ux-pro-max`, `design-system`, `ui-styling`                                                                                                                                                | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT) | **Curated markdown only** — reasoning-rule tables, token architecture, and shadcn/Tailwind guidance. The upstream project's Python search CLI, CSV style/color/font databases, and binary font assets were deliberately **not** vendored (this repo has no Python toolchain); each `SKILL.md` says so explicitly. |
+
+A [21st.dev](https://21st.dev) MCP server is configured in `.mcp.json` for component search/generation — it needs an `API_KEY_21ST` environment variable (get a key from your 21st.dev account) to actually connect; without it the server just fails to authenticate.
+
 ## Additional reference files
 
 | File                                                                         | Covers                                                                                                     |
@@ -97,3 +119,4 @@ Read it before writing or reviewing code under `src/**`.
 | [.claude/skills/conventions/patterns/](.claude/skills/conventions/patterns/) | Annotated per-pattern reference docs                                                                       |
 | [.claude/skills/open-pr/SKILL.md](.claude/skills/open-pr/SKILL.md)           | `/open-pr` — PR template and checklist rules                                                               |
 | [.claude/agents/](.claude/agents/)                                           | Subagent definitions — delegate matching tasks via the Agent tool instead of duplicating their work inline |
+| [.mcp.json](.mcp.json)                                                       | Project-scoped MCP servers (currently: 21st.dev component search — needs `API_KEY_21ST`)                   |

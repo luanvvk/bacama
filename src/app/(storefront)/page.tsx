@@ -13,7 +13,7 @@ import { WorkshopsSection } from './_components/WorkshopsSection';
 
 const ANNOUNCEMENTS = [
   "Today's roast · Đà Lạt Washed",
-  'Fresh bake · 05:14',
+  'Fresh bake, every morning',
   'Nationwide in 2–3 days',
   'Site 3 opens in September',
 ];

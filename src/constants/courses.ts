@@ -106,7 +106,7 @@ export const COURSES: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=620&q=72',
     priceVnd: 3200000,
-    availability: '3 seats left · 21–22 Sep',
+    availability: 'Limited seats',
     lowAvailability: true,
     ctaLabel: 'Book a seat',
   },
@@ -134,7 +134,7 @@ export const COURSES: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=620&q=72',
     priceVnd: 1890000,
-    availability: '1 seat left · starts 1 Oct',
+    availability: 'Limited seats',
     lowAvailability: true,
     ctaLabel: 'Enrol',
   },

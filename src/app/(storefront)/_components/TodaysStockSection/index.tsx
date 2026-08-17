@@ -1,13 +1,15 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
+import { getCourseBySlug } from '@/constants/courses';
 import { getProductBySlug } from '@/constants/products';
-import { Heading, Text } from '@/components/ui/Typography';
+import { Heading } from '@/components/ui/Typography';
 import { Container } from '@/components/layout/Container';
+import { CourseCard } from '@/components/courses/CourseCard';
 import { ProductCard } from '@/components/shop/ProductCard';
 
 const dalatWashed = getProductBySlug('dalat-washed')!;
 const croissant = getProductBySlug('croissant-aux-amandes')!;
+const baristaFoundations = getCourseBySlug('barista-foundations')!;
 
 export const TodaysStockSection = () => (
   <section className="border-t py-16">
@@ -29,35 +31,7 @@ export const TodaysStockSection = () => (
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <ProductCard product={dalatWashed} featured />
         <ProductCard product={croissant} />
-        <article className="flex flex-col">
-          <Link
-            href="/courses"
-            className="bg-muted relative block aspect-4/5 overflow-hidden rounded-lg"
-          >
-            <Image
-              src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=620&q=72"
-              alt="Barista pulling an espresso shot"
-              fill
-              sizes="(min-width: 1024px) 33vw, 100vw"
-              className="object-cover"
-            />
-          </Link>
-          <div className="mt-3 flex flex-1 flex-col">
-            <p className="text-primary font-mono text-xs tracking-widest uppercase">Workshop</p>
-            <h3 className="font-heading mt-1 text-lg">
-              <Link href="/courses">Barista Foundations</Link>
-            </h3>
-            <Text variant="muted" className="mt-1">
-              Six weeks online, final exam on-site in Hội An.
-            </Text>
-            <div className="mt-auto flex items-center justify-between gap-3 pt-3">
-              <span className="font-mono font-bold tabular-nums">1.890.000 ₫</span>
-              <Link href="/courses" className="text-primary text-sm font-medium hover:underline">
-                Enroll →
-              </Link>
-            </div>
-          </div>
-        </article>
+        <CourseCard course={baristaFoundations} />
       </div>
     </Container>
   </section>
