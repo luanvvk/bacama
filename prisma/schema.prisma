@@ -1,0 +1,498 @@
+// Schema source of truth. See docs/BUILD-PLAN.md for the phase each model is
+// actually wired up in, and for the localisation rules behind the *Vi/*En
+// column pairs (editorial copy is stored per-locale; option keys and enums are
+// locale-neutral identifiers translated through /messages/{vi,en}.json).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  student
+  instructor
+  admin
+}
+
+enum Locale {
+  vi
+  en
+}
+
+enum ProductCategory {
+  coffee
+  bakery
+  gift
+}
+
+enum RoastLevel {
+  light
+  medium
+  dark
+}
+
+enum CourseFormat {
+  online
+  in_person
+  hybrid
+}
+
+enum PaymentMethod {
+  zalopay
+  momo
+  vnpay_qr
+  bank_transfer
+  card
+  cod
+}
+
+enum OrderStatus {
+  pending
+  awaiting_cod
+  paid
+  shipped
+  delivered
+  completed
+  failed
+  refunded
+}
+
+enum DeliveryMode {
+  home_delivery
+  pickup
+}
+
+enum ShipmentLane {
+  nationwide
+  hot_zone
+}
+
+enum ShipmentStatus {
+  created
+  picked_up
+  in_transit
+  delivered
+  failed
+}
+
+enum EnrollmentStatus {
+  pending
+  active
+  completed
+  cancelled
+}
+
+enum BakeryHandoff {
+  pickup
+  grabfood
+  courier
+}
+
+model Site {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  city      String
+  nameVi    String
+  nameEn    String
+  addressVi String
+  addressEn String
+  hoursVi   String
+  hoursEn   String
+  timezone  String    @default("Asia/Ho_Chi_Minh")
+  imageUrl  String?
+  opensAt   DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  todaysRoastProductId String?
+  todaysRoastProduct   Product? @relation("SiteTodaysRoast", fields: [todaysRoastProductId], references: [id], onDelete: SetNull)
+
+  staff          User[]
+  bakeryItems    BakeryItem[]
+  menuItems      MenuItem[]
+  announcements  Announcement[]
+  courseSessions CourseSession[]
+  pickupOrders   Order[]         @relation("OrderPickupSite")
+
+  @@index([todaysRoastProductId])
+}
+
+model User {
+  id              String   @id @default(cuid())
+  clerkId         String   @unique
+  email           String   @unique
+  name            String
+  role            Role     @default(student)
+  preferredLocale Locale   @default(vi)
+  homeSiteId      String?
+  homeSite        Site?    @relation(fields: [homeSiteId], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  orders      Order[]
+  enrollments Enrollment[]
+  comments    Comment[]
+  courses     Course[]     @relation("CourseInstructor")
+
+  @@index([homeSiteId])
+}
+
+model Product {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  category       ProductCategory
+  nameVi         String
+  nameEn         String
+  descriptionVi  String
+  descriptionEn  String
+  originVi       String?
+  originEn       String?
+  originStoryVi  String?
+  originStoryEn  String?
+  tastingNotesVi String[]
+  tastingNotesEn String[]
+  roastLevel     RoastLevel?
+  imageUrl       String?
+  images         String[]
+  weightOptions  String[]
+  grindOptions   String[]
+  priceVnd       Int
+  priceUsd       Int?
+  stock          Int             @default(0)
+  reorderLevel   Int             @default(0)
+  roastDate      DateTime?
+  featuredUntil  DateTime?
+  isActive       Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  brewGuides BrewGuide[]
+  orderItems OrderItem[]
+  featuredAt Site[]      @relation("SiteTodaysRoast")
+
+  @@index([category])
+  @@index([featuredUntil])
+}
+
+model BrewGuide {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  method    String
+  ratio     String
+  detailVi  String
+  detailEn  String
+  order     Int     @default(0)
+
+  @@index([productId])
+}
+
+model Order {
+  id     String      @id @default(cuid())
+  ref    String      @unique
+  userId String?
+  user   User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status OrderStatus @default(pending)
+
+  customerName String
+  phone        String
+  email        String?
+
+  deliveryMode DeliveryMode @default(home_delivery)
+  addressLine  String?
+  province     String?
+  pickupSiteId String?
+  pickupSite   Site?        @relation("OrderPickupSite", fields: [pickupSiteId], references: [id], onDelete: SetNull)
+  note         String?
+
+  subtotalVnd Int
+  shippingVnd Int @default(0)
+  totalVnd    Int
+
+  currency String @default("VND")
+  locale   Locale @default(vi)
+
+  paymentProvider PaymentMethod?
+  providerRef     String?        @unique
+  paidAt          DateTime?
+  addressCountry  String         @default("VN")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items      OrderItem[]
+  shipment   Shipment?
+  enrollment Enrollment?
+
+  @@index([userId])
+  @@index([status])
+  @@index([pickupSiteId])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id           String   @id @default(cuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String?
+  product      Product? @relation(fields: [productId], references: [id], onDelete: Restrict)
+  courseId     String?
+  course       Course?  @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  nameSnapshot String
+  quantity     Int      @default(1)
+  unitPriceVnd Int
+  weight       String?
+  grind        String?
+
+  @@index([orderId])
+  @@index([productId])
+  @@index([courseId])
+}
+
+model Shipment {
+  id              String         @id @default(cuid())
+  orderId         String         @unique
+  order           Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  courierProvider String
+  trackingNo      String?
+  lane            ShipmentLane
+  status          ShipmentStatus @default(created)
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([trackingNo])
+  @@index([status])
+}
+
+model BakeryItem {
+  id            String        @id @default(cuid())
+  slug          String
+  siteId        String
+  site          Site          @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  nameVi        String
+  nameEn        String
+  descriptionVi String
+  descriptionEn String
+  imageUrl      String?
+  priceVnd      Int
+  bakesAt       String
+  sellOutBy     String?
+  handoff       BakeryHandoff @default(pickup)
+  handoffUrl    String?
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@unique([siteId, slug])
+  @@index([siteId])
+}
+
+model MenuItem {
+  id        String   @id @default(cuid())
+  siteId    String
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  section   String
+  nameVi    String
+  nameEn    String
+  priceVnd  Int
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([siteId, section])
+}
+
+model Announcement {
+  id        String    @id @default(cuid())
+  siteId    String?
+  site      Site?     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  titleVi   String
+  titleEn   String
+  bodyVi    String
+  bodyEn    String
+  startsAt  DateTime
+  endsAt    DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([siteId])
+  @@index([isActive, startsAt])
+}
+
+model Course {
+  id             String       @id @default(cuid())
+  slug           String       @unique
+  format         CourseFormat
+  titleVi        String
+  titleEn        String
+  metaVi         String?
+  metaEn         String?
+  descriptionVi  String
+  descriptionEn  String
+  availabilityVi String?
+  availabilityEn String?
+  imageUrl       String?
+  level          String?
+  topic          String?
+  priceVnd       Int
+  isActive       Boolean      @default(true)
+  instructorId   String?
+  instructor     User?        @relation("CourseInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  sessions    CourseSession[]
+  modules     CourseModule[]
+  enrollments Enrollment[]
+  orderItems  OrderItem[]
+
+  @@index([format])
+  @@index([instructorId])
+}
+
+model CourseSession {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  siteId      String
+  site        Site     @relation(fields: [siteId], references: [id], onDelete: Restrict)
+  startsAt    DateTime
+  capacity    Int
+  seatsBooked Int      @default(0)
+
+  enrollments Enrollment[]
+
+  @@index([courseId])
+  @@index([siteId])
+  @@index([startsAt])
+}
+
+model CourseModule {
+  id       String @id @default(cuid())
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  titleVi  String
+  titleEn  String
+  order    Int
+
+  lessons Lesson[]
+
+  @@index([courseId])
+}
+
+model Lesson {
+  id            String       @id @default(cuid())
+  moduleId      String
+  module        CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  titleVi       String
+  titleEn       String
+  bodyVi        String?
+  bodyEn        String?
+  order         Int
+  videoId       String?
+  durationSec   Int?
+  isFreePreview Boolean      @default(false)
+
+  progress    Progress[]
+  comments    Comment[]
+  attachments Attachment[]
+
+  @@index([moduleId])
+}
+
+model Enrollment {
+  id            String           @id @default(cuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId      String
+  course        Course           @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  sessionId     String?
+  session       CourseSession?   @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  orderId       String?          @unique
+  order         Order?           @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  status        EnrollmentStatus @default(pending)
+  holdExpiresAt DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  progress    Progress[]
+  attendances Attendance[]
+  certificate Certificate?
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+  @@index([sessionId])
+  @@index([status, holdExpiresAt])
+}
+
+model Progress {
+  id             String     @id @default(cuid())
+  enrollmentId   String
+  enrollment     Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lessonId       String
+  lesson         Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  secondsWatched Int        @default(0)
+  completedAt    DateTime?
+  updatedAt      DateTime   @updatedAt
+
+  @@unique([enrollmentId, lessonId])
+  @@index([lessonId])
+}
+
+model Attendance {
+  id           String     @id @default(cuid())
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  markedById   String?
+  attendedAt   DateTime   @default(now())
+
+  @@index([enrollmentId])
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  lessonId  String
+  lesson    Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  parentId  String?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([lessonId, createdAt])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  name      String
+  url       String
+  size      String
+  createdAt DateTime @default(now())
+
+  @@index([lessonId])
+}
+
+model Certificate {
+  id           String     @id @default(cuid())
+  enrollmentId String     @unique
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  serial       String     @unique
+  issuedAt     DateTime   @default(now())
+  pdfUrl       String?
+}

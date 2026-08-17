@@ -25,6 +25,14 @@ The original static HTML/CSS design mockups live on the
 reference when building the equivalent React pages, but don't copy their
 markup verbatim (no Tailwind classes, no component structure).
 
+> **Before starting any feature work, read [docs/BUILD-PLAN.md](docs/BUILD-PLAN.md).**
+> It holds the current phase order, per-task breakdown, acceptance criteria,
+> external blockers, settled architecture decisions (don't relitigate them),
+> the risk register, and the security review gates. Critically: **the UI is
+> already built against hardcoded mock data** — the work ahead is replacing
+> that with a real data layer and real provider adapters, not building pages
+> from scratch.
+
 ## Working principles
 
 Four principles that apply to every task, adapted from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on common LLM coding pitfalls (via [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills), MIT):
@@ -54,10 +62,12 @@ Four principles that apply to every task, adapted from [Andrej Karpathy's observ
 - **Package manager:** pnpm (`packageManager` field + `.npmrc engine-strict=true` — don't use npm/yarn commands or lockfiles)
 - **Linting/formatting:** ESLint (flat config, `eslint-config-next` + `eslint-config-prettier`), Prettier (`prettier-plugin-tailwindcss` sorts classes — don't hand-sort)
 - **Auth:** [Clerk](https://clerk.com) is the chosen provider, but **not wired up yet** — `@clerk/nextjs` isn't installed, and there's no `<ClerkProvider>`, middleware, or real session anywhere. `/login` and `/register` are UI/UX only: real-looking forms (our usual `react-hook-form` + zod + `Controlled*` stack, not Clerk's own components) whose submit handlers just `toast()` instead of calling Clerk. When the real integration lands, these get swapped for Clerk's actual components/hooks — don't build any other page as if a session exists (see `src/components/auth/GuestGate`, used everywhere a signed-in state would otherwise be assumed) until then.
+- **Data layer:** Prisma ORM 7 + Neon Postgres — `prisma/schema.prisma` is the schema source of truth. Prisma 7 requires a driver adapter for SQL providers: `@prisma/adapter-pg` + `pg`, wired once in `src/lib/prisma.ts` — import the shared `prisma` client from there, never instantiate `PrismaClient` inline. Client generates into `src/generated/prisma` (gitignored; run `pnpm exec prisma generate` after schema changes). No real Neon project is provisioned yet — `DATABASE_URL` in `.env` is a local placeholder; every model in the schema exists only as hardcoded data in `src/constants/*.ts` until a real migration runs.
+- **External providers (payment, shipping, video, email, auth):** each sits behind a small interface in `src/lib/providers/<concern>/types.ts` (payment, courier, local-handoff, video, email, auth), with per-vendor adapters and a factory (`index.ts`) selecting the active one. Pages/route handlers call the interface — `getPaymentProvider(...).pay(...)` — never a vendor name directly. **Reviewer rule:** if `zalopay`, `momo`, `ghn`, `clerk`, `resend`, or `cloudflare` appears anywhere outside its own adapter file, the PR doesn't merge. All six factories currently throw `not implemented` — real adapters land in later phases as each provider is wired up.
 
-No data-fetching library is chosen yet. **Don't add one speculatively.**
-When a task needs one, ask, then add it here once decided so future agents
-don't re-litigate the choice.
+No client-side data-fetching library (React Query, SWR, etc.) is chosen yet.
+**Don't add one speculatively.** When a task needs one, ask, then add it here
+once decided so future agents don't re-litigate the choice.
 
 ## Commands
 
@@ -113,10 +123,13 @@ A [21st.dev](https://21st.dev) MCP server is configured in `.mcp.json` for compo
 
 ## Additional reference files
 
-| File                                                                         | Covers                                                                                                     |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| [.claude/skills/conventions/SKILL.md](.claude/skills/conventions/SKILL.md)   | Coding conventions (naming, file layout, component/hook/service patterns, comments policy)                 |
-| [.claude/skills/conventions/patterns/](.claude/skills/conventions/patterns/) | Annotated per-pattern reference docs                                                                       |
-| [.claude/skills/open-pr/SKILL.md](.claude/skills/open-pr/SKILL.md)           | `/open-pr` — PR template and checklist rules                                                               |
-| [.claude/agents/](.claude/agents/)                                           | Subagent definitions — delegate matching tasks via the Agent tool instead of duplicating their work inline |
-| [.mcp.json](.mcp.json)                                                       | Project-scoped MCP servers (currently: 21st.dev component search — needs `API_KEY_21ST`)                   |
+| File                                                                         | Covers                                                                                                            |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [docs/BUILD-PLAN.md](docs/BUILD-PLAN.md)                                     | **Phases, tasks, blockers, acceptance criteria, settled decisions, risks, security gates — read first**           |
+| [coffee-shop-prd.md](coffee-shop-prd.md)                                     | Functional requirements (`FR-*`/`MO-*` ids), personas, mood constraints. Build plan supersedes its §4/§6 ordering |
+| [coffee-plan.html](coffee-plan.html)                                         | Business rationale, provider-interface reasoning, brand/perf constraints                                          |
+| [.claude/skills/conventions/SKILL.md](.claude/skills/conventions/SKILL.md)   | Coding conventions (naming, file layout, component/hook/service patterns, comments policy)                        |
+| [.claude/skills/conventions/patterns/](.claude/skills/conventions/patterns/) | Annotated per-pattern reference docs                                                                              |
+| [.claude/skills/open-pr/SKILL.md](.claude/skills/open-pr/SKILL.md)           | `/open-pr` — PR template and checklist rules                                                                      |
+| [.claude/agents/](.claude/agents/)                                           | Subagent definitions — delegate matching tasks via the Agent tool instead of duplicating their work inline        |
+| [.mcp.json](.mcp.json)                                                       | Project-scoped MCP servers (currently: 21st.dev component search — needs `API_KEY_21ST`)                          |

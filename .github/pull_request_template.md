@@ -12,6 +12,7 @@ Include a summary of the work done and the motivation behind it.
 - [ ] **Tested**: new/changed behavior is covered by `pnpm test`.
 - [ ] **Passes checks**: `pnpm lint`, `pnpm typecheck`, and `pnpm test` all pass locally.
 - [ ] **Self-reviewed**: author has reviewed their own diff before requesting review.
+- [ ] **Provider boundary respected**: if this PR touches payment/shipping/video/email/auth, no vendor name (`zalopay`, `momo`, `ghn`, `clerk`, `resend`, `cloudflare`) appears outside its own file under `src/lib/providers/<concern>/`.
 
 ## Security Checklist
 

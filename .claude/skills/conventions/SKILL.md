@@ -32,6 +32,8 @@ description: Coding conventions for this repo — naming, file layout, component
   - Never hardcode a color (`bg-[#96521F]`, `text-[#1E1A17]`) in a className. Define it as a CSS variable in `src/app/globals.css` (`:root` / `.dark`) and expose it through `@theme inline` as a `--color-*` token, then reference it by semantic name (`bg-primary`, `text-ink-faint`). This keeps theming (including dark-scoped sections) working from one place instead of scattered literals.
 - **Client vs. server components:** default to server components; add `'use client'` only when the component actually needs state, effects, browser APIs, or event handlers.
 - **Data/services:** any function that talks to an external API or backend lives in `src/services/<feature>/`, not inline in a component — see [patterns/service.md](./patterns/service.md).
+- **Database access:** Prisma (`prisma/schema.prisma`) via the shared client in `src/lib/prisma.ts` — never `new PrismaClient()` in a route handler or component.
+- **External providers** (payment, shipping, video, email, auth): behind an interface in `src/lib/providers/<concern>/types.ts` with a factory in `<concern>/index.ts` — never call a vendor SDK or name a vendor outside its own adapter file — see [patterns/provider-interface.md](./patterns/provider-interface.md).
 - **Hooks:** shared stateful logic used by 2+ components goes in `src/hooks/`, named `use*` — see [patterns/hook.md](./patterns/hook.md).
 - **Forms:** always `react-hook-form` + a `zod` schema via `zodResolver`. Build the field UI from `src/components/form/Controlled*` components (`ControlledInput`, `ControlledSelect`, `ControlledTextarea`, `ControlledCheckbox`) rather than wiring `Controller` inline in a page/feature component — see [patterns/form.md](./patterns/form.md). Don't roll custom validation when a zod schema can express it.
 - **Client state shared across components:** Zustand (`src/stores/`). Local, single-component state stays `useState`. Don't introduce a Context when a prop or a Zustand selector would do — see [patterns/zustand-store.md](./patterns/zustand-store.md).
@@ -55,6 +57,7 @@ relevant one(s) load for the file you're editing:
 - [patterns/component-variants.md](./patterns/component-variants.md) — `cva`-based variant components
 - [patterns/hook.md](./patterns/hook.md) — custom hooks
 - [patterns/service.md](./patterns/service.md) — `src/services/<feature>/` data-access modules
+- [patterns/provider-interface.md](./patterns/provider-interface.md) — payment/shipping/video/email/auth provider interfaces + adapters
 - [patterns/form.md](./patterns/form.md) — `react-hook-form` + zod forms built from `Controlled*` components
 - [patterns/zod-schema.md](./patterns/zod-schema.md) — zod schemas and inferred types
 - [patterns/zustand-store.md](./patterns/zustand-store.md) — `use*Store.ts` Zustand stores
