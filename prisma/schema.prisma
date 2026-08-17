@@ -304,6 +304,7 @@ model MenuItem {
   id        String   @id @default(cuid())
   siteId    String
   site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  slug      String
   section   String
   nameVi    String
   nameEn    String
@@ -313,6 +314,7 @@ model MenuItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([siteId, slug])
   @@index([siteId, section])
 }
 

@@ -1,12 +1,22 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client';
 
-// Seed data mirrors src/constants/*.ts so the DB reproduces what the UI already
-// renders. Vietnamese copy is taken verbatim from coffee-shop-ui.html where it
-// exists; the rest is a plain translation that still needs a native-speaker
-// pass before launch (BUILD-PLAN.md blocker B1-b).
+// Seed data sources, in order of trust:
+//  1. Real data pulled from the live GrabFood listing (merchant ID
+//     5-C3KEGFM1VGN2N2, "BACAMA COFFEE & MORE") — real address, hours, and a
+//     representative subset of the real 92-item menu. Vietnamese copy here is
+//     the business's own, taken verbatim.
+//  2. coffee-shop-ui.html's fictional multi-site roastery narrative, kept for
+//     the two not-yet-real sites (Hội An, An Thuận) per the agreed roadmap
+//     story — see docs/BUILD-PLAN.md B0-c / site-reconciliation note.
+// The fictional single-origin coffee products (Đà Lạt Washed, Sơn La Natural,
+// House Blend, Three Origins Box) are retired here — the real menu sells
+// packaged coffee by bean type, not by an invented origin story, and keeping
+// both would give Product two conflicting sources of truth.
 //
 // Idempotent: every write is an upsert on a unique key, so re-running is safe.
+// A rename/cleanup step retargets or removes rows superseded by real data
+// rather than leaving them as stale duplicates.
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL,
@@ -25,19 +35,38 @@ const daysFromNow = (n: number) => {
   return d;
 };
 
+// Slugs retired by real data — removed before re-seeding so re-runs don't
+// leave stale duplicates alongside the rows that replaced them.
+const RETIRED_PRODUCT_SLUGS = [
+  'dalat-washed',
+  'son-la-natural',
+  'house-blend',
+  'three-origins-box',
+];
+const RETIRED_BAKERY_SLUGS = ['croissant-aux-amandes', 'kouign-amann'];
+// Announcements are matched by titleEn (no slug on that model) — a renamed
+// title can't match its old row, so the old title is retired explicitly
+// rather than left as an orphan.
+const RETIRED_ANNOUNCEMENT_TITLES_EN = ['New batch: Đà Lạt Washed'];
+
 const SITES = [
   {
-    slug: 'ngo-quyen',
+    // Real, live location (GrabFood merchant 5-C3KEGFM1VGN2N2). Was seeded
+    // under slug "ngo-quyen" with a fictional address; renamed below.
+    slug: 'ly-tu-trong',
     city: 'Đà Nẵng',
-    nameVi: 'Ngô Quyền',
-    nameEn: 'Ngô Quyền',
-    addressVi: '27 Ngô Quyền, Hải Châu, Đà Nẵng · Bánh nướng tại chỗ',
-    addressEn: '27 Ngo Quyen, Hai Chau, Da Nang · Pastries baked on site',
-    hoursVi: 'Thứ 2–CN · 07:00 – 19:00',
-    hoursEn: 'Mon–Sun · 7 a.m. – 7 p.m.',
+    nameVi: 'Lý Tự Trọng',
+    nameEn: 'Lý Tự Trọng',
+    addressVi: 'K154/6 Lý Tự Trọng, Phường Thanh Bình, Quận Hải Châu, Đà Nẵng',
+    addressEn: 'K154/6 Ly Tu Trong, Thanh Binh Ward, Hai Chau District, Da Nang',
+    hoursVi: 'Hằng ngày · 07:00 – 21:00',
+    hoursEn: 'Every day · 7 a.m. – 9 p.m.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/merchants/5-C3KEGFM1VGN2N2/hero/811e0385d45c4a0681c6af48ae77ff3d_1652529908962123339.webp',
     opensAt: null,
   },
   {
+    // Fictional — no real listing yet. Kept per the roadmap's multi-site story.
     slug: 'hoi-an-pho-co',
     city: 'Hội An',
     nameVi: 'Phố cổ',
@@ -46,9 +75,11 @@ const SITES = [
     addressEn: '14 Phan Boi Chau, Minh An, Hoi An · Weekend cupping',
     hoursVi: 'Thứ 3–CN · 07:30 – 18:00',
     hoursEn: 'Tue–Sun · 7:30 a.m. – 6 p.m.',
+    imageUrl: null,
     opensAt: null,
   },
   {
+    // Fictional, not yet open.
     slug: 'an-thuan',
     city: 'Đà Nẵng',
     nameVi: 'An Thuận',
@@ -57,116 +88,24 @@ const SITES = [
     addressEn: '8 An Thuan 12, Ngu Hanh Son, Da Nang · Roastery, classroom, garden',
     hoursVi: 'Mở cửa · 09.2026',
     hoursEn: 'Opens · 09.2026',
+    imageUrl: null,
     opensAt: new Date('2026-09-01T00:00:00Z'),
   },
 ];
 
+// Real packaged coffee (GrabFood category "Cà phê đóng gói"). Sold by bean
+// type, not by the fictional single-origin story it replaces.
 const PRODUCTS = [
   {
-    slug: 'dalat-washed',
+    slug: 'bag-arabica-250g',
     category: 'coffee' as const,
-    nameVi: 'Đà Lạt Washed',
-    nameEn: 'Đà Lạt Washed',
+    nameVi: 'Túi 250g hạt cf 100% Arabica',
+    nameEn: '250g Bag · 100% Arabica',
     descriptionVi:
-      'Sạch và ngọt. Rang vừa để giữ hương mận khô và mật ong, hậu bạc hà nhẹ khi nguội.',
-    descriptionEn:
-      'Clean and sweet. Roasted medium to keep the dried plum and honey, with a light mint finish as it cools.',
-    originVi: 'Đà Lạt, Lâm Đồng · 1.500 m · Sơ chế ướt',
-    originEn: 'Đà Lạt, Lâm Đồng · 1,500 m · Washed',
-    originStoryVi:
-      'Từ ba nông hộ nhỏ quanh Cầu Đất ở độ cao 1.450–1.600 m. Sơ chế ướt, phơi nhà kính 14 ngày. Chúng tôi mua trực tiếp từ các nông hộ này từ 2019.',
-    originStoryEn:
-      'From three smallholder plots around Cầu Đất at 1,450–1,600 m. Washed, then dried under greenhouse for 14 days. We have bought direct from these farms since 2019.',
-    tastingNotesVi: ['Mận khô', 'Mật ong', 'Bạc hà', 'Rang vừa'],
-    tastingNotesEn: ['Dried plum', 'Honey', 'Mint', 'Medium roast'],
-    roastLevel: 'medium' as const,
-    weightOptions: ['250g', '500g', '1kg'],
-    grindOptions: ['whole_bean', 'phin', 'espresso', 'pour_over'],
-    priceVnd: 280_000,
-    stock: 42,
-    reorderLevel: 10,
-    roastDate: daysAgo(3),
-    featuredUntil: daysFromNow(7),
-    brewGuides: [
-      {
-        method: 'phin',
-        ratio: '25 g · 120 ml',
-        detailVi: 'Xay vừa-thô · 4–5 phút',
-        detailEn: 'Medium-coarse · 4–5 min',
-      },
-      {
-        method: 'espresso',
-        ratio: '18 g → 36 g',
-        detailVi: '26–30 s · 93 °C',
-        detailEn: '26–30 s · 93 °C',
-      },
-      {
-        method: 'pour_over',
-        ratio: '15 g · 250 ml',
-        detailVi: 'Xay vừa · 2:45',
-        detailEn: 'Medium grind · 2:45',
-      },
-      {
-        method: 'cold_brew',
-        ratio: '70 g · 1 L',
-        detailVi: '16 giờ, lạnh',
-        detailEn: '16 hours, cold',
-      },
-    ],
-  },
-  {
-    slug: 'son-la-natural',
-    category: 'coffee' as const,
-    nameVi: 'Sơn La Natural',
-    nameEn: 'Sơn La Natural',
-    descriptionVi: 'Ca cao, mạch nha, hậu ngọt dài.',
-    descriptionEn: 'Cocoa, malt, a long sweet finish.',
-    originVi: 'Sơn La · Sơ chế khô',
-    originEn: 'Sơn La · Natural process',
-    originStoryVi: null,
-    originStoryEn: null,
-    tastingNotesVi: ['Ca cao', 'Mạch nha', 'Rang đậm'],
-    tastingNotesEn: ['Cocoa', 'Malt', 'Dark roast'],
-    roastLevel: 'dark' as const,
-    weightOptions: ['250g', '1kg'],
-    grindOptions: ['whole_bean', 'phin'],
-    priceVnd: 265_000,
-    stock: 6,
-    reorderLevel: 10,
-    roastDate: daysAgo(1),
-    featuredUntil: null,
-    brewGuides: [],
-  },
-  {
-    slug: 'house-blend',
-    category: 'coffee' as const,
-    nameVi: 'Blend Nhà',
-    nameEn: 'House Blend',
-    descriptionVi: 'Đà Lạt + Sơn La. Ngon với phin và với espresso.',
-    descriptionEn: 'Đà Lạt + Sơn La. Good in a phin and in espresso.',
-    originVi: 'Đà Lạt + Sơn La',
-    originEn: 'Đà Lạt + Sơn La',
-    originStoryVi: null,
-    originStoryEn: null,
-    tastingNotesVi: ['Cân bằng', 'Ngọt hậu', 'Rang vừa'],
-    tastingNotesEn: ['Balanced', 'Sweet finish', 'Medium roast'],
-    roastLevel: 'medium' as const,
-    weightOptions: ['250g', '1kg'],
-    grindOptions: ['whole_bean', 'phin', 'espresso'],
-    priceVnd: 230_000,
-    stock: 31,
-    reorderLevel: 10,
-    roastDate: daysAgo(2),
-    featuredUntil: null,
-    brewGuides: [],
-  },
-  {
-    slug: 'three-origins-box',
-    category: 'gift' as const,
-    nameVi: 'Hộp Ba Vùng',
-    nameEn: 'Three Origins Box',
-    descriptionVi: 'Ba gói 250 g kèm thẻ ghi ngày rang.',
-    descriptionEn: 'Three 250 g bags with a roast-date card.',
+      'Cà phê rang xay tại xưởng. Arabica thiên về hương thơm dịu nhẹ và hậu vị chua dịu.',
+    descriptionEn: 'Roasted in-house. Arabica leans toward a gentle aroma and a mild sour finish.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2025020307455071970/photo/menueditor_item_634034960633486ea6368b22b10e2a77_1776934552297883360.webp',
     originVi: null,
     originEn: null,
     originStoryVi: null,
@@ -174,39 +113,253 @@ const PRODUCTS = [
     tastingNotesVi: [],
     tastingNotesEn: [],
     roastLevel: null,
-    weightOptions: ['3x250g'],
+    weightOptions: ['250g'],
     grindOptions: ['whole_bean'],
-    priceVnd: 720_000,
-    stock: 12,
-    reorderLevel: 4,
-    roastDate: daysAgo(1),
+    priceVnd: 200_000,
+    stock: 30,
+    reorderLevel: 10,
+    roastDate: daysAgo(2),
+    featuredUntil: daysFromNow(7),
+    brewGuides: [] as { method: string; ratio: string; detailVi: string; detailEn: string }[],
+  },
+  {
+    slug: 'bag-robusta-250g',
+    category: 'coffee' as const,
+    nameVi: 'Túi 250g hạt cf 100% Robusta',
+    nameEn: '250g Bag · 100% Robusta',
+    descriptionVi: 'Cà phê rang xay tại xưởng. Robusta thiên về vị đậm đắng, phù hợp để pha phin.',
+    descriptionEn: 'Roasted in-house. Robusta leans bold and bitter — good for a phin brew.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2025020307385455927/photo/menueditor_item_a3a193da624e4bfc93fa35efc1390233_1776934597507254353.webp',
+    originVi: null,
+    originEn: null,
+    originStoryVi: null,
+    originStoryEn: null,
+    tastingNotesVi: [],
+    tastingNotesEn: [],
+    roastLevel: null,
+    weightOptions: ['250g'],
+    grindOptions: ['whole_bean', 'phin'],
+    priceVnd: 145_000,
+    stock: 30,
+    reorderLevel: 10,
+    roastDate: daysAgo(2),
     featuredUntil: null,
-    brewGuides: [],
+    brewGuides: [] as { method: string; ratio: string; detailVi: string; detailEn: string }[],
+  },
+  {
+    slug: 'bag-liberica-250g',
+    category: 'coffee' as const,
+    nameVi: 'Túi 250g hạt cf 100% Liberica',
+    nameEn: '250g Bag · 100% Liberica',
+    descriptionVi: 'Cà phê hạt vùng Khe Sanh, hương vị trái cây mít, hậu vị chua dịu nhẹ.',
+    descriptionEn: 'Beans from Khe Sanh, with a jackfruit note and a mild sour finish.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026042309225978022/photo/menueditor_item_8b7ba76af0df444e9e16db2e9df981c9_1776936170798829229.webp',
+    originVi: 'Khe Sanh, Quảng Trị',
+    originEn: 'Khe Sanh, Quảng Trị',
+    originStoryVi: null,
+    originStoryEn: null,
+    tastingNotesVi: ['Trái cây mít', 'Chua dịu nhẹ'],
+    tastingNotesEn: ['Jackfruit', 'Mild acidity'],
+    roastLevel: null,
+    weightOptions: ['250g'],
+    grindOptions: ['whole_bean'],
+    priceVnd: 200_000,
+    stock: 20,
+    reorderLevel: 8,
+    roastDate: daysAgo(2),
+    featuredUntil: null,
+    brewGuides: [] as { method: string; ratio: string; detailVi: string; detailEn: string }[],
+  },
+  {
+    slug: 'bag-blend-70-30-250g',
+    category: 'coffee' as const,
+    nameVi: 'Túi 250g hạt cf 70% Robusta:30% Arabica',
+    nameEn: '250g Bag · 70/30 Robusta-Arabica Blend',
+    descriptionVi: 'Cà phê rang xay tại xưởng, phối trộn đậm đà và thơm nhẹ.',
+    descriptionEn: 'Roasted in-house, blended for a bold cup with a lighter aroma.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2025020307443591693/photo/menueditor_item_dcb6c2843a3d4eccba81f6e6468756f1_1738568525263197214.webp',
+    originVi: null,
+    originEn: null,
+    originStoryVi: null,
+    originStoryEn: null,
+    tastingNotesVi: [],
+    tastingNotesEn: [],
+    roastLevel: null,
+    weightOptions: ['250g'],
+    grindOptions: ['whole_bean', 'phin'],
+    priceVnd: 175_000,
+    stock: 25,
+    reorderLevel: 10,
+    roastDate: daysAgo(2),
+    featuredUntil: null,
+    brewGuides: [] as { method: string; ratio: string; detailVi: string; detailEn: string }[],
   },
 ];
 
+// Representative subset of the real "Homebaked Cake" + daily-special
+// categories — croissant, cake, savory quiche, sandwich, bread. All handed
+// off via GrabFood, matching how this data was sourced.
 const BAKERY_ITEMS = [
   {
-    slug: 'croissant-aux-amandes',
-    nameVi: 'Croissant hạnh nhân',
-    nameEn: 'Croissant aux amandes',
-    descriptionVi: 'Bơ Pháp, hạnh nhân nghiền, đường mía. Nướng 5 giờ — bán hết trưa.',
-    descriptionEn: 'French butter, ground almond, cane sugar. Baked at five — gone by noon.',
-    priceVnd: 45_000,
-    bakesAt: '05:00',
-    sellOutBy: '12:00',
+    slug: 'sunshine-croissant',
+    nameVi: 'Sunshine Croissant - Croissant trứng muối',
+    nameEn: 'Sunshine Croissant (Salted Egg)',
+    descriptionVi: 'Bánh ngàn lớp, kem trứng muối béo ngậy, chà bông gà cay, trứng muối nghiền.',
+    descriptionEn: 'Homemade croissant, creamy egg custard, chicken floss, salted egg yolk.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026081408082730232/photo/menueditor_item_c40624c0d1cf4f3a9adfc4a7ac4df827_1786694791583087924.webp',
+    priceVnd: 75_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
     handoff: 'grabfood' as const,
   },
   {
-    slug: 'kouign-amann',
-    nameVi: 'Kouign-amann',
-    nameEn: 'Kouign-amann',
-    descriptionVi: 'Bơ Pháp, caramel giòn, hơi mặn.',
-    descriptionEn: 'French butter, crisp caramel, lightly salted.',
-    priceVnd: 52_000,
-    bakesAt: '05:20',
-    sellOutBy: '12:00',
-    handoff: 'pickup' as const,
+    slug: 'carrot-cake',
+    nameVi: 'Carrot cake - Bánh cà rốt',
+    nameEn: 'Carrot Cake',
+    descriptionVi: 'Bạt cà rốt quế siêu thơm, kem bơ phô mai thanh dịu, kẹo óc chó homemade.',
+    descriptionEn: 'Cinnamon carrot sponge, light cream-cheese frosting, homemade candied walnut.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026012301510001009/photo/menueditor_item_ef15da2793c54e969f79c6e75781b9c6_1774939325143133788.webp',
+    priceVnd: 75_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
+    handoff: 'grabfood' as const,
+  },
+  {
+    slug: 'ham-double-cheese-croissant',
+    nameVi: 'Ham & Double cheese croissant',
+    nameEn: 'Ham & Double Cheese Croissant',
+    descriptionVi:
+      'Bánh croissant thơm bơ, thịt dăm bông, phô mai cheddar, phô mai mozzarella, sốt mayo.',
+    descriptionEn: 'Buttery croissant, ham, cheddar, mozzarella, mayo sauce.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026031702260881713/photo/menueditor_item_859c2f0a1b374329a515e3e7d520ab56_1774939247979353937.webp',
+    priceVnd: 85_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
+    handoff: 'grabfood' as const,
+  },
+  {
+    slug: 'sesame-burnt-cheesecake-taro',
+    nameVi: 'Sesame Burnt Cheesecake & Taro Cream',
+    nameEn: 'Sesame Burnt Cheesecake & Taro Cream',
+    descriptionVi: 'Bánh phô mai cháy vị mè đen, kem muối khoai môn, vụn cookie socola homemade.',
+    descriptionEn:
+      'Black-sesame burnt cheesecake, salted taro cream, homemade chocolate cookie crumb.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026052507423616054/photo/menueditor_item_6cfbaaeca27343cbab898888bf70e0c6_1786686202406515565.webp',
+    priceVnd: 75_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
+    handoff: 'grabfood' as const,
+  },
+  {
+    slug: 'chi-chi-chicken-sando',
+    nameVi: 'Chi-Chi Chicken Sando - Bánh mỳ kẹp gà giòn',
+    nameEn: 'Chi-Chi Chicken Sando',
+    descriptionVi: 'Bánh mỳ mềm, sốt belchame, xà lách, gà giòn, bơ, cà chua và muối tiêu.',
+    descriptionEn:
+      'Soft bread, belchame sauce, lettuce, crispy chicken, butter, tomato, salt and pepper.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026081308541843279/photo/menueditor_item_722cf498a14c4855b1e9541e70bcf4f5_1786611128660134339.webp',
+    priceVnd: 69_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
+    handoff: 'grabfood' as const,
+  },
+  {
+    slug: 'mushroom-onion-quiche',
+    nameVi: 'Mushroom and onion Quiche - Bánh mặn nấm và hành caramel',
+    nameEn: 'Mushroom & Caramelised Onion Quiche',
+    descriptionVi:
+      'Đế bánh nướng cùng hành tây xào giấm balsamic và nấm hương sốt kem, sốt kem trứng royale.',
+    descriptionEn: 'Tart shell, balsamic-caramelised onion, creamy mushroom, royale egg custard.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2025021505162081614/photo/menueditor_item_484482e4cac94d5ca1a428037a9a103c_1774939425509646201.webp',
+    priceVnd: 59_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
+    handoff: 'grabfood' as const,
+  },
+  {
+    slug: 'roasted-tomato-rosemary-focaccia',
+    nameVi: 'Roasted tomato & rosemary focaccia - Bánh mỳ focaccia',
+    nameEn: 'Roasted Tomato & Rosemary Focaccia',
+    descriptionVi:
+      'Bánh mỳ ủ chậm, dầu olive nguyên chất, cà chua bi nướng, tỏi confit, lá hương thảo.',
+    descriptionEn:
+      'Slow-proofed bread, extra virgin olive oil, roasted cherry tomato, confit garlic, rosemary.',
+    imageUrl:
+      'https://huawei-food-cms.grab.com/compressed_webp/items/VNITE2026072906493707068/photo/menueditor_item_c81c8fd1d14f4417bc6ab64908ec3190_1785307752124629130.webp',
+    priceVnd: 55_000,
+    bakesAt: 'Hằng ngày',
+    sellOutBy: null,
+    handoff: 'grabfood' as const,
+  },
+];
+
+// Real café menu (prepared drinks) — display-only, dine-in. `section` is a
+// locale-neutral key translated via message files, not editorial copy.
+const MENU_ITEMS = [
+  {
+    slug: 'espresso',
+    section: 'espresso',
+    nameVi: 'Espresso',
+    nameEn: 'Espresso',
+    priceVnd: 50_000,
+  },
+  {
+    slug: 'cappuccino',
+    section: 'espresso',
+    nameVi: 'Cappuccino',
+    nameEn: 'Cappuccino',
+    priceVnd: 60_000,
+  },
+  {
+    slug: 'cafe-den',
+    section: 'phin',
+    nameVi: 'Cafe đen',
+    nameEn: 'Black Phin Coffee',
+    priceVnd: 39_000,
+  },
+  {
+    slug: 'cafe-sua',
+    section: 'phin',
+    nameVi: 'Cafe sữa',
+    nameEn: 'Milk Phin Coffee',
+    priceVnd: 39_000,
+  },
+  {
+    slug: 'coldbrew-truyen-thong',
+    section: 'cold_brew',
+    nameVi: 'Cold brew Truyền thống',
+    nameEn: 'Classic Cold Brew',
+    priceVnd: 55_000,
+  },
+  {
+    slug: 'matcha-classic-latte',
+    section: 'matcha',
+    nameVi: 'Matcha Classic Latte',
+    nameEn: 'Matcha Classic Latte',
+    priceVnd: 55_000,
+  },
+  {
+    slug: 'tra-thanh-long-nhan',
+    section: 'tea',
+    nameVi: 'Trà Thanh Long Nhãn - Mild',
+    nameEn: 'Dragonfruit Longan Tea',
+    priceVnd: 60_000,
+  },
+  {
+    slug: 'cam-ep',
+    section: 'juice',
+    nameVi: 'Cam',
+    nameEn: 'Fresh Orange Juice',
+    priceVnd: 55_000,
   },
 ];
 
@@ -337,13 +490,13 @@ const COURSES = [
 
 const ANNOUNCEMENTS = [
   {
-    titleVi: 'Lô mới: Đà Lạt Washed',
-    titleEn: 'New batch: Đà Lạt Washed',
-    bodyVi: 'Ra lò sáng nay, giảm 10% gói 1 kg đến Chủ nhật.',
-    bodyEn: 'Out this morning, 10% off 1 kg bags until Sunday.',
+    titleVi: 'Ưu đãi hôm nay: giảm giá bánh cookie',
+    titleEn: "Today's offer: cookies discounted",
+    bodyVi: 'Giảm 10% Original cookie và Pistachio cookie, áp dụng trên GrabFood.',
+    bodyEn: '10% off Original and Pistachio cookies, on GrabFood.',
     startsAt: daysAgo(1),
     endsAt: daysFromNow(6),
-    siteSlug: null,
+    siteSlug: 'ly-tu-trong',
   },
   {
     titleVi: 'Quán 03 mở cửa tháng 9',
@@ -357,6 +510,16 @@ const ANNOUNCEMENTS = [
 ];
 
 const seed = async () => {
+  // Retarget the row seeded under the old fictional slug to the real site,
+  // rather than letting the new slug create a duplicate below.
+  await prisma.site.updateMany({ where: { slug: 'ngo-quyen' }, data: { slug: 'ly-tu-trong' } });
+  // Fictional coffee products and bakery items superseded by real data.
+  await prisma.product.deleteMany({ where: { slug: { in: RETIRED_PRODUCT_SLUGS } } });
+  await prisma.bakeryItem.deleteMany({ where: { slug: { in: RETIRED_BAKERY_SLUGS } } });
+  await prisma.announcement.deleteMany({
+    where: { titleEn: { in: RETIRED_ANNOUNCEMENT_TITLES_EN } },
+  });
+
   const sites = new Map<string, string>();
   for (const site of SITES) {
     const row = await prisma.site.upsert({
@@ -386,24 +549,30 @@ const seed = async () => {
   }
   console.log(`products: ${products.size}`);
 
-  // Fresh bakes are made at the site with an on-site oven (Ngô Quyền).
-  const bakerySiteId = sites.get('ngo-quyen')!;
+  const liveSiteId = sites.get('ly-tu-trong')!;
   for (const item of BAKERY_ITEMS) {
     await prisma.bakeryItem.upsert({
-      where: { siteId_slug: { siteId: bakerySiteId, slug: item.slug } },
+      where: { siteId_slug: { siteId: liveSiteId, slug: item.slug } },
       update: item,
-      create: { ...item, siteId: bakerySiteId },
+      create: { ...item, siteId: liveSiteId },
     });
   }
   console.log(`bakery items: ${BAKERY_ITEMS.length}`);
 
+  for (const item of MENU_ITEMS) {
+    await prisma.menuItem.upsert({
+      where: { siteId_slug: { siteId: liveSiteId, slug: item.slug } },
+      update: item,
+      create: { ...item, siteId: liveSiteId },
+    });
+  }
+  console.log(`menu items: ${MENU_ITEMS.length}`);
+
+  // Only the real, open site has a real "today's roast" — the fictional
+  // second site is left unset rather than inventing which bag it would sell.
   await prisma.site.update({
-    where: { slug: 'ngo-quyen' },
-    data: { todaysRoastProductId: products.get('dalat-washed') },
-  });
-  await prisma.site.update({
-    where: { slug: 'hoi-an-pho-co' },
-    data: { todaysRoastProductId: products.get('son-la-natural') },
+    where: { slug: 'ly-tu-trong' },
+    data: { todaysRoastProductId: products.get('bag-arabica-250g') },
   });
 
   let lessonCount = 0;
