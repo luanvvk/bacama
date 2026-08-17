@@ -8,10 +8,14 @@
 
 ## 0. How to use this document
 
-Read **§1–§5 before writing any code**, then **§6.0 milestones**, then only the
-phase you're working on. Phases are ordered; don't start phase _n+1_ until
-phase _n_'s exit criteria are met — but note that **launching does not wait for
-a phase boundary** (§6.0).
+Read **§1–§5 before writing any code**, then **§6.0 (delivery model)**, then only
+the phase you're working on. Phases are ordered: don't start phase _n+1_ until
+phase _n_'s exit criteria are met.
+
+**The single most important thing in §6.0:** everything is built against free
+tiers and sandbox credentials. Real merchant accounts, a real domain, and
+production keys are a go-live task (§11), and **no phase waits on vendor
+approval.** The target is a complete app, not early revenue.
 
 For _how_ to make design decisions and how much to build in one go, see
 [DESIGN-PRINCIPLES.md](DESIGN-PRINCIPLES.md). This document is the what; that
@@ -266,74 +270,82 @@ the phase that touches that route. Track remaining routes in §9.
 
 ## 6. Phases
 
-### 6.0 Milestones — when you can actually transact
+### 6.0 Delivery model — sandbox throughout, real services at the end
 
-**Read this before the phases.** Phases describe _what gets built_. Milestones
-describe _when the business can take money_. They are deliberately not the same
-thing, because the phases are a ~10-week full-time roadmap and this is a
-one-person project with agent support. Waiting for a phase boundary to launch
-means months of spending before a single VND arrives.
+**Read this before the phases.** Two things are deliberately decoupled: _what
+gets built_ (the phases) and _when real external services get wired up_ (the
+end).
 
-The rule: **a thin slice all the way through beats a complete layer.** See
-[DESIGN-PRINCIPLES.md §6](DESIGN-PRINCIPLES.md).
+**The owner's stated goal is a complete app, not early revenue.** There is no
+cash-flow pressure. So:
 
----
+- **Everything is built against free tiers and sandbox credentials** — PayOS
+  sandbox for card, gateway sandboxes for ZaloPay/MoMo, Clerk free, Neon free,
+  Resend free, Cloudflare Stream free, Vercel Hobby.
+- **Real merchant accounts, a real domain, and production credentials are a
+  go-live task (M3), not a build blocker.** No phase waits on vendor approval.
+- Do **not** treat "we could take money now" as a reason to ship early. The
+  target is the finished product.
 
-#### M1 — Sellable · the smallest thing that earns money
+This is also the strongest possible argument for the provider-interface pattern
+(§3.1): sandbox→production is exactly the swap the adapters exist for. If
+switching to real credentials requires touching a page, the boundary leaked.
 
-**Definition of done:** a real customer pays for a real bag of coffee, the owner
-sees the order, and the beans get posted. Nothing more.
+#### Still build in thin vertical slices — for a different reason
 
-Needs only:
+Revenue isn't the motive, but slicing still is. A slice that runs all the way
+through — one product, one payment method, one order, one receipt — **surfaces
+integration problems while there is still slack to absorb them**. A complete
+data layer with no checkout has proved nothing; the same work sliced proves the
+whole path. See [DESIGN-PRINCIPLES.md §6](DESIGN-PRINCIPLES.md).
 
-- Phase 0 tasks 0.6–0.8 (Neon, migration, seed)
-- **One** payment method working end-to-end (ZaloPay _or_ MoMo — whichever
-  approves first), plus COD, which needs no gateway at all
-- `Order` written via a verified webhook + receipt email (Phase 2: 2.1, 2.2,
-  2.3 partial, 2.4, 2.5, 2.6, 2.7, 2.8, 2.10)
-- Stock decrement (2.8) so you can't oversell
-- Guest order lookup (2.11)
-
-**Deliberately deferred at M1 — all of it:**
-
-| Deferred                    | Why it's fine                                                                       |
-| --------------------------- | ----------------------------------------------------------------------------------- |
-| Full i18n rollout           | Storefront stays English-only; only the checkout path gets Vietnamese copy          |
-| Products in the DB          | Storefront can keep reading `src/constants/products.ts` — only orders need Postgres |
-| GHN API integration         | Owner books the shipment by hand in GHN's own dashboard. Two minutes per order.     |
-| Admin console               | Owner reads orders in `pnpm db:studio`, or one read-only list                       |
-| The other 4 payment methods | Each is a new adapter file behind the same interface. Add on demand.                |
-| `/menu`, `/sites/[slug]`    | Not needed to sell a bag of coffee                                                  |
-| Courses, auth, player       | Entire separate business line — Phases 3–4                                          |
-
-**What is _not_ deferred:** webhook signature verification, amount re-read from
-`Order`, replay protection, and the §8 Gate 1 review. M1 cuts **features, never
-correctness on the money path.** Fewer things, each correct.
-
-Rough size: ~1–2 weeks rather than the ~5 weeks that Phases 0+1+2 in full would
-take. At the end, the project stops costing money and starts making it.
+So within Phase 2, get **one** payment method working end-to-end on sandbox
+before adding the other five. Within Phase 1, get **one** page reading real
+data before converting the rest. Vertical, then wide.
 
 ---
 
-#### M2 — A real bean shop
+#### M1 — Walking skeleton (sandbox)
 
-Everything M1 deferred that removes _manual work_ or _blocks Vietnamese
-customers_: products and stock in the DB with admin editing (Phase 1 + Phase 5
-partial), GHN API so fulfilment stops being manual (2.9), remaining payment
-methods, Vietnamese storefront (1.9), `/menu` and `/sites/[slug]`.
+**Definition of done:** on sandbox credentials, an order goes all the way
+through — cart → checkout → sandbox gateway → verified webhook → `Order` row →
+receipt email → visible to the owner. Nothing is real except the code.
 
-Trigger for each item: **it is costing real time or losing real customers.** Not
-"it feels unfinished."
+Purpose: prove the architecture end-to-end and find the integration surprises
+early. Not customer-facing.
+
+Needs: Phase 0 tasks 0.6–0.8, plus Phase 2 tasks 2.1, 2.2, 2.4–2.8, 2.10, with
+**one** sandbox adapter (PayOS sandbox is simplest — no merchant approval at
+all) plus `cod.ts`, which needs no gateway in any environment.
+
+**What is _not_ deferred, even on sandbox:** webhook signature verification,
+amount re-read from `Order`, replay protection. Write the money path correctly
+the first time — sandbox is for testing the integration, not an excuse for
+sloppy logic that "gets fixed before launch." It won't.
+
+#### M2 — Feature complete (still sandbox)
+
+All phases done. Every feature works, every provider on a sandbox or free tier.
+This is the real bulk of the work and where most of the time goes.
+
+Exit: every phase's exit criteria met; nothing left that only works "in theory."
+
+#### M3 — Go live
+
+The credential swap and the operational readiness work. **This is its own piece
+of work, not an afterthought** — see §11.
 
 ---
 
-#### M3 — Courses
-
-Phases 3–4 in full: Clerk auth, catalogue, enrolment, player, certificates. A
-separate business line — it should not delay M1 or M2 by a single day.
-
-> **If resource runs short, M1 is the launch.** M2 makes it comfortable, M3 adds
-> a second business. In that order, each one standing alone.
+> **Risk of deferring real services to the end** (accepted deliberately, but
+> know it): sandbox behaviour is not identical to production — real 3-D Secure
+> flows, real bank timeouts, different error codes, real webhook latency. Those
+> surprises land at M3, when there is least slack. Two cheap mitigations:
+> **(a)** start merchant-account paperwork whenever convenient, since approval
+> is bureaucratic, can require business documents, and can be refused —
+> discovering that at M3 is a schedule risk, and registering early costs nothing
+> because you needn't use the account; **(b)** at M3, do a handful of small real
+> transactions before announcing anything.
 
 ---
 
@@ -436,11 +448,12 @@ double-decrement stock. §8 security gate cleared.
 
 **Blockers:**
 
-- **B2-a (owner, long lead time — start early):** ZaloPay + MoMo merchant accounts. Free to register, per-transaction only, but **approval takes time**. Register during Phase 0/1 so this doesn't gate Phase 2. Build against PayOS sandbox meanwhile.
-- **B2-b (owner):** GHN account + API credentials.
-- **B2-c (owner):** domain purchase (~$12/yr) — **required** to verify a Resend sending domain, so it blocks 2.10.
-- **B2-d (owner):** Resend account + verified domain.
-- **B2-e (infra):** webhooks need a public HTTPS URL. Needs the Vercel deploy healthy; use a tunnel for local development.
+- **B2-a (not a blocker — sandbox):** ZaloPay/MoMo **production** merchant accounts are an M3 task, not a Phase 2 one (§6.0). Build against sandbox credentials. Registering early is still worth doing as background paperwork — approval is bureaucratic and can be refused — but nothing here waits on it.
+- **B2-b (sandbox):** GHN has a sandbox/staging API; use it. Production credentials at M3.
+- **B2-c (not a blocker until M3):** a domain is needed to verify a Resend _sending domain_, but the free tier can send from Resend's own test sender to **your own** verified address — enough to build and test 2.10. Real recipients need the domain, so it moves to M3.
+- **B2-d (sandbox):** Resend free account. Domain verification at M3.
+- **B2-e (infra):** webhooks need a public HTTPS URL. Use a tunnel (e.g. `ngrok`) locally; a Vercel preview deploy works too.
+- **B2-e2 (safety):** if a build with sandbox payments is deployed to a public URL, a real person could attempt a real order and believe it succeeded. Keep pre-M3 deploys behind Vercel deployment protection, or label them unmistakably as previews. **Do not leave a sandbox checkout publicly reachable and unlabelled.**
 - **B2-f (decision):** VNPay QR and bank transfer — real integrations now, or honest "contact us" stubs? Stubs are fine (they're behind the interface) but the tile list must not offer a method that silently fails.
 - **B2-g (legal/business):** refund + delivery-failure policy. `refund()` exists on the interface; someone must decide the actual policy before it's exposed.
 - **B2-h (RISK, highest in the project):** this phase handles real money. See §8. Do not ship any part of it without the security gate.
@@ -576,8 +589,10 @@ this build, plus risks found during reconciliation.
 | R10 | **Heavy storefront losing the traffic it earns**                                  | §3.5 budget + Lighthouse CI                                                                                                                    |
 | R11 | **Generic English reading as "another Vietnamese café site"**                     | MO-3/MO-4: place, time, freshness. No superlatives.                                                                                            |
 | R12 | **Croissants on the nationwide shipping lane**                                    | Two lanes, two interfaces. Beans ship; cakes hand off.                                                                                         |
-| R13 | **Solo-dev bandwidth vs 10–11 week scope**                                        | Phase order revised (D9) so revenue lands ~Phase 2 rather than week 6; each phase independently shippable                                      |
-| R14 | **Vercel Hobby commercial-use violation**                                         | B5-b — Pro before launch                                                                                                                       |
+| R13 | **Solo-dev bandwidth vs 10–11 week scope**                                        | Thin vertical slices within each phase (§6.0); one thing in flight at a time; batch work by what one person can actually review                |
+| R14 | **Vercel Hobby commercial-use violation**                                         | Hobby is legitimate while nothing is sold. Pro required at M3, before real transactions — §11                                                  |
+| R16 | **Sandbox behaviour ≠ production** — surprises land at M3 with least slack        | §6.0 note: register merchant accounts early as paperwork; run small real transactions at M3 before announcing                                  |
+| R17 | **A sandbox checkout reachable by a real customer**                               | B2-e2 — deployment protection or unmistakable preview labelling until M3                                                                       |
 | R15 | **Irreversible migration against live data**                                      | Never `migrate reset`/`--force-reset`/`--accept-data-loss` on real data; Prisma's AI consent gate is a backstop, not a workaround target       |
 
 ---
@@ -635,27 +650,75 @@ noted; **don't silently resolve one in code.**
 
 ## 10. External accounts checklist (owner)
 
-Register early — several have approval lead times. **Every credential goes
-straight into `.env` locally and Vercel env vars for deploy. Never into a chat
-transcript, a commit, or a PR description.**
+Two columns on purpose: what's needed **to build** (free/sandbox — the only
+thing that gates a phase) and what's needed **to go live** (M3, §11). **Every
+credential goes straight into `.env` locally and Vercel env vars for deploy.
+Never into a chat transcript, a commit, or a PR description.**
 
-| Service           | Needed by        | Cost         | Notes                                            |
-| ----------------- | ---------------- | ------------ | ------------------------------------------------ |
-| Neon Postgres     | Phase 0          | Free         | Blocks everything downstream                     |
-| Domain            | Phase 2          | ~$12/yr      | Only unavoidable cost; unblocks Resend           |
-| ZaloPay merchant  | Phase 2          | Per-tx       | **Approval lead time — register during Phase 0** |
-| MoMo merchant     | Phase 2          | Per-tx       | Same                                             |
-| PayOS (sandbox)   | Phase 2          | Free         | Card path; exercises the interface while waiting |
-| GHN               | Phase 2          | Per-shipment | Nationwide bean lane                             |
-| Resend            | Phase 2          | Free 3k/mo   | Needs verified domain                            |
-| Clerk             | Phase 3          | Free 10k MAU | —                                                |
-| Cloudflare Stream | Phase 4          | Free tier    | Paid-lesson playback                             |
-| UploadThing       | Phase 4          | Free 2 GB    | Handouts                                         |
-| Vercel Pro        | Phase 5 / launch | ~$20/mo      | **Hobby forbids commercial use**                 |
+| Service           | To build (gates a phase)                  | To go live (M3)                                              | Cost when live |
+| ----------------- | ----------------------------------------- | ------------------------------------------------------------ | -------------- |
+| Neon Postgres     | **Free tier — gates Phase 0**             | same, or paid if size demands                                | Free           |
+| PayOS             | Sandbox — simplest card path, no approval | Production keys                                              | Per-tx         |
+| ZaloPay           | Sandbox credentials                       | **Merchant account — can be refused; start paperwork early** | Per-tx         |
+| MoMo              | Sandbox credentials                       | Merchant account — same                                      | Per-tx         |
+| GHN               | Sandbox/staging API                       | Production account                                           | Per-shipment   |
+| Resend            | Free account, send to own address         | **Verified domain** (needs the domain)                       | Free 3k/mo     |
+| Domain            | not needed                                | ~$12/yr — unblocks Resend + credibility                      | ~$12/yr        |
+| Clerk             | Free 10k MAU (dev instance)               | Production instance                                          | Free 10k MAU   |
+| Cloudflare Stream | Free tier                                 | same                                                         | Free tier      |
+| UploadThing       | Free 2 GB                                 | same                                                         | Free 2 GB      |
+| Vercel            | **Hobby is fine while nothing is sold**   | **Pro — Hobby forbids commercial use**                       | ~$20/mo        |
+
+Total cost to build the entire app: **$0.** Total recurring at go-live: roughly
+**$20/mo + $12/yr**, plus per-transaction fees.
 
 ---
 
-## 11. Quick reference
+## 11. M3 — Go-live checklist
+
+Everything deferred by the sandbox-throughout decision (§6.0) lands here. **This
+is real work, not a switch flip** — budget days, not an afternoon.
+
+### Credentials and accounts
+
+- [ ] Production merchant accounts approved: ZaloPay, MoMo (and PayOS/Stripe if card is offered)
+- [ ] GHN production account + credentials
+- [ ] Domain purchased, DNS pointed
+- [ ] Resend sending domain verified (SPF/DKIM) — receipts to real recipients fail without this
+- [ ] Clerk switched from dev to production instance (**dev and prod users are separate — dev accounts do not carry over**)
+- [ ] Vercel upgraded to Pro (Hobby forbids commercial use — R14)
+- [ ] Every production secret in Vercel env vars; **none in the repo**
+
+### Verification before announcing
+
+- [ ] All five §8 security gates cleared against the production configuration, not just sandbox
+- [ ] Small **real** transactions run end-to-end per payment method — money actually arrives in the bank account
+- [ ] A real refund executed, to confirm the path works before a customer needs it
+- [ ] Webhook signature verification confirmed against production keys (sandbox and prod keys differ)
+- [ ] Real receipt email received at a non-owner address, rendering correctly in both locales
+- [ ] A GHN shipment booked and tracked for real
+- [ ] Vercel deployment protection **removed** (R17) — and confirm nothing else was gating access
+- [ ] Lighthouse budget (§3.5) re-checked on the production domain
+
+### Operational readiness
+
+- [ ] Owner knows how to see today's orders and mark COD collected — without a developer
+- [ ] Someone is watching for failed payments and stuck `pending` orders
+- [ ] A refund/delivery-failure policy exists in writing (was B2-g)
+- [ ] Database backups confirmed (Neon's retention on the current tier is understood, not assumed)
+- [ ] A rollback plan for the deploy, and for the most recent migration
+- [ ] Legal minimum for a Vietnamese online seller reviewed: business licence display, terms, privacy, return policy. **Not a developer decision — confirm with the owner.**
+
+### Known deferred items to re-check at M3
+
+- [ ] Any `/messages/*` route still untranslated (§5.3)
+- [ ] Any payment tile still a "contact us" stub (Q2) — remove or implement; never offer a method that silently fails
+- [ ] Placeholder photography still in place (B1-a)
+- [ ] Nav mega-menu links still pointing at generic `/shop` (Q11)
+
+---
+
+## 12. Quick reference
 
 ```bash
 pnpm dev                 # dev server

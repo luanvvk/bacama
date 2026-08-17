@@ -150,26 +150,30 @@ is how you find out you need them.
 
 Solo developers overbuild because nobody says stop. These are the stops.
 
-**Ship a thin vertical slice, not a horizontal layer.** A slice that goes all
-the way through — one product, one payment method, one real order, money in the
-bank — teaches more and is worth more than a complete data layer with no
-checkout. See the milestones in [BUILD-PLAN.md §6.0](BUILD-PLAN.md).
+**Build a thin vertical slice before a wide horizontal layer.** One product, one
+payment method, one order, one receipt — all the way through — before adding the
+other five payment methods or converting the other twelve pages.
 
-**Prefer manual over automated until volume hurts.** Booking a GHN shipment by
-hand takes two minutes. At three orders a day, the API integration is not worth
-building yet. Automate the thing that is actually costing you time, not the
-thing that feels unfinished. "A human does this step for now" is a legitimate
-architecture.
+The goal here is **not** early revenue; the owner is building toward a complete
+app and there is no cash-flow pressure (BUILD-PLAN.md §6.0). The reason to slice
+is different and still compelling: a slice that runs end-to-end **surfaces
+integration problems while there is still slack to absorb them.** A finished
+data layer with no checkout has proved nothing. The same effort, sliced, proves
+the whole path works.
 
-**Cut features, never correctness on the money path.** Scope-cutting means
-fewer payment methods, no admin UI, manual fulfilment, English-only. It never
-means skipping webhook signature verification or shipping an unreviewed role
-check. Fewer things, each correct.
+**Cut features, never correctness.** Scope-cutting means fewer payment methods,
+no admin UI yet, English-only for now. It never means skipping webhook signature
+verification or shipping an unreviewed role check — and "it's only sandbox" is
+not a reason to write the money path sloppily, because that code is what goes
+live. Fewer things, each correct.
 
-**Distinguish "needed to launch" from "needed to look finished."** `/menu`,
-`/sites/[slug]`, an admin console, and six payment methods are all in the
-"looks finished" bucket. One working payment method and an order that reaches
-the kitchen is the launch bucket.
+**Prefer manual over automated until the manual version actually hurts.** A
+step a human does occasionally is a legitimate architecture, not technical debt.
+Automate what is costing real time, not what feels unfinished.
+
+**Distinguish "needed to work" from "needed to look finished."** Both eventually
+ship here, but they are not the same priority, and confusing them is how three
+features end up 80% done instead of one being finished.
 
 **Timebox exploration; scope-box delivery.** For "I'm not sure how this works,"
 give it a fixed time and accept whatever you learn. For "this must work," fix
@@ -244,7 +248,8 @@ committed — because it got challenged rather than implemented.
 - **Money code with no explicit state machine.**
 - **Hidden UI mistaken for access control.** A button you didn't render is not a permission check; the route handler is.
 - **Finishing the easy 80% of five features** instead of all of one.
-- **Polishing before shipping.** The design pass on a page nobody can buy from yet is deferred work, not progress.
+- **Treating sandbox as an excuse for sloppy logic.** The code written against a sandbox is the code that goes live; only the credentials change.
+- **Assuming the sandbox→production swap is free.** It isn't — see BUILD-PLAN.md §11.
 
 ---
 
