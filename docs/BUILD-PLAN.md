@@ -8,18 +8,24 @@
 
 ## 0. How to use this document
 
-Read **§1–§5 before writing any code**, then read only the phase you're working
-on. The phases are strictly ordered: don't start phase _n+1_ until phase _n_'s
-exit criteria are met.
+Read **§1–§5 before writing any code**, then **§6.0 milestones**, then only the
+phase you're working on. Phases are ordered; don't start phase _n+1_ until
+phase _n_'s exit criteria are met — but note that **launching does not wait for
+a phase boundary** (§6.0).
+
+For _how_ to make design decisions and how much to build in one go, see
+[DESIGN-PRINCIPLES.md](DESIGN-PRINCIPLES.md). This document is the what; that
+one is the why and the how-much.
 
 Three companion documents exist and are **not** superseded by this one:
 
-| Doc                   | Still authoritative for                                                              |
-| --------------------- | ------------------------------------------------------------------------------------ |
-| `AGENTS.md`           | Stack, conventions, commands, working principles. **Read first, always.**            |
-| `coffee-plan.html`    | Business rationale, provider-interface reasoning, brand/mood/perf constraints, risks |
-| `coffee-shop-prd.md`  | Functional requirements (FR-\* / MO-\* ids), personas, mood constraints              |
-| `coffee-shop-ui.html` | One visual option for the storefront — **reference only, see §3**                    |
+| Doc                    | Still authoritative for                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| `AGENTS.md`            | Stack, conventions, commands, working principles. **Read first, always.**            |
+| `DESIGN-PRINCIPLES.md` | How to make design decisions, scope discipline, solo-with-agents working process     |
+| `coffee-plan.html`     | Business rationale, provider-interface reasoning, brand/mood/perf constraints, risks |
+| `coffee-shop-prd.md`   | Functional requirements (FR-\* / MO-\* ids), personas, mood constraints              |
+| `coffee-shop-ui.html`  | One visual option for the storefront — **reference only, see §3**                    |
 
 Where this doc and the PRD disagree on **ordering or task breakdown**, this doc
 wins. Where they disagree on **a functional requirement**, the PRD wins — flag
@@ -259,6 +265,77 @@ the phase that touches that route. Track remaining routes in §9.
 ---
 
 ## 6. Phases
+
+### 6.0 Milestones — when you can actually transact
+
+**Read this before the phases.** Phases describe _what gets built_. Milestones
+describe _when the business can take money_. They are deliberately not the same
+thing, because the phases are a ~10-week full-time roadmap and this is a
+one-person project with agent support. Waiting for a phase boundary to launch
+means months of spending before a single VND arrives.
+
+The rule: **a thin slice all the way through beats a complete layer.** See
+[DESIGN-PRINCIPLES.md §6](DESIGN-PRINCIPLES.md).
+
+---
+
+#### M1 — Sellable · the smallest thing that earns money
+
+**Definition of done:** a real customer pays for a real bag of coffee, the owner
+sees the order, and the beans get posted. Nothing more.
+
+Needs only:
+
+- Phase 0 tasks 0.6–0.8 (Neon, migration, seed)
+- **One** payment method working end-to-end (ZaloPay _or_ MoMo — whichever
+  approves first), plus COD, which needs no gateway at all
+- `Order` written via a verified webhook + receipt email (Phase 2: 2.1, 2.2,
+  2.3 partial, 2.4, 2.5, 2.6, 2.7, 2.8, 2.10)
+- Stock decrement (2.8) so you can't oversell
+- Guest order lookup (2.11)
+
+**Deliberately deferred at M1 — all of it:**
+
+| Deferred                    | Why it's fine                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| Full i18n rollout           | Storefront stays English-only; only the checkout path gets Vietnamese copy          |
+| Products in the DB          | Storefront can keep reading `src/constants/products.ts` — only orders need Postgres |
+| GHN API integration         | Owner books the shipment by hand in GHN's own dashboard. Two minutes per order.     |
+| Admin console               | Owner reads orders in `pnpm db:studio`, or one read-only list                       |
+| The other 4 payment methods | Each is a new adapter file behind the same interface. Add on demand.                |
+| `/menu`, `/sites/[slug]`    | Not needed to sell a bag of coffee                                                  |
+| Courses, auth, player       | Entire separate business line — Phases 3–4                                          |
+
+**What is _not_ deferred:** webhook signature verification, amount re-read from
+`Order`, replay protection, and the §8 Gate 1 review. M1 cuts **features, never
+correctness on the money path.** Fewer things, each correct.
+
+Rough size: ~1–2 weeks rather than the ~5 weeks that Phases 0+1+2 in full would
+take. At the end, the project stops costing money and starts making it.
+
+---
+
+#### M2 — A real bean shop
+
+Everything M1 deferred that removes _manual work_ or _blocks Vietnamese
+customers_: products and stock in the DB with admin editing (Phase 1 + Phase 5
+partial), GHN API so fulfilment stops being manual (2.9), remaining payment
+methods, Vietnamese storefront (1.9), `/menu` and `/sites/[slug]`.
+
+Trigger for each item: **it is costing real time or losing real customers.** Not
+"it feels unfinished."
+
+---
+
+#### M3 — Courses
+
+Phases 3–4 in full: Clerk auth, catalogue, enrolment, player, certificates. A
+separate business line — it should not delay M1 or M2 by a single day.
+
+> **If resource runs short, M1 is the launch.** M2 makes it comfortable, M3 adds
+> a second business. In that order, each one standing alone.
+
+---
 
 ### Phase 0 — Foundation
 

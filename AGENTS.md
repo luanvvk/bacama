@@ -25,13 +25,16 @@ The original static HTML/CSS design mockups live on the
 reference when building the equivalent React pages, but don't copy their
 markup verbatim (no Tailwind classes, no component structure).
 
-> **Before starting any feature work, read [docs/BUILD-PLAN.md](docs/BUILD-PLAN.md).**
-> It holds the current phase order, per-task breakdown, acceptance criteria,
-> external blockers, settled architecture decisions (don't relitigate them),
-> the risk register, and the security review gates. Critically: **the UI is
-> already built against hardcoded mock data** — the work ahead is replacing
-> that with a real data layer and real provider adapters, not building pages
-> from scratch.
+> **Before starting any feature work, read [docs/BUILD-PLAN.md](docs/BUILD-PLAN.md)**
+> — phase order, per-task breakdown, acceptance criteria, external blockers,
+> settled architecture decisions (don't relitigate them), the risk register, and
+> the security review gates. Critically: **the UI is already built against
+> hardcoded mock data** — the work ahead is replacing that with a real data layer
+> and real provider adapters, not building pages from scratch. Note §6.0: this is
+> a solo project, so **launch does not wait for a phase boundary.**
+>
+> For _how much_ to build and how to work sustainably with agents, read
+> [docs/DESIGN-PRINCIPLES.md](docs/DESIGN-PRINCIPLES.md).
 
 ## Working principles
 
@@ -126,6 +129,7 @@ A [21st.dev](https://21st.dev) MCP server is configured in `.mcp.json` for compo
 | File                                                                         | Covers                                                                                                            |
 | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | [docs/BUILD-PLAN.md](docs/BUILD-PLAN.md)                                     | **Phases, tasks, blockers, acceptance criteria, settled decisions, risks, security gates — read first**           |
+| [docs/DESIGN-PRINCIPLES.md](docs/DESIGN-PRINCIPLES.md)                       | How to make design decisions, scope discipline, solo-dev-with-agents working process                              |
 | [coffee-shop-prd.md](coffee-shop-prd.md)                                     | Functional requirements (`FR-*`/`MO-*` ids), personas, mood constraints. Build plan supersedes its §4/§6 ordering |
 | [coffee-plan.html](coffee-plan.html)                                         | Business rationale, provider-interface reasoning, brand/perf constraints                                          |
 | [.claude/skills/conventions/SKILL.md](.claude/skills/conventions/SKILL.md)   | Coding conventions (naming, file layout, component/hook/service patterns, comments policy)                        |
