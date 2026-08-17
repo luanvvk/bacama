@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Của tôi · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+<style>
+  .me-guest{max-width:560px;margin:0 auto;padding:60px var(--pad) 100px;text-align:center}
+  .me-guest .lock{width:78px;height:78px;border-radius:50%;background:var(--accent-tint);
+    color:var(--accent);display:grid;place-items:center;margin:0 auto 22px}
+  .me-guest .lock svg{width:32px;height:32px}
+  .me-guest h1{font-size:clamp(28px,3.6vw,38px);margin-top:14px}
+  .me-guest p{color:var(--ink-soft);font-size:15.5px;max-width:46ch;margin:16px auto 0}
+  .me-guest .row{margin-top:28px;display:flex;gap:11px;justify-content:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-row">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
+    <ul class="nav">
+      <li><a class="nav-link" href="shop.html"><span data-vi>Cà phê &amp; Bánh</span><span data-en>Coffee &amp; Bakery</span></a></li>
+      <li><a class="nav-link" href="courses.html"><span data-vi>Khoá học</span><span data-en>Workshops</span></a></li>
+      <li><a class="nav-link" href="index.html#sites"><span data-vi>Quán</span><span data-en>Cafés</span></a></li>
+      <li><a class="nav-link" href="story.html"><span data-vi>Gia đình</span><span data-en>Our family</span></a></li>
+    </ul>
+    <div class="hdr-actions">
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      <button class="icon-btn" type="button" data-open="cartDrawer" aria-label="Giỏ hàng / Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l2.5 12h11l2-8H6"/></svg><i class="pip" data-cart-count>2</i></button>
+      <div class="acct">
+        <button class="btn sm" type="button" data-open-auth><span data-vi>Của tôi</span><span data-en>My page</span></button>
+        <div class="acct-menu">
+          <div class="acct-head"><div class="n">Lê Thị Ngọc</div><div class="r"><span data-vi>Học viên</span><span data-en>Student</span></div></div>
+          <a href="me.html" aria-current="page"><span data-vi>Khoá học của tôi</span><span data-en>My learning</span></a>
+          <a href="account.html"><span data-vi>Đơn hàng của tôi</span><span data-en>My orders</span></a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:15px;height:15px;opacity:.7"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><span data-vi>Chứng chỉ</span><span data-en>Certificates</span></a>
+          <div class="sep"></div>
+          <a href="#"><span data-vi>Cài đặt tài khoản</span><span data-en>Account settings</span></a>
+          <a href="index.html"><span data-vi>Đăng xuất</span><span data-en>Sign out</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ═══════════════════════════════════════════════════════════
+       GUEST state — shown to a visitor who hasn't signed in yet.
+       No fake "you are enrolled in…" pretence; just one clear
+       call: sign in, or make an account. The same page renders
+       the signed-in dashboard once they're authed (Phase 2).
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="me-guest" id="guestView">
+    <div class="lock">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <div class="lbl acc"><span data-vi>Của tôi · chưa đăng nhập</span><span data-en>My page · not signed in</span></div>
+    <h1><span data-vi>Tiếp tục chỗ bạn đang học.</span><span data-en>Pick up where you left off.</span></h1>
+    <p><span data-vi>Khoá học, đơn hàng và chứng chỉ của bạn đều ở đây. Đăng nhập để mở, hoặc tạo tài khoản nếu lần đầu tới.</span><span data-en>Your courses, orders and certificates live here. Sign in, or make an account if it's your first visit.</span></p>
+    <div class="row">
+      <button class="btn lg" type="button" data-open-auth><span data-vi>Đăng nhập</span><span data-en>Log in</span></button>
+      <a href="courses.html" class="btn ghost lg"><span data-vi>Xem khoá học trước</span><span data-en>Browse courses first</span></a>
+    </div>
+    <p class="hint" style="margin-top:22px"><span data-vi>Chưa mua gì cũng xem được — chỉ cần đăng nhập khi muốn xem video hoặc theo dõi tiến độ.</span><span data-en>You can browse without buying — you only need to sign in to watch lessons or track progress.</span></p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SIGNED-IN DASHBOARD (prototype-only render; in Phase 2 this
+       section is gated server-side on `User.role = student`)
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="me" id="studentView" hidden>
+    <div class="me-hero">
+      <div class="lbl acc"><span data-vi>Chào chị Ngọc · học viên</span><span data-en>Welcome, Ngọc · student</span></div>
+      <h1><span data-vi>Của chị hôm nay</span><span data-en>Your page today</span></h1>
+    </div>
+
+    <div class="stat-row">
+      <div class="kpi"><div class="k"><span data-vi>Tiếp tục học</span><span data-en>Resume</span></div><div class="v"><span data-vi>Bài 03</span><span data-en>Lesson 03</span></div><div class="d"><span data-vi>Latte Art · 4:12 / 11:05</span><span data-en>Latte Art · 4:12 / 11:05</span></div></div>
+      <div class="kpi"><div class="k"><span data-vi>Đang học</span><span data-en>Enrolled</span></div><div class="v">2</div><div class="d"><span data-vi>1 online · 1 tại quán</span><span data-en>1 online · 1 in-person</span></div></div>
+      <div class="kpi"><div class="k"><span data-vi>Chứng chỉ</span><span data-en>Certificates</span></div><div class="v">1</div><div class="d"><span data-vi>Barista Foundations</span><span data-en>Barista Foundations</span></div></div>
+    </div>
+
+    <div class="page-hd" style="margin:8px 0 18px;padding-bottom:16px">
+      <div>
+        <h1 style="font-size:clamp(22px,2.6vw,28px)"><span data-vi>Tiếp tục nào</span><span data-en>Keep going</span></h1>
+        <div class="sub"><span data-vi>Trở lại bài gần nhất</span><span data-en>Jump back to your latest lesson</span></div>
+      </div>
+      <a href="learn.html" class="btn ghost sm"><span data-vi>Mở trình học</span><span data-en>Open player</span> →</a>
+    </div>
+
+    <div class="me-grid">
+      <article class="me-card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=620&q=72" width="620" height="349" alt="" loading="lazy" /></div>
+        <div class="bd">
+          <span class="lbl acc">Latte Art · <span data-vi>Online</span><span data-en>Online</span></span>
+          <h3><span data-vi>Trái tim — rót chậm, dứt khoát</span><span data-en>The heart — pour slow, finish clean</span></h3>
+          <p class="desc"><span data-vi>Bài 03 trong 9. Lần xem gần nhất: sáng nay 09:42.</span><span data-en>Lesson 03 of 9. Last watched: this morning 09:42.</span></p>
+          <div class="prog"><span><span data-vi>Đã xem</span><span data-en>Watched</span></span><span class="bar"><i style="width:33%"></i></span><b>33%</b></div>
+        </div>
+      </article>
+      <article class="me-card">
+        <div class="img"><img src="https://images.unsplash.com/photo-1509446152067-d56c2e1cde3a?auto=format&fit=crop&w=620&q=72" width="620" height="349" alt="" loading="lazy" /></div>
+        <div class="bd">
+          <span class="lbl acc">Viennoiserie · <span data-vi>Tại Hội An · 21–22.09</span><span data-en>In Hội An · 21–22 Sep</span></span>
+          <h3><span data-vi>Lớp cuối tuần</span><span data-en>The weekend class</span></h3>
+          <p class="desc"><span data-vi>Hai ngày, 8 người. Điểm danh mở vào sáng thứ Bảy.</span><span data-en>Two days, eight people. Attendance opens Saturday morning.</span></p>
+          <div class="prog"><span><span data-vi>Đã đăng ký</span><span data-en>Booked</span></span><span class="bar"><i style="width:100%"></i></span><b>✓</b></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="page-hd" style="margin:34px 0 14px;padding-bottom:16px">
+      <div>
+        <h1 style="font-size:clamp(22px,2.6vw,28px)"><span data-vi>Đơn hàng gần đây</span><span data-en>Recent orders</span></h1>
+        <div class="sub"><span data-vi>Cà phê và khoá học chị đã mua</span><span data-en>Coffee and courses you've bought</span></div>
+      </div>
+      <a href="account.html" class="btn ghost sm"><span data-vi>Tất cả đơn hàng</span><span data-en>All orders</span> →</a>
+    </div>
+
+    <div class="me-list">
+      <a class="me-row" href="account.html">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 2h12l1 7H5zM5 9h14v13H5z"/></svg></span>
+        <div><div class="t">BCM-2419 · <span data-vi>Đà Lạt + Blend Nhà</span><span data-en>Đà Lạt + House Blend</span></div><div class="d"><span data-vi>ZaloPay · 510.000 ₫ · 13.08</span><span data-en>ZaloPay · 510,000 ₫ · 13 Aug</span></div></div>
+        <div class="meta"><span data-vi>Đang rang</span><span data-en>Roasting</span><b><span data-vi>Giao 16.08</span><span data-en>Due 16 Aug</span></b></div>
+      </a>
+      <a class="me-row" href="account.html">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v12H4zM9 21h6M12 17v4"/></svg></span>
+        <div><div class="t">BCM-2391 · <span data-vi>Barista Foundations</span><span data-en>Barista Foundations</span></div><div class="d"><span data-vi>ZaloPay · 1.890.000 ₫ · 02.07</span><span data-en>ZaloPay · 1,890,000 ₫ · 02 Jul</span></div></div>
+        <div class="meta"><span data-vi>Hoàn thành</span><span data-en>Completed</span><b><span data-vi>Đã cấp</span><span data-en>Issued</span></b></div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr"><div class="wrap"><div class="ftr-bottom" style="margin-top:0;border-top:0">
+  <p>© 2026 Bacama · <span data-vi>Đà Nẵng</span><span data-en>Da Nang</span></p><p>ZaloPay · MoMo · VNPay · COD · GHN</p>
+</div></div></footer>
+
+<script src="app.js"></script>
+<script>
+/* Prototype-only: the guest view and signed-in view live on the same
+   page; flip them by adding ?signedin=1 to the URL. Phase 2 renders
+   only the matching view server-side, gated on the Clerk session. */
+(function () {
+  if (/[?&]signedin=1\b/.test(location.search)) {
+    document.getElementById('guestView').hidden = true;
+    document.getElementById('studentView').hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

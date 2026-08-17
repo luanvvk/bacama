@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tài khoản · Bacama</title>
+<link rel="stylesheet" href="app.css" />
+<style>
+  .cols2{display:grid;grid-template-columns:1fr 336px;gap:clamp(24px,3.4vw,44px);align-items:start;margin-top:34px}
+  .order-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;transition:border-color .16s}
+  .order-card:hover{border-color:var(--line-strong)}
+  .order-card .top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .order-card .ref{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent)}
+  .order-card .when{font-size:12.5px;color:var(--ink-faint);margin-left:auto}
+  .order-card .stat{margin-top:11px}
+  .order-card .lines{margin-top:13px}
+  .order-card .lines .ol{display:flex;gap:11px;padding:9px 0;align-items:center}
+  .order-card .lines .ol img{width:42px;height:52px;object-fit:cover;border-radius:2px;flex:none}
+  .order-card .lines .ol .nm{font-size:13.5px;font-weight:600;line-height:1.25}
+  .order-card .lines .ol .op{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px}
+  .order-card .lines .ol .px{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+  .order-card .foot{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .order-card .foot .total{margin-left:auto;font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  @media(max-width:980px){.cols2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span data-vi>Tới nội dung</span><span data-en>Skip to content</span></a>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-row">
+    <a class="lockup" href="index.html"><span class="mark">Bacama<span class="dot">·</span></span><span class="sub">Coffee and more</span></a>
+    <ul class="nav">
+      <li><a class="nav-link" href="shop.html"><span data-vi>Cà phê &amp; Bánh</span><span data-en>Coffee &amp; Bakery</span></a></li>
+      <li><a class="nav-link" href="courses.html"><span data-vi>Khoá học</span><span data-en>Workshops</span></a></li>
+      <li><a class="nav-link" href="index.html#sites"><span data-vi>Quán</span><span data-en>Cafés</span></a></li>
+      <li><a class="nav-link" href="story.html"><span data-vi>Gia đình</span><span data-en>Our family</span></a></li>
+    </ul>
+    <div class="hdr-actions">
+      <button class="pill" type="button" data-toggle-lang><span data-vi>EN</span><span data-en>VI</span></button>
+      <button class="icon-btn" type="button" data-open="cartDrawer" aria-label="Giỏ hàng / Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l2.5 12h11l2-8H6"/></svg></button>
+      <div class="acct">
+        <button class="btn sm" type="button" data-acct aria-haspopup="true" aria-expanded="false"><span data-vi>Chào chị Ngọc</span><span data-en>Hi, Ngọc</span></button>
+        <div class="acct-menu">
+          <div class="acct-head"><div class="n">Lê Thị Ngọc</div><div class="r"><span data-vi>Học viên</span><span data-en>Student</span></div></div>
+          <a href="me.html"><span data-vi>Khoá học của tôi</span><span data-en>My learning</span></a>
+          <a href="account.html" aria-current="page"><span data-vi>Đơn hàng của tôi</span><span data-en>My orders</span></a>
+          <a href="#"><span data-vi>Chứng chỉ</span><span data-en>Certificates</span></a>
+          <div class="sep"></div>
+          <a href="#"><span data-vi>Cài đặt tài khoản</span><span data-en>Account settings</span></a>
+          <a href="index.html"><span data-vi>Đăng xuất</span><span data-en>Sign out</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="crumb"><a href="index.html"><span data-vi>Trang chủ</span><span data-en>Home</span></a> / <span data-vi>Tài khoản</span><span data-en>Account</span></div>
+
+  <div class="cols2">
+    <div>
+      <div class="page-hd" style="margin-top:20px;padding-bottom:16px">
+        <div>
+          <div class="lbl acc"><span data-vi>Đơn hàng của chị</span><span data-en>Your orders</span></div>
+          <h1 style="margin-top:8px"><span data-vi>Từ gần nhất về trước</span><span data-en>Most recent first</span></h1>
+          <div class="sub"><span data-vi>Mọi đơn cà phê và khoá học chị đã mua</span><span data-en>Every coffee and course order you've placed</span></div>
+        </div>
+        <div class="seg">
+          <button type="button" aria-pressed="true"><span data-vi>Tất cả</span><span data-en>All</span></button>
+          <button type="button" aria-pressed="false"><span data-vi>Cà phê</span><span data-en>Coffee</span></button>
+          <button type="button" aria-pressed="false"><span data-vi>Khoá học</span><span data-en>Courses</span></button>
+        </div>
+      </div>
+
+      <article class="order-card">
+        <div class="top">
+          <span class="ref">BCM-2419</span>
+          <span class="lbl acc"><span data-vi>Đang xử lý</span><span data-en>In progress</span></span>
+          <span class="when"><span data-vi>Hôm nay · 10:24</span><span data-en>Today · 10:24</span></span>
+        </div>
+        <div class="stat">
+          <div class="track" style="margin:0">
+            <div class="on"><div class="k"><span data-vi>Đã trả</span><span data-en>Paid</span></div></div>
+            <div class="on"><div class="k"><span data-vi>Đang rang</span><span data-en>Roasting</span></div></div>
+            <div><div class="k"><span data-vi>GHN lấy</span><span data-en>GHN picks up</span></div></div>
+            <div><div class="k"><span data-vi>Giao</span><span data-en>Delivers</span></div></div>
+          </div>
+        </div>
+        <div class="lines">
+          <div class="ol"><img src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=120&q=70" alt="" /><div><div class="nm">Đà Lạt Washed</div><div class="op">250 g · <span data-vi>xay phin · × 1</span><span data-en>phin grind · × 1</span></div></div><span class="px">280.000 ₫</span></div>
+          <div class="ol"><img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=120&q=70" alt="" /><div><div class="nm"><span data-vi>Blend Nhà</span><span data-en>House Blend</span></div><div class="op">250 g · <span data-vi>nguyên hạt · × 1</span><span data-en>whole bean · × 1</span></div></div><span class="px">230.000 ₫</span></div>
+        </div>
+        <div class="foot">
+          <a class="add" href="#"><span data-vi>Theo dõi</span><span data-en>Track</span> →</a>
+          <a class="add" href="#"><span data-vi>Tải biên nhận</span><span data-en>Receipt</span> →</a>
+          <a class="add" href="#"><span data-vi>Nhắn quán</span><span data-en>Message shop</span> →</a>
+          <span class="total">510.000 ₫</span>
+        </div>
+      </article>
+
+      <article class="order-card">
+        <div class="top">
+          <span class="ref">BCM-2391</span>
+          <span class="badge ok"><span data-vi>Hoàn thành</span><span data-en>Completed</span></span>
+          <span class="when">02.07.2026</span>
+        </div>
+        <div class="lines">
+          <div class="ol"><img src="https://images.unsplash.com/photo-1445116572660-236099ec47a3?auto=format&fit=crop&w=120&q=70" alt="" /><div><div class="nm">Barista Foundations</div><div class="op"><span data-vi>Khoá học online · 6 tuần</span><span data-en>Online course · 6 weeks</span></div></div><span class="px">1.890.000 ₫</span></div>
+        </div>
+        <div class="foot">
+          <a class="add" href="me.html"><span data-vi>Xem chứng chỉ</span><span data-en>View certificate</span> →</a>
+          <span class="total">1.890.000 ₫</span>
+        </div>
+      </article>
+
+      <article class="order-card">
+        <div class="top">
+          <span class="ref">BCM-2364</span>
+          <span class="badge"><span data-vi>Đã giao</span><span data-en>Delivered</span></span>
+          <span class="when">19.06.2026</span>
+        </div>
+        <div class="lines">
+          <div class="ol"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=120&q=70" alt="" /><div><div class="nm">Sơn La Natural</div><div class="op">250 g · × 2</div></div><span class="px">530.000 ₫</span></div>
+        </div>
+        <div class="foot">
+          <a class="add" href="shop.html"><span data-vi>Mua lại</span><span data-en>Reorder</span> →</a>
+          <span class="total">530.000 ₫</span>
+        </div>
+      </article>
+    </div>
+
+    <aside>
+      <div class="panel">
+        <div class="panel-hd"><h3><span data-vi>Hồ sơ</span><span data-en>Profile</span></h3><a class="add" href="#"><span data-vi>Sửa</span><span data-en>Edit</span></a></div>
+        <div class="panel-bd">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+            <div class="avatar" style="width:48px;height:48px;font-size:18px;background:var(--accent);color:var(--card)">LN</div>
+            <div><div style="font-family:var(--display);font-size:18px;font-weight:600">Lê Thị Ngọc</div><div class="lbl acc">Student · 2026</div></div>
+          </div>
+          <div class="sumrow"><span><span data-vi>Email</span><span data-en>Email</span></span><span class="v" style="font-family:var(--body);color:var(--ink-soft);font-weight:400;font-size:13px">ngoc.le@email.vn</span></div>
+          <div class="sumrow"><span><span data-vi>Điện thoại</span><span data-en>Phone</span></span><span class="v" style="font-family:var(--body);color:var(--ink-soft);font-weight:400;font-size:13px">0905 123 456</span></div>
+          <div class="sumrow"><span><span data-vi>Ngôn ngữ</span><span data-en>Language</span></span><span class="v" style="font-family:var(--mono);font-size:12px">Tiếng Việt</span></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:18px">
+        <div class="panel-hd"><h3><span data-vi>Địa chỉ giao</span><span data-en>Shipping address</span></h3></div>
+        <div class="panel-bd">
+          <p style="font-size:14px;color:var(--ink-soft)">Lê Thị Ngọc · 0905 123 456<br />27 Ngô Quyền, Hải Châu, Đà Nẵng</p>
+          <a class="add" href="#" style="display:inline-block;margin-top:13px"><span data-vi>Đổi địa chỉ</span><span data-en>Change address</span> →</a>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:18px">
+        <div class="panel-hd"><h3><span data-vi>Bảo mật</span><span data-en>Security</span></h3></div>
+        <div class="panel-bd" style="display:flex;flex-direction:column;gap:9px">
+          <a class="add" href="#"><span data-vi>Đổi mật khẩu</span><span data-en>Change password</span> →</a>
+          <a class="add" href="#"><span data-vi>Bật xác thực hai bước</span><span data-en>Enable two-factor</span> →</a>
+          <a class="add" href="#" style="color:var(--crit)"><span data-vi>Đăng xuất tất cả thiết bị</span><span data-en>Sign out all devices</span> →</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="ftr"><div class="wrap"><div class="ftr-bottom" style="margin-top:40px;border-top:0">
+  <p>© 2026 Bacama · <span data-vi>Đà Nẵng</span><span data-en>Da Nang</span></p><p>ZaloPay · MoMo · VNPay · COD · GHN</p>
+</div></div></footer>
+
+<script src="app.js"></script>
+</body>
+</html>

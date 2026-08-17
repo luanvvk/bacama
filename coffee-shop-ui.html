@@ -1,0 +1,1752 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bacama · Coffee and more</title>
+    <meta
+      name="description"
+      content="Lò roastery và bánh tây ở Đà Nẵng. Cà phê rang mộc, bánh nướng từ 5 giờ sáng, khoá học barista."
+    />
+    <style>
+      :root {
+        /* Onyx-inspired dark restraint, warmed with bakery tones */
+        --ink-page: #14110d; /* deep warm matte black */
+        --ink-surface: #1c1812; /* slightly raised card */
+        --ink-sunk: #221c16; /* sunken, borders */
+        --ink-line: #2e2620; /* hairlines */
+        --ink-line-bright: #3d342b;
+        --paper: #efe7da; /* warm paper text */
+        --paper-soft: #c9bfae;
+        --muted: #94866f; /* muted coyote-grey */
+        --faint: #5e5346;
+        --accent: #c8923f; /* coyote / caramel — Onyx signature */
+        --accent-soft: #8a6432;
+        --accent-line: #3a2e1b;
+        --ok: #7fa877;
+
+        --display: "Fraunces", "Cormorant Garamond", Georgia, serif;
+        --body:
+          "Be Vietnam Pro", "Inter", ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", Roboto, Arial, sans-serif;
+        --mono:
+          ui-monospace, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      * {
+        margin: 0;
+      }
+      html,
+      body {
+        background: var(--ink-page);
+        color: var(--paper);
+      }
+      body {
+        font-family: var(--body);
+        font-size: 15px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+      .meas {
+        max-width: 60ch;
+      }
+
+      /* ================== SPLASH / ENTRANCE ================== */
+      .splash {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: #0e0b07;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        transition:
+          opacity 700ms ease,
+          visibility 700ms;
+      }
+      .splash.gone {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .splash-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        filter: brightness(0.55) contrast(1.05) saturate(0.85);
+      }
+      .splash-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(14, 11, 7, 0.55) 0%,
+          rgba(14, 11, 7, 0.92) 75%
+        );
+      }
+      .splash-inner {
+        position: relative;
+        padding: 24px;
+        max-width: 560px;
+      }
+      .splash-mark {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: clamp(48px, 9vw, 92px);
+        letter-spacing: -0.02em;
+        line-height: 1;
+        color: var(--paper);
+        margin-bottom: 8px;
+      }
+      .splash-mark .dot {
+        color: var(--accent);
+        margin: 0 4px;
+      }
+      .splash-sub {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 32px;
+      }
+      .splash-tag {
+        font-family: var(--display);
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(16px, 2.4vw, 20px);
+        color: var(--paper-soft);
+        max-width: 34ch;
+        margin: 0 auto 40px;
+        line-height: 1.5;
+      }
+      .splash-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding: 14px 26px;
+        border: 1px solid var(--accent);
+        color: var(--paper);
+        background: rgba(200, 146, 63, 0.06);
+        transition:
+          background 200ms ease,
+          color 200ms ease,
+          letter-spacing 200ms ease;
+      }
+      .splash-btn:hover {
+        background: var(--accent);
+        color: var(--ink-page);
+        letter-spacing: 0.22em;
+      }
+      .splash-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+      .splash-locale {
+        position: absolute;
+        bottom: 28px;
+        right: 32px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .splash-locale button {
+        color: var(--paper-soft);
+        padding: 2px 6px;
+      }
+      .splash-locale button[aria-current="true"] {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .splash-locale .sep {
+        color: var(--faint);
+      }
+
+      body.splash-locked {
+        overflow: hidden;
+      }
+
+      /* ================== HEADER ================== */
+      .hdr {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(20, 17, 13, 0.78);
+        backdrop-filter: saturate(140%) blur(10px);
+        border-bottom: 1px solid transparent;
+        transition: border-color 200ms ease;
+      }
+      .hdr.scrolled {
+        border-color: var(--ink-line);
+      }
+      .hdr-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        height: 68px;
+      }
+      .lockup {
+        display: inline-flex;
+        flex-direction: column;
+        line-height: 1;
+      }
+      .lockup .mark {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+        color: var(--paper);
+      }
+      .lockup .mark .dot {
+        color: var(--accent);
+        margin: 0 3px;
+      }
+      .lockup .sub {
+        font-family: var(--mono);
+        font-size: 7.5px;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 4px;
+        padding-left: 1px;
+      }
+      .nav {
+        display: flex;
+        gap: 28px;
+        margin-left: 36px;
+      }
+      .nav a {
+        font-size: 12.5px;
+        color: var(--paper-soft);
+        font-weight: 400;
+        padding: 8px 0;
+        border-bottom: 1px solid transparent;
+        transition:
+          color 160ms ease,
+          border-color 160ms ease;
+      }
+      .nav a:hover {
+        color: var(--paper);
+        border-bottom-color: var(--accent);
+      }
+      .hdr-actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .lang {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        border: 1px solid var(--ink-line-bright);
+        color: var(--paper-soft);
+        padding: 7px 12px;
+        border-radius: 2px;
+        transition:
+          color 160ms ease,
+          border-color 160ms ease,
+          background 160ms ease;
+      }
+      .lang:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--paper-soft);
+        border-radius: 2px;
+      }
+      .icon-btn:hover {
+        color: var(--accent);
+      }
+      .cta {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        padding: 11px 18px;
+        border-radius: 2px;
+        background: var(--accent);
+        color: var(--ink-page);
+        font-weight: 600;
+        transition:
+          background 160ms ease,
+          transform 160ms ease;
+      }
+      .cta:hover {
+        background: var(--paper);
+        transform: translateY(-1px);
+      }
+      .cta.ghost {
+        background: transparent;
+        color: var(--paper);
+        border: 1px solid var(--ink-line-bright);
+      }
+      .cta.ghost:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: transparent;
+      }
+
+      /* ================== HERO (Onyx-style) ================== */
+      .hero {
+        position: relative;
+        min-height: 86vh;
+        display: flex;
+        align-items: flex-end;
+        padding: 80px 0 56px;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background-size: cover;
+        background-position: center;
+        filter: brightness(0.62) contrast(1.05) saturate(0.9);
+      }
+      .hero-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(20, 17, 13, 0.55) 0%,
+          rgba(20, 17, 13, 0.15) 35%,
+          rgba(20, 17, 13, 0.95) 100%
+        );
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+      }
+      .hero-eyebrow {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 18px;
+      }
+      .hero h1 {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(40px, 6.2vw, 76px);
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+        color: var(--paper);
+        max-width: 18ch;
+      }
+      .hero h1 em {
+        font-style: italic;
+        color: var(--accent);
+        font-weight: 400;
+      }
+      .hero-lede {
+        font-size: 16px;
+        color: var(--paper-soft);
+        max-width: 48ch;
+        margin-top: 22px;
+      }
+      .hero-cta-row {
+        display: flex;
+        gap: 14px;
+        margin-top: 32px;
+        flex-wrap: wrap;
+      }
+      .hero-meta {
+        margin-top: 42px;
+        padding-top: 22px;
+        border-top: 1px solid rgba(200, 146, 63, 0.25);
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.16em;
+        color: var(--paper-soft);
+        text-transform: uppercase;
+      }
+      .hero-meta b {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* ================== SECTIONS ================== */
+      .section {
+        padding: 96px 0;
+        border-top: 1px solid var(--ink-line);
+      }
+      .section-hd {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 44px;
+      }
+      .section-hd .n {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .section-hd h2 {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(28px, 3.6vw, 44px);
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        text-wrap: balance;
+        margin-top: 10px;
+        color: var(--paper);
+      }
+      .section-hd .lk {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding-bottom: 4px;
+      }
+      .section-hd .lk a {
+        color: var(--paper);
+        border-bottom: 1px solid var(--accent);
+        padding-bottom: 2px;
+      }
+
+      /* Featured 3 — Onyx-style spacious cards */
+      .feat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+      .feat-card {
+        display: flex;
+        flex-direction: column;
+        transition: transform 200ms ease;
+      }
+      .feat-card:hover {
+        transform: translateY(-3px);
+      }
+      .feat-card .img {
+        aspect-ratio: 4 / 5;
+        background: var(--ink-sunk);
+        overflow: hidden;
+      }
+      .feat-card .img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.92) contrast(1.05) saturate(0.85);
+        transition: transform 600ms ease;
+      }
+      .feat-card:hover .img img {
+        transform: scale(1.02);
+      }
+      .feat-card .body {
+        padding: 22px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+      }
+      .feat-card .tag {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .feat-card h3 {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        color: var(--paper);
+      }
+      .feat-card .desc {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .feat-card .meta {
+        margin-top: auto;
+        padding-top: 18px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        border-top: 1px solid var(--ink-line);
+      }
+      .feat-card .price {
+        font-family: var(--mono);
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--paper);
+        font-variant-numeric: tabular-nums;
+      }
+      .feat-card .price .usd {
+        color: var(--faint);
+        font-weight: 400;
+        margin-left: 6px;
+        font-size: 11.5px;
+      }
+      .feat-card .add {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.14em;
+        border-bottom: 1px solid var(--accent);
+        padding: 0 0 2px;
+        text-transform: uppercase;
+      }
+      .feat-card .roast {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* Philosophy / Story — Onyx-style wide single column */
+      .story {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+      .story-img {
+        aspect-ratio: 5/4;
+        background: var(--ink-sunk);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .story-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.94) contrast(1.05) saturate(0.85);
+      }
+      .story .eyebrow {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .story h2 {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(30px, 3.6vw, 44px);
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        margin-top: 14px;
+        color: var(--paper);
+      }
+      .story p {
+        margin-top: 22px;
+        font-size: 16px;
+        color: var(--paper-soft);
+        max-width: 52ch;
+      }
+      .story p + p {
+        margin-top: 14px;
+      }
+      .story .sign {
+        margin-top: 26px;
+        font-family: var(--display);
+        font-style: italic;
+        font-size: 18px;
+        color: var(--accent);
+      }
+
+      /* Locations — Verve-card pattern, dark */
+      .loc-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+      .loc-card {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--ink-line);
+        padding-top: 22px;
+      }
+      .loc-card .img {
+        aspect-ratio: 16 / 11;
+        background: var(--ink-sunk);
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+      .loc-card .img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.92) contrast(1.06) saturate(0.82);
+        transition: transform 500ms ease;
+      }
+      .loc-card:hover .img img {
+        transform: scale(1.015);
+      }
+      .loc-card .city {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 10px;
+      }
+      .loc-card h3 {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+        margin-bottom: 12px;
+        color: var(--paper);
+      }
+      .loc-card .addr {
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .loc-card .hours {
+        margin-top: 14px;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--paper-soft);
+      }
+      .loc-card .open {
+        color: var(--ok);
+      }
+      .loc-card .roast-today {
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--ink-line);
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .loc-card .roast-today b {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* CTA band */
+      .band {
+        padding: 120px 0;
+        text-align: center;
+        border-top: 1px solid var(--ink-line);
+      }
+      .band h2 {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(30px, 4.6vw, 48px);
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        max-width: 22ch;
+        margin: 0 auto;
+        color: var(--paper);
+      }
+      .band h2 em {
+        color: var(--accent);
+        font-style: italic;
+      }
+      .band .lede {
+        color: var(--paper-soft);
+        max-width: 52ch;
+        margin: 20px auto 36px;
+        font-size: 16px;
+      }
+      .band .row {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .band-note {
+        margin-top: 28px;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      /* Footer */
+      .ftr {
+        background: #0e0b07;
+        color: var(--paper);
+        padding: 88px 0 36px;
+      }
+      .ftr-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 44px;
+      }
+      .ftr h4 {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+      .ftr .lockup .mark {
+        color: var(--paper);
+        font-size: 24px;
+      }
+      .ftr .lockup .mark .dot {
+        color: var(--accent);
+      }
+      .ftr .lockup .sub {
+        color: var(--muted);
+      }
+      .ftr-found {
+        font-family: var(--display);
+        font-style: italic;
+        font-size: 17px;
+        margin-top: 18px;
+        color: var(--paper-soft);
+        max-width: 30ch;
+        line-height: 1.5;
+      }
+      .ftr ul li {
+        padding: 5px 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .ftr ul li a:hover {
+        color: var(--accent);
+      }
+      .ftr-bottom {
+        margin-top: 64px;
+        padding-top: 28px;
+        border-top: 1px solid var(--ink-line);
+        display: flex;
+        gap: 24px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .ftr-bottom p {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .ftr-bottom a {
+        color: var(--paper-soft);
+        border-bottom: 1px solid var(--ink-line-bright);
+        padding-bottom: 1px;
+      }
+      .ftr-art {
+        margin-top: 28px;
+      }
+
+      /* ============== Locale ============== */
+      /* All text keyed via data-vi/data-en — only the active locale renders.
+         Inactive marked display:none via [lang] attribute on <html>. */
+      html[lang="vi"] [data-en] {
+        display: none !important;
+      }
+      html[lang="en"] [data-vi] {
+        display: none !important;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .hero {
+          min-height: 76vh;
+          padding: 48px 0 40px;
+        }
+        .hero h1 {
+          font-size: clamp(34px, 9vw, 48px);
+        }
+        .feat-grid,
+        .loc-grid {
+          grid-template-columns: 1fr;
+        }
+        .story {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .ftr-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .nav {
+          display: none;
+        }
+      }
+      @media (max-width: 620px) {
+        .ftr-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-meta {
+          gap: 18px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="splash-locked">
+    <!-- ====================== ENTRANCE / SPLASH ====================== -->
+    <div class="splash" id="splash" role="dialog" aria-label="Welcome">
+      <div
+        class="splash-bg"
+        style="
+          background-image: url(&quot;https://images.unsplash.com/photo-1453614512568-c4054b9be2c2?auto=format&fit=crop&w=1600&q=70&quot;);
+        "
+      ></div>
+      <div class="splash-inner">
+        <div class="splash-mark">Bacama<span class="dot">·</span></div>
+        <div class="splash-sub">
+          <span data-vi>Cà phê và nhiều hơn nữa</span>
+          <span data-en>Coffee and more</span>
+        </div>
+        <div class="splash-tag">
+          <span data-vi
+            >Lò roastery nhỏ ở Đà Nẵng. Bánh tây nướng từ 5 giờ sáng. Cà phê
+            rang mộc theo lô.</span
+          >
+          <span data-en
+            >A small roastery in Da Nang. Pastries baked at five. Coffee roasted
+            in daily batches.</span
+          >
+        </div>
+        <button class="splash-btn" id="enterBtn" type="button">
+          <span data-vi>Vào quán</span>
+          <span data-en>Enter the shop</span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14" />
+            <path d="M13 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+      <div class="splash-locale">
+        <button id="sl-vi" aria-current="true" type="button">VI</button>
+        <span class="sep">·</span>
+        <button id="sl-en" aria-current="false" type="button">EN</button>
+      </div>
+    </div>
+
+    <!-- ====================== HEADER ====================== -->
+    <header class="hdr" id="hdr">
+      <div class="wrap hdr-row">
+        <a class="lockup" href="#top">
+          <span class="mark">Bacama<span class="dot">·</span></span>
+          <span class="sub">Coffee and more</span>
+        </a>
+        <nav class="nav">
+          <a href="#shop"
+            ><span data-vi>Cà phê &amp; Bánh</span
+            ><span data-en>Coffee &amp; Bakery</span></a
+          >
+          <a href="#courses"
+            ><span data-vi>Khoá học</span><span data-en>Workshops</span></a
+          >
+          <a href="#sites"
+            ><span data-vi>Quán</span><span data-en>Cafés</span></a
+          >
+          <a href="#story"
+            ><span data-vi>Gia đình</span><span data-en>Our family</span></a
+          >
+        </nav>
+        <div class="hdr-actions">
+          <!-- Single language pill: shows the OTHER language you can switch to. -->
+          <button
+            class="lang"
+            id="langToggle"
+            type="button"
+            aria-label="Switch language"
+          >
+            <span data-vi>EN</span>
+            <span data-en>VI</span>
+          </button>
+          <button class="icon-btn" aria-label="Cart">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="9" cy="20" r="1" />
+              <circle cx="18" cy="20" r="1" />
+              <path d="M2 3h3l2.5 12h11l2-8H6" />
+            </svg>
+          </button>
+          <a href="#shop" class="cta">
+            <span data-vi>Mua cà phê</span>
+            <span data-en>Order beans</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- ====================== HERO ====================== -->
+      <section class="hero">
+        <div
+          class="hero-bg"
+          style="
+            background-image: url(&quot;https://images.unsplash.com/photo-1514432322609-38342e0a025d?auto=format&fit=crop&w=1800&q=70&quot;);
+          "
+        ></div>
+        <div class="wrap hero-inner">
+          <div class="hero-eyebrow">
+            <span data-vi>Lò roastery · Đà Nẵng · 2017</span>
+            <span data-en>Roastery · Da Nang · since 2017</span>
+          </div>
+          <h1>
+            <span data-vi>Rang mộc, <em>nướng từ 5 giờ sáng.</em></span>
+            <span data-en>Roasted by hand, <em>baked at five.</em></span>
+          </h1>
+          <p class="hero-lede">
+            <span data-vi
+              >Một lò nhỏ ngoài Đà Nẵng. Cà phê rang theo lô ngày, dán ngày rang
+              lên từng gói. Bánh tây nướng bằng bơ Pháp. Giao về cả nước—hoặc
+              ghé ngồi.</span
+            >
+            <span data-en
+              >A small roastery outside Da Nang. Coffee roasted in daily
+              batches, a roast date stamped on every bag. Western pastries with
+              French butter. Shipped nationwide — or come and sit.</span
+            >
+          </p>
+          <div class="hero-cta-row">
+            <a href="#shop" class="cta"
+              ><span data-vi>Mua cà phê rang</span
+              ><span data-en>Shop the roast</span></a
+            >
+            <a href="#courses" class="cta ghost"
+              ><span data-vi>Học làm barista</span
+              ><span data-en>Take a workshop</span></a
+            >
+          </div>
+          <div class="hero-meta">
+            <span
+              ><span data-vi>Rang hôm nay</span
+              ><span data-en>Today's roast</span> · <b>Đà Lạt Washed</b></span
+            >
+            <span
+              ><span data-vi>Bánh mới</span><span data-en>Fresh bake</span> ·
+              <b>05:14</b></span
+            >
+            <span
+              ><span data-vi>Giao toàn quốc</span
+              ><span data-en>Ships nationwide</span></span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== FEATURED ====================== -->
+      <section class="section" id="shop">
+        <div class="wrap">
+          <div class="section-hd">
+            <div>
+              <div class="n">
+                <span data-vi>Hôm nay</span><span data-en>Today's stock</span>
+              </div>
+              <h2>
+                <span data-vi>Ba thứ chúng tôi muốn gửi đi đầu tiên.</span
+                ><span data-en>Three things we'd send you first.</span>
+              </h2>
+            </div>
+            <div class="lk">
+              <a href="#shop"
+                ><span data-vi>Xem tất cả →</span
+                ><span data-en>Browse all →</span></a
+              >
+            </div>
+          </div>
+
+          <div class="feat-grid">
+            <article class="feat-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1559056199-641a5ac471bb?auto=format&fit=crop&w=720&q=70"
+                  alt="Bag of Da Lat washed beans"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="body">
+                <span class="tag"
+                  ><span data-vi>Cà phê rang</span
+                  ><span data-en>Coffee blend</span></span
+                >
+                <h3>Đà Lạt Washed</h3>
+                <p class="desc">
+                  <span data-vi
+                    >Hương mận khô, mật ong, hậu bạc hà. Rang vừa 11.08.</span
+                  >
+                  <span data-en
+                    >Dried plum, honey, mint finish. Medium roast · 11
+                    Aug.</span
+                  >
+                </p>
+                <span class="roast"
+                  ><span data-vi>Rang 3 ngày trước</span
+                  ><span data-en>Roasted 3 days ago</span></span
+                >
+                <div class="meta">
+                  <span class="price"
+                    >280.000 ₫<span class="usd">· $11.50</span></span
+                  >
+                  <a class="add" href="#"
+                    ><span data-vi>Thêm vào giỏ</span
+                    ><span data-en>Add to cart</span></a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <article class="feat-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1555507036-ab1f40a8ed90?auto=format&fit=crop&w=720&q=70"
+                  alt="Almond croissants stacked"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="body">
+                <span class="tag"
+                  ><span data-vi>Bánh tây</span
+                  ><span data-en>Bakery</span></span
+                >
+                <h3>Croissant Hạnh nhân</h3>
+                <p class="desc">
+                  <span data-vi
+                    >Bơ Pháp, hạnh nhân nghiền, đường mía. Nướng 5 giờ — bán hết
+                    trưa.</span
+                  >
+                  <span data-en
+                    >French butter, ground almond, cane sugar. Baked at five —
+                    gone by noon.</span
+                  >
+                </p>
+                <span class="roast"
+                  ><span data-vi>Nướng lúc 05:00</span
+                  ><span data-en>Baked at 05:00</span></span
+                >
+                <div class="meta">
+                  <span class="price"
+                    >45.000 ₫<span class="usd">· $1.85</span></span
+                  >
+                  <a class="add" href="#"
+                    ><span data-vi>Đặt qua GrabFood →</span
+                    ><span data-en>Order via GrabFood →</span></a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <article class="feat-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1445116572660-236099ec47a3?auto=format&fit=crop&w=720&q=70"
+                  alt="A barista pulling a shot"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="body">
+                <span class="tag"
+                  ><span data-vi>Khoá học</span
+                  ><span data-en>Workshop</span></span
+                >
+                <h3>
+                  <span data-vi>Căn bản Pha chế · 6 tuần</span
+                  ><span data-en>Barista Foundations · 6 weeks</span>
+                </h3>
+                <p class="desc">
+                  <span data-vi
+                    >Online qua video; thi cuối khoá tại Phố cổ Hội An.</span
+                  >
+                  <span data-en
+                    >Online video lessons; final exam on-site in Hoi An.</span
+                  >
+                </p>
+                <span class="roast"
+                  ><span data-vi>Còn 1 ghế</span
+                  ><span data-en>1 seat left</span></span
+                >
+                <div class="meta">
+                  <span class="price"
+                    >1.890.000 ₫<span class="usd">· $77</span></span
+                  >
+                  <a class="add" href="#courses"
+                    ><span data-vi>Đăng ký →</span
+                    ><span data-en>Enroll →</span></a
+                  >
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== STORY ====================== -->
+      <section class="section" id="story">
+        <div class="wrap">
+          <div class="story">
+            <div class="story-img">
+              <img
+                src="https://images.unsplash.com/photo-1447934143428-44e0ad3a4bc1?auto=format&fit=crop&w=900&q=70"
+                alt="The roastery drum in morning light"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div>
+              <div class="eyebrow">
+                <span data-vi>Gia đình · Từ 2017</span
+                ><span data-en>Our family · since 2017</span>
+              </div>
+              <h2>
+                <span data-vi
+                  >Bắt đầu ở bếp nhà, với một chảo rang và một bà nội.</span
+                >
+                <span data-en
+                  >We started in the family kitchen, one roasting pan, my
+                  grandmother.</span
+                >
+              </h2>
+              <p>
+                <span data-vi
+                  >Bà rang cà phê cho khay bàn mỗi sáng. Mẹ nướng bánh mì trắng
+                  cho bà con chung xóm. Mở lò năm 2017. Một bếp, một lò, một gia
+                  đình ở ngoại ô Đà Nẵng.</span
+                >
+                <span data-en
+                  >She roasted coffee for the family each morning. My mother
+                  baked bread for the neighbours. We opened the roastery in
+                  2017. One kitchen, one oven, one family outside Da Nang.</span
+                >
+              </p>
+              <p>
+                <span data-vi
+                  >Cà phê Đà Lạt và Sơn La rang theo lô ngày, dán ngày rang lên
+                  từng gói. Bánh tây — croissant, kouign-amann, carrot cake —
+                  nướng bằng bơ Pháp và hạnh nhân gửi từ Marseille.</span
+                >
+                <span data-en
+                  >Da Lat and Son La coffees roasted in daily batches, a roast
+                  date stamped on every bag. Western pastries — croissants,
+                  kouign-amann, carrot cake — made with French butter and almond
+                  shipped from Marseille.</span
+                >
+              </p>
+              <p class="sign">— Cô Hằng &amp; gia đình</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== COURSES ====================== -->
+      <section
+        class="section"
+        id="courses"
+        style="background: var(--ink-surface)"
+      >
+        <div class="wrap">
+          <div class="section-hd">
+            <div>
+              <div class="n">
+                <span data-vi>Khoá học</span
+                ><span data-en>Workshops &amp; courses</span>
+              </div>
+              <h2>
+                <span data-vi>Học cùng người rang, học cùng người nướng.</span
+                ><span data-en
+                  >Learn from the roaster. Learn from the baker.</span
+                >
+              </h2>
+            </div>
+            <div class="lk">
+              <a href="#courses"
+                ><span data-vi>Tất cả khoá học →</span
+                ><span data-en>All courses →</span></a
+              >
+            </div>
+          </div>
+
+          <div class="feat-grid">
+            <article class="feat-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1572490122747-3968b75ccf67?auto=format&fit=crop&w=720&q=70"
+                  alt="Latte art pour"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="body">
+                <span class="tag"
+                  ><span data-vi>Online</span><span data-en>Online</span></span
+                >
+                <h3>
+                  Latte Art · <span data-vi>9 bài</span
+                  ><span data-en>9 lessons</span>
+                </h3>
+                <p class="desc">
+                  <span data-vi
+                    >Video kèm bình luận, thi bằng ảnh. Học ở nhà, thi ở
+                    quán.</span
+                  >
+                  <span data-en
+                    >Video lessons with comments, photo-based exam. Learn at
+                    home, finish at a café.</span
+                  >
+                </p>
+                <div class="meta">
+                  <span class="price"
+                    >790.000 ₫<span class="usd">· $32</span></span
+                  >
+                  <a class="add" href="#"
+                    ><span data-vi>Xem bài 1 miễn phí →</span
+                    ><span data-en>Watch lesson 1 free →</span></a
+                  >
+                </div>
+              </div>
+            </article>
+            <article class="feat-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1509446152067-d56c2e1cde3a?auto=format&fit=crop&w=720&q=70"
+                  alt="Baker shaping dough"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="body">
+                <span class="tag"
+                  ><span data-vi>Tại chỗ · Hội An</span
+                  ><span data-en>In-person · Hoi An</span></span
+                >
+                <h3>
+                  <span data-vi>Làm bánh Viennoiserie · cuối tuần</span
+                  ><span data-en>Viennoiserie Weekend</span>
+                </h3>
+                <p class="desc">
+                  <span data-vi
+                    >2 ngày tại Phố cổ Hội An, 8 người, bơ Pháp.</span
+                  >
+                  <span data-en
+                    >Two days in Hoi An's old town, eight people, French
+                    butter.</span
+                  >
+                </p>
+                <div class="meta">
+                  <span class="price"
+                    >3.200.000 ₫<span class="usd">· $130</span></span
+                  >
+                  <a class="add" href="#"
+                    ><span data-vi>Còn 3 ghế →</span
+                    ><span data-en>3 seats left →</span></a
+                  >
+                </div>
+              </div>
+            </article>
+            <article class="feat-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2084?auto=format&fit=crop&w=720&q=70"
+                  alt="Cupping spoons and glass"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="body">
+                <span class="tag"
+                  ><span data-vi>Online</span><span data-en>Online</span></span
+                >
+                <h3>Cupping &amp; Origin</h3>
+                <p class="desc">
+                  <span data-vi
+                    >Cà phê origin Sơn La và Đà Lạt; thi bằng cảm quan.</span
+                  >
+                  <span data-en
+                    >Son La and Da Lat origins; sensory-based final.</span
+                  >
+                </p>
+                <div class="meta">
+                  <span class="price"
+                    >1.290.000 ₫<span class="usd">· $52</span></span
+                  >
+                  <a class="add" href="#"
+                    ><span data-vi>Đăng ký →</span
+                    ><span data-en>Enroll →</span></a
+                  >
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== LOCATIONS ====================== -->
+      <section class="section" id="sites">
+        <div class="wrap">
+          <div class="section-hd">
+            <div>
+              <div class="n">
+                <span data-vi>Quán</span><span data-en>Our cafés</span>
+              </div>
+              <h2>
+                <span data-vi>Ba quán, một lò rang.</span
+                ><span data-en>Three cafés, one roastery.</span>
+              </h2>
+            </div>
+            <div class="lk">
+              <a href="#sites"
+                ><span data-vi>Bản đồ &amp; giờ →</span
+                ><span data-en>Map &amp; hours →</span></a
+              >
+            </div>
+          </div>
+
+          <div class="loc-grid">
+            <article class="loc-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1453614512568-c4054b9be2c2?auto=format&fit=crop&w=800&q=70"
+                  alt="Site 1 storefront"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="city">Site 1 · Đà Nẵng</div>
+              <h3>Ngô Quyền</h3>
+              <p class="addr">
+                <span data-vi
+                  >27 Ngô Quyền, Hải Châu, Đà Nẵng · Bánh nướng tại chỗ</span
+                ><span data-en
+                  >27 Ngo Quyen, Hai Chau, Da Nang · Pastries baked on
+                  site</span
+                >
+              </p>
+              <p class="hours">
+                <span data-vi>Thứ 2–CN · </span><span data-en>Mon–Sun · </span
+                ><b class="open"
+                  ><span data-vi>07:00 — 19:00</span
+                  ><span data-en>7 a.m. — 7 p.m.</span></b
+                >
+              </p>
+              <div class="roast-today">
+                <span
+                  ><span data-vi>Rang hôm nay</span
+                  ><span data-en>Today's roast</span></span
+                >
+                <b>Đà Lạt W.</b>
+              </div>
+            </article>
+            <article class="loc-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1521017432531-fbd62d7a603f?auto=format&fit=crop&w=800&q=70"
+                  alt="Site 2 storefront"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="city">Site 2 · Hội An</div>
+              <h3><span data-vi>Phố cổ</span><span data-en>Old town</span></h3>
+              <p class="addr">
+                <span data-vi
+                  >14 Phan Bội Châu, Minh An, Hội An · Cupping cuối tuần</span
+                ><span data-en
+                  >14 Phan Boi Chau, Minh An, Hoi An · Weekend cupping</span
+                >
+              </p>
+              <p class="hours">
+                <span data-vi>Thứ 3–CN · </span><span data-en>Tue–Sun · </span
+                ><b class="open"
+                  ><span data-vi>07:30 — 18:00</span
+                  ><span data-en>7:30 a.m. — 6 p.m.</span></b
+                >
+              </p>
+              <div class="roast-today">
+                <span
+                  ><span data-vi>Rang hôm nay</span
+                  ><span data-en>Today's roast</span></span
+                >
+                <b>Sơn La N.</b>
+              </div>
+            </article>
+            <article class="loc-card">
+              <div class="img">
+                <img
+                  src="https://images.unsplash.com/photo-1559925395-82d087d0fe3c?auto=format&fit=crop&w=800&q=70"
+                  alt="Site 3 storefront"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="city">
+                Site 3 · Đà Nẵng
+                <span style="color: var(--accent)"
+                  >· <span data-vi>Mở T9</span
+                  ><span data-en>Opens Sept</span></span
+                >
+              </div>
+              <h3>An Thuận</h3>
+              <p class="addr">
+                <span data-vi
+                  >8 An Thuận 12, Ngũ Hành Sơn, Đà Nẵng · Lò rang, phòng học,
+                  sân sau</span
+                ><span data-en
+                  >8 An Thuan 12, Ngu Hanh Son, Da Nang · Roastery, classroom,
+                  garden</span
+                >
+              </p>
+              <p class="hours">
+                <span data-vi>Mở của · </span><span data-en>Opens · </span
+                ><b>09.2026</b>
+              </p>
+              <div class="roast-today">
+                <span
+                  ><span data-vi>Sắp khai trương</span
+                  ><span data-en>Opening soon</span></span
+                >
+                <b>—</b>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== CTA BAND ====================== -->
+      <section class="band">
+        <div class="wrap">
+          <h2>
+            <span data-vi
+              >Một gói rang hôm nay, <em>gửi về cửa nhà bạn.</em></span
+            >
+            <span data-en
+              >A bag roasted today, <em>posted to your door.</em></span
+            >
+          </h2>
+          <p class="lede">
+            <span data-vi
+              >Thanh toán bằng ZaloPay, MoMo hoặc COD. GHN giao toàn quốc trong
+              2–3 ngày.</span
+            >
+            <span data-en
+              >Pay with ZaloPay, MoMo, or cash on delivery. GHN ships nationwide
+              in 2–3 days.</span
+            >
+          </p>
+          <div class="row">
+            <a href="#shop" class="cta"
+              ><span data-vi>Mua Đà Lạt Washed</span
+              ><span data-en>Shop Da Lat Washed</span></a
+            >
+            <a href="#shop" class="cta ghost"
+              ><span data-vi>Xem tất cả các blend</span
+              ><span data-en>Browse all blends</span></a
+            >
+          </div>
+          <p class="band-note">
+            <span data-vi
+              >Miễn phí giao hàng từ 500.000 ₫ · COD có mặt toàn quốc</span
+            >
+            <span data-en
+              >Free shipping over 500,000₫ · COD available nationwide</span
+            >
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- ====================== FOOTER ====================== -->
+    <footer class="ftr">
+      <div class="wrap">
+        <div class="ftr-grid">
+          <div>
+            <span class="lockup">
+              <span class="mark">Bacama<span class="dot">·</span></span>
+              <span class="sub">Coffee and more</span>
+            </span>
+            <p class="ftr-found">
+              <span data-vi>Lò nhỏ, rang ngày, nướng sớm — Đà Nẵng 2017.</span>
+              <span data-en
+                >Small roastery, daily batches, early bake — Da Nang 2017.</span
+              >
+            </p>
+            <div class="ftr-art" aria-hidden="true">
+              <svg
+                width="190"
+                height="60"
+                viewBox="0 0 190 60"
+                fill="none"
+                stroke="#C8923F"
+                stroke-width="1.3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="opacity: 0.6"
+              >
+                <path d="M14 38 q8 -6 16 0 t16 0 t16 0" />
+                <path d="M14 30 q8 -4 16 0 t16 0 t16 0" opacity="0.6" />
+                <circle cx="38" cy="46" r="3" />
+                <path d="M70 42 h28 a4 4 0 0 1 0 8 h-28 z" />
+                <path d="M70 42 q-2 8 -6 8 m32 -8 q2 6 6 8" />
+                <path
+                  d="M110 50 q6 -4 12 -6 q-4 -6 0 -10 q6 4 6 10 q-2 4 -6 4 q-2 0 -2 -1"
+                />
+                <path d="M150 28 v-8 h6 v8 m-3 0 v6" />
+                <path d="M158 32 q-2 6 -6 8" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h4><span data-vi>Cà phê</span><span data-en>Coffee</span></h4>
+            <ul>
+              <li><a href="#">Đà Lạt Washed</a></li>
+              <li><a href="#">Sơn La Natural</a></li>
+              <li>
+                <a href="#"
+                  ><span data-vi>Blend Nhà</span
+                  ><span data-en>House Blend</span></a
+                >
+              </li>
+              <li>
+                <a href="#"
+                  ><span data-vi>Gói 1kg</span><span data-en>1 kg bags</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4><span data-vi>Khoá học</span><span data-en>Workshops</span></h4>
+            <ul>
+              <li>
+                <a href="#"
+                  ><span data-vi>Căn bản barista</span
+                  ><span data-en>Barista foundations</span></a
+                >
+              </li>
+              <li>
+                <a href="#"
+                  ><span data-vi>Latte art</span
+                  ><span data-en>Latte art</span></a
+                >
+              </li>
+              <li><a href="#">Viennoiserie</a></li>
+              <li><a href="#">Cupping</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4><span data-vi>Liên hệ</span><span data-en>Contact</span></h4>
+            <ul>
+              <li>
+                <span data-vi>Site 1 — 27 Ngô Quyền, Đà Nẵng</span
+                ><span data-en>Site 1 — 27 Ngo Quyen, Da Nang</span>
+              </li>
+              <li>07:00 — 19:00 · 7/7</li>
+              <li>hang@bacama.vn</li>
+              <li>+84 236 000 0000</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ftr-bottom">
+          <p>
+            © 2026 Bacama · <span data-vi>GPKD Đà Nẵng</span
+            ><span data-en>Da Nang business licence</span> 0300/2026
+          </p>
+          <p>
+            <span data-vi
+              >Đang xem tiếng Việt ·
+              <a href="#" id="ftrLang" data-target="en">English</a></span
+            >
+            <span data-en
+              >Showing English ·
+              <a href="#" id="ftrLang2" data-target="vi">Tiếng Việt</a></span
+            >
+          </p>
+          <p>ZaloPay · MoMo · VNPay · COD · GHN</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // ============== Locale: one language at a time ==============
+      // The active locale lives only on <html lang>. CSS hides the other using
+      // html[lang="vi"] [data-en]{ display:none } (and the reverse). No two
+      // strings ever render together. Single source of truth.
+      function setLang(lang) {
+        document.documentElement.setAttribute("lang", lang);
+        try {
+          localStorage.setItem("bacama.locale", lang);
+        } catch (e) {}
+        document.querySelectorAll("#sl-vi, #sl-en").forEach(function (b) {
+          b.setAttribute("aria-current", "false");
+        });
+        const slBtn = document.getElementById("sl-" + lang);
+        if (slBtn) slBtn.setAttribute("aria-current", "true");
+      }
+
+      function getInitialLang() {
+        try {
+          const stored = localStorage.getItem("bacama.locale");
+          if (stored === "vi" || stored === "en") return stored;
+        } catch (e) {}
+        // Default Vietnamese, regardless of Accept-Language (per PRD FR-0.1)
+        return "vi";
+      }
+
+      // Wire each toggle: a single click is all it takes; the visible label is
+      // the OTHER language because that's what you'll switch to.
+      document
+        .getElementById("langToggle")
+        .addEventListener("click", function () {
+          const current = document.documentElement.getAttribute("lang");
+          setLang(current === "vi" ? "en" : "vi");
+        });
+      document.getElementById("sl-vi").addEventListener("click", function () {
+        setLang("vi");
+      });
+      document.getElementById("sl-en").addEventListener("click", function () {
+        setLang("en");
+      });
+      const ftrA = document.getElementById("ftrLang");
+      const ftrB = document.getElementById("ftrLang2");
+      if (ftrA)
+        ftrA.addEventListener("click", function (e) {
+          e.preventDefault();
+          setLang("en");
+        });
+      if (ftrB)
+        ftrB.addEventListener("click", function (e) {
+          e.preventDefault();
+          setLang("vi");
+        });
+
+      setLang(getInitialLang());
+
+      // ============== Splash entrance ==============
+      // Once the visitor enters, remember and skip the splash for 24h.
+      function closeSplash() {
+        const splash = document.getElementById("splash");
+        if (!splash) return;
+        splash.classList.add("gone");
+        document.body.classList.remove("splash-locked");
+        try {
+          localStorage.setItem("bacama.entered", String(Date.now()));
+        } catch (e) {}
+      }
+      function shouldShowSplash() {
+        try {
+          const ts = localStorage.getItem("bacama.entered");
+          if (!ts) return true;
+          // 24 hour skip
+          return Date.now() - Number(ts) > 24 * 60 * 60 * 1000;
+        } catch (e) {
+          return true;
+        }
+      }
+      document
+        .getElementById("enterBtn")
+        .addEventListener("click", closeSplash);
+      if (!shouldShowSplash()) {
+        // Skip immediately on warm return-visit
+        const splash = document.getElementById("splash");
+        splash.classList.add("gone");
+        document.body.classList.remove("splash-locked");
+      }
+
+      // ============== Header shrink on scroll ==============
+      (function () {
+        const hdr = document.getElementById("hdr");
+        let ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(function () {
+            const y = window.scrollY || 0;
+            hdr.classList.toggle("scrolled", y > 12);
+            ticking = false;
+          });
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+      })();
+    </script>
+  </body>
+</html>
