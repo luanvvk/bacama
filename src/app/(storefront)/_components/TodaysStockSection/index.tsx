@@ -8,7 +8,7 @@ import { CourseCard } from '@/components/courses/CourseCard';
 import { ProductCard } from '@/components/shop/ProductCard';
 
 const dalatWashed = getProductBySlug('dalat-washed')!;
-const croissant = getProductBySlug('croissant-aux-amandes')!;
+const houseBlend = getProductBySlug('house-blend')!;
 const baristaFoundations = getCourseBySlug('barista-foundations')!;
 
 export const TodaysStockSection = () => (
@@ -30,7 +30,7 @@ export const TodaysStockSection = () => (
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <ProductCard product={dalatWashed} featured />
-        <ProductCard product={croissant} />
+        <ProductCard product={houseBlend} />
         <CourseCard course={baristaFoundations} />
       </div>
     </Container>
