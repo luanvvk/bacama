@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
-import { PRODUCTS, type ProductCategory } from '@/constants/products';
+import { PRODUCTS, type Product, type ProductCategory } from '@/constants/products';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Label } from '@/components/ui/Label';
 import {
@@ -21,13 +21,17 @@ const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
 
 type SortOrder = 'featured' | 'price-asc' | 'price-desc';
 
-const sortProducts = (products: typeof PRODUCTS, order: SortOrder) => {
+const sortProducts = (products: Product[], order: SortOrder) => {
   if (order === 'price-asc') return [...products].sort((a, b) => a.priceVnd - b.priceVnd);
   if (order === 'price-desc') return [...products].sort((a, b) => b.priceVnd - a.priceVnd);
   return products;
 };
 
-export const ShopBrowser = () => {
+interface ShopBrowserProps {
+  products?: Product[];
+}
+
+export const ShopBrowser = ({ products = PRODUCTS }: ShopBrowserProps) => {
   const [categories, setCategories] = useState<Set<ProductCategory>>(new Set());
   const [sortOrder, setSortOrder] = useState<SortOrder>('featured');
 
@@ -42,10 +46,10 @@ export const ShopBrowser = () => {
   const filteredProducts = useMemo(() => {
     const filtered =
       categories.size === 0
-        ? PRODUCTS
-        : PRODUCTS.filter((product) => categories.has(product.category));
+        ? products
+        : products.filter((product) => categories.has(product.category));
     return sortProducts(filtered, sortOrder);
-  }, [categories, sortOrder]);
+  }, [categories, products, sortOrder]);
 
   return (
     <div className="grid gap-8 py-8 lg:grid-cols-[230px_1fr]">
