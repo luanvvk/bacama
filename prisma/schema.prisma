@@ -12,8 +12,14 @@ datasource db {
   provider = "postgresql"
 }
 
+// Privilege only. "student" and "customer-who-has-ordered" are relationships
+// derived from Enrollment / Order, not roles — a single-valued enum cannot
+// express someone who both buys coffee and takes a course. A guest has no User
+// row at all. Flat by design: requireRole takes the explicit list of roles that
+// may pass, and admin always passes. See docs/BUILD-PLAN.md §4.4.
 enum Role {
-  student
+  customer
+  staff
   instructor
   admin
 }
@@ -127,7 +133,7 @@ model User {
   clerkId         String   @unique
   email           String   @unique
   name            String
-  role            Role     @default(student)
+  role            Role     @default(customer)
   preferredLocale Locale   @default(vi)
   homeSiteId      String?
   homeSite        Site?    @relation(fields: [homeSiteId], references: [id], onDelete: SetNull)

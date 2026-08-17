@@ -146,14 +146,15 @@ schema itself can't express:
 
 ### 4.1 Deliberate divergences from the PRD
 
-| PRD says                                               | Schema has                                 | Why                                                                                                                                           |
-| ------------------------------------------------------ | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Session`                                              | `CourseSession`                            | "Session" next to auth is genuinely ambiguous. Same entity, clearer name.                                                                     |
-| `Order.total`                                          | `subtotalVnd` / `shippingVnd` / `totalVnd` | A single `total` can't produce a correct receipt line-by-line.                                                                                |
-| —                                                      | `Order.ref`                                | Human-facing order reference (`#2418`), distinct from the internal `cuid()`. The existing checkout already generates one.                     |
-| —                                                      | `OrderItem.nameSnapshot`                   | A receipt must show what was bought _at purchase time_, even if the product is later renamed or deleted.                                      |
-| —                                                      | `BrewGuide` model                          | The existing `/product/[slug]` page renders a brew-guide table; it needed somewhere to live.                                                  |
-| `StockMovement`, `SalesFact`, `RoastBatch`, `GreenLot` | **absent, deliberately**                   | POS owns in-store sales; the roastery's batch/yield bookkeeping is out of scope. Do not reintroduce these as "small additions" — see risk R3. |
+| PRD says                                               | Schema has                                 | Why                                                                                                                                                                                                                                   |
+| ------------------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Session`                                              | `CourseSession`                            | "Session" next to auth is genuinely ambiguous. Same entity, clearer name.                                                                                                                                                             |
+| `Role = student \| instructor \| admin`                | `customer \| staff \| instructor \| admin` | `student` does zero authorization work (lesson access is enrolment-scoped) and mislabels every coffee buyer; `staff` was missing even though the built admin UI already displays it, forcing café staff to be made `admin`. See §4.4. |
+| `Order.total`                                          | `subtotalVnd` / `shippingVnd` / `totalVnd` | A single `total` can't produce a correct receipt line-by-line.                                                                                                                                                                        |
+| —                                                      | `Order.ref`                                | Human-facing order reference (`#2418`), distinct from the internal `cuid()`. The existing checkout already generates one.                                                                                                             |
+| —                                                      | `OrderItem.nameSnapshot`                   | A receipt must show what was bought _at purchase time_, even if the product is later renamed or deleted.                                                                                                                              |
+| —                                                      | `BrewGuide` model                          | The existing `/product/[slug]` page renders a brew-guide table; it needed somewhere to live.                                                                                                                                          |
+| `StockMovement`, `SalesFact`, `RoastBatch`, `GreenLot` | **absent, deliberately**                   | POS owns in-store sales; the roastery's batch/yield bookkeeping is out of scope. Do not reintroduce these as "small additions" — see risk R3.                                                                                         |
 
 ### 4.2 Invariants the database cannot enforce — enforce in application code
 
@@ -171,6 +172,56 @@ schema itself can't express:
 lesson `completed`/`current` from `Progress`; seats-left from
 `capacity - seatsBooked`. The existing mock constants store some of these as
 literal strings — that's a mock artifact, not a model to copy.
+
+### 4.4 Identity, roles, and who a "customer" is
+
+Three separate concepts. Conflating them is how authorization bugs happen.
+
+**1. `Role` is privilege only — what you may do.**
+
+```prisma
+enum Role { customer  staff  instructor  admin }   // default: customer
+```
+
+| Role         | May do                                                                                   |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| `customer`   | Buy beans/pastries/courses; see **own** orders and enrolments. Default on signup.        |
+| `staff`      | Site-scoped ops at `homeSiteId`: stock, roast dates, bakery items, menu, today's orders. |
+| `instructor` | Own courses: lessons, video, replies, attendance. **No** site ops (decided, see below).  |
+| `admin`      | Everything, all sites.                                                                   |
+
+The enum is **flat, not hierarchical.** `requireRole` takes the explicit list of
+roles that may pass: `requireRole(['staff','admin'])` for stock,
+`requireRole(['instructor','admin'])` for the course builder. **`admin` always
+passes** — implement that once in the Clerk adapter so no call site can forget it.
+
+**Role and site are separate axes.** `role` says _what_; `homeSiteId` says
+_where_. Both are checked — a `staff` user at Site 1 editing Site 2's bakery
+must fail. `homeSiteId` is meaningful for `staff`/`instructor` only.
+
+**2. Relationships are derived — never stored as a role.**
+
+| Concept  | How to get it                                       |
+| -------- | --------------------------------------------------- |
+| student  | a `User` with ≥1 `Enrollment`                       |
+| customer | a `User` with ≥1 `Order` (distinct from the _role_) |
+
+A single-valued enum cannot express "buys coffee **and** takes a course" — which
+describes the best customers. And access to a lesson is **never**
+`requireRole('student')`; it is "is this user enrolled in _this_ course",
+i.e. enrolment-scoped. So `student` as a role would do no authorization work
+at all. `/admin/students` is an `Enrollment` query, not a role filter.
+
+**3. A guest has no `User` row at all.** `getCurrentUser()` → `null`;
+`Order.userId` → `null`. There is deliberately **no `guest` role** — a role
+lives on a `User` row, so having one would invite creating `User` rows for
+guests and make "is this a real account?" ambiguous. Guest identity lives where
+it belongs: `customerName`, `phone`, `email` snapshotted on the `Order`.
+Guest order lookup must therefore be non-enumerable (Task 2.11).
+
+**Decided 2026-08-17:** `instructor` does **not** imply `staff`. A teacher
+manages courses, not bean prices. Someone needing both gets the higher role
+explicitly. This keeps contract instructors safe to onboard.
 
 ---
 
@@ -404,25 +455,25 @@ roast date, prints today's online orders — all persisted. A site-scoped staff
 user provably **cannot** edit another site's data. Every `toast()` placeholder
 is either a real write or an honestly-labelled unbuilt feature.
 
-| #    | Task                                                                                                                   | Files                                  |
-| ---- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| 5.1  | `requireRole(['instructor','admin'])` on the whole `/admin` segment — layout **and** every route handler               | `src/app/admin/layout.tsx`             |
-| 5.2  | `src/lib/auth/scoped.ts` — `homeSiteId` scoping helper; admin crosses sites, staff don't                               | `src/lib/auth/scoped.ts`               |
-| 5.3  | Catalogue writes: price, stock, `roastDate`, `featuredUntil` (replaces `StockPanel`'s toast)                           | `admin/catalog/`, `admin/_components/` |
-| 5.4  | Bakery CRUD: names, description, `bakesAt`, `sellOutBy`, `handoff`                                                     | `admin/bakery/`                        |
-| 5.5  | Menu CRUD (`section` grouping)                                                                                         | `admin/menu/`                          |
-| 5.6  | Announcement editor with active window + site scope                                                                    | `admin/announcements/`                 |
-| 5.7  | Site editor: address, hours, `isActive`, today's roast                                                                 | `admin/sites/`                         |
-| 5.8  | Orders + shipments on real data; COD → `completed` transition; `trackShipment` refresh                                 | `admin/orders/`, `admin/shipments/`    |
-| 5.9  | Real KPI tiles (replace hardcoded `KPI_TILES`) — online orders/revenue only. **No POS data, no cross-channel rollup.** | `admin/_components/KpiTiles/`          |
-| 5.10 | Students + staff directories on real `User` data. **Never expose more PII than the task needs.**                       | `admin/students/`, `admin/staff/`      |
-| 5.11 | Roster + attendance, markable by that course's instructor                                                              | `admin/sessions/[id]/attendance/`      |
-| 5.12 | Delete now-unused mock constants; keep `routes.ts`/`nav.ts`                                                            | `src/constants/`                       |
-| 5.13 | Migrate admin strings to `/messages/*` (lower priority — staff-facing, and staff are Vietnamese-speaking)              | `messages/*.json`                      |
+| #    | Task                                                                                                                                                                                                                        | Files                                  |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| 5.1  | `requireRole(['staff','instructor','admin'])` on the `/admin` segment — layout **and** every route handler. Per-screen role lists are narrower; see §4.4.                                                                   | `src/app/admin/layout.tsx`             |
+| 5.2  | `src/lib/auth/scoped.ts` — `homeSiteId` scoping helper; admin crosses sites, staff don't                                                                                                                                    | `src/lib/auth/scoped.ts`               |
+| 5.3  | Catalogue writes: price, stock, `roastDate`, `featuredUntil` (replaces `StockPanel`'s toast). `['staff','admin']`                                                                                                           | `admin/catalog/`, `admin/_components/` |
+| 5.4  | Bakery CRUD: names, description, `bakesAt`, `sellOutBy`, `handoff`. `['staff','admin']`                                                                                                                                     | `admin/bakery/`                        |
+| 5.5  | Menu CRUD (`section` grouping). `['staff','admin']`                                                                                                                                                                         | `admin/menu/`                          |
+| 5.6  | Announcement editor with active window + site scope. `['staff','admin']`                                                                                                                                                    | `admin/announcements/`                 |
+| 5.7  | Site editor: address, hours, `isActive`, today's roast. `['admin']` — site config is not day-to-day ops                                                                                                                     | `admin/sites/`                         |
+| 5.8  | Orders + shipments on real data; COD → `completed` transition; `trackShipment` refresh. `['staff','admin']`, but **refunds are `['admin']`**                                                                                | `admin/orders/`, `admin/shipments/`    |
+| 5.9  | Real KPI tiles (replace hardcoded `KPI_TILES`) — online orders/revenue only. **No POS data, no cross-channel rollup.**                                                                                                      | `admin/_components/KpiTiles/`          |
+| 5.10 | Students + staff directories on real `User` data — students via an `Enrollment` query, **not** a role filter (§4.4). `['admin']`; staff-role management is `['admin']` only. **Never expose more PII than the task needs.** | `admin/students/`, `admin/staff/`      |
+| 5.11 | Roster + attendance, markable by that course's instructor. `['instructor','admin']` + per-course ownership check                                                                                                            | `admin/sessions/[id]/attendance/`      |
+| 5.12 | Delete now-unused mock constants; keep `routes.ts`/`nav.ts`                                                                                                                                                                 | `src/constants/`                       |
+| 5.13 | Migrate admin strings to `/messages/*` (lower priority — staff-facing, and staff are Vietnamese-speaking)                                                                                                                   | `messages/*.json`                      |
 
 **Blockers:**
 
-- **B5-a (decision):** exact role→permission matrix. Who can refund? Who can delete a product? Who sees customer PII? Currently undefined and it must be explicit before write access ships.
+- **B5-a (resolved 2026-08-17):** role→permission matrix is now defined — see §4.4 and the per-task role lists above. Refunds and PII are `admin`-only; `staff` is site-scoped ops. Any _new_ admin screen must state its role list explicitly rather than inheriting the segment guard.
 - **B5-b (owner, business):** Vercel Hobby **forbids commercial use** — upgrade to Pro (~$20/mo) before real launch. A suspension mid-launch is exactly the kind of loss to avoid.
 - **B5-c (decision):** audit trail for staff writes (who changed a price)? Not modelled. Cheap to add now, expensive after a dispute.
 - **B5-d (risk):** admin is the highest-privilege surface. Every route handler needs its own check — a guarded layout does **not** protect a route handler.
@@ -486,22 +537,22 @@ data loss, with a stated rollback plan.
 Open questions, with the assumption currently in force. Revisit at the phase
 noted; **don't silently resolve one in code.**
 
-| id  | Question                                         | Current assumption                           | Decide by                                                    |
-| --- | ------------------------------------------------ | -------------------------------------------- | ------------------------------------------------------------ |
-| Q1  | Client-side data-fetching library?               | None — Server Components + Route Handlers    | When a screen needs client cache                             |
-| Q2  | VNPay QR + bank transfer: real or stub?          | Honest stubs behind the interface            | Phase 2                                                      |
-| Q3  | How are `instructor`/`admin` granted?            | Manual promotion in Clerk dashboard          | Phase 3                                                      |
-| Q4  | Guest orders claimable by a later account?       | No — guest stays guest                       | Phase 3                                                      |
-| Q5  | Signed-video TTL / concurrent-stream abuse?      | Short TTL, no abuse handling                 | Phase 4                                                      |
-| Q6  | Comment moderation + reporting?                  | None built; comments enrolled-only           | Phase 4                                                      |
-| Q7  | Full role→permission matrix?                     | instructor = own courses; admin = everything | Phase 5                                                      |
-| Q8  | Audit trail for staff writes?                    | Not modelled                                 | Phase 5                                                      |
-| Q9  | `/menu` real content?                            | Route ships only when content exists         | Phase 1                                                      |
-| Q10 | Third locale ever?                               | No — `*Vi`/`*En` columns assume exactly two  | If a third is wanted, switch to Json or a translations table |
-| Q11 | Nav mega-menu's 4 identical `/shop` links?       | Known issue, unresolved                      | Phase 1                                                      |
-| Q12 | `/teach` authoring console scope?                | Minimal placeholder until Phase 4            | Phase 4                                                      |
-| Q13 | Subscriptions ("Roast of the week")?             | Out of scope, not modelled                   | Post-launch                                                  |
-| Q14 | Wholesale ordering (a `/wholesale` page exists)? | Marketing page only, no real flow            | Post-launch                                                  |
+| id  | Question                                         | Current assumption                                                                      | Decide by                                                    |
+| --- | ------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Q1  | Client-side data-fetching library?               | None — Server Components + Route Handlers                                               | When a screen needs client cache                             |
+| Q2  | VNPay QR + bank transfer: real or stub?          | Honest stubs behind the interface                                                       | Phase 2                                                      |
+| Q3  | How are `staff`/`instructor`/`admin` granted?    | Manual promotion in Clerk dashboard — **no self-serve path to any non-`customer` role** | Phase 3                                                      |
+| Q4  | Guest orders claimable by a later account?       | No — guest stays guest                                                                  | Phase 3                                                      |
+| Q5  | Signed-video TTL / concurrent-stream abuse?      | Short TTL, no abuse handling                                                            | Phase 4                                                      |
+| Q6  | Comment moderation + reporting?                  | None built; comments enrolled-only                                                      | Phase 4                                                      |
+| Q7  | ~~Full role→permission matrix?~~                 | **Resolved 2026-08-17** — see §4.4                                                      | done                                                         |
+| Q8  | Audit trail for staff writes?                    | Not modelled                                                                            | Phase 5                                                      |
+| Q9  | `/menu` real content?                            | Route ships only when content exists                                                    | Phase 1                                                      |
+| Q10 | Third locale ever?                               | No — `*Vi`/`*En` columns assume exactly two                                             | If a third is wanted, switch to Json or a translations table |
+| Q11 | Nav mega-menu's 4 identical `/shop` links?       | Known issue, unresolved                                                                 | Phase 1                                                      |
+| Q12 | `/teach` authoring console scope?                | Minimal placeholder until Phase 4                                                       | Phase 4                                                      |
+| Q13 | Subscriptions ("Roast of the week")?             | Out of scope, not modelled                                                              | Post-launch                                                  |
+| Q14 | Wholesale ordering (a `/wholesale` page exists)? | Marketing page only, no real flow                                                       | Post-launch                                                  |
 
 ---
 
