@@ -16,7 +16,6 @@ import { ProductCard } from '@/components/shop/ProductCard';
 
 const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
   { value: 'coffee', label: 'Coffee' },
-  { value: 'bakery', label: 'Bakery' },
   { value: 'gift', label: 'Gift sets' },
 ];
 

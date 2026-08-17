@@ -14,19 +14,19 @@ describe('ShopBrowser', () => {
   it('filters to just the checked category', async () => {
     render(<ShopBrowser />);
 
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Bakery' }));
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Gift sets' }));
 
-    const bakeryCount = PRODUCTS.filter((product) => product.category === 'bakery').length;
-    expect(screen.getByText(`${bakeryCount} products`)).toBeInTheDocument();
+    const giftCount = PRODUCTS.filter((product) => product.category === 'gift').length;
+    expect(screen.getByText(`${giftCount} products`)).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Đà Lạt Washed' })).not.toBeInTheDocument();
   });
 
   it('shows every product again once the category is unchecked', async () => {
     render(<ShopBrowser />);
 
-    const bakeryCheckbox = screen.getByRole('checkbox', { name: 'Bakery' });
-    await userEvent.click(bakeryCheckbox);
-    await userEvent.click(bakeryCheckbox);
+    const giftCheckbox = screen.getByRole('checkbox', { name: 'Gift sets' });
+    await userEvent.click(giftCheckbox);
+    await userEvent.click(giftCheckbox);
 
     expect(screen.getByText(`${PRODUCTS.length} products`)).toBeInTheDocument();
   });

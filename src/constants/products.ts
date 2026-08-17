@@ -1,4 +1,4 @@
-export type ProductCategory = 'coffee' | 'bakery' | 'gift';
+export type ProductCategory = 'coffee' | 'gift';
 export type RoastLevel = 'light' | 'medium' | 'dark';
 
 export interface BrewGuide {
@@ -93,30 +93,6 @@ export const PRODUCTS: Product[] = [
       'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=620&q=72',
     freshness: 'Roasted 2 days ago',
     swatches: ['250g', '1kg'],
-  },
-  {
-    id: 'croissant-amandes',
-    slug: 'croissant-aux-amandes',
-    name: 'Croissant aux amandes',
-    category: 'bakery',
-    priceVnd: 45000,
-    description: 'Out at 05:00. In-store or GrabFood only.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=620&q=72',
-    freshness: 'Back tomorrow',
-    freshnessLow: true,
-    soldOut: true,
-  },
-  {
-    id: 'kouign-amann',
-    slug: 'kouign-amann',
-    name: 'Kouign-amann',
-    category: 'bakery',
-    priceVnd: 52000,
-    description: 'French butter, crisp caramel, lightly salted.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=620&q=72',
-    freshness: 'Out at 05:20 · 12 left',
   },
   {
     id: 'three-origins-box',

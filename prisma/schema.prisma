@@ -31,7 +31,6 @@ enum Locale {
 
 enum ProductCategory {
   coffee
-  bakery
   gift
 }
 

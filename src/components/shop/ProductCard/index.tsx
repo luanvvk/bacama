@@ -12,7 +12,6 @@ export interface ProductCardProps {
 
 const CATEGORY_LABEL: Record<Product['category'], string> = {
   coffee: 'Coffee blend',
-  bakery: 'Bakery',
   gift: 'Gift set',
 };
 

@@ -21,7 +21,7 @@ import { PRODUCTS, type Product, type ProductCategory } from '@/constants/produc
 import { formatVnd } from '@/lib/format-price';
 import { toast } from '@/lib/toast';
 
-type CatalogFilter = ProductCategory | 'all';
+type CatalogFilter = ProductCategory | 'all' | 'bakery';
 
 interface CatalogBrowserProps {
   title: string;
@@ -35,8 +35,6 @@ const stockFor = (product: Product) =>
     'dalat-washed': 42,
     'sonla-natural': 6,
     'house-blend': 31,
-    'croissant-amandes': 0,
-    'kouign-amann': 12,
     'three-origins-box': 19,
   })[product.id] ?? 0;
 
@@ -45,7 +43,8 @@ export const CatalogBrowser = ({ title, description, filter, newLabel }: Catalog
   const [status, setStatus] = useState<'all' | 'live' | 'low'>('all');
 
   const products = PRODUCTS.filter((product) => {
-    const matchesCategory = filter === 'all' || product.category === filter;
+    const matchesCategory =
+      filter === 'bakery' ? false : filter === 'all' || product.category === filter;
     const matchesQuery = `${product.name} ${product.origin ?? ''}`
       .toLowerCase()
       .includes(query.toLowerCase());
@@ -83,7 +82,9 @@ export const CatalogBrowser = ({ title, description, filter, newLabel }: Catalog
               {
                 PRODUCTS.filter(
                   (product) =>
-                    (filter === 'all' || product.category === filter) && stockFor(product) > 0,
+                    (filter === 'bakery' || filter === 'all' || product.category === filter) &&
+                    filter !== 'bakery' &&
+                    stockFor(product) > 0,
                 ).length
               }
             </p>
@@ -94,10 +95,11 @@ export const CatalogBrowser = ({ title, description, filter, newLabel }: Catalog
           <CardContent className="pt-4">
             <p className="text-muted-foreground font-mono text-xs uppercase">Total stock</p>
             <p className="font-heading mt-2 text-2xl">
-              {PRODUCTS.filter((product) => filter === 'all' || product.category === filter).reduce(
-                (total, product) => total + stockFor(product),
-                0,
-              )}
+              {filter === 'bakery'
+                ? 0
+                : PRODUCTS.filter(
+                    (product) => filter === 'all' || product.category === filter,
+                  ).reduce((total, product) => total + stockFor(product), 0)}
             </p>
             <p className="text-muted-foreground text-xs">units at Site 01</p>
           </CardContent>
@@ -109,6 +111,7 @@ export const CatalogBrowser = ({ title, description, filter, newLabel }: Catalog
               {
                 PRODUCTS.filter(
                   (product) =>
+                    filter !== 'bakery' &&
                     (filter === 'all' || product.category === filter) &&
                     stockFor(product) > 0 &&
                     stockFor(product) <= 10,

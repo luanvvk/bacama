@@ -4,7 +4,7 @@ import { ProductCard } from '../index';
 import { PRODUCTS } from '@/constants/products';
 
 const [dalatWashed] = PRODUCTS;
-const soldOutProduct = PRODUCTS.find((product) => product.soldOut)!;
+const soldOutProduct = { ...dalatWashed, soldOut: true };
 
 describe('ProductCard', () => {
   it('renders the product name, description, and price', () => {
