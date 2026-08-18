@@ -33,6 +33,7 @@ export const PaymentProcessing = () => {
   if (!order) return null;
 
   const method = getPaymentMethod(order.paymentMethod);
+  const isPickup = order.shipping.deliveryOption === 'pickup';
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
@@ -122,6 +123,7 @@ export const PaymentProcessing = () => {
         subtotalVnd={order.subtotalVnd}
         totalVnd={order.totalVnd}
         showBreakdown={false}
+        shipToLabel={isPickup ? 'Contact' : 'Ship to'}
         shipTo={{
           name: order.shipping.fullName,
           phone: order.shipping.phone,

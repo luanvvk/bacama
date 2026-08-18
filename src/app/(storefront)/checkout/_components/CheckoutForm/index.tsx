@@ -41,6 +41,14 @@ export const CheckoutForm = () => {
   const existingOrder = useCheckoutStore((state) => state.order);
   const placeOrder = useCheckoutStore((state) => state.placeOrder);
 
+  // Bakery items and drinks are pickup-only (perishable, site-fulfilled) —
+  // a cart containing either forces the whole order to pickup rather than
+  // offering nationwide GHN delivery for the parts that could ship.
+  const requiresPickup = items.some((item) => item.kind === 'bakery' || item.kind === 'menu');
+  const deliveryOptions = requiresPickup
+    ? DELIVERY_OPTIONS.filter((option) => option.value === 'pickup')
+    : DELIVERY_OPTIONS;
+
   const { control, handleSubmit, formState } = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
@@ -49,7 +57,9 @@ export const CheckoutForm = () => {
       phone: existingOrder?.shipping.phone ?? '',
       address: existingOrder?.shipping.address ?? '',
       province: existingOrder?.shipping.province ?? PROVINCES[0],
-      deliveryOption: existingOrder?.shipping.deliveryOption ?? DELIVERY_OPTIONS[0].value,
+      deliveryOption: requiresPickup
+        ? 'pickup'
+        : (existingOrder?.shipping.deliveryOption ?? DELIVERY_OPTIONS[0].value),
       note: existingOrder?.shipping.note ?? '',
     },
   });
@@ -122,9 +132,16 @@ export const CheckoutForm = () => {
                 control={control}
                 name="deliveryOption"
                 label="How to receive"
-                options={DELIVERY_OPTIONS}
+                options={deliveryOptions}
+                disabled={requiresPickup}
               />
             </div>
+            {requiresPickup && (
+              <Text variant="muted" className="text-xs">
+                Bakery items and drinks in your basket are pickup-only, so the whole order will be
+                collected at Lý Tự Trọng.
+              </Text>
+            )}
             <ControlledTextarea
               control={control}
               name="note"
@@ -139,6 +156,7 @@ export const CheckoutForm = () => {
         items={items}
         subtotalVnd={subtotalVnd}
         totalVnd={subtotalVnd}
+        shippingLabel={requiresPickup ? 'Pickup' : 'Shipping · GHN'}
         hint="Your coffee is roasted before it ships. Today's order rides tomorrow's batch."
       />
 

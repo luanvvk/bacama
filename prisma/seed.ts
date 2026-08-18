@@ -28,12 +28,6 @@ import { PrismaClient } from '../src/generated/prisma/client';
 // A rename/cleanup step retargets or removes rows superseded by real data
 // rather than leaving them as stale duplicates.
 
-// Grab has no confirmed per-item deep-link format, so every "grabfood"
-// handoff item points at the merchant listing itself (real, always works)
-// rather than a guessed item-level URL.
-const GRABFOOD_MERCHANT_URL =
-  'https://food.grab.com/vn/vi/restaurant/bacama-coffee-more-delivery/5-C3KEGFM1VGN2N2';
-
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL,
 });
@@ -311,8 +305,10 @@ const PRODUCTS = [
 // All 48 real items from the live GrabFood "Homebaked Cake" category —
 // croissants, cakes, cheesecakes, savory quiches, sandwiches, breads, and
 // salads (this category is the listing's catch-all for baked/prepared food,
-// not just cake despite its name). All handed off via GrabFood, matching how
-// this data was sourced.
+// not just cake despite its name). Sourced with `handoff: 'grabfood'` per
+// item (how each was actually sold at scrape time) — the seed loop below
+// overrides this to 'pickup' uniformly, since the business now sells these
+// directly through the site (2026-08-18 decision).
 const BAKERY_ITEMS = [
   {
     slug: 'sunshine-croissant',
@@ -1358,10 +1354,11 @@ const seed = async () => {
 
   const liveSiteId = sites.get('ly-tu-trong')!;
   for (const item of BAKERY_ITEMS) {
-    const data = {
-      ...item,
-      handoffUrl: item.handoff === 'grabfood' ? GRABFOOD_MERCHANT_URL : null,
-    };
+    // Every item's literal `handoff: 'grabfood'` reflects how it was
+    // sourced (the live GrabFood listing), not how it's sold — the business
+    // has since decided to sell bakery items directly, site pickup only, so
+    // that supersedes the scraped value here rather than in the literals.
+    const data = { ...item, handoff: 'pickup' as const, handoffUrl: null };
     await prisma.bakeryItem.upsert({
       where: { siteId_slug: { siteId: liveSiteId, slug: item.slug } },
       update: data,

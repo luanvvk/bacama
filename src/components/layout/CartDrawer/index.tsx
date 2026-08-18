@@ -27,8 +27,12 @@ export const CartDrawer = () => {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const subtotalVnd = useCartTotalVnd();
 
+  // A bakery/drink item in the cart forces the whole order to pickup at
+  // checkout (see CheckoutForm) — no GHN shipping applies, so the nationwide
+  // shipping copy below would be misleading.
+  const requiresPickup = items.some((item) => item.kind === 'bakery' || item.kind === 'menu');
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD_VND - subtotalVnd);
-  const shippingLabel = remainingForFreeShipping === 0 ? 'Free' : formatVnd(0);
+  const shippingValueLabel = remainingForFreeShipping === 0 ? 'Free' : formatVnd(0);
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => (open ? undefined : close())}>
@@ -40,7 +44,9 @@ export const CartDrawer = () => {
 
         <div className="flex-1 overflow-y-auto px-4">
           <p className="bg-muted mb-4 rounded-lg px-3 py-2 text-sm">
-            {remainingForFreeShipping === 0 ? (
+            {requiresPickup ? (
+              'Bakery items and drinks are pickup-only — the whole order will be collected at Lý Tự Trọng.'
+            ) : remainingForFreeShipping === 0 ? (
               'You qualify for free shipping.'
             ) : (
               <>
@@ -98,8 +104,8 @@ export const CartDrawer = () => {
             <span className="font-mono font-semibold">{formatVnd(subtotalVnd)}</span>
           </div>
           <div className="text-muted-foreground flex justify-between text-sm">
-            <span>Shipping · GHN</span>
-            <span className="font-mono">{shippingLabel}</span>
+            <span>{requiresPickup ? 'Pickup' : 'Shipping · GHN'}</span>
+            <span className="font-mono">{shippingValueLabel}</span>
           </div>
           <div className="flex justify-between border-t pt-2 text-base font-semibold">
             <span>Total</span>

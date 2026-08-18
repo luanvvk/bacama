@@ -71,4 +71,29 @@ describe('CheckoutForm', () => {
 
     expect(replace).toHaveBeenCalledWith('/shop');
   });
+
+  it('forces pickup-only delivery when the cart has a bakery or drink item', async () => {
+    useCartStore.setState({
+      items: [
+        { ...DALAT_WASHED, quantity: 1 },
+        { id: 'croissant', name: 'Croissant', priceVnd: 75000, quantity: 1, kind: 'bakery' },
+      ],
+      isOpen: false,
+    });
+    const user = userEvent.setup();
+    render(<CheckoutForm />);
+
+    expect(screen.getByLabelText('How to receive')).toHaveTextContent('Collect at a café');
+    expect(screen.getByLabelText('How to receive')).toHaveAttribute('data-disabled');
+    expect(
+      screen.getByText(/pickup-only, so the whole order will be collected/),
+    ).toBeInTheDocument();
+
+    await fillShippingFields(user);
+    await user.click(screen.getByRole('button', { name: 'Pay with ZaloPay' }));
+
+    expect(useCheckoutStore.getState().order).toMatchObject({
+      shipping: { deliveryOption: 'pickup' },
+    });
+  });
 });

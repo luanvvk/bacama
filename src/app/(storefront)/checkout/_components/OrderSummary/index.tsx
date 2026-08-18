@@ -18,8 +18,10 @@ export interface OrderSummaryProps {
   subtotalVnd: number;
   totalVnd: number;
   totalLabel?: string;
+  shippingLabel?: string;
   showBreakdown?: boolean;
   shipTo?: OrderSummaryShipTo;
+  shipToLabel?: string;
   hint?: ReactNode;
   className?: string;
 }
@@ -30,8 +32,10 @@ export const OrderSummary = ({
   subtotalVnd,
   totalVnd,
   totalLabel = 'Total',
+  shippingLabel = 'Shipping · GHN',
   showBreakdown = true,
   shipTo,
+  shipToLabel = 'Ship to',
   hint,
   className,
 }: OrderSummaryProps) => (
@@ -77,7 +81,7 @@ export const OrderSummary = ({
               <span className="font-mono">{formatVnd(subtotalVnd)}</span>
             </div>
             <div className="text-muted-foreground flex justify-between">
-              <span>Shipping · GHN</span>
+              <span>{shippingLabel}</span>
               <span className="text-success font-mono">Free</span>
             </div>
           </>
@@ -95,7 +99,7 @@ export const OrderSummary = ({
           <Separator />
           <div>
             <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-              Ship to
+              {shipToLabel}
             </p>
             <p className="mt-1.5 text-sm">
               {shipTo.name} · {shipTo.phone}

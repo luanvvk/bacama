@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { BakeryCard } from '../index';
+import { useCartStore } from '@/stores/cart';
 import { type BakeryCatalogItem } from '@/services/catalog/get-bakery-items';
 
 const item: BakeryCatalogItem = {
@@ -14,9 +16,13 @@ const item: BakeryCatalogItem = {
   priceVnd: 75000,
   bakesAt: 'Hằng ngày',
   sellOutBy: null,
-  handoff: 'grabfood',
-  handoffUrl: 'https://food.grab.com/vn/vi/restaurant/bacama-coffee-more-delivery/5-C3KEGFM1VGN2N2',
+  handoff: 'pickup',
+  handoffUrl: null,
 };
+
+afterEach(() => {
+  useCartStore.setState({ items: [], isOpen: false });
+});
 
 describe('BakeryCard', () => {
   it('renders the item name, description, and price', () => {
@@ -33,18 +39,36 @@ describe('BakeryCard', () => {
     expect(screen.getByText('Baked daily')).toBeInTheDocument();
   });
 
-  it('links out to GrabFood when a handoff URL is set', () => {
+  it('adds the item to the cart and opens the drawer', async () => {
+    const user = userEvent.setup();
     render(<BakeryCard item={item} />);
+
+    await user.click(screen.getByRole('button', { name: 'Add to cart' }));
+
+    expect(useCartStore.getState().items).toEqual([
+      {
+        id: 'b1',
+        name: item.name,
+        priceVnd: 75000,
+        imageUrl: item.imageUrl,
+        kind: 'bakery',
+        quantity: 1,
+      },
+    ]);
+    expect(useCartStore.getState().isOpen).toBe(true);
+  });
+
+  it('links out to GrabFood instead of adding to cart when handoff is grabfood', () => {
+    render(
+      <BakeryCard
+        item={{ ...item, handoff: 'grabfood', handoffUrl: 'https://food.grab.com/example' }}
+      />,
+    );
 
     expect(screen.getByRole('link', { name: 'Order on GrabFood' })).toHaveAttribute(
       'href',
-      item.handoffUrl,
+      'https://food.grab.com/example',
     );
-  });
-
-  it('does not render a GrabFood link when no handoff URL is set', () => {
-    render(<BakeryCard item={{ ...item, handoffUrl: null }} />);
-
-    expect(screen.queryByRole('link', { name: 'Order on GrabFood' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Add to cart' })).not.toBeInTheDocument();
   });
 });

@@ -2,7 +2,6 @@ import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 import { getMenuItems, type MenuCatalogItem } from '@/services/catalog/get-menu-items';
-import { formatVnd } from '@/lib/format-price';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,7 +10,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/Breadcrumb';
-import { Heading } from '@/components/ui/Typography';
+import { Heading, Text } from '@/components/ui/Typography';
+
+import { MenuSections } from './_components/MenuSections';
 
 export const revalidate = 3600;
 
@@ -44,7 +45,7 @@ const groupBySection = (items: MenuCatalogItem[]) => {
   );
 };
 
-const ANNOUNCEMENTS = ['Dine-in menu · Lý Tự Trọng', 'One size, every drink'];
+const ANNOUNCEMENTS = ['Order ahead, collect at Lý Tự Trọng', 'One size, every drink'];
 
 const MenuPage = async () => {
   const items = await getMenuItems();
@@ -69,28 +70,13 @@ const MenuPage = async () => {
 
           <div className="py-8">
             <Heading as="h1" size="lg">
-              Dine-in menu
+              Drinks menu
             </Heading>
+            <Text variant="muted" className="mt-2 max-w-2xl">
+              Order ahead and collect at the café — pickup only, no delivery for drinks.
+            </Text>
 
-            <div className="mt-8 space-y-10">
-              {sections.map(([section, sectionItems]) => (
-                <div key={section}>
-                  <p className="text-primary font-mono text-xs tracking-widest uppercase">
-                    {SECTION_LABELS[section] ?? section}
-                  </p>
-                  <ul className="mt-3 divide-y">
-                    {sectionItems.map((item) => (
-                      <li key={item.id} className="flex items-center justify-between gap-6 py-2.5">
-                        <span className="text-sm">{item.name}</span>
-                        <span className="font-mono text-sm font-medium tabular-nums">
-                          {formatVnd(item.priceVnd)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            <MenuSections sections={sections} sectionLabels={SECTION_LABELS} />
           </div>
         </Container>
       </main>

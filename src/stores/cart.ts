@@ -7,6 +7,9 @@ export interface CartItem {
   quantity: number;
   imageUrl?: string;
   options?: string;
+  // Absent/'product' = shippable (GHN or pickup). 'bakery'/'menu' items are
+  // pickup-only — see CheckoutForm's pickup-forcing logic.
+  kind?: 'product' | 'bakery' | 'menu';
 }
 
 interface CartState {
