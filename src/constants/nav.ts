@@ -23,11 +23,12 @@ const DEFAULT_COFFEE_LINKS: NavLink[] = [
   { label: '250g Bag · 100% Robusta', href: '/product/bag-robusta-250g' },
 ];
 const DEFAULT_BAKERY_LINKS: NavLink[] = [
-  { label: 'Sunshine Croissant (Salted Egg)', href: '/shop' },
-  { label: 'Carrot Cake', href: '/shop' },
+  { label: 'Sunshine Croissant (Salted Egg)', href: '/bakery' },
+  { label: 'Carrot Cake', href: '/bakery' },
 ];
 
 const STATIC_NAV_ITEMS: NavItem[] = [
+  { label: 'Menu', href: '/menu' },
   {
     label: 'Workshops',
     href: '/courses',
@@ -70,7 +71,7 @@ export const buildNavItems = (
       },
       {
         heading: 'Bakery',
-        links: [...bakeryLinks, { label: 'Shop all bakery', href: '/shop' }],
+        links: [...bakeryLinks, { label: 'Shop all bakery', href: '/bakery' }],
       },
     ],
   },

@@ -20,7 +20,7 @@ export const mapProduct = (product: DatabaseProduct): Product => ({
   priceVnd: product.priceVnd,
   description: product.descriptionEn,
   imageUrl: product.imageUrl ?? product.images[0] ?? '',
-  images: product.images,
+  images: product.images.length > 0 ? product.images : product.imageUrl ? [product.imageUrl] : [],
   freshness: product.roastDate
     ? `Roasted ${daysSince(product.roastDate)} days ago`
     : 'Packed to order',

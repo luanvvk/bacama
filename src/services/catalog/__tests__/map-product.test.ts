@@ -57,4 +57,39 @@ describe('mapProduct', () => {
       originStory: 'A coffee story',
     });
   });
+
+  it('falls back to imageUrl for the gallery when images is empty', () => {
+    const product = {
+      id: 'product-2',
+      slug: 'robusta-250g',
+      category: 'coffee' as const,
+      nameVi: 'Robusta 250g',
+      nameEn: 'Robusta 250g',
+      descriptionVi: 'Mô tả',
+      descriptionEn: 'Description',
+      originVi: null,
+      originEn: null,
+      originStoryVi: null,
+      originStoryEn: null,
+      tastingNotesVi: [],
+      tastingNotesEn: [],
+      roastLevel: null,
+      imageUrl: 'https://example.com/robusta.jpg',
+      images: [],
+      weightOptions: ['250g'],
+      grindOptions: ['whole_bean'],
+      priceVnd: 145000,
+      priceUsd: null,
+      stock: 10,
+      reorderLevel: 5,
+      roastDate: new Date('2026-08-16T00:00:00.000Z'),
+      featuredUntil: null,
+      isActive: true,
+      createdAt: new Date('2026-08-16T00:00:00.000Z'),
+      updatedAt: new Date('2026-08-16T00:00:00.000Z'),
+      brewGuides: [],
+    } satisfies Parameters<typeof mapProduct>[0];
+
+    expect(mapProduct(product).images).toEqual(['https://example.com/robusta.jpg']);
+  });
 });

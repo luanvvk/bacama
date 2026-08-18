@@ -12,7 +12,7 @@ const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => 
       label: product.name,
       href: `/product/${product.slug}`,
     })),
-    bakeryItems.slice(0, 2).map((item) => ({ label: item.name, href: '/shop' })),
+    bakeryItems.slice(0, 2).map((item) => ({ label: item.name, href: '/bakery' })),
   );
 
   return (
