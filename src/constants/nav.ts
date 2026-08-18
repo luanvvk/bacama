@@ -15,43 +15,19 @@ export interface NavItem {
   columns?: NavColumn[];
 }
 
-export const NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Coffee & Bakery',
-    href: '/shop',
-    columns: [
-      {
-        heading: 'Coffee',
-        links: [
-          {
-            label: 'Đà Lạt Washed',
-            href: '/product/dalat-washed',
-            description: 'Medium · plum, honey',
-          },
-          {
-            label: 'Sơn La Natural',
-            href: '/product/son-la-natural',
-            description: 'Dark · cocoa, malt',
-          },
-          {
-            label: 'House Blend',
-            href: '/product/house-blend',
-            description: 'For phin and espresso',
-          },
-          { label: '1 kg wholesale bags', href: '/shop' },
-        ],
-      },
-      {
-        heading: 'Bakery',
-        links: [
-          { label: 'Croissant', href: '/shop', description: 'Plain, almond, chocolate' },
-          { label: 'Kouign-amann', href: '/shop' },
-          { label: 'Carrot cake', href: '/shop' },
-          { label: 'Order a whole cake', href: '/shop' },
-        ],
-      },
-    ],
-  },
+// Fallback content for the Coffee/Bakery columns when no real data is passed
+// in (e.g. component tests) — see `buildNavItems`. Real page requests get the
+// live top products/bakery items via the (storefront) layout instead.
+const DEFAULT_COFFEE_LINKS: NavLink[] = [
+  { label: '250g Bag · 100% Arabica', href: '/product/bag-arabica-250g' },
+  { label: '250g Bag · 100% Robusta', href: '/product/bag-robusta-250g' },
+];
+const DEFAULT_BAKERY_LINKS: NavLink[] = [
+  { label: 'Sunshine Croissant (Salted Egg)', href: '/shop' },
+  { label: 'Carrot Cake', href: '/shop' },
+];
+
+const STATIC_NAV_ITEMS: NavItem[] = [
   {
     label: 'Workshops',
     href: '/courses',
@@ -77,3 +53,28 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Cafés', href: '/#sites' },
   { label: 'Our family', href: '/story' },
 ];
+
+// Coffee/Bakery are the only columns backed by real catalog data — everything
+// else in the mega-menu (Workshops) is still hand-curated copy, unchanged.
+export const buildNavItems = (
+  coffeeLinks: NavLink[] = DEFAULT_COFFEE_LINKS,
+  bakeryLinks: NavLink[] = DEFAULT_BAKERY_LINKS,
+): NavItem[] => [
+  {
+    label: 'Coffee & Bakery',
+    href: '/shop',
+    columns: [
+      {
+        heading: 'Coffee',
+        links: [...coffeeLinks, { label: 'Shop all coffee', href: '/shop' }],
+      },
+      {
+        heading: 'Bakery',
+        links: [...bakeryLinks, { label: 'Shop all bakery', href: '/shop' }],
+      },
+    ],
+  },
+  ...STATIC_NAV_ITEMS,
+];
+
+export const NAV_ITEMS: NavItem[] = buildNavItems();

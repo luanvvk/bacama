@@ -14,7 +14,7 @@ import {
 import { ShopBrowser } from './_components/ShopBrowser';
 
 const ANNOUNCEMENTS = [
-  "Today's roast · Đà Lạt Washed",
+  'Roasted in-house, every batch',
   'Free shipping over 500,000 ₫',
   'COD nationwide',
 ];

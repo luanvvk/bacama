@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { getProductBySlug } from '@/constants/products';
+import { getProductBySlug } from '@/services/catalog/get-product-by-slug';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -17,11 +17,11 @@ import { BuyBox } from './_components/BuyBox';
 import { ProductGallery } from './_components/ProductGallery';
 import { ProductTabs } from './_components/ProductTabs';
 
-const ANNOUNCEMENTS = ["Today's roast · Đà Lạt Washed", 'Shipped within 24h of roasting'];
+const ANNOUNCEMENTS = ['Roasted in-house, every batch', 'Shipped within 24h of roasting'];
 
 const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) notFound();
 

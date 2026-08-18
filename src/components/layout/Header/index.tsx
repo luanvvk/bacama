@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Menu, ShoppingBag } from 'lucide-react';
 
-import { NAV_ITEMS } from '@/constants/nav';
+import { NAV_ITEMS, type NavItem } from '@/constants/nav';
 import { useCartCount, useCartStore } from '@/stores/cart';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -21,7 +21,11 @@ import { Container } from '@/components/layout/Container';
 import { Logo } from '@/components/layout/Logo';
 import { MobileNav } from '@/components/layout/MobileNav';
 
-export const Header = () => {
+export interface HeaderProps {
+  navItems?: NavItem[];
+}
+
+export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
   const cartCount = useCartCount();
   const openCart = useCartStore((state) => state.open);
 
@@ -32,7 +36,7 @@ export const Header = () => {
 
         <NavigationMenu viewport={false} className="hidden lg:flex">
           <NavigationMenuList>
-            {NAV_ITEMS.map((item) =>
+            {navItems.map((item) =>
               item.columns ? (
                 <NavigationMenuItem key={item.href}>
                   <NavigationMenuTrigger className="font-mono text-xs tracking-widest uppercase">
@@ -120,7 +124,7 @@ export const Header = () => {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <div className="px-4 pb-6">
-                <MobileNav />
+                <MobileNav navItems={navItems} />
               </div>
             </SheetContent>
           </Sheet>

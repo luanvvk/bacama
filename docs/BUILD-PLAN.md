@@ -427,8 +427,8 @@ stub; pastry cards deep-link to GrabFood.
 
 - **B1-a (owner, hard):** real photography. Weighted hero (pour / croissant stack / roast drum, < 60 KB WebP), 3 site façades, ~5 tight product crops. Film-emulation, hands in frame, real light (MO-2). Until then Unsplash placeholders stay and the storefront **cannot be called launch-ready**.
 - **B1-b (owner, hard):** Vietnamese copy for the whole storefront, reviewed by a native speaker. Machine translation is not acceptable for brand copy (MO-3: "us/we/our family", specific place names, one anecdote per page).
-- **B1-c (decision):** `/menu` has no mock data at all — `MenuItem` needs real café menu content per site, or the route ships hidden.
-- **B1-d (decision):** the nav mega-menu's 4 items all currently point at `/shop`. Real destinations needed (known open issue, pre-existing).
+- **B1-c (decision):** ~~`/menu` has no mock data at all~~ — resolved (2026-08-18): `MenuItem` is seeded with the business's real 26-item dine-in drinks menu (sourced from its own printed menu board, not GrabFood — GrabFood's drink prices are delivery prices and run higher). The `/menu` route itself (task 1.5) is still not built.
+- **B1-d (decision):** the nav mega-menu's Coffee column now links to real featured products (2026-08-18); the Bakery column still points at `/shop` for every item — no dedicated bakery browsing route exists yet, so per-item links have nowhere real to go.
 - **B1-e (content):** only 6 distinct stock photos exist sitewide; several are reused across sections. Resolved by B1-a.
 
 **Do not do in this phase:** real payments, auth, admin writes.
