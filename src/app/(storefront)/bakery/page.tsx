@@ -14,7 +14,7 @@ import { BakeryCard } from '@/components/bakery/BakeryCard';
 
 export const revalidate = 3600;
 
-const ANNOUNCEMENTS = ['Fresh bake, every morning', 'Handed off via GrabFood delivery'];
+const ANNOUNCEMENTS = ['Fresh bake, every morning', 'Collect at Lý Tự Trọng'];
 
 const BakeryPage = async () => {
   const items = await getBakeryItems();

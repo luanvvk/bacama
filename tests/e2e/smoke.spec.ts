@@ -3,6 +3,9 @@ import { expect, test } from '@playwright/test';
 const publicRoutes = [
   ['/', 'Roasted by hand,'],
   ['/shop', 'Coffee & Bakery'],
+  ['/bakery', 'items'],
+  ['/menu', 'Drinks menu'],
+  ['/sites/ly-tu-trong', 'Address'],
   ['/courses', 'All courses'],
   ['/story', 'One kitchen, one oven, one family.'],
   ['/login', 'Welcome back'],
@@ -13,7 +16,7 @@ const publicRoutes = [
   ['/shipping-returns', 'From our oven to your door.'],
   ['/terms', 'Terms & conditions.'],
   ['/privacy', 'Privacy policy.'],
-  ['/wholesale', 'Coffee that fits your counter.'],
+  ['/wholesale', 'Real prices, real terms.'],
   ['/gift-cards', 'Give them a morning at Bacama.'],
   ['/accessibility', 'A shop made to be used.'],
   ['/careers', 'Good work is made by good people.'],

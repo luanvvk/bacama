@@ -13,6 +13,8 @@ import {
 
 import { ShopBrowser } from './_components/ShopBrowser';
 
+export const revalidate = 3600;
+
 const ANNOUNCEMENTS = [
   'Roasted in-house, every batch',
   'Free shipping over 500,000 ₫',

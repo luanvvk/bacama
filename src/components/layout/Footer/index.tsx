@@ -2,15 +2,19 @@ import Link from 'next/link';
 
 import { Container } from '@/components/layout/Container';
 import { Logo } from '@/components/layout/Logo';
+import { BUSINESS_CONTACT } from '@/constants/business';
 
 const FOOTER_COLUMNS = [
   {
+    // Real products. The previous three (Đà Lạt Washed / Sơn La Natural /
+    // House Blend) were retired by the real-data seed, so every page's footer
+    // carried three links that 404'd.
     heading: 'Coffee',
     links: [
-      { label: 'Đà Lạt Washed', href: '/product/dalat-washed' },
-      { label: 'Sơn La Natural', href: '/product/son-la-natural' },
-      { label: 'House Blend', href: '/product/house-blend' },
-      { label: '1 kg bags', href: '/shop' },
+      { label: '250g Bag · 100% Arabica', href: '/product/bag-arabica-250g' },
+      { label: '250g Bag · 100% Robusta', href: '/product/bag-robusta-250g' },
+      { label: 'Cold Brew Filter Bag', href: '/product/coldbrew-filter-arabica' },
+      { label: 'All coffee', href: '/shop' },
     ],
   },
   {
@@ -79,10 +83,10 @@ export const Footer = ({ variant = 'full' }: FooterProps) => (
                 </ul>
               ) : column.heading === 'Contact' ? (
                 <ul className="text-background/70 mt-3 flex flex-col gap-2 text-sm">
-                  <li>27 Ngô Quyền, Đà Nẵng</li>
-                  <li>07:00 – 19:00 · 7/7</li>
-                  <li>hang@bacama.vn</li>
-                  <li>+84 236 000 0000</li>
+                  <li>{BUSINESS_CONTACT.addressShort}</li>
+                  <li>{BUSINESS_CONTACT.hours}</li>
+                  <li>{BUSINESS_CONTACT.email}</li>
+                  <li>{BUSINESS_CONTACT.phone}</li>
                 </ul>
               ) : (
                 <ul className="mt-3 flex flex-col gap-2 text-sm">

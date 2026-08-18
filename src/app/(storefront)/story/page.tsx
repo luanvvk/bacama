@@ -6,12 +6,11 @@ import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
 import { Heading, Text } from '@/components/ui/Typography';
+import { getActiveAnnouncements } from '@/services/sites/get-active-announcements';
 
-const ANNOUNCEMENTS = [
-  "Today's roast · Đà Lạt Washed",
-  'Fresh bake · 05:14',
-  'Site 3 opens September',
-];
+export const revalidate = 3600;
+
+const TAGLINES = ['Fresh bake, every morning'];
 
 const CHAPTERS = [
   {
@@ -96,9 +95,11 @@ const PEOPLE = [
   ],
 ];
 
-const StoryPage = () => (
+const StoryPage = async () => (
   <>
-    <AnnouncementBar items={ANNOUNCEMENTS} />
+    <AnnouncementBar
+      items={[...TAGLINES, ...(await getActiveAnnouncements()).map(({ title }) => title)]}
+    />
     <main>
       <section className="py-14 text-center sm:py-20">
         <Container>

@@ -5,11 +5,12 @@ import { StaticPageShell } from '@/app/(storefront)/_components/StaticPageShell'
 import { Footer } from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { BUSINESS_CONTACT } from '@/constants/business';
 
 const ContactPage = () => (
   <>
     <StaticPageShell
-      eyebrow="Contact · 07:00–19:00 daily"
+      eyebrow={`Contact · ${BUSINESS_CONTACT.hours}`}
       title="Come by, call, or write."
       description="Questions about a roast, a course, or a birthday cake? A real person reads every message."
     >
@@ -25,17 +26,13 @@ const ContactPage = () => (
         <div className="space-y-5">
           <Card size="sm">
             <CardHeader>
-              <CardTitle>Ngô Quyền · Site 01</CardTitle>
+              <CardTitle>{BUSINESS_CONTACT.siteName} · Site 01</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
-              <p>
-                27 Ngô Quyền, Hải Châu
-                <br />
-                Đà Nẵng
-              </p>
-              <p className="text-muted-foreground">07:00–19:00 · every day</p>
+              <p>{BUSINESS_CONTACT.addressFull}</p>
+              <p className="text-muted-foreground">{BUSINESS_CONTACT.hours}</p>
               <Button asChild variant="link" className="px-0">
-                <Link href="tel:+842360000000">+84 236 000 0000</Link>
+                <Link href={BUSINESS_CONTACT.phoneHref}>{BUSINESS_CONTACT.phone}</Link>
               </Button>
             </CardContent>
           </Card>

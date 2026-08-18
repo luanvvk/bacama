@@ -1,14 +1,12 @@
 import type { Prisma } from '@/generated/prisma/client';
 import type { Product } from '@/constants/products';
+import { formatFreshness } from '@/lib/format-freshness';
 
 export const PRODUCT_INCLUDE = {
   brewGuides: { orderBy: { order: 'asc' as const } },
 } satisfies Prisma.ProductInclude;
 
 export type DatabaseProduct = Prisma.ProductGetPayload<{ include: typeof PRODUCT_INCLUDE }>;
-
-const daysSince = (date: Date) =>
-  Math.max(0, Math.floor((Date.now() - date.getTime()) / (24 * 60 * 60 * 1000)));
 
 export const mapProduct = (product: DatabaseProduct): Product => ({
   id: product.id,
@@ -21,9 +19,7 @@ export const mapProduct = (product: DatabaseProduct): Product => ({
   description: product.descriptionEn,
   imageUrl: product.imageUrl ?? product.images[0] ?? '',
   images: product.images.length > 0 ? product.images : product.imageUrl ? [product.imageUrl] : [],
-  freshness: product.roastDate
-    ? `Roasted ${daysSince(product.roastDate)} days ago`
-    : 'Packed to order',
+  freshness: formatFreshness(product.roastDate),
   soldOut: product.stock <= 0,
   swatches: [...product.weightOptions, ...product.grindOptions],
   tastingNotes: product.tastingNotesEn,

@@ -1,5 +1,6 @@
 import { LegalDocument } from '@/app/(storefront)/_components/LegalDocument';
 import { Footer } from '@/components/layout/Footer';
+import { BUSINESS_CONTACT } from '@/constants/business';
 
 const sections = [
   {
@@ -87,7 +88,7 @@ const sections = [
   {
     title: '12. Contact',
     paragraphs: [
-      'Questions about privacy? Email hang@bacama.vn or write to Bacama, 27 Ngô Quyền, Hải Châu, Đà Nẵng, Vietnam. We answer during opening hours, 07:00–19:00, every day.',
+      `Questions about privacy? Email ${BUSINESS_CONTACT.email} or write to Bacama, ${BUSINESS_CONTACT.addressFull}, Vietnam. We answer during opening hours, ${BUSINESS_CONTACT.hours}.`,
     ],
   },
 ];

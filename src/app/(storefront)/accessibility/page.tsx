@@ -1,5 +1,6 @@
 import { LegalDocument } from '@/app/(storefront)/_components/LegalDocument';
 import { Footer } from '@/components/layout/Footer';
+import { BUSINESS_CONTACT } from '@/constants/business';
 
 const AccessibilityPage = () => (
   <>
@@ -24,7 +25,7 @@ const AccessibilityPage = () => (
         {
           title: 'Need another way?',
           paragraphs: [
-            'Email hang@bacama.vn or call +84 236 000 0000. We can take an order, answer a question, or help with a course without requiring you to use the website.',
+            `Email ${BUSINESS_CONTACT.email} or call ${BUSINESS_CONTACT.phone}. We can take an order, answer a question, or help with a course without requiring you to use the website.`,
           ],
         },
       ]}
