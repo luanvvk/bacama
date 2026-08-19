@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Menu, ShoppingBag } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { NAV_ITEMS, type NavItem } from '@/constants/nav';
 import { useCartCount, useCartStore } from '@/stores/cart';
@@ -18,6 +19,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/Sheet';
 import { AccountMenu } from '@/components/layout/AccountMenu';
 import { Container } from '@/components/layout/Container';
+import { LocaleToggle } from '@/components/layout/LocaleToggle';
 import { Logo } from '@/components/layout/Logo';
 import { MobileNav } from '@/components/layout/MobileNav';
 
@@ -26,6 +28,7 @@ export interface HeaderProps {
 }
 
 export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
+  const t = useTranslations('Header');
   const cartCount = useCartCount();
   const openCart = useCartStore((state) => state.open);
 
@@ -84,11 +87,15 @@ export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
         </NavigationMenu>
 
         <div className="flex items-center gap-2">
+          <div className="hidden lg:block">
+            <LocaleToggle />
+          </div>
+
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Open cart"
+            aria-label={t('openCart')}
             className="relative"
             onClick={openCart}
           >
@@ -113,7 +120,7 @@ export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
                 type="button"
                 variant="ghost"
                 size="icon"
-                aria-label="Open menu"
+                aria-label={t('openMenu')}
                 className="lg:hidden"
               >
                 <Menu />
@@ -121,7 +128,7 @@ export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
             </SheetTrigger>
             <SheetContent side="left" className="overflow-y-auto">
               <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle>{t('menu')}</SheetTitle>
               </SheetHeader>
               <div className="px-4 pb-6">
                 <MobileNav navItems={navItems} />

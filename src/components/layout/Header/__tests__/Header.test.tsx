@@ -4,6 +4,22 @@ import userEvent from '@testing-library/user-event';
 import { Header } from '../index';
 import { useCartStore } from '@/stores/cart';
 
+const MESSAGES: Record<string, string> = {
+  openCart: 'Open cart',
+  openMenu: 'Open menu',
+  menu: 'Menu',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
+// LocaleToggle has its own test suite; stub it here so this file doesn't also
+// need to satisfy its next-intl/next-navigation hooks.
+jest.mock('@/components/layout/LocaleToggle', () => ({
+  LocaleToggle: () => null,
+}));
+
 afterEach(() => {
   useCartStore.setState({ items: [], isOpen: false });
 });

@@ -1,0 +1,19 @@
+{
+  "Header": {
+    "openCart": "Mở giỏ hàng",
+    "openMenu": "Mở menu",
+    "menu": "Menu"
+  },
+  "Footer": {
+    "tagline": "Xưởng rang nhỏ, mẻ bánh mỗi ngày, nướng từ sớm — Đà Nẵng, 2017.",
+    "columns": {
+      "coffee": "Cà phê",
+      "workshops": "Khóa học",
+      "helpInfo": "Trợ giúp & thông tin",
+      "moreBacama": "Thêm về Bacama",
+      "contact": "Liên hệ"
+    },
+    "copyright": "© 2026 Bacama · Giấy phép kinh doanh Đà Nẵng 0300/2026",
+    "paymentMethods": "ZaloPay · MoMo · VNPay · COD · GHN"
+  }
+}

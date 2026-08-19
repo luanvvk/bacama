@@ -2,6 +2,21 @@ import { render, screen } from '@testing-library/react';
 
 import { Footer } from '../index';
 
+const MESSAGES: Record<string, string> = {
+  tagline: 'Small roastery, daily batches, an early bake — Đà Nẵng, 2017.',
+  'columns.coffee': 'Coffee',
+  'columns.workshops': 'Workshops',
+  'columns.helpInfo': 'Help & info',
+  'columns.moreBacama': 'More Bacama',
+  'columns.contact': 'Contact',
+  copyright: '© 2026 Bacama · Đà Nẵng business licence 0300/2026',
+  paymentMethods: 'ZaloPay · MoMo · VNPay · COD · GHN',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 describe('Footer', () => {
   it('renders the full column layout by default', () => {
     render(<Footer />);

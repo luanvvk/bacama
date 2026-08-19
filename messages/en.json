@@ -1,0 +1,19 @@
+{
+  "Header": {
+    "openCart": "Open cart",
+    "openMenu": "Open menu",
+    "menu": "Menu"
+  },
+  "Footer": {
+    "tagline": "Small roastery, daily batches, an early bake — Đà Nẵng, 2017.",
+    "columns": {
+      "coffee": "Coffee",
+      "workshops": "Workshops",
+      "helpInfo": "Help & info",
+      "moreBacama": "More Bacama",
+      "contact": "Contact"
+    },
+    "copyright": "© 2026 Bacama · Đà Nẵng business licence 0300/2026",
+    "paymentMethods": "ZaloPay · MoMo · VNPay · COD · GHN"
+  }
+}
