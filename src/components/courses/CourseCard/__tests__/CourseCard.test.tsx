@@ -1,10 +1,9 @@
 import { render, screen } from '@testing-library/react';
 
 import { CourseCard } from '../index';
-import { COURSES } from '@/constants/courses';
+import { COURSE_FIXTURES } from '@/services/courses/__fixtures__/courses';
 
-const latteArt = COURSES[0];
-const viennoiserie = COURSES[1];
+const [latteArt, viennoiserie, cuppingOrigin] = COURSE_FIXTURES;
 
 describe('CourseCard', () => {
   it('renders the course name, format, and price', () => {
@@ -25,10 +24,17 @@ describe('CourseCard', () => {
     expect(screen.getByRole('link', { name: 'Enrol →' })).toHaveAttribute('href', '/me');
   });
 
-  it('flags low availability with the warning badge variant', () => {
+  it('flags a seat-limited course with the warning badge variant', () => {
     render(<CourseCard course={viennoiserie} />);
 
     expect(screen.getByText('Limited seats')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Book a seat →' })).toBeInTheDocument();
+  });
+
+  it('falls back to the format label when a course has no photo or meta', () => {
+    render(<CourseCard course={cuppingOrigin} />);
+
+    expect(screen.queryByAltText('Cupping & Origin')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Online')).not.toHaveLength(0);
   });
 });

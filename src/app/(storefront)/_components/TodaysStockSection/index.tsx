@@ -1,18 +1,17 @@
 import Link from 'next/link';
 
-import { getCourseBySlug } from '@/constants/courses';
 import { getFeaturedProducts } from '@/services/catalog/get-featured-products';
 import { getProducts } from '@/services/catalog/get-products';
+import { getFeaturedCourses } from '@/services/courses/get-featured-courses';
 import { Heading } from '@/components/ui/Typography';
 import { Container } from '@/components/layout/Container';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { ProductCard } from '@/components/shop/ProductCard';
 
-const baristaFoundations = getCourseBySlug('barista-foundations')!;
-
 export const TodaysStockSection = async () => {
   const featured = await getFeaturedProducts();
   const products = featured.length >= 2 ? featured : await getProducts();
+  const [course] = await getFeaturedCourses(1);
 
   return (
     <section className="border-t py-16">
@@ -34,7 +33,7 @@ export const TodaysStockSection = async () => {
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {products[0] && <ProductCard product={products[0]} featured />}
           {products[1] && <ProductCard product={products[1]} />}
-          <CourseCard course={baristaFoundations} />
+          {course && <CourseCard course={course} />}
         </div>
       </Container>
     </section>

@@ -1,0 +1,55 @@
+import type { Course } from '../map-course';
+
+// Shaped like real rows so component tests exercise the same optional fields the
+// database actually leaves empty (no image, no meta, no availability).
+export const COURSE_FIXTURES: Course[] = [
+  {
+    id: 'course-1',
+    slug: 'latte-art',
+    name: 'Latte Art',
+    format: 'online',
+    meta: '9 lessons',
+    description: 'Video lessons with live discussion, a photo-based exam.',
+    imageUrl: 'https://example.test/latte-art.jpg',
+    priceVnd: 790_000,
+    availability: 'Free preview lesson',
+    seatLimited: false,
+    ctaLabel: 'Enrol',
+  },
+  {
+    id: 'course-2',
+    slug: 'viennoiserie',
+    name: 'Viennoiserie Weekend',
+    format: 'in-person',
+    meta: 'Hội An · weekend',
+    description: "Two days in Hội An's old town, eight people, French butter.",
+    imageUrl: 'https://example.test/viennoiserie.jpg',
+    priceVnd: 3_200_000,
+    availability: 'Limited seats',
+    seatLimited: true,
+    ctaLabel: 'Book a seat',
+  },
+  {
+    id: 'course-3',
+    slug: 'cupping-origin',
+    name: 'Cupping & Origin',
+    format: 'online',
+    description: 'Sơn La and Đà Lạt origins; a sensory-based final.',
+    priceVnd: 1_290_000,
+    seatLimited: false,
+    ctaLabel: 'Enrol',
+  },
+  {
+    id: 'course-4',
+    slug: 'barista-foundations',
+    name: 'Barista Foundations',
+    format: 'hybrid',
+    meta: '6 weeks online + final at a café',
+    description: '24 online lessons; final exam on-site in Hội An.',
+    imageUrl: 'https://example.test/barista.jpg',
+    priceVnd: 1_890_000,
+    availability: 'Limited seats',
+    seatLimited: true,
+    ctaLabel: 'Enrol',
+  },
+];

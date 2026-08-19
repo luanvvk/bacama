@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
-import { COURSES, type CourseFormat } from '@/constants/courses';
+import { type Course, type CourseFormat } from '@/services/courses/map-course';
 import { Button } from '@/components/ui/Button';
 import {
   Select,
@@ -13,6 +13,10 @@ import {
 } from '@/components/ui/Select';
 import { CourseCard } from '@/components/courses/CourseCard';
 
+export interface CoursesBrowserProps {
+  courses: Course[];
+}
+
 const FORMAT_OPTIONS: { value: CourseFormat | 'all'; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'online', label: 'Online' },
@@ -22,21 +26,21 @@ const FORMAT_OPTIONS: { value: CourseFormat | 'all'; label: string }[] = [
 
 type SortOrder = 'popular' | 'price-asc' | 'price-desc';
 
-const sortCourses = (courses: typeof COURSES, order: SortOrder) => {
+const sortCourses = (courses: Course[], order: SortOrder) => {
   if (order === 'price-asc') return [...courses].sort((a, b) => a.priceVnd - b.priceVnd);
   if (order === 'price-desc') return [...courses].sort((a, b) => b.priceVnd - a.priceVnd);
   return courses;
 };
 
-export const CoursesBrowser = () => {
+export const CoursesBrowser = ({ courses }: CoursesBrowserProps) => {
   const [format, setFormat] = useState<CourseFormat | 'all'>('all');
   const [sortOrder, setSortOrder] = useState<SortOrder>('popular');
 
   const filteredCourses = useMemo(() => {
     const filtered =
-      format === 'all' ? COURSES : COURSES.filter((course) => course.format === format);
+      format === 'all' ? courses : courses.filter((course) => course.format === format);
     return sortCourses(filtered, sortOrder);
-  }, [format, sortOrder]);
+  }, [courses, format, sortOrder]);
 
   return (
     <div>

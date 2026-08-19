@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
-import { type Course } from '@/constants/courses';
+import { type Course } from '@/services/courses/map-course';
 import { Badge } from '@/components/ui/Badge';
+import { CardMedia } from '@/components/ui/CardMedia';
 import { PriceTag } from '@/components/shop/PriceTag';
 
 export interface CourseCardProps {
@@ -18,26 +18,24 @@ const FORMAT_LABEL: Record<Course['format'], string> = {
 export const CourseCard = ({ course }: CourseCardProps) => {
   const previewHref = '/learn';
   const enrolHref = '/me';
+  const formatLabel = FORMAT_LABEL[course.format];
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border">
-      <Link
-        href={previewHref}
-        className="bg-muted relative block aspect-16/10 overflow-hidden"
-        aria-label={`Preview ${course.name}`}
-      >
-        <Image
+      <Link href={previewHref} aria-label={`Preview ${course.name}`}>
+        <CardMedia
           src={course.imageUrl}
           alt={course.name}
-          fill
+          aspect="landscape"
           sizes="(min-width: 1024px) 33vw, 100vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="rounded-none"
+          fallback={<Badge variant="outline">{formatLabel}</Badge>}
         />
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 p-5">
         <p className="text-primary font-mono text-xs tracking-widest uppercase">
-          {FORMAT_LABEL[course.format]} · {course.meta}
+          {course.meta ? `${formatLabel} · ${course.meta}` : formatLabel}
         </p>
         <h2 className="font-heading text-xl">
           <Link href={previewHref}>{course.name}</Link>
@@ -45,9 +43,11 @@ export const CourseCard = ({ course }: CourseCardProps) => {
         <p className="text-muted-foreground text-sm">{course.description}</p>
 
         <div className="mt-auto flex flex-wrap items-baseline gap-3 border-t pt-3.5">
-          <Badge variant={course.lowAvailability ? 'warning' : 'success'}>
-            {course.availability}
-          </Badge>
+          {course.availability && (
+            <Badge variant={course.seatLimited ? 'warning' : 'success'}>
+              {course.availability}
+            </Badge>
+          )}
           <PriceTag priceVnd={course.priceVnd} className="ml-auto" />
           <Link href={enrolHref} className="text-primary text-sm font-medium hover:underline">
             {course.ctaLabel} →
