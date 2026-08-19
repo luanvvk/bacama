@@ -1,12 +1,14 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const Logo = () => (
-  <Link href="/" className="flex flex-col leading-none">
-    <span className="font-heading text-lg">
-      Bacama<span className="text-primary">·</span>
-    </span>
-    <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-      Coffee and more
-    </span>
+  <Link href="/" className="inline-flex items-center">
+    <Image
+      src="/Images/bacama-logo-crop.png"
+      alt="Bacama — Coffee & More"
+      width={1422}
+      height={892}
+      className="h-10 w-auto"
+    />
   </Link>
 );
