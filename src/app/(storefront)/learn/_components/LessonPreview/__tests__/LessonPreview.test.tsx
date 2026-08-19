@@ -3,12 +3,63 @@ import userEvent from '@testing-library/user-event';
 
 import { LessonPreview } from '../index';
 import { toast } from '@/lib/toast';
+import type { CoursePreview } from '@/services/courses/get-preview-course';
 
 jest.mock('@/lib/toast', () => ({ toast: jest.fn() }));
 
+const PREVIEW: CoursePreview = {
+  course: {
+    id: 'course-1',
+    slug: 'latte-art',
+    name: 'Latte Art',
+    format: 'online',
+    description: 'Video lessons with live discussion.',
+    priceVnd: 790_000,
+    seatLimited: false,
+    ctaLabel: 'Enrol',
+    modules: [
+      {
+        id: 'module-1',
+        title: 'Module 1 · Foundations',
+        lessons: [
+          {
+            id: 'lesson-1',
+            number: '01',
+            title: 'Milk and microfoam',
+            duration: '12:40',
+            isFreePreview: false,
+            documents: [],
+          },
+          {
+            id: 'lesson-3',
+            number: '03',
+            title: 'The heart — pour slow, finish clean',
+            duration: '11:05',
+            isFreePreview: true,
+            documents: [
+              { id: 'doc-1', name: 'Milk ratio & temperature chart', size: 'PDF · 240 KB' },
+            ],
+            body: 'The heart comes first because it teaches three things at once.',
+          },
+        ],
+      },
+    ],
+  },
+  lesson: {
+    id: 'lesson-3',
+    number: '03',
+    title: 'The heart — pour slow, finish clean',
+    duration: '11:05',
+    isFreePreview: true,
+    documents: [{ id: 'doc-1', name: 'Milk ratio & temperature chart', size: 'PDF · 240 KB' }],
+    body: 'The heart comes first because it teaches three things at once.',
+  },
+  moduleLabel: 'Module 1 · Foundations · Lesson 03',
+};
+
 describe('LessonPreview', () => {
   it('renders the free-preview banner and lesson content', () => {
-    render(<LessonPreview />);
+    render(<LessonPreview preview={PREVIEW} />);
 
     expect(screen.getByText(/watching the free preview/)).toBeInTheDocument();
     expect(
@@ -18,7 +69,7 @@ describe('LessonPreview', () => {
   });
 
   it('shows a sign-in toast instead of playing a real video', async () => {
-    render(<LessonPreview />);
+    render(<LessonPreview preview={PREVIEW} />);
 
     await userEvent.click(screen.getByRole('button', { name: 'Play preview' }));
 
@@ -26,7 +77,7 @@ describe('LessonPreview', () => {
   });
 
   it('gates the documents tab behind sign-in', async () => {
-    render(<LessonPreview />);
+    render(<LessonPreview preview={PREVIEW} />);
 
     await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
 
@@ -34,10 +85,22 @@ describe('LessonPreview', () => {
     expect(screen.getAllByText('Sign in to download').length).toBeGreaterThan(0);
   });
 
-  it('renders the course outline with the current lesson marked', () => {
-    render(<LessonPreview />);
+  it('shows an honest empty state when a lesson has no documents', async () => {
+    const noDocs: CoursePreview = {
+      ...PREVIEW,
+      lesson: { ...PREVIEW.lesson, documents: [] },
+    };
+    render(<LessonPreview preview={noDocs} />);
 
-    expect(screen.getByText('The heart')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
+
+    expect(screen.getByText('No documents added for this lesson yet.')).toBeInTheDocument();
+  });
+
+  it('renders the course outline with the current lesson marked', () => {
+    render(<LessonPreview preview={PREVIEW} />);
+
+    expect(screen.getByText('Milk and microfoam')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Log in to join the discussion' })).toHaveAttribute(
       'href',
       '/login',

@@ -1,17 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { Lock, Play } from 'lucide-react';
 
-import { COURSES } from '@/constants/courses';
 import { toast } from '@/lib/toast';
 import { cn } from '@/lib/utils';
+import type { CoursePreview } from '@/services/courses/get-preview-course';
 import { Button } from '@/components/ui/Button';
+import { CardMedia } from '@/components/ui/CardMedia';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Heading, Text } from '@/components/ui/Typography';
-
-const course = COURSES[0];
 
 const DISCUSSION_SAMPLE = [
   {
@@ -33,9 +31,16 @@ const DISCUSSION_SAMPLE = [
   },
 ];
 
-export const LessonPreview = () => {
-  const { modules, preview } = course;
-  if (!modules || !preview) return null;
+export interface LessonPreviewProps {
+  preview: CoursePreview;
+}
+
+export const LessonPreview = ({ preview }: LessonPreviewProps) => {
+  const { course, lesson, moduleLabel } = preview;
+  const totalLessons = course.modules.reduce(
+    (sum, courseModule) => sum + courseModule.lessons.length,
+    0,
+  );
 
   const handlePlayClick = () => toast('Sign in to watch the full lesson.');
 
@@ -58,8 +63,7 @@ export const LessonPreview = () => {
           </Button>
         </div>
 
-        <div className="bg-muted relative mt-6 aspect-video overflow-hidden rounded-lg">
-          <Image src={course.imageUrl} alt="" fill className="object-cover" />
+        <CardMedia src={course.imageUrl} alt="" aspect="video" zoom={false} className="mt-6">
           <button
             type="button"
             onClick={handlePlayClick}
@@ -74,13 +78,13 @@ export const LessonPreview = () => {
               />
             </span>
           </button>
-        </div>
+        </CardMedia>
 
         <p className="text-primary mt-6 font-mono text-xs tracking-widest uppercase">
-          {preview.moduleLabel}
+          {moduleLabel}
         </p>
         <Heading as="h1" size="md" className="mt-2">
-          {preview.title}
+          {lesson.title}
         </Heading>
 
         <Tabs defaultValue="overview" className="mt-6">
@@ -91,11 +95,7 @@ export const LessonPreview = () => {
 
           <TabsContent value="overview">
             <div className="flex flex-col gap-4 py-6">
-              {preview.overview.map((paragraph, index) => (
-                <Text key={index} variant="muted">
-                  {paragraph}
-                </Text>
-              ))}
+              <Text variant="muted">{lesson.body ?? 'No overview added for this lesson yet.'}</Text>
               <Button asChild className="w-fit">
                 <Link href="/login">Sign in to track your progress</Link>
               </Button>
@@ -103,20 +103,26 @@ export const LessonPreview = () => {
           </TabsContent>
 
           <TabsContent value="documents">
-            <ul className="flex flex-col gap-2 py-6">
-              {preview.documents.map((document) => (
-                <li key={document.name} className="flex items-center gap-3 rounded-lg border p-3">
-                  <Lock className="text-muted-foreground size-4 shrink-0" aria-hidden="true" />
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{document.name}</p>
-                    <p className="text-muted-foreground text-xs">{document.size}</p>
-                  </div>
-                  <span className="text-muted-foreground font-mono text-xs uppercase">
-                    Sign in to download
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {lesson.documents.length === 0 ? (
+              <p className="text-muted-foreground py-6 text-sm">
+                No documents added for this lesson yet.
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-2 py-6">
+                {lesson.documents.map((document) => (
+                  <li key={document.id} className="flex items-center gap-3 rounded-lg border p-3">
+                    <Lock className="text-muted-foreground size-4 shrink-0" aria-hidden="true" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{document.name}</p>
+                      <p className="text-muted-foreground text-xs">{document.size}</p>
+                    </div>
+                    <span className="text-muted-foreground font-mono text-xs uppercase">
+                      Sign in to download
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </TabsContent>
         </Tabs>
       </div>
@@ -127,31 +133,32 @@ export const LessonPreview = () => {
           <Heading as="h2" size="xs" className="mt-1">
             {course.name}
           </Heading>
-          <p className="text-muted-foreground mt-1 font-mono text-xs">3 of 9 lessons · 33%</p>
+          <p className="text-muted-foreground mt-1 font-mono text-xs">
+            {totalLessons} lesson{totalLessons === 1 ? '' : 's'}
+          </p>
 
           <div className="mt-4 flex flex-col gap-4">
-            {modules.map((courseModule) => (
-              <div key={courseModule.title}>
+            {course.modules.map((courseModule) => (
+              <div key={courseModule.id}>
                 <p className="text-muted-foreground mb-2 font-mono text-xs tracking-widest uppercase">
                   {courseModule.title}
                 </p>
                 <ul className="flex flex-col gap-1">
-                  {courseModule.lessons.map((lesson) => (
+                  {courseModule.lessons.map((moduleLesson) => (
                     <li
-                      key={lesson.number}
+                      key={moduleLesson.id}
                       className={cn(
                         'flex items-center gap-2 rounded-md border px-2.5 py-2 text-sm',
-                        lesson.current ? 'border-primary bg-primary/5' : 'border-transparent',
+                        moduleLesson.id === lesson.id
+                          ? 'border-primary bg-primary/5'
+                          : 'border-transparent',
                       )}
                     >
                       <span className="text-muted-foreground font-mono text-xs">
-                        {lesson.number}
+                        {moduleLesson.number}
                       </span>
-                      <span className="flex-1">{lesson.title}</span>
-                      <span className="text-muted-foreground text-xs">
-                        {lesson.completed ? '✓ ' : ''}
-                        {lesson.duration}
-                      </span>
+                      <span className="flex-1">{moduleLesson.title}</span>
+                      <span className="text-muted-foreground text-xs">{moduleLesson.duration}</span>
                     </li>
                   ))}
                 </ul>
