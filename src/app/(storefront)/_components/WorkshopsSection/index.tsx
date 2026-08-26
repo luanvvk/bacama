@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 import { getFeaturedCourses } from '@/services/courses/get-featured-courses';
 import { Heading } from '@/components/ui/Typography';
@@ -6,6 +7,7 @@ import { Container } from '@/components/layout/Container';
 import { CourseCard } from '@/components/courses/CourseCard';
 
 export const WorkshopsSection = async () => {
+  const t = await getTranslations('Workshops');
   const courses = await getFeaturedCourses();
 
   if (courses.length === 0) return null;
@@ -16,14 +18,14 @@ export const WorkshopsSection = async () => {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-primary font-mono text-xs tracking-widest uppercase">
-              03 · Workshops
+              {t('eyebrow')}
             </p>
             <Heading as="h2" size="lg" className="mt-2 max-w-lg">
-              Taught by the people who bake at five.
+              {t('heading')}
             </Heading>
           </div>
           <Link href="/courses" className="text-primary text-sm font-medium hover:underline">
-            All courses →
+            {t('allCourses')}
           </Link>
         </div>
 

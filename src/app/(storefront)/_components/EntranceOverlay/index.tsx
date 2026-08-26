@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 
 import { Button } from '@/components/ui/Button';
@@ -18,6 +19,7 @@ const POSTER_IMAGE =
   'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1500&q=68';
 
 export const EntranceOverlay = () => {
+  const t = useTranslations('Entrance');
   const searchParams = useSearchParams();
   const [dismissed, setDismissed] = useState(false);
   const alreadySeen = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -35,9 +37,9 @@ export const EntranceOverlay = () => {
           className="dark data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 fixed inset-0 z-50 outline-none data-closed:duration-200 data-closed:ease-[cubic-bezier(0.23,1,0.32,1)] data-open:duration-350 data-open:ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:data-closed:duration-150 motion-reduce:data-open:duration-150"
           onEscapeKeyDown={dismiss}
         >
-          <DialogPrimitive.Title className="sr-only">Welcome to Bacama</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">{t('title')}</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">
-            A small roastery in Đà Nẵng.
+            {t('description')}
           </DialogPrimitive.Description>
 
           <div className="bg-background relative h-full w-full overflow-hidden">
@@ -61,17 +63,14 @@ export const EntranceOverlay = () => {
                 Bacama<span className="text-primary">·</span>
               </p>
               <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-                Coffee and more
+                {t('tagline')}
               </p>
-              <p className="text-muted-foreground max-w-md">
-                A small roastery in Đà Nẵng. Bread before the light, coffee by the day&rsquo;s
-                batch.
-              </p>
+              <p className="text-muted-foreground max-w-md">{t('body')}</p>
               <Button size="lg" onClick={dismiss} className="mt-2">
-                Enter the shop
+                {t('enter')}
               </Button>
               <Button variant="ghost" size="sm" onClick={dismiss}>
-                Skip
+                {t('skip')}
               </Button>
             </div>
           </div>

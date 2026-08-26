@@ -5,6 +5,19 @@ import { EntranceOverlay } from '../index';
 
 let searchParams = new URLSearchParams();
 
+const MESSAGES: Record<string, string> = {
+  title: 'Welcome to Bacama',
+  description: 'A small roastery in Đà Nẵng.',
+  tagline: 'Coffee and more',
+  body: "A small roastery in Đà Nẵng. Bread before the light, coffee by the day's batch.",
+  enter: 'Enter the shop',
+  skip: 'Skip',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 jest.mock('next/navigation', () => ({
   useSearchParams: () => searchParams,
 }));

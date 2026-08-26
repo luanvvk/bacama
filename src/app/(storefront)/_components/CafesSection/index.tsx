@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 import { Badge } from '@/components/ui/Badge';
 import { Heading } from '@/components/ui/Typography';
@@ -7,21 +8,25 @@ import { Container } from '@/components/layout/Container';
 import { cn } from '@/lib/utils';
 import { formatOpening, getSites } from '@/services/sites/get-sites';
 
-const COUNT_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five'];
-
-const countWord = (count: number) => COUNT_WORDS[count] ?? String(count);
-
 // Derived from the sites actually in the database, so opening a fourth site (or
 // a third one going live) can't leave the headline overclaiming.
-const buildHeadline = (open: number, upcoming: number) => {
-  const today = `${countWord(open)} ${open === 1 ? 'café' : 'cafés'} today`;
+const buildHeadline = (
+  t: Awaited<ReturnType<typeof getTranslations>>,
+  open: number,
+  upcoming: number,
+) => {
+  const countWords = t.raw('countWords') as string[];
+  const countWord = (count: number) => countWords[count] ?? String(count);
+  const cafe = open === 1 ? t('cafeSingular') : t('cafePlural');
+  const today = t('cafesToday', { count: countWord(open), cafe });
 
   return upcoming === 0
     ? `${today}.`
-    : `${today}, ${countWord(upcoming).toLowerCase()} more on the way.`;
+    : `${today}, ${t('moreOnTheWay', { count: countWord(upcoming).toLowerCase() })}.`;
 };
 
 export const CafesSection = async () => {
+  const t = await getTranslations('Cafes');
   const sites = await getSites();
   const openCount = sites.filter((site) => !site.comingSoon).length;
 
@@ -29,9 +34,9 @@ export const CafesSection = async () => {
     <section id="sites" className="border-t py-16">
       <Container>
         <div>
-          <p className="text-primary font-mono text-xs tracking-widest uppercase">04 · Our cafés</p>
+          <p className="text-primary font-mono text-xs tracking-widest uppercase">{t('eyebrow')}</p>
           <Heading as="h2" size="lg" className="mt-2 max-w-lg">
-            {buildHeadline(openCount, sites.length - openCount)}
+            {buildHeadline(t, openCount, sites.length - openCount)}
           </Heading>
         </div>
 
@@ -51,14 +56,14 @@ export const CafesSection = async () => {
                   <div className="bg-secondary flex h-full w-full items-center justify-center">
                     <Badge variant="warning">
                       {site.comingSoon && site.opensAt
-                        ? `Opening · ${formatOpening(site.opensAt)}`
+                        ? t('openingSince', { date: formatOpening(site.opensAt) })
                         : site.city}
                     </Badge>
                   </div>
                 )}
               </div>
               <p className="text-primary mt-3 font-mono text-xs tracking-widest uppercase">
-                Site {String(index + 1).padStart(2, '0')} · {site.city}
+                {t('siteLabel')} {String(index + 1).padStart(2, '0')} · {site.city}
               </p>
               <h3 className="font-heading mt-1 text-lg">
                 <Link href={`/sites/${site.slug}`} className="hover:text-primary">
@@ -80,10 +85,11 @@ export const CafesSection = async () => {
               </p>
               <div className="text-muted-foreground mt-auto flex items-center justify-between gap-3 border-t pt-3 text-sm">
                 {site.comingSoon ? (
-                  <span>Opening soon</span>
+                  <span>{t('openingSoon')}</span>
                 ) : site.todaysRoast ? (
                   <span>
-                    House roast ·{' '}
+                    {t('houseRoast')}
+                    {' · '}
                     <Link
                       href={`/product/${site.todaysRoast.slug}`}
                       className="text-foreground font-bold hover:underline"
@@ -92,13 +98,13 @@ export const CafesSection = async () => {
                     </Link>
                   </span>
                 ) : (
-                  <span>Open today</span>
+                  <span>{t('openToday')}</span>
                 )}
                 <Link
                   href={`/sites/${site.slug}`}
                   className="text-primary shrink-0 font-medium hover:underline"
                 >
-                  Map &amp; hours →
+                  {t('mapAndHours')}
                 </Link>
               </div>
             </article>

@@ -15,5 +15,64 @@
     },
     "copyright": "© 2026 Bacama · Giấy phép kinh doanh Đà Nẵng 0300/2026",
     "paymentMethods": "ZaloPay · MoMo · VNPay · COD · GHN"
+  },
+  "Hero": {
+    "eyebrow": "Xưởng rang · Đà Nẵng · từ 2017",
+    "heading": "Rang bằng tay,",
+    "headingEmphasis": "nướng trước khi trời sáng.",
+    "lead": "Một xưởng rang nhỏ ngoại thành Đà Nẵng. Cà phê rang theo từng mẻ mỗi ngày, ngày rang in trên mỗi túi. Bánh Tây làm từ bơ Pháp.",
+    "shopRoast": "Mua cà phê",
+    "takeWorkshop": "Tham gia khóa học",
+    "cafesToday": "Hai quán hôm nay · <b>Đà Nẵng, Hội An</b>",
+    "dailyBatch": "Rang theo mẻ mỗi ngày",
+    "paymentMethods": "ZaloPay · MoMo · COD",
+    "overlayLabel": "Đã rang",
+    "overlayValue": "Mới mỗi ngày"
+  },
+  "TodaysStock": {
+    "eyebrow": "01 · Hàng hôm nay",
+    "heading": "Ba món, chọn trước khi mở cửa.",
+    "browseAll": "Xem tất cả →"
+  },
+  "Workshops": {
+    "eyebrow": "03 · Khóa học",
+    "heading": "Dạy bởi những người nướng bánh từ năm giờ sáng.",
+    "allCourses": "Tất cả khóa học →"
+  },
+  "Story": {
+    "eyebrow": "02 · Gia đình chúng tôi · từ 2017",
+    "heading": "Bắt đầu từ chiếc chảo của bà tôi.",
+    "lead": "Bà rang cà phê cho gia đình mỗi sáng. Mẹ tôi nướng bánh mì cho bà con lối xóm. Chúng tôi mở xưởng rang năm 2017 — một gian bếp, một lò nướng, một gia đình ngoại thành Đà Nẵng.",
+    "readStory": "Đọc câu chuyện của chúng tôi"
+  },
+  "Cafes": {
+    "eyebrow": "04 · Quán của chúng tôi",
+    "countWords": ["Không", "Một", "Hai", "Ba", "Bốn", "Năm"],
+    "cafeSingular": "quán",
+    "cafePlural": "quán",
+    "cafesToday": "{count} quán hôm nay",
+    "moreOnTheWay": "sắp mở thêm {count}",
+    "siteLabel": "Quán",
+    "openingSince": "Sắp mở · {date}",
+    "openingSoon": "Sắp mở",
+    "houseRoast": "Cà phê nhà rang",
+    "openToday": "Đang mở hôm nay",
+    "mapAndHours": "Bản đồ & giờ mở →"
+  },
+  "CtaBand": {
+    "eyebrow": "05 · Đặt hàng",
+    "heading": "Một túi rang sáng nay, gửi đến tận cửa nhà bạn.",
+    "lead": "Thanh toán qua ZaloPay, MoMo, hoặc tiền mặt khi nhận hàng. GHN giao hàng toàn quốc trong 2–3 ngày.",
+    "shopFeatured": "Mua {name}",
+    "browseAllBlends": "Xem tất cả các loại",
+    "tagline": "Xưởng rang nhỏ, mẻ bánh mỗi ngày, nướng từ sớm — Đà Nẵng, 2017."
+  },
+  "Entrance": {
+    "title": "Chào mừng đến với Bacama",
+    "description": "Một xưởng rang nhỏ ở Đà Nẵng.",
+    "tagline": "Cà phê và hơn thế nữa",
+    "body": "Một xưởng rang nhỏ ở Đà Nẵng. Bánh nướng trước khi trời sáng, cà phê theo mẻ mỗi ngày.",
+    "enter": "Vào cửa hàng",
+    "skip": "Bỏ qua"
   }
 }

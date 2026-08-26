@@ -15,5 +15,64 @@
     },
     "copyright": "© 2026 Bacama · Đà Nẵng business licence 0300/2026",
     "paymentMethods": "ZaloPay · MoMo · VNPay · COD · GHN"
+  },
+  "Hero": {
+    "eyebrow": "Roastery · Đà Nẵng · since 2017",
+    "heading": "Roasted by hand,",
+    "headingEmphasis": "baked before the light.",
+    "lead": "A small roastery outside Đà Nẵng. Coffee roasted in daily batches, a roast date on every bag. Western pastries made with French butter.",
+    "shopRoast": "Shop the roast",
+    "takeWorkshop": "Take a workshop",
+    "cafesToday": "Two cafés today · <b>Đà Nẵng, Hội An</b>",
+    "dailyBatch": "Daily batch roasting",
+    "paymentMethods": "ZaloPay · MoMo · COD",
+    "overlayLabel": "Roasted",
+    "overlayValue": "Fresh daily"
+  },
+  "TodaysStock": {
+    "eyebrow": "01 · Today's stock",
+    "heading": "Three things, picked before the shop opened.",
+    "browseAll": "Browse all →"
+  },
+  "Workshops": {
+    "eyebrow": "03 · Workshops",
+    "heading": "Taught by the people who bake at five.",
+    "allCourses": "All courses →"
+  },
+  "Story": {
+    "eyebrow": "02 · Our family · since 2017",
+    "heading": "It began with my grandmother's pan.",
+    "lead": "She roasted coffee for the family every morning. My mother baked bread for the neighbours. We opened the roastery in 2017 — one kitchen, one oven, one family outside Đà Nẵng.",
+    "readStory": "Read our story"
+  },
+  "Cafes": {
+    "eyebrow": "04 · Our cafés",
+    "countWords": ["No", "One", "Two", "Three", "Four", "Five"],
+    "cafeSingular": "café",
+    "cafePlural": "cafés",
+    "cafesToday": "{count} {cafe} today",
+    "moreOnTheWay": "{count} more on the way",
+    "siteLabel": "Site",
+    "openingSince": "Opening · {date}",
+    "openingSoon": "Opening soon",
+    "houseRoast": "House roast",
+    "openToday": "Open today",
+    "mapAndHours": "Map & hours →"
+  },
+  "CtaBand": {
+    "eyebrow": "05 · Order",
+    "heading": "A bag roasted this morning, posted to your door.",
+    "lead": "Pay with ZaloPay, MoMo, or cash on delivery. GHN ships nationwide in 2–3 days.",
+    "shopFeatured": "Shop {name}",
+    "browseAllBlends": "Browse all blends",
+    "tagline": "Small roastery, daily batches, an early bake — Đà Nẵng, 2017."
+  },
+  "Entrance": {
+    "title": "Welcome to Bacama",
+    "description": "A small roastery in Đà Nẵng.",
+    "tagline": "Coffee and more",
+    "body": "A small roastery in Đà Nẵng. Bread before the light, coffee by the day's batch.",
+    "enter": "Enter the shop",
+    "skip": "Skip"
   }
 }
