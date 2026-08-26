@@ -5,6 +5,21 @@ import { BuyBox } from '../index';
 import { PRODUCTS } from '@/constants/products';
 import { useCartStore } from '@/stores/cart';
 
+const MESSAGES: Record<string, string> = {
+  weightLabel: 'Weight',
+  grindLabel: 'Grind for',
+  addToCart: 'Add to cart',
+  buyNowZalopay: 'Buy now with ZaloPay',
+  assuranceRoasted: 'Roasted, then posted. Ships within 24 hours of the batch.',
+  assuranceShipping: 'GHN nationwide in 2–3 days. Free over 500,000 ₫.',
+  assuranceCod: 'Cash on delivery available nationwide.',
+  assurancePickup: 'Or collect at a café within 2 hours.',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 const dalatWashed = PRODUCTS[0];
 
 afterEach(() => {

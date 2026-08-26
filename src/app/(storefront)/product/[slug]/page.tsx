@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import { getProductBySlug } from '@/services/catalog/get-product-by-slug';
 import { getProducts } from '@/services/catalog/get-products';
@@ -28,11 +29,13 @@ export const generateStaticParams = async () => {
   return products.map((product) => ({ slug: product.slug }));
 };
 
-const ANNOUNCEMENTS = ['Roasted in-house, every batch', 'Shipped within 24h of roasting'];
-
 const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const [t, tAnnouncements, product] = await Promise.all([
+    getTranslations('Product'),
+    getTranslations('Announcements'),
+    getProductBySlug(slug),
+  ]);
 
   if (!product) notFound();
 
@@ -40,17 +43,17 @@ const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) =>
 
   return (
     <>
-      <AnnouncementBar items={ANNOUNCEMENTS} />
+      <AnnouncementBar items={tAnnouncements.raw('product')} />
       <main>
         <Container>
           <Breadcrumb className="pt-6">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t('breadcrumbHome')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/shop">Coffee</BreadcrumbLink>
+                <BreadcrumbLink href="/shop">{t('breadcrumbCategory')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>

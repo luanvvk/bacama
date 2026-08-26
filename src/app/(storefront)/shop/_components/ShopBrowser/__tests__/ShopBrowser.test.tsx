@@ -4,6 +4,22 @@ import userEvent from '@testing-library/user-event';
 import { ShopBrowser } from '../index';
 import { PRODUCTS } from '@/constants/products';
 
+const MESSAGES: Record<string, string> = {
+  categoryLabel: 'Category',
+  categoryCoffee: 'Coffee',
+  categoryGiftSets: 'Gift sets',
+  sortLabel: 'Sort by',
+  sortFeatured: 'Most recently roasted',
+  sortPriceAsc: 'Price: low to high',
+  sortPriceDesc: 'Price: high to low',
+  noResults: 'No products match those filters.',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string, params?: { count: number }) =>
+    key === 'productsCount' ? `${params?.count} products` : MESSAGES[key],
+}));
+
 describe('ShopBrowser', () => {
   it('shows every product by default', () => {
     render(<ShopBrowser />);

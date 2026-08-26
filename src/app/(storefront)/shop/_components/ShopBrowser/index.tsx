@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { PRODUCTS, type Product, type ProductCategory } from '@/constants/products';
 import { Checkbox } from '@/components/ui/Checkbox';
@@ -13,11 +14,6 @@ import {
   SelectValue,
 } from '@/components/ui/Select';
 import { ProductCard } from '@/components/shop/ProductCard';
-
-const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
-  { value: 'coffee', label: 'Coffee' },
-  { value: 'gift', label: 'Gift sets' },
-];
 
 type SortOrder = 'featured' | 'price-asc' | 'price-desc';
 
@@ -32,8 +28,14 @@ interface ShopBrowserProps {
 }
 
 export const ShopBrowser = ({ products = PRODUCTS }: ShopBrowserProps) => {
+  const t = useTranslations('Shop');
   const [categories, setCategories] = useState<Set<ProductCategory>>(new Set());
   const [sortOrder, setSortOrder] = useState<SortOrder>('featured');
+
+  const categoryOptions: { value: ProductCategory; label: string }[] = [
+    { value: 'coffee', label: t('categoryCoffee') },
+    { value: 'gift', label: t('categoryGiftSets') },
+  ];
 
   const toggleCategory = (category: ProductCategory) =>
     setCategories((current) => {
@@ -55,10 +57,10 @@ export const ShopBrowser = ({ products = PRODUCTS }: ShopBrowserProps) => {
     <div className="grid gap-8 py-8 lg:grid-cols-[230px_1fr]">
       <aside className="lg:sticky lg:top-24 lg:self-start">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-          Category
+          {t('categoryLabel')}
         </p>
         <div className="mt-3 flex flex-col gap-2">
-          {CATEGORY_OPTIONS.map((option) => (
+          {categoryOptions.map((option) => (
             <div key={option.value} className="flex items-center gap-2">
               <Checkbox
                 id={`category-${option.value}`}
@@ -76,24 +78,22 @@ export const ShopBrowser = ({ products = PRODUCTS }: ShopBrowserProps) => {
       <div>
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b pb-4">
           <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-            {filteredProducts.length} products
+            {t('productsCount', { count: filteredProducts.length })}
           </p>
           <Select value={sortOrder} onValueChange={(value) => setSortOrder(value as SortOrder)}>
-            <SelectTrigger aria-label="Sort by">
+            <SelectTrigger aria-label={t('sortLabel')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="featured">Most recently roasted</SelectItem>
-              <SelectItem value="price-asc">Price: low to high</SelectItem>
-              <SelectItem value="price-desc">Price: high to low</SelectItem>
+              <SelectItem value="featured">{t('sortFeatured')}</SelectItem>
+              <SelectItem value="price-asc">{t('sortPriceAsc')}</SelectItem>
+              <SelectItem value="price-desc">{t('sortPriceDesc')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         {filteredProducts.length === 0 ? (
-          <p className="text-muted-foreground py-16 text-center text-sm">
-            No products match those filters.
-          </p>
+          <p className="text-muted-foreground py-16 text-center text-sm">{t('noResults')}</p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((product) => (

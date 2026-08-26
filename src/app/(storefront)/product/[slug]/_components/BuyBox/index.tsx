@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Clock, CreditCard, MapPin, Truck } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { type Product } from '@/constants/products';
 import { formatVnd } from '@/lib/format-price';
@@ -14,18 +15,19 @@ export interface BuyBoxProps {
   product: Product;
 }
 
-const ASSURANCES = [
-  { icon: Clock, text: 'Roasted, then posted. Ships within 24 hours of the batch.' },
-  { icon: Truck, text: 'GHN nationwide in 2–3 days. Free over 500,000 ₫.' },
-  { icon: CreditCard, text: 'Cash on delivery available nationwide.' },
-  { icon: MapPin, text: 'Or collect at a café within 2 hours.' },
-];
-
 const PAYMENT_METHODS = ['ZaloPay', 'MoMo', 'VNPay QR', 'Bank transfer', 'Visa · MC', 'COD'];
 
 export const BuyBox = ({ product }: BuyBoxProps) => {
+  const t = useTranslations('Product');
   const weightOptions = product.weightOptions ?? ['Standard'];
   const grindOptions = product.grindOptions ?? [{ label: 'Standard' }];
+
+  const assurances = [
+    { icon: Clock, text: t('assuranceRoasted') },
+    { icon: Truck, text: t('assuranceShipping') },
+    { icon: CreditCard, text: t('assuranceCod') },
+    { icon: MapPin, text: t('assurancePickup') },
+  ];
 
   const [weight, setWeight] = useState(weightOptions[0]);
   const [grind, setGrind] = useState(grindOptions[0].label);
@@ -70,7 +72,7 @@ export const BuyBox = ({ product }: BuyBoxProps) => {
       )}
 
       <div className="mt-6">
-        <p className="text-sm font-medium">Weight</p>
+        <p className="text-sm font-medium">{t('weightLabel')}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {weightOptions.map((option) => (
             <Button
@@ -87,7 +89,7 @@ export const BuyBox = ({ product }: BuyBoxProps) => {
       </div>
 
       <div className="mt-4">
-        <p className="text-sm font-medium">Grind for</p>
+        <p className="text-sm font-medium">{t('grindLabel')}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {grindOptions.map((option) => (
             <Button
@@ -115,15 +117,15 @@ export const BuyBox = ({ product }: BuyBoxProps) => {
       <div className="flex gap-3">
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <Button type="button" className="flex-1" onClick={handleAddToCart}>
-          Add to cart
+          {t('addToCart')}
         </Button>
       </div>
       <Button type="button" variant="outline" className="mt-3 w-full">
-        Buy now with ZaloPay
+        {t('buyNowZalopay')}
       </Button>
 
       <div className="mt-6 flex flex-col gap-3 border-t pt-4">
-        {ASSURANCES.map(({ icon: Icon, text }) => (
+        {assurances.map(({ icon: Icon, text }) => (
           <div key={text} className="text-muted-foreground flex items-start gap-2 text-sm">
             <Icon className="text-primary mt-0.5 size-4 shrink-0" aria-hidden="true" />
             <span>{text}</span>

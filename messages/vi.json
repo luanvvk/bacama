@@ -74,5 +74,40 @@
     "body": "Một xưởng rang nhỏ ở Đà Nẵng. Bánh nướng trước khi trời sáng, cà phê theo mẻ mỗi ngày.",
     "enter": "Vào cửa hàng",
     "skip": "Bỏ qua"
+  },
+  "Announcements": {
+    "home": ["Rang trong xưởng, từng mẻ", "Bánh mới mỗi sáng", "Giao toàn quốc trong 2–3 ngày"],
+    "shop": ["Rang trong xưởng, từng mẻ", "Miễn phí vận chuyển từ 500.000 ₫", "COD toàn quốc"],
+    "product": ["Rang trong xưởng, từng mẻ", "Gửi trong 24 giờ sau khi rang"]
+  },
+  "Shop": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbCurrent": "Cà phê & Bánh",
+    "categoryLabel": "Phân loại",
+    "categoryCoffee": "Cà phê",
+    "categoryGiftSets": "Bộ quà tặng",
+    "productsCount": "{count} sản phẩm",
+    "sortLabel": "Sắp xếp theo",
+    "sortFeatured": "Mới rang gần nhất",
+    "sortPriceAsc": "Giá: thấp đến cao",
+    "sortPriceDesc": "Giá: cao đến thấp",
+    "noResults": "Không có sản phẩm phù hợp với bộ lọc này."
+  },
+  "Product": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbCategory": "Cà phê",
+    "weightLabel": "Trọng lượng",
+    "grindLabel": "Xay cho",
+    "addToCart": "Thêm vào giỏ",
+    "buyNowZalopay": "Mua ngay với ZaloPay",
+    "assuranceRoasted": "Rang xong là gửi. Giao trong 24 giờ sau mẻ rang.",
+    "assuranceShipping": "GHN giao toàn quốc trong 2–3 ngày. Miễn phí từ 500.000 ₫.",
+    "assuranceCod": "Có thanh toán khi nhận hàng toàn quốc.",
+    "assurancePickup": "Hoặc nhận tại quán trong vòng 2 giờ.",
+    "showImage": "Xem ảnh {index}",
+    "tabBrew": "Cách pha",
+    "tabOrigin": "Nguồn gốc",
+    "tabShipping": "Vận chuyển & đổi trả",
+    "shippingCopy": "GHN giao toàn quốc trong 2–3 ngày, miễn phí từ 500.000 ₫. Nhận tại quán trong vòng 2 giờ. Túi đã mở không thể đổi trả, nhưng nếu mẻ cà phê có vấn đề, hãy nhắn cho chúng tôi qua Zalo và chúng tôi sẽ gửi một túi mới."
   }
 }

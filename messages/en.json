@@ -74,5 +74,44 @@
     "body": "A small roastery in Đà Nẵng. Bread before the light, coffee by the day's batch.",
     "enter": "Enter the shop",
     "skip": "Skip"
+  },
+  "Announcements": {
+    "home": [
+      "Roasted in-house, every batch",
+      "Fresh bake, every morning",
+      "Nationwide in 2–3 days"
+    ],
+    "shop": ["Roasted in-house, every batch", "Free shipping over 500,000 ₫", "COD nationwide"],
+    "product": ["Roasted in-house, every batch", "Shipped within 24h of roasting"]
+  },
+  "Shop": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCurrent": "Coffee & Bakery",
+    "categoryLabel": "Category",
+    "categoryCoffee": "Coffee",
+    "categoryGiftSets": "Gift sets",
+    "productsCount": "{count} products",
+    "sortLabel": "Sort by",
+    "sortFeatured": "Most recently roasted",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "noResults": "No products match those filters."
+  },
+  "Product": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCategory": "Coffee",
+    "weightLabel": "Weight",
+    "grindLabel": "Grind for",
+    "addToCart": "Add to cart",
+    "buyNowZalopay": "Buy now with ZaloPay",
+    "assuranceRoasted": "Roasted, then posted. Ships within 24 hours of the batch.",
+    "assuranceShipping": "GHN nationwide in 2–3 days. Free over 500,000 ₫.",
+    "assuranceCod": "Cash on delivery available nationwide.",
+    "assurancePickup": "Or collect at a café within 2 hours.",
+    "showImage": "Show image {index}",
+    "tabBrew": "How to brew",
+    "tabOrigin": "Origin",
+    "tabShipping": "Shipping & returns",
+    "shippingCopy": "GHN nationwide in 2–3 days, free over 500,000 ₫. Collect at a café within 2 hours. Opened bags cannot be returned, but if a batch is off, message us on Zalo and we will send a fresh bag."
   }
 }

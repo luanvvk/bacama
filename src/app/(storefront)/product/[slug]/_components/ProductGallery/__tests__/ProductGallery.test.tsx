@@ -3,6 +3,11 @@ import userEvent from '@testing-library/user-event';
 
 import { ProductGallery } from '../index';
 
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string, params?: { index: number }) =>
+    key === 'showImage' ? `Show image ${params?.index}` : key,
+}));
+
 const IMAGES = ['/a.jpg', '/b.jpg', '/c.jpg'];
 
 describe('ProductGallery', () => {

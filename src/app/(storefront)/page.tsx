@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
 
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Footer } from '@/components/layout/Footer';
@@ -16,23 +17,19 @@ import { WorkshopsSection } from './_components/WorkshopsSection';
 // this route must not be frozen at build time (docs/BUILD-PLAN.md task 1.10).
 export const revalidate = 3600;
 
-const TAGLINES = [
-  'Roasted in-house, every batch',
-  'Fresh bake, every morning',
-  'Nationwide in 2–3 days',
-];
-
 const Home = async () => {
+  const t = await getTranslations('Announcements');
   // Real announcements join the evergreen taglines, so a dated line ("Site 3
   // opens in September") can no longer outlive its own start/end window.
   const announcements = await getActiveAnnouncements();
+  const taglines = t.raw('home') as string[];
 
   return (
     <>
       <Suspense fallback={null}>
         <EntranceOverlay />
       </Suspense>
-      <AnnouncementBar items={[...TAGLINES, ...announcements.map(({ title }) => title)]} />
+      <AnnouncementBar items={[...taglines, ...announcements.map(({ title }) => title)]} />
       <main>
         <HeroSection />
         <TodaysStockSection />
