@@ -3,6 +3,16 @@ import { render, screen } from '@testing-library/react';
 import { CourseCard } from '../index';
 import { COURSE_FIXTURES } from '@/services/courses/__fixtures__/courses';
 
+const MESSAGES: Record<string, string> = {
+  formatOnline: 'Online',
+  formatInPerson: 'In-person',
+  formatHybrid: 'Hybrid',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 const [latteArt, viennoiserie, cuppingOrigin] = COURSE_FIXTURES;
 
 describe('CourseCard', () => {

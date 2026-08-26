@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 import { type BakeryCatalogItem } from '@/services/catalog/get-bakery-items';
 import { useCartStore } from '@/stores/cart';
@@ -12,12 +13,12 @@ export interface BakeryCardProps {
   item: BakeryCatalogItem;
 }
 
-// bakesAt is free text, not a Vi/En pair — every real item currently uses
-// this one Vietnamese value, translated locally rather than via a full i18n
-// system that doesn't exist yet.
-const BAKES_AT_LABEL: Record<string, string> = { 'Hằng ngày': 'Baked daily' };
-
 export const BakeryCard = ({ item }: BakeryCardProps) => {
+  const t = useTranslations('BakeryCard');
+  // bakesAt is free text, not a Vi/En pair — every real item currently uses
+  // this one Vietnamese value, translated locally rather than via a full i18n
+  // system that doesn't exist yet.
+  const bakesAtLabel: Record<string, string> = { 'Hằng ngày': t('bakedDaily') };
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useCartStore((state) => state.open);
 
@@ -47,12 +48,12 @@ export const BakeryCard = ({ item }: BakeryCardProps) => {
       </div>
 
       <div className="mt-3 flex flex-1 flex-col">
-        <p className="text-primary font-mono text-xs tracking-widest uppercase">Bakery</p>
+        <p className="text-primary font-mono text-xs tracking-widest uppercase">{t('eyebrow')}</p>
         <h3 className="font-heading mt-1 text-lg">{item.name}</h3>
         <p className="text-muted-foreground mt-1 text-sm">{item.description}</p>
 
         <Badge variant="success" className="mt-2 w-fit">
-          {BAKES_AT_LABEL[item.bakesAt] ?? item.bakesAt}
+          {bakesAtLabel[item.bakesAt] ?? item.bakesAt}
         </Badge>
 
         <div className="mt-auto flex items-center justify-between gap-3 pt-3">
@@ -64,16 +65,16 @@ export const BakeryCard = ({ item }: BakeryCardProps) => {
               rel="noopener noreferrer"
               className="text-primary text-sm font-medium hover:underline"
             >
-              Order on GrabFood
+              {t('orderOnGrabfood')}
             </a>
           ) : (
             <Button type="button" size="sm" onClick={handleAddToCart}>
-              Add to cart
+              {t('addToCart')}
             </Button>
           )}
         </div>
         {item.handoff === 'pickup' && (
-          <p className="text-muted-foreground mt-2 text-xs">Pickup at Lý Tự Trọng</p>
+          <p className="text-muted-foreground mt-2 text-xs">{t('pickupNote')}</p>
         )}
       </div>
     </article>

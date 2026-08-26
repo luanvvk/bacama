@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 import { type Course } from '@/services/courses/map-course';
 import { Badge } from '@/components/ui/Badge';
@@ -9,16 +12,16 @@ export interface CourseCardProps {
   course: Course;
 }
 
-const FORMAT_LABEL: Record<Course['format'], string> = {
-  online: 'Online',
-  'in-person': 'In-person',
-  hybrid: 'Hybrid',
-};
-
 export const CourseCard = ({ course }: CourseCardProps) => {
+  const t = useTranslations('CourseCard');
+  const formatLabels: Record<Course['format'], string> = {
+    online: t('formatOnline'),
+    'in-person': t('formatInPerson'),
+    hybrid: t('formatHybrid'),
+  };
+  const formatLabel = formatLabels[course.format];
   const previewHref = '/learn';
   const enrolHref = '/me';
-  const formatLabel = FORMAT_LABEL[course.format];
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border">

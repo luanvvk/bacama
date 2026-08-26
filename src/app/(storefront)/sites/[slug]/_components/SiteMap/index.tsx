@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 import { Text } from '@/components/ui/Typography';
 
 export interface SiteMapProps {
@@ -8,26 +10,30 @@ export interface SiteMapProps {
 
 const mapQuery = (address: string) => encodeURIComponent(address);
 
-export const SiteMap = ({ address, name }: SiteMapProps) => (
-  <div>
-    <div className="bg-muted aspect-video overflow-hidden rounded-lg border">
-      <iframe
-        title={`Map of ${name}`}
-        src={`https://www.google.com/maps?q=${mapQuery(address)}&output=embed`}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        className="h-full w-full border-0"
-      />
+export const SiteMap = async ({ address, name }: SiteMapProps) => {
+  const t = await getTranslations('Site');
+
+  return (
+    <div>
+      <div className="bg-muted aspect-video overflow-hidden rounded-lg border">
+        <iframe
+          title={t('mapTitle', { name })}
+          src={`https://www.google.com/maps?q=${mapQuery(address)}&output=embed`}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="h-full w-full border-0"
+        />
+      </div>
+      <Text variant="muted" className="mt-2">
+        <a
+          href={`https://www.google.com/maps/search/?api=1&query=${mapQuery(address)}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary font-medium hover:underline"
+        >
+          {t('openInGoogleMaps')}
+        </a>
+      </Text>
     </div>
-    <Text variant="muted" className="mt-2">
-      <a
-        href={`https://www.google.com/maps/search/?api=1&query=${mapQuery(address)}`}
-        target="_blank"
-        rel="noreferrer"
-        className="text-primary font-medium hover:underline"
-      >
-        Open in Google Maps →
-      </a>
-    </Text>
-  </div>
-);
+  );
+};

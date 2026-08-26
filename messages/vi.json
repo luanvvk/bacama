@@ -79,7 +79,8 @@
     "home": ["Rang trong xưởng, từng mẻ", "Bánh mới mỗi sáng", "Giao toàn quốc trong 2–3 ngày"],
     "shop": ["Rang trong xưởng, từng mẻ", "Miễn phí vận chuyển từ 500.000 ₫", "COD toàn quốc"],
     "product": ["Rang trong xưởng, từng mẻ", "Gửi trong 24 giờ sau khi rang"],
-    "menu": ["Đặt trước, nhận tại Lý Tự Trọng", "Một cỡ duy nhất, mọi loại thức uống"]
+    "menu": ["Đặt trước, nhận tại Lý Tự Trọng", "Một cỡ duy nhất, mọi loại thức uống"],
+    "bakery": ["Bánh mới mỗi sáng", "Nhận tại Lý Tự Trọng"]
   },
   "Shop": {
     "breadcrumbHome": "Trang chủ",
@@ -128,5 +129,60 @@
       "chocolate": "Chocolate",
       "juice": "Đồ giải khát"
     }
+  },
+  "Bakery": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbCurrent": "Bánh",
+    "itemsCount": "{count} món",
+    "emptyState": "Hiện chưa có bánh nào trong tủ."
+  },
+  "BakeryCard": {
+    "eyebrow": "Bánh",
+    "bakedDaily": "Nướng mỗi ngày",
+    "orderOnGrabfood": "Đặt qua GrabFood",
+    "addToCart": "Thêm vào giỏ",
+    "pickupNote": "Nhận tại Lý Tự Trọng"
+  },
+  "Site": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbCafes": "Quán",
+    "openingSince": "Sắp mở · {date}",
+    "addressLabel": "Địa chỉ",
+    "hoursLabel": "Giờ mở",
+    "onSiteLabel": "Tại quán",
+    "houseRoastLabel": "Cà phê nhà rang",
+    "whatsOn": "Đang diễn ra",
+    "drinksMenu": "Menu thức uống",
+    "todaysBakery": "Bánh hôm nay",
+    "mapTitle": "Bản đồ {name}",
+    "openInGoogleMaps": "Mở trong Google Maps →"
+  },
+  "Courses": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbCurrent": "Khóa học",
+    "eyebrow": "Dạy bởi người rang cà phê và người làm bánh",
+    "heading": "Tất cả khóa học",
+    "subtext": "Xem miễn phí bài học đầu tiên của mọi khóa online. Đăng ký và tiến trình của bạn sẽ được lưu lại.",
+    "publicNoticeTitle": "Công khai — không cần đăng nhập để xem",
+    "publicNoticeBody": "Chỉ cần đăng nhập khi bạn muốn xem toàn bộ bài học hoặc lưu tiến trình.",
+    "logIn": "Đăng nhập",
+    "toStudentPage": "Đến trang học viên →",
+    "formatAll": "Tất cả",
+    "formatOnline": "Online",
+    "formatInPerson": "Tại lớp",
+    "formatHybrid": "Kết hợp",
+    "sortLabel": "Sắp xếp theo",
+    "sortPopular": "Sắp xếp: phổ biến",
+    "sortPriceAsc": "Giá: thấp đến cao",
+    "sortPriceDesc": "Giá: cao đến thấp",
+    "noResults": "Không có khóa học phù hợp với bộ lọc này.",
+    "allCoursesCount": "Tất cả khóa học · {count}",
+    "firstLessonFree": "Bài học đầu miễn phí",
+    "certificateOnCompletion": "Có chứng nhận hoàn thành"
+  },
+  "CourseCard": {
+    "formatOnline": "Online",
+    "formatInPerson": "Tại lớp",
+    "formatHybrid": "Kết hợp"
   }
 }

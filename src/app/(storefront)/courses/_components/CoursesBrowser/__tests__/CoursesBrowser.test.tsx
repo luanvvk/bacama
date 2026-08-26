@@ -4,6 +4,22 @@ import userEvent from '@testing-library/user-event';
 import { CoursesBrowser } from '../index';
 import { COURSE_FIXTURES } from '@/services/courses/__fixtures__/courses';
 
+const MESSAGES: Record<string, string> = {
+  formatAll: 'All',
+  formatOnline: 'Online',
+  formatInPerson: 'In-person',
+  formatHybrid: 'Hybrid',
+  sortLabel: 'Sort by',
+  sortPopular: 'Sort: popular',
+  sortPriceAsc: 'Price: low to high',
+  sortPriceDesc: 'Price: high to low',
+  noResults: 'No courses match those filters.',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 describe('CoursesBrowser', () => {
   it('shows every course by default', () => {
     render(<CoursesBrowser courses={COURSE_FIXTURES} />);

@@ -83,7 +83,8 @@
     ],
     "shop": ["Roasted in-house, every batch", "Free shipping over 500,000 ₫", "COD nationwide"],
     "product": ["Roasted in-house, every batch", "Shipped within 24h of roasting"],
-    "menu": ["Order ahead, collect at Lý Tự Trọng", "One size, every drink"]
+    "menu": ["Order ahead, collect at Lý Tự Trọng", "One size, every drink"],
+    "bakery": ["Fresh bake, every morning", "Collect at Lý Tự Trọng"]
   },
   "Shop": {
     "breadcrumbHome": "Home",
@@ -132,5 +133,60 @@
       "chocolate": "Chocolate",
       "juice": "Refresher"
     }
+  },
+  "Bakery": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCurrent": "Bakery",
+    "itemsCount": "{count} items",
+    "emptyState": "Nothing on the bakery case right now."
+  },
+  "BakeryCard": {
+    "eyebrow": "Bakery",
+    "bakedDaily": "Baked daily",
+    "orderOnGrabfood": "Order on GrabFood",
+    "addToCart": "Add to cart",
+    "pickupNote": "Pickup at Lý Tự Trọng"
+  },
+  "Site": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCafes": "Cafés",
+    "openingSince": "Opening · {date}",
+    "addressLabel": "Address",
+    "hoursLabel": "Hours",
+    "onSiteLabel": "On site",
+    "houseRoastLabel": "House roast",
+    "whatsOn": "What's on",
+    "drinksMenu": "Drinks menu",
+    "todaysBakery": "Today's bakery",
+    "mapTitle": "Map of {name}",
+    "openInGoogleMaps": "Open in Google Maps →"
+  },
+  "Courses": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCurrent": "Workshops",
+    "eyebrow": "Taught by the roaster and the baker",
+    "heading": "All courses",
+    "subtext": "Watch the first lesson of every online course free. Enrol and your progress is saved.",
+    "publicNoticeTitle": "Public — no sign-in needed to browse",
+    "publicNoticeBody": "Sign in only when you want to watch a full lesson or save your progress.",
+    "logIn": "Log in",
+    "toStudentPage": "To student page →",
+    "formatAll": "All",
+    "formatOnline": "Online",
+    "formatInPerson": "In-person",
+    "formatHybrid": "Hybrid",
+    "sortLabel": "Sort by",
+    "sortPopular": "Sort: popular",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "noResults": "No courses match those filters.",
+    "allCoursesCount": "All courses · {count}",
+    "firstLessonFree": "First lesson free",
+    "certificateOnCompletion": "Certificate on completion"
+  },
+  "CourseCard": {
+    "formatOnline": "Online",
+    "formatInPerson": "In-person",
+    "formatHybrid": "Hybrid"
   }
 }

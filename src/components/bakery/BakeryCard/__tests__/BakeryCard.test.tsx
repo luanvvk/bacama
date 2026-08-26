@@ -5,6 +5,18 @@ import { BakeryCard } from '../index';
 import { useCartStore } from '@/stores/cart';
 import { type BakeryCatalogItem } from '@/services/catalog/get-bakery-items';
 
+const MESSAGES: Record<string, string> = {
+  eyebrow: 'Bakery',
+  bakedDaily: 'Baked daily',
+  orderOnGrabfood: 'Order on GrabFood',
+  addToCart: 'Add to cart',
+  pickupNote: 'Pickup at Lý Tự Trọng',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 const item: BakeryCatalogItem = {
   id: 'b1',
   slug: 'sunshine-croissant',

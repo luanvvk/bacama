@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
@@ -33,7 +34,7 @@ export const generateStaticParams = async () => {
 
 const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const site = await getSiteBySlug(slug);
+  const [t, site] = await Promise.all([getTranslations('Site'), getSiteBySlug(slug)]);
 
   if (!site) notFound();
 
@@ -53,11 +54,11 @@ const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
           <Breadcrumb className="pt-6">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t('breadcrumbHome')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/#sites">Cafés</BreadcrumbLink>
+                <BreadcrumbLink href="/#sites">{t('breadcrumbCafes')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -82,20 +83,20 @@ const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
               {site.comingSoon && site.opensAt && (
                 <Badge variant="warning" className="mt-4">
-                  Opening · {formatOpening(site.opensAt)}
+                  {t('openingSince', { date: formatOpening(site.opensAt) })}
                 </Badge>
               )}
 
               <dl className="mt-6 space-y-4 border-t pt-6 text-sm">
                 <div>
                   <dt className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-                    Address
+                    {t('addressLabel')}
                   </dt>
                   <dd className="mt-1">{site.address}</dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-                    Hours
+                    {t('hoursLabel')}
                   </dt>
                   <dd className="mt-1">
                     {site.hoursDays}
@@ -110,7 +111,7 @@ const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 {site.addressNote && (
                   <div>
                     <dt className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-                      On site
+                      {t('onSiteLabel')}
                     </dt>
                     <dd className="mt-1">{site.addressNote}</dd>
                   </div>
@@ -118,7 +119,7 @@ const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 {site.todaysRoast && (
                   <div>
                     <dt className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-                      House roast
+                      {t('houseRoastLabel')}
                     </dt>
                     <dd className="mt-1">
                       <Link
@@ -135,7 +136,7 @@ const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
               {announcements.length > 0 && (
                 <section className="mt-8 border-t pt-6">
                   <Heading as="h2" size="sm">
-                    What&rsquo;s on
+                    {t('whatsOn')}
                   </Heading>
                   <ul className="mt-3 space-y-3">
                     {announcements.map((announcement) => (
@@ -154,12 +155,12 @@ const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 <div className="mt-8 flex flex-wrap gap-3 border-t pt-6">
                   {site.servesMenu && (
                     <Button asChild>
-                      <Link href="/menu">Drinks menu</Link>
+                      <Link href="/menu">{t('drinksMenu')}</Link>
                     </Button>
                   )}
                   {site.servesBakery && (
                     <Button asChild variant={site.servesMenu ? 'outline' : 'default'}>
-                      <Link href="/bakery">Today&rsquo;s bakery</Link>
+                      <Link href="/bakery">{t('todaysBakery')}</Link>
                     </Button>
                   )}
                 </div>
