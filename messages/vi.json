@@ -208,6 +208,14 @@
     "logInToJoin": "Đăng nhập để tham gia thảo luận",
     "teacherRoleLabel": "Giáo viên"
   },
+  "StaticPageShell": {
+    "asideEyebrow": "Bacama · Đà Nẵng",
+    "asideBody": "Từng mẻ nhỏ, nướng từ sớm, và luôn có người thật trả lời bạn."
+  },
+  "LegalDocument": {
+    "onThisPage": "Trong trang này",
+    "updated": "Cập nhật · {date}"
+  },
   "Teach": {
     "eyebrow": "Trang giảng viên · chưa hoàn thiện",
     "title": "Trang giảng viên chưa được xây dựng.",

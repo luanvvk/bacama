@@ -1,12 +1,16 @@
 import { expect, test } from '@playwright/test';
 
+// Default locale is 'vi' (see src/i18n/routing.ts) — routes already migrated
+// to next-intl render Vietnamese by default, so their expected heading here
+// is the Vietnamese string, not the English one. Routes not yet migrated
+// (still hardcoded English in their page component) keep the English string.
 const publicRoutes = [
-  ['/', 'Roasted by hand,'],
-  ['/shop', 'Coffee & Bakery'],
-  ['/bakery', 'items'],
-  ['/menu', 'Drinks menu'],
-  ['/sites/ly-tu-trong', 'Address'],
-  ['/courses', 'All courses'],
+  ['/', 'Rang bằng tay,'],
+  ['/shop', 'Cà phê & Bánh'],
+  ['/bakery', 'món'],
+  ['/menu', 'Menu thức uống'],
+  ['/sites/ly-tu-trong', 'Địa chỉ'],
+  ['/courses', 'Tất cả khóa học'],
   ['/story', 'One kitchen, one oven, one family.'],
   ['/login', 'Welcome back'],
   ['/register', 'Create your account'],
@@ -125,7 +129,9 @@ test('mobile storefront menu opens', async ({ page }) => {
   await page.goto('/story');
   await page.waitForTimeout(500);
 
-  await page.getByRole('button', { name: 'Open menu' }).click();
+  // Header's mobile-menu trigger aria-label is localized (Header.openMenu) —
+  // default locale is 'vi' (see src/i18n/routing.ts), so it renders "Mở menu".
+  await page.getByRole('button', { name: 'Mở menu' }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText('Our family', { exact: true })).toBeVisible();

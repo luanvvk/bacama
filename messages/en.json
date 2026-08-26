@@ -212,6 +212,14 @@
     "logInToJoin": "Log in to join the discussion",
     "teacherRoleLabel": "Teacher"
   },
+  "StaticPageShell": {
+    "asideEyebrow": "Bacama · Đà Nẵng",
+    "asideBody": "Small batches, an early bake, and a real person behind the answer."
+  },
+  "LegalDocument": {
+    "onThisPage": "On this page",
+    "updated": "Updated · {date}"
+  },
   "Teach": {
     "eyebrow": "Teacher console · not set up yet",
     "title": "The teaching console isn't built yet.",
