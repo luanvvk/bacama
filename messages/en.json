@@ -356,5 +356,675 @@
     "address": "Enter your delivery address",
     "province": "Choose a province or city",
     "deliveryOption": "Choose how to receive your order"
+  },
+  "AccessibilityPage": {
+    "eyebrow": "Accessibility · everyone is welcome",
+    "title": "A shop made to be used.",
+    "description": "We want Bacama to work for as many people as possible, whether you are browsing with a keyboard, a screen reader, a small screen, or a slower connection.",
+    "updatedDate": "16 August 2026",
+    "contactParagraph": "Email {email} or call {phone}. We can take an order, answer a question, or help with a course without requiring you to use the website.",
+    "sections": [
+      {
+        "title": "Our approach",
+        "paragraphs": [
+          "We aim to provide clear headings, labelled controls, readable contrast, keyboard access, meaningful link text, and alternative text for informative images."
+        ]
+      },
+      {
+        "title": "Known limits",
+        "paragraphs": [
+          "Some product photography and third-party payment or courier experiences may not meet the same standard as the rest of the site. We are working through these as integrations become real."
+        ]
+      },
+      {
+        "title": "Need another way?",
+        "paragraphs": [""]
+      }
+    ]
+  },
+  "PrivacyPage": {
+    "eyebrow": "Privacy · what we keep",
+    "title": "Privacy policy.",
+    "description": "We collect only what helps us take an order, answer a message, or save your learning progress. This is the full and honest version of what we keep, why, and for how long.",
+    "updatedDate": "16 August 2026",
+    "contactParagraph": "Questions about privacy? Email {email} or write to Bacama, {address}, Vietnam. We answer during opening hours, {hours}.",
+    "sections": [
+      {
+        "title": "1. Introduction",
+        "paragraphs": [
+          "Bacama is a small roastery, bakery, café group, and online learning studio based in Đà Nẵng, Vietnam. This policy explains what personal information we collect, why we collect it, and the choices you have.",
+          "We are not a large platform. We collect only what helps us take an order, answer a message, arrange delivery, or save your learning progress. We do not sell personal information."
+        ]
+      },
+      {
+        "title": "2. What we collect",
+        "paragraphs": [
+          "When you place an order: your name, phone number, email, delivery address, order details, and payment method (payment card details are handled by the payment provider, not by us).",
+          "When you contact us: your name, email, phone number if you provide it, and the content of your message.",
+          "When you subscribe to the newsletter: your email address and subscription preference.",
+          "When you create an account or enrol in a course: your name, email, course progress, and assessment submissions.",
+          "When you browse the site: technical information such as browser type, pages visited, and time spent, collected through cookies and similar technologies (see our cookie policy for details)."
+        ]
+      },
+      {
+        "title": "3. Legal basis and purpose",
+        "paragraphs": [
+          "We process your information to fulfil orders you place (contract), to answer messages you send (consent), to send the newsletter you subscribed to (consent), and to improve the site (legitimate interest).",
+          "If you are in Vietnam, your data is handled in accordance with the Law on Protection of Personal Data (Decree 13/2023/ND-CP). If you are in the EU or UK, we handle your data under the GDPR principles of lawfulness, fairness, and transparency."
+        ]
+      },
+      {
+        "title": "4. How we use your information",
+        "paragraphs": [
+          "To process and deliver your orders, arrange shipping, and handle returns.",
+          "To grant course access, track progress, and issue certificates.",
+          "To answer support requests and messages you send us.",
+          "To send the newsletter you subscribed to (you can unsubscribe at any time).",
+          "To understand which products and pages are popular, so we can make the site better."
+        ]
+      },
+      {
+        "title": "5. Payment and delivery providers",
+        "paragraphs": [
+          "Payment providers (ZaloPay, MoMo, VNPay, Visa, bank transfer) receive the information they need to process your payment, including your name and the payment amount. Card details are handled entirely by the payment provider — Bacama never sees or stores them.",
+          "Delivery couriers (GHN, Ahamove, GrabExpress) receive your name, phone number, and delivery address to complete the shipment."
+        ]
+      },
+      {
+        "title": "6. How long we keep your data",
+        "paragraphs": [
+          "Order details are kept for as long as needed to fulfil the order and handle any returns, plus a reasonable period for accounting and tax records.",
+          "Newsletter subscriptions are kept until you unsubscribe.",
+          "Course progress and certificates are kept as long as your account is active.",
+          "Messages sent through the contact form are kept for up to 12 months, then deleted."
+        ]
+      },
+      {
+        "title": "7. Sharing",
+        "paragraphs": [
+          "We do not sell your personal information. We share it only with the providers listed in section 5, and only to the extent necessary to complete the service you requested.",
+          "We may be required to disclose information to authorities if compelled by law."
+        ]
+      },
+      {
+        "title": "8. Your rights",
+        "paragraphs": [
+          "You can ask what information we hold about you, request a correction or deletion, unsubscribe from the newsletter, or object to a specific use.",
+          "To exercise any of these rights, contact hang@bacama.vn. We will respond within 30 days."
+        ]
+      },
+      {
+        "title": "9. Children",
+        "paragraphs": [
+          "The site is not directed at children under 13. We do not knowingly collect information from children. If you believe a child has provided us with information, contact us and we will delete it."
+        ]
+      },
+      {
+        "title": "10. Data transfer",
+        "paragraphs": [
+          "Your data may be processed on servers located outside Vietnam or your home country. Where this happens, appropriate safeguards are in place to protect your information."
+        ]
+      },
+      {
+        "title": "11. Changes to this policy",
+        "paragraphs": [
+          "We may update this policy when the services we offer change. The date shown on this page indicates the version currently in effect."
+        ]
+      },
+      {
+        "title": "12. Contact",
+        "paragraphs": [""]
+      }
+    ]
+  },
+  "TermsPage": {
+    "eyebrow": "Terms · the small print",
+    "title": "Terms & conditions.",
+    "description": "The straightforward but complete version of how Bacama orders, courses, and accounts work. Written for humans, not just lawyers.",
+    "updatedDate": "16 August 2026",
+    "contactParagraph": "If you have a question about these terms, an order, or a course, contact us at {email} or {phone}. We answer during opening hours, {hours}.",
+    "sections": [
+      {
+        "title": "1. About these terms",
+        "paragraphs": [
+          "These terms govern your use of bacama.vn and any orders, course enrolments, or interactions you make through it. By browsing the site, placing an order, or creating an account, you accept these terms.",
+          "If you do not agree with any part of these terms, please do not use the website. We may update these terms from time to time — the date shown on this page indicates the version currently in effect."
+        ]
+      },
+      {
+        "title": "2. Definitions",
+        "paragraphs": [
+          "\"Bacama\", \"we\", \"us\", and \"our\" refer to the roastery, bakery, café, and online learning business operated from Đà Nẵng, Vietnam.",
+          "\"You\" and \"your\" refer to the person browsing the site, placing an order, enrolling in a course, or contacting us.",
+          "\"Products\" refers to coffee, bakery items, gift sets, and any other physical goods sold through the site.",
+          "\"Courses\" refers to online or in-person classes, workshops, and learning content offered through the site."
+        ]
+      },
+      {
+        "title": "3. Use of the website",
+        "paragraphs": [
+          "You may browse, place orders, and enrol in courses for personal or business use. You agree to provide accurate contact and delivery details and to use the site in a way that does not disrupt others or the service.",
+          "You must not attempt to access areas of the site that are not intended for you, use the site for unlawful purposes, or reproduce content without permission. All site content — text, photography, course material, and design — is owned by Bacama unless otherwise stated."
+        ]
+      },
+      {
+        "title": "4. Accounts",
+        "paragraphs": [
+          "An account is needed to save course progress, view order history, and receive certificates. When accounts are enabled, you are responsible for keeping your login details secure.",
+          "Accounts are free. You may close your account at any time by contacting us. We may suspend or close an account if it is misused or if these terms are violated."
+        ]
+      },
+      {
+        "title": "5. Products and pricing",
+        "paragraphs": [
+          "We make every effort to display products and prices accurately. Prices are shown in Vietnamese đồng and include applicable taxes. We reserve the right to correct pricing errors and to refuse or cancel an order if a price was displayed incorrectly.",
+          "Product availability may change. If an item you ordered is no longer available, we will contact you to offer a substitute or a full refund.",
+          "Coffee bags carry a roast date. Pastries and bakery items are made fresh daily and may sell out."
+        ]
+      },
+      {
+        "title": "6. Orders and payment",
+        "paragraphs": [
+          "An order is accepted when payment is confirmed or, for cash-on-delivery (COD) orders, when we accept the order for dispatch. You will receive an order reference by email or the contact method you provided.",
+          "We accept ZaloPay, MoMo, VNPay, Visa, bank transfer, and COD. For bank transfers, the order is held until the transfer is confirmed. Sufficient payment must be received before an order is dispatched.",
+          "If a payment fails, we will contact you. Orders with unresolved payments for more than 24 hours may be cancelled automatically."
+        ]
+      },
+      {
+        "title": "7. Delivery and shipping",
+        "paragraphs": [
+          "Orders are dispatched within 24 hours of confirmation or roasting. Nationwide delivery through GHN typically takes 2–3 business days. Local delivery in Đà Nẵng via Ahamove or GrabExpress may arrive same-day.",
+          "Free shipping applies to orders above 500,000 ₫. Delivery times are estimates and may be affected by courier schedules, weather, or public holidays.",
+          "Please ensure someone is available to receive the delivery at the address you provide. If a parcel is returned to us due to an incorrect address or failed delivery, we will contact you to arrange redelivery, which may incur an additional fee."
+        ]
+      },
+      {
+        "title": "8. Returns and refunds",
+        "paragraphs": [
+          "Unopened coffee may be returned within 14 days of delivery. If a product arrives damaged or incorrect, contact us within 48 hours with a photo and we will arrange a replacement or refund.",
+          "Perishable bakery items cannot be returned. If you are not satisfied with a bakery product, contact us and we will make it right.",
+          "Refunds are processed to the original payment method and typically arrive within 5–10 business days, depending on your bank or payment provider."
+        ]
+      },
+      {
+        "title": "9. Courses and learning",
+        "paragraphs": [
+          "Course access is granted to the enrolled person and should not be shared, transferred, or resold. Each course has a stated completion requirement, usually a set of lessons or an assessment.",
+          "Certificates are issued upon successful completion. Bacama reserves the right to revoke a certificate if the assessment was completed dishonestly.",
+          "Online course enrolments can be cancelled before the first lesson is watched for a full refund. In-person classes can be rescheduled with 7 days’ notice, subject to availability."
+        ]
+      },
+      {
+        "title": "10. Intellectual property",
+        "paragraphs": [
+          "All content on this site — including text, photography, illustrations, course videos, lesson documents, logos, and design — is owned by Bacama or used with permission. You may not copy, download, or redistribute it without written consent.",
+          "Course materials are provided for personal learning. Educators who wish to use Bacama materials in their own teaching should contact us first."
+        ]
+      },
+      {
+        "title": "11. Limitation of liability",
+        "paragraphs": [
+          "Bacama is a small business, not a large platform. We take responsibility for delivering good products and honest service. To the extent permitted by Vietnamese law, our liability for any single order is limited to the value of that order.",
+          "We are not liable for indirect or consequential losses, or for events beyond our reasonable control, such as courier delays, payment provider failures, or natural events."
+        ]
+      },
+      {
+        "title": "12. Force majeure",
+        "paragraphs": [
+          "If circumstances beyond our control — such as extreme weather, supply chain failure, or government action — prevent us from fulfilling an order, we will contact you as soon as we can and arrange a refund or alternative."
+        ]
+      },
+      {
+        "title": "13. Changes to these terms",
+        "paragraphs": [
+          "We may update these terms when the service changes. The version shown here applies to orders and enrolments placed after its update date. Previous versions are available on request."
+        ]
+      },
+      {
+        "title": "14. Governing law",
+        "paragraphs": [
+          "These terms are governed by the laws of Vietnam. Any dispute that cannot be resolved by contacting us will be handled through the courts of Đà Nẵng or through good-faith mediation."
+        ]
+      },
+      {
+        "title": "15. Contact",
+        "paragraphs": [""]
+      }
+    ]
+  },
+  "CookiesPage": {
+    "eyebrow": "Cookies · a quiet explanation",
+    "title": "Cookie policy.",
+    "description": "We use a minimal amount of cookies and browser storage to make the shop work and remember choices you make. This page explains what we set, why we set it, and how you can control it.",
+    "onThisPage": "On this page",
+    "updatedDate": "Updated · 16 August 2026",
+    "sections": [
+      { "id": "what-are-cookies", "title": "What are cookies" },
+      { "id": "types-we-use", "title": "Types of cookies we use" },
+      { "id": "essential", "title": "Essential cookies" },
+      { "id": "preferences", "title": "Preference cookies" },
+      { "id": "analytics", "title": "Analytics cookies" },
+      { "id": "third-party", "title": "Third-party cookies" },
+      { "id": "cookie-table", "title": "Cookies we set" },
+      { "id": "manage", "title": "How to manage cookies" },
+      { "id": "contact", "title": "Contact" }
+    ],
+    "whatAreCookiesTitle": "What are cookies and similar technologies",
+    "whatAreCookiesBody": "Cookies are small text files placed on your device when you visit a website. They let the site remember things — what is in your cart, whether you have seen a message before, or how you found us. We also use browser storage (local storage and session storage) for similar purposes; it works like a cookie but can hold slightly more information without being sent with every request.",
+    "typesWeUseTitle": "Types of cookies we use",
+    "typesWeUseBody": "We categorise the cookies and storage we use into four types. Only the first (essential) is set automatically. The rest are added when the corresponding service is connected.",
+    "cookieTypes": [
+      {
+        "type": "Essential",
+        "description": "Required for the site to function. Without these, the cart and checkout do not work."
+      },
+      {
+        "type": "Preference",
+        "description": "Remember your choices — like whether you have seen the entrance welcome — to make the site feel smoother."
+      },
+      {
+        "type": "Analytics",
+        "description": "Help us understand which pages are useful and where we can improve. Anonymous or pseudonymous."
+      },
+      {
+        "type": "Marketing",
+        "description": "Used to show relevant content on third-party platforms. Added only if you engage with those features."
+      }
+    ],
+    "essentialTitle": "Essential cookies",
+    "essentialBody": "These are set automatically and cannot be turned off if you want to use the shop. They do not identify you to us or to anyone else.",
+    "preferencesTitle": "Preference cookies",
+    "preferencesBody": "The entrance welcome uses local storage to remember whether you have already seen it, so it does not show every time you visit. This does not identify you to us.",
+    "analyticsTitle": "Analytics cookies",
+    "analyticsBody": "When an analytics service is connected, it may set cookies to understand how the site is used — which pages are visited, how long people stay, and where they come from. This data is anonymous or pseudonymous and is used only to improve the site.",
+    "thirdPartyTitle": "Third-party cookies",
+    "thirdPartyBody": "Payment providers (ZaloPay, MoMo, VNPay, Visa), delivery couriers (GHN, Ahamove, GrabExpress), and embedded media may set their own cookies when you interact with those services. Their policies, not ours, govern those cookies.",
+    "cookieTableTitle": "Cookies we set",
+    "cookieTableBody": "The table below lists the cookies and storage currently used or planned. It will be updated as services are connected.",
+    "tableColumnName": "Name",
+    "tableColumnType": "Type",
+    "tableColumnDuration": "Duration",
+    "tableColumnThirdParty": "Third-party",
+    "tableColumnPurpose": "Purpose",
+    "cookieTable": [
+      {
+        "name": "bacama-entrance-seen",
+        "type": "Local Storage",
+        "duration": "Session",
+        "thirdParty": "No",
+        "purpose": "Remembers whether you have seen the entrance welcome."
+      },
+      {
+        "name": "bacama.locale",
+        "type": "Local Storage",
+        "duration": "Persistent",
+        "thirdParty": "No",
+        "purpose": "Stores your language preference (future feature)."
+      },
+      {
+        "name": "cart",
+        "type": "Zustand store",
+        "duration": "Session",
+        "thirdParty": "No",
+        "purpose": "Keeps your shopping cart contents while you browse."
+      },
+      {
+        "name": "__session",
+        "type": "Cookie",
+        "duration": "Session",
+        "thirdParty": "Yes",
+        "purpose": "Identifies your browsing session for cart and checkout."
+      },
+      {
+        "name": "_ga",
+        "type": "Cookie",
+        "duration": "730 days",
+        "thirdParty": "Yes",
+        "purpose": "Used by Google Analytics to distinguish visitors (added when connected)."
+      },
+      {
+        "name": "_gid",
+        "type": "Cookie",
+        "duration": "1 day",
+        "thirdParty": "Yes",
+        "purpose": "Used by Google Analytics to distinguish visitors (added when connected)."
+      }
+    ],
+    "manageTitle": "How to manage cookies",
+    "manageBodyOne": "You can clear cookies and local storage from your browser settings at any time. On most browsers, this is under Settings → Privacy → Site data or similar. Clearing site storage may empty your local cart or show the entrance message again the next time you visit.",
+    "manageBodyTwo": "You can also browse in private or incognito mode, which clears storage when you close the window.",
+    "contactTitle": "Contact",
+    "contactParagraph": "Questions about cookies or privacy? Email {email} and we will answer during opening hours."
+  },
+  "FaqPage": {
+    "eyebrow": "Help · answers in plain language",
+    "heading": "Frequently asked questions.",
+    "intro": "A few useful things before you order, book a class, or come by the café. Search or browse by topic.",
+    "sidebarEyebrow": "Bacama · Đà Nẵng",
+    "sidebarText": "Small batches, an early bake, and a real person behind the answer.",
+    "searchPlaceholder": "Search questions…",
+    "searchAriaLabel": "Search FAQ",
+    "allTopics": "All topics",
+    "noResults": "No questions match “{query}”. Try a different word or",
+    "noResultsContactLink": "contact us",
+    "ctaEyebrow": "Still unsure?",
+    "ctaHeading": "Talk to the people behind the counter.",
+    "ctaText": "We answer messages during opening hours, every day. There is no chatbot — just us.",
+    "ctaButton": "Contact us",
+    "groups": [
+      {
+        "id": "orders",
+        "title": "Coffee & orders",
+        "items": [
+          {
+            "q": "When do you roast?",
+            "a": "We roast in small batches through the week. The roast date is printed on every bag and shown on each product page, so you always know how fresh it is."
+          },
+          {
+            "q": "How quickly do you ship?",
+            "a": "Orders leave within 24 hours of roasting. Nationwide delivery usually takes 2–3 days through GHN. Same-day delivery is available in Đà Nẵng through Ahamove and GrabExpress."
+          },
+          {
+            "q": "Can I order wholesale bags?",
+            "a": "Yes. Choose the 1 kg option in the shop or visit our wholesale page to start a conversation about a regular café order."
+          },
+          {
+            "q": "Do you sell whole bean or pre-ground?",
+            "a": "Both. Each product page lets you select a grind option — whole bean, phin, espresso, pour-over — so you get coffee ready for how you brew."
+          },
+          {
+            "q": "How should I store the coffee?",
+            "a": "Keep the bag sealed and away from direct sunlight, heat, and moisture. Once opened, try to finish it within 2–3 weeks. Coffee does not need to go in the fridge."
+          }
+        ]
+      },
+      {
+        "id": "bakery",
+        "title": "Bakery & pastries",
+        "items": [
+          {
+            "q": "What time do you bake?",
+            "a": "Pastries come out of the oven from 05:00 every morning. If you want a croissant, come early — they go fast and we do not hold them overnight."
+          },
+          {
+            "q": "Can I order a whole cake?",
+            "a": "Yes, with 48 hours’ notice. Contact us with what you need and for when, and we will confirm what we can make."
+          },
+          {
+            "q": "Are pastries available for delivery?",
+            "a": "Pastries are available for local collection or same-day delivery only, because they are best eaten the day they are made."
+          }
+        ]
+      },
+      {
+        "id": "courses",
+        "title": "Courses & learning",
+        "items": [
+          {
+            "q": "Do I need an account to browse courses?",
+            "a": "No. You can browse every course and watch the public preview lesson without signing in. An account is only needed to save progress, take assessments, and receive a certificate."
+          },
+          {
+            "q": "Are in-person classes held in English?",
+            "a": "Classes are supported in English and Vietnamese. Contact us before booking if you have accessibility or language questions."
+          },
+          {
+            "q": "Do I get a certificate?",
+            "a": "Yes. Completing the required lessons and assessment for a course earns a Bacama certificate, visible from your learning page once auth is connected."
+          },
+          {
+            "q": "Can I get a refund on a course?",
+            "a": "Online course enrolments can be cancelled before the first lesson is watched for a full refund. After that, contact us and we will see what we can do."
+          }
+        ]
+      },
+      {
+        "id": "shipping",
+        "title": "Shipping & returns",
+        "items": [
+          {
+            "q": "What if my parcel arrives damaged?",
+            "a": "Take a photo before opening the parcel and contact us within 48 hours. We will replace or refund — no room for argument on that one."
+          },
+          {
+            "q": "Can I change my order?",
+            "a": "Contact us as soon as possible. Once a parcel has been collected by the courier, changes may not be possible."
+          },
+          {
+            "q": "Do you ship internationally?",
+            "a": "Not yet. We currently deliver within Vietnam. If you are outside the country, contact us and we can explore options for a large order."
+          }
+        ]
+      }
+    ]
+  },
+  "StoryPage": {
+    "tagline": "Fresh bake, every morning",
+    "eyebrow": "Our story · since 2017",
+    "heading": "One kitchen, one oven, one family.",
+    "lead": "We did not start with a business plan. We started with my grandmother's roasting pan and my mother's oven.",
+    "heroImageAlt": "The roastery in morning light",
+    "chapters": [
+      {
+        "year": "2017",
+        "label": "The beginning",
+        "title": "My grandmother's pan, every Saturday morning",
+        "paragraphs": [
+          "She roasted over a wood stove behind the house, turning by hand, waiting for the first crack before she took it off. No thermometer, no timer — she listened. We opened in 2017 with one 3 kg roaster and a glass cabinet.",
+          "My mother had been baking bread for the neighbours for years. When we opened, she asked: \"If you sell coffee, where do the pastries go?\" So there were pastries."
+        ],
+        "alt": "Bread cooling on a rack",
+        "caption": "The first bread at Ngô Quyền, 2017"
+      },
+      {
+        "year": "2019",
+        "label": "To the farms",
+        "title": "We drove to Cầu Đất and stopped buying through brokers",
+        "paragraphs": [
+          "Three smallholder plots at 1,450–1,600 metres. We pay above market and buy the same lots every year, so the growers know in advance where the harvest goes. Since then, every bag we sell knows where it came from."
+        ]
+      },
+      {
+        "year": "2022",
+        "label": "Teaching",
+        "title": "Someone asked how to pour a heart, and a class began",
+        "paragraphs": [
+          "It began as a Tuesday afternoon, four people, one espresso machine. Now it is an online course for people far away and a weekend class in Hội An for people who want to stand at the machine. We teach exactly how we work — nothing held back."
+        ],
+        "alt": "A latte art class",
+        "caption": "Latte art class, Hội An"
+      },
+      {
+        "year": "2026",
+        "label": "The third café",
+        "title": "An Thuận — a roastery, a classroom, and a garden",
+        "paragraphs": [
+          "In September we open our third café in Ngũ Hành Sơn. For the first time the roaster, the classroom and the seats share one roof — so you can smell today's batch while drinking yesterday's."
+        ]
+      }
+    ],
+    "quote": "\"Good coffee has a date on it. If you won't print the roast date on the bag, don't sell it.\"",
+    "valuesEyebrow": "How we work",
+    "valuesHeading": "Three things we don't compromise.",
+    "values": [
+      {
+        "number": "01",
+        "title": "A roast date on every bag",
+        "description": "Not a use-by date — a roast date. You deserve to know how old your coffee is."
+      },
+      {
+        "number": "02",
+        "title": "Baked that morning, then gone",
+        "description": "We do not hold pastries overnight. If you arrive at two and the croissants are gone, that is the proof."
+      },
+      {
+        "number": "03",
+        "title": "Bought straight from the growers",
+        "description": "The same three farms, every year, above market price. Long relationships make consistent coffee."
+      }
+    ],
+    "peopleEyebrow": "The family",
+    "peopleHeading": "Who is behind the counter.",
+    "people": [
+      {
+        "name": "Cô Hằng",
+        "role": "Owner & roaster",
+        "description": "Has roasted every batch since 2017. Still listens for first crack before checking the timer."
+      },
+      {
+        "name": "Chị Mai",
+        "role": "Head baker",
+        "description": "In at three in the morning. Her croissants are laminated by hand, never by machine."
+      },
+      {
+        "name": "Anh Minh",
+        "role": "Instructor",
+        "description": "Teaches barista and cupping. Answers every student question within 24 hours."
+      }
+    ],
+    "visitEyebrow": "Come by",
+    "visitHeadingLead": "Sunday morning,",
+    "visitHeadingEmphasis": "bring the family.",
+    "visitLead": "Three cafés in Da Nang and Hội An. Pastries from five, coffee roasted this week.",
+    "findCafe": "Find a café",
+    "shopRoast": "Shop the roast"
+  },
+  "WholesalePage": {
+    "eyebrow": "Wholesale · for cafés and kitchens",
+    "title": "Real prices, real terms.",
+    "description": "1 kg bags, roasted to order, with volume pricing that improves as you order more. Reach us directly at {hotline}.",
+    "coreLineTitle": "Core Line",
+    "coreLineDescription": "85–90% ripe cherry, natural process (washed for Arabica), 1 kg bags. For machine and traditional phin brewing, medium to dark.",
+    "signatureLineTitle": "Signature Line",
+    "signatureLineDescription": "98–99% ripe cherry, honey/washed process, 1 kg bags. Our premium selection, for specialty espresso.",
+    "tableHeadBean": "Bean",
+    "tableHeadProcessSize": "Process · size",
+    "tableHeadPricePerKg": "Price / kg",
+    "tableHeadMonthlyVolume": "Monthly volume",
+    "tableHeadVolume": "Volume",
+    "vatExcludedNote": "Prices exclude 8% VAT.",
+    "volumePricingHeading": "Volume pricing (café channel)",
+    "volumePricingDescription": "Per-kg price improves automatically at higher monthly volumes — no separate negotiation needed.",
+    "oemHeading": "Contract roasting (OEM)",
+    "oemDescription": "Roasted to your spec, unpackaged.",
+    "deliveryAfterSalesEyebrow": "Delivery & after-sales",
+    "deliveryAfterSales": [
+      "Free delivery on orders of 10 kg or more; under 10 kg, a delivery-app fee applies.",
+      "If a café closes, we buy back unopened stock at up to 50% of the original price, within 1 month of delivery.",
+      "Ongoing support: roast consistency, machine cleaning, grinder maintenance.",
+      "Espresso extraction guidance and barista training, on request."
+    ],
+    "creditTermsHeading": "Payment & credit terms",
+    "creditTerms": [
+      "Out-of-province orders: full prepayment by bank transfer before delivery.",
+      "Regular customers ordering 30 kg/month or more can settle on credit — signed on receipt, closed on the 25th, paid by the 30th.",
+      "VAT-invoice orders: pay 100% of the order plus 8% VAT upfront; the official e-invoice is issued the same business day (excluding weekends and holidays)."
+    ],
+    "startConversationCta": "Start a wholesale conversation",
+    "reachUsEyebrow": "Reach us",
+    "reachUsLines": [
+      "Hotline · 0934 856 938",
+      "154/6 Lý Tự Trọng, Hải Châu, Đà Nẵng",
+      "Roasting workshops · Thủy Yên, Chân Mây & Lăng Cô, Huế"
+    ]
+  },
+  "CareersPage": {
+    "eyebrow": "Work with us · Đà Nẵng & Hội An",
+    "title": "Good work is made by good people.",
+    "description": "We are a small team across the roastery, bakery, cafés, and classroom. We care about craft, clear shifts, and leaving the place better than we found it.",
+    "role1Eyebrow": "Open role · Site 01",
+    "role1Title": "Barista / café team",
+    "role1Description": "Full-time or weekend shifts. Experience helps; curiosity and care matter more.",
+    "role2Eyebrow": "Open role · Site 02",
+    "role2Title": "Weekend workshop assistant",
+    "role2Description": "Help prepare materials, welcome students, and keep the classroom calm and ready.",
+    "askAboutRole": "Ask about the role",
+    "noMatchHeading": "No matching role?",
+    "noMatchBody": "Send a short note with what you do well, where you are based, and the kind of work you want to learn. We keep good introductions on file.",
+    "introduceYourself": "Introduce yourself"
+  },
+  "ContactPage": {
+    "eyebrow": "Contact · {hours}",
+    "title": "Come by, call, or write.",
+    "description": "Questions about a roast, a course, or a birthday cake? A real person reads every message.",
+    "sendMessageHeading": "Send a message",
+    "siteHeading": "{siteName} · Site 01",
+    "preferEmailHeading": "Prefer email?"
+  },
+  "ContactForm": {
+    "nameLabel": "Your name",
+    "emailLabel": "Email address",
+    "messageLabel": "Message",
+    "messagePlaceholder": "What can we help with?",
+    "submit": "Send message",
+    "nameValidation": "Enter your name.",
+    "emailValidation": "Enter a valid email address.",
+    "messageValidation": "Tell us a little more so we can help.",
+    "successToast": "Message received. We will reply during opening hours."
+  },
+  "GiftCardsPage": {
+    "eyebrow": "Gifts · coffee, bread, time",
+    "title": "Give them a morning at Bacama.",
+    "description": "Digital gift cards are coming soon. Until then, we can arrange a thoughtful coffee, pastry, or workshop gift by email.",
+    "optionDetail1": "A first bag and a morning pastry",
+    "optionDetail2": "Coffee, cake, and room for a workshop",
+    "optionDetail3": "A proper gift for a coffee household",
+    "askAboutGift": "Ask about this gift",
+    "notSureHeading": "Not sure what they like?",
+    "notSureBody": "Choose a gift card amount and tell us whether it is for coffee, a class, or a café morning. We will help you turn it into something personal while the digital system is being prepared.",
+    "emailRoastery": "Email the roastery"
+  },
+  "PressPage": {
+    "eyebrow": "Press · facts and files",
+    "title": "A small story, told accurately.",
+    "description": "For press, partnerships, or a piece about coffee and baking in central Vietnam, start here.",
+    "briefHeading": "Bacama in brief",
+    "briefBody1": "Bacama is a small roastery, bakery, café group, and online learning studio based in Đà Nẵng. We roast Vietnamese coffee in daily batches, bake western pastries in the morning, and teach coffee and baking beside the machines.",
+    "briefBody2": "Founded in 2017. Sites in Đà Nẵng and Hội An. Third site opening in September 2026.",
+    "contactForPress": "Contact for press",
+    "quickFactsHeading": "Quick facts",
+    "foundedLabel": "Founded",
+    "basedInLabel": "Based in",
+    "focusLabel": "Focus",
+    "focusValue": "Coffee · bread · learning",
+    "pressEmailLabel": "Press email"
+  },
+  "ShippingReturnsPage": {
+    "eyebrow": "Shipping & returns · nationwide",
+    "title": "From our oven to your door.",
+    "description": "We pack coffee carefully, ship quickly, and would rather solve a problem than hide behind a policy.",
+    "step1Title": "Dispatch",
+    "step1Body": "Orders leave within 24 hours of roasting. Bakery items are available for local collection or same-day delivery only.",
+    "step2Title": "Delivery",
+    "step2Body": "GHN delivers nationwide in 2–3 days. Ahamove and GrabExpress cover Da Nang and nearby areas. Free shipping starts at 500,000 ₫.",
+    "step3Title": "If something goes wrong",
+    "step3Body": "Send us a photo within 48 hours of delivery. Damaged, missing, or incorrect items are replaced or refunded.",
+    "coffeeReturnsHeading": "Coffee returns",
+    "coffeeReturnsBody": "Coffee is freshest when it reaches you, so unopened coffee can be returned within 14 days. Once opened, contact us anyway if it is not right — we will help you troubleshoot the brew before deciding what comes next.",
+    "coursesBookingsHeading": "Courses and bookings",
+    "coursesBookingsBody": "Online course enrolments can be cancelled before the first lesson is watched. In-person classes can be moved to another date with 7 days' notice, subject to availability.",
+    "askAboutOrder": "Ask about an order"
+  },
+  "SubscribePage": {
+    "eyebrow": "A note from the roastery",
+    "title": "The good stuff, occasionally.",
+    "description": "New roast dates, early-bake notes, workshop places, and the occasional story from the farms. No noise, no daily discount code.",
+    "whatArrives": "What arrives",
+    "noteHeading": "A small note, not a campaign.",
+    "noteBody": "We write when there is something worth knowing: a fresh lot, a new class date, or a morning at one of the farms we buy from.",
+    "perk1Title": "Roast notes",
+    "perk1Description": "What is in the drum and why it tastes that way.",
+    "perk2Title": "Class openings",
+    "perk2Description": "A quiet heads-up before weekend seats disappear.",
+    "perk3Title": "Café news",
+    "perk3Description": "New rooms, early bakes, and people worth meeting.",
+    "joinLetterHeading": "Join the Bacama letter",
+    "agreeText": "By subscribing, you agree to receive Bacama updates. Unsubscribe whenever you like."
+  },
+  "NewsletterForm": {
+    "emailLabel": "Email address",
+    "subscribe": "Subscribe",
+    "emailValidation": "Enter a valid email address.",
+    "successToast": "You are on the list. Newsletter delivery will be connected soon."
   }
 }

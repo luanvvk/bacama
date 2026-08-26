@@ -2,41 +2,44 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useTranslations } from 'next-intl';
 
 import { ControlledInput, ControlledTextarea } from '@/components/form';
 import { Button } from '@/components/ui/Button';
 import { toast } from '@/lib/toast';
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'Enter your name.'),
-  email: z.string().email('Enter a valid email address.'),
-  message: z.string().min(10, 'Tell us a little more so we can help.'),
-});
-type ContactValues = z.infer<typeof contactSchema>;
+import { buildContactSchema, type ContactFormValues } from './schema';
 
 export const ContactForm = () => {
-  const { control, handleSubmit, reset } = useForm<ContactValues>({
-    resolver: zodResolver(contactSchema),
+  const t = useTranslations('ContactForm');
+
+  const { control, handleSubmit, reset } = useForm<ContactFormValues>({
+    resolver: zodResolver(
+      buildContactSchema({
+        name: t('nameValidation'),
+        email: t('emailValidation'),
+        message: t('messageValidation'),
+      }),
+    ),
     defaultValues: { name: '', email: '', message: '' },
   });
 
   const onSubmit = () => {
     reset();
-    toast('Message received. We will reply during opening hours.');
+    toast(t('successToast'));
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <ControlledInput control={control} name="name" label="Your name" />
-      <ControlledInput control={control} name="email" label="Email address" type="email" />
+      <ControlledInput control={control} name="name" label={t('nameLabel')} />
+      <ControlledInput control={control} name="email" label={t('emailLabel')} type="email" />
       <ControlledTextarea
         control={control}
         name="message"
-        label="Message"
-        placeholder="What can we help with?"
+        label={t('messageLabel')}
+        placeholder={t('messagePlaceholder')}
       />
-      <Button type="submit">Send message</Button>
+      <Button type="submit">{t('submit')}</Button>
     </form>
   );
 };

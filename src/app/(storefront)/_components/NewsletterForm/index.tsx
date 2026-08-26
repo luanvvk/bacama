@@ -2,24 +2,25 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useTranslations } from 'next-intl';
 
 import { ControlledInput } from '@/components/form';
 import { Button } from '@/components/ui/Button';
 import { toast } from '@/lib/toast';
 
-const newsletterSchema = z.object({ email: z.string().email('Enter a valid email address.') });
-type NewsletterValues = z.infer<typeof newsletterSchema>;
+import { buildNewsletterSchema, type NewsletterFormValues } from './schema';
 
 export const NewsletterForm = () => {
-  const { control, handleSubmit, reset } = useForm<NewsletterValues>({
-    resolver: zodResolver(newsletterSchema),
+  const t = useTranslations('NewsletterForm');
+
+  const { control, handleSubmit, reset } = useForm<NewsletterFormValues>({
+    resolver: zodResolver(buildNewsletterSchema({ email: t('emailValidation') })),
     defaultValues: { email: '' },
   });
 
   const onSubmit = () => {
     reset();
-    toast('You are on the list. Newsletter delivery will be connected soon.');
+    toast(t('successToast'));
   };
 
   return (
@@ -30,13 +31,13 @@ export const NewsletterForm = () => {
       <ControlledInput
         control={control}
         name="email"
-        label="Email address"
+        label={t('emailLabel')}
         placeholder="you@example.com"
         type="email"
         className="sm:min-w-72"
       />
       <Button type="submit" className="sm:mt-7">
-        Subscribe
+        {t('subscribe')}
       </Button>
     </form>
   );

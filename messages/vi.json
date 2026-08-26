@@ -352,5 +352,675 @@
     "address": "Vui lòng nhập địa chỉ giao hàng",
     "province": "Vui lòng chọn tỉnh hoặc thành phố",
     "deliveryOption": "Vui lòng chọn cách nhận hàng"
+  },
+  "AccessibilityPage": {
+    "eyebrow": "Khả năng tiếp cận · ai cũng được chào đón",
+    "title": "Một tiệm được làm ra để ai cũng dùng được.",
+    "description": "Chúng tôi muốn Bacama phù hợp với càng nhiều người càng tốt, dù bạn đang duyệt web bằng bàn phím, trình đọc màn hình, màn hình nhỏ, hay đường truyền chậm.",
+    "updatedDate": "16 tháng 8, 2026",
+    "contactParagraph": "Gửi email tới {email} hoặc gọi {phone}. Chúng tôi có thể nhận đơn, giải đáp thắc mắc, hoặc hỗ trợ về khóa học mà không cần bạn phải dùng website.",
+    "sections": [
+      {
+        "title": "Cách chúng tôi tiếp cận",
+        "paragraphs": [
+          "Chúng tôi cố gắng dùng tiêu đề rõ ràng, các nút điều khiển có nhãn, độ tương phản dễ đọc, hỗ trợ điều hướng bằng bàn phím, văn bản liên kết có nghĩa, và mô tả thay thế cho những hình ảnh mang thông tin."
+        ]
+      },
+      {
+        "title": "Những hạn chế hiện tại",
+        "paragraphs": [
+          "Một số hình ảnh sản phẩm và các trải nghiệm thanh toán, giao hàng của bên thứ ba có thể chưa đạt cùng chuẩn với phần còn lại của trang. Chúng tôi đang cải thiện dần khi các bên tích hợp thực sự đi vào hoạt động."
+        ]
+      },
+      {
+        "title": "Cần một cách khác?",
+        "paragraphs": [""]
+      }
+    ]
+  },
+  "PrivacyPage": {
+    "eyebrow": "Quyền riêng tư · những gì chúng tôi lưu giữ",
+    "title": "Chính sách quyền riêng tư.",
+    "description": "Chúng tôi chỉ thu thập những thông tin cần thiết để tiếp nhận đơn hàng, phản hồi tin nhắn, hoặc lưu lại quá trình học của bạn. Đây là phiên bản đầy đủ và trung thực về những gì chúng tôi lưu giữ, vì sao, và trong bao lâu.",
+    "updatedDate": "16 tháng 8, 2026",
+    "contactParagraph": "Có câu hỏi về quyền riêng tư? Hãy gửi email đến {email} hoặc gửi thư đến Bacama, {address}, Việt Nam. Chúng tôi phản hồi trong giờ mở cửa, {hours}.",
+    "sections": [
+      {
+        "title": "1. Giới thiệu",
+        "paragraphs": [
+          "Bacama là một nhóm nhỏ chuyên rang cà phê, làm bánh, quán café và studio học trực tuyến có trụ sở tại Đà Nẵng, Việt Nam. Chính sách này giải thích những thông tin cá nhân nào chúng tôi thu thập, vì sao chúng tôi thu thập, và những lựa chọn bạn có.",
+          "Chúng tôi không phải một nền tảng lớn. Chúng tôi chỉ thu thập những gì giúp chúng tôi tiếp nhận đơn hàng, phản hồi tin nhắn, sắp xếp giao hàng, hoặc lưu lại quá trình học của bạn. Chúng tôi không bán thông tin cá nhân."
+        ]
+      },
+      {
+        "title": "2. Thông tin chúng tôi thu thập",
+        "paragraphs": [
+          "Khi bạn đặt hàng: họ tên, số điện thoại, email, địa chỉ giao hàng, chi tiết đơn hàng, và phương thức thanh toán (thông tin thẻ thanh toán do đơn vị cung cấp dịch vụ thanh toán xử lý, không phải chúng tôi).",
+          "Khi bạn liên hệ với chúng tôi: họ tên, email, số điện thoại nếu bạn cung cấp, và nội dung tin nhắn của bạn.",
+          "Khi bạn đăng ký nhận bản tin: địa chỉ email và tùy chọn đăng ký của bạn.",
+          "Khi bạn tạo tài khoản hoặc đăng ký một khóa học: họ tên, email, tiến độ học tập, và các bài nộp đánh giá.",
+          "Khi bạn truy cập trang web: thông tin kỹ thuật như loại trình duyệt, các trang đã truy cập, và thời gian sử dụng, được thu thập qua cookie và các công nghệ tương tự (xem chính sách cookie của chúng tôi để biết chi tiết)."
+        ]
+      },
+      {
+        "title": "3. Cơ sở pháp lý và mục đích",
+        "paragraphs": [
+          "Chúng tôi xử lý thông tin của bạn để thực hiện các đơn hàng bạn đặt (theo hợp đồng), để phản hồi các tin nhắn bạn gửi (theo sự đồng ý), để gửi bản tin bạn đã đăng ký nhận (theo sự đồng ý), và để cải thiện trang web (theo lợi ích hợp pháp).",
+          "Nếu bạn ở Việt Nam, dữ liệu của bạn được xử lý theo quy định của pháp luật về bảo vệ dữ liệu cá nhân (Nghị định 13/2023/NĐ-CP). Nếu bạn ở EU hoặc Vương quốc Anh, chúng tôi xử lý dữ liệu của bạn theo các nguyên tắc hợp pháp, công bằng và minh bạch của GDPR."
+        ]
+      },
+      {
+        "title": "4. Cách chúng tôi sử dụng thông tin của bạn",
+        "paragraphs": [
+          "Để xử lý và giao các đơn hàng của bạn, sắp xếp vận chuyển, và xử lý việc đổi trả.",
+          "Để cấp quyền truy cập khóa học, theo dõi tiến độ, và cấp chứng nhận.",
+          "Để phản hồi các yêu cầu hỗ trợ và tin nhắn bạn gửi cho chúng tôi.",
+          "Để gửi bản tin bạn đã đăng ký nhận (bạn có thể hủy đăng ký bất cứ lúc nào).",
+          "Để hiểu sản phẩm và trang nào được quan tâm nhiều, giúp chúng tôi cải thiện trang web tốt hơn."
+        ]
+      },
+      {
+        "title": "5. Đơn vị thanh toán và giao hàng",
+        "paragraphs": [
+          "Các đơn vị cung cấp dịch vụ thanh toán (ZaloPay, MoMo, VNPay, Visa, chuyển khoản ngân hàng) nhận thông tin cần thiết để xử lý thanh toán của bạn, bao gồm họ tên và số tiền thanh toán. Thông tin thẻ được xử lý hoàn toàn bởi đơn vị cung cấp dịch vụ thanh toán — Bacama không bao giờ thấy hoặc lưu trữ thông tin đó.",
+          "Các đơn vị vận chuyển (GHN, Ahamove, GrabExpress) nhận họ tên, số điện thoại, và địa chỉ giao hàng của bạn để hoàn tất việc giao hàng."
+        ]
+      },
+      {
+        "title": "6. Thời gian chúng tôi lưu giữ dữ liệu của bạn",
+        "paragraphs": [
+          "Chi tiết đơn hàng được lưu giữ trong thời gian cần thiết để thực hiện đơn hàng và xử lý việc đổi trả, cộng thêm một khoảng thời gian hợp lý cho mục đích kế toán và lưu trữ hồ sơ thuế.",
+          "Thông tin đăng ký nhận bản tin được lưu giữ cho đến khi bạn hủy đăng ký.",
+          "Tiến độ học tập và chứng nhận được lưu giữ trong suốt thời gian tài khoản của bạn còn hoạt động.",
+          "Tin nhắn gửi qua biểu mẫu liên hệ được lưu giữ tối đa 12 tháng, sau đó bị xóa."
+        ]
+      },
+      {
+        "title": "7. Việc chia sẻ thông tin",
+        "paragraphs": [
+          "Chúng tôi không bán thông tin cá nhân của bạn. Chúng tôi chỉ chia sẻ thông tin với các đơn vị được liệt kê trong mục 5, và chỉ trong phạm vi cần thiết để hoàn thành dịch vụ bạn yêu cầu.",
+          "Chúng tôi có thể phải tiết lộ thông tin cho cơ quan có thẩm quyền nếu bị pháp luật yêu cầu."
+        ]
+      },
+      {
+        "title": "8. Quyền của bạn",
+        "paragraphs": [
+          "Bạn có thể yêu cầu biết những thông tin chúng tôi đang lưu giữ về bạn, yêu cầu chỉnh sửa hoặc xóa, hủy đăng ký nhận bản tin, hoặc phản đối một hình thức sử dụng cụ thể.",
+          "Để thực hiện bất kỳ quyền nào trong số này, hãy liên hệ hang@bacama.vn. Chúng tôi sẽ phản hồi trong vòng 30 ngày."
+        ]
+      },
+      {
+        "title": "9. Trẻ em",
+        "paragraphs": [
+          "Trang web này không hướng đến trẻ em dưới 13 tuổi. Chúng tôi không chủ ý thu thập thông tin từ trẻ em. Nếu bạn tin rằng một trẻ em đã cung cấp thông tin cho chúng tôi, hãy liên hệ với chúng tôi và chúng tôi sẽ xóa thông tin đó."
+        ]
+      },
+      {
+        "title": "10. Chuyển giao dữ liệu",
+        "paragraphs": [
+          "Dữ liệu của bạn có thể được xử lý trên các máy chủ đặt ngoài lãnh thổ Việt Nam hoặc quốc gia bạn đang sinh sống. Trong trường hợp này, các biện pháp bảo vệ phù hợp được áp dụng để bảo vệ thông tin của bạn."
+        ]
+      },
+      {
+        "title": "11. Thay đổi đối với chính sách này",
+        "paragraphs": [
+          "Chúng tôi có thể cập nhật chính sách này khi các dịch vụ chúng tôi cung cấp thay đổi. Ngày hiển thị trên trang này cho biết phiên bản đang có hiệu lực."
+        ]
+      },
+      {
+        "title": "12. Liên hệ",
+        "paragraphs": [""]
+      }
+    ]
+  },
+  "TermsPage": {
+    "eyebrow": "Điều khoản · phần chữ nhỏ",
+    "title": "Điều khoản & điều kiện.",
+    "description": "Phiên bản đơn giản nhưng đầy đủ về cách hoạt động của việc đặt hàng, khóa học, và tài khoản tại Bacama. Được viết cho con người, không chỉ dành riêng cho luật sư.",
+    "updatedDate": "16 tháng 8, 2026",
+    "contactParagraph": "Nếu bạn có câu hỏi về các điều khoản này, một đơn hàng, hoặc một khóa học, hãy liên hệ với chúng tôi tại {email} hoặc {phone}. Chúng tôi sẽ trả lời trong giờ mở cửa, {hours}.",
+    "sections": [
+      {
+        "title": "1. Về các điều khoản này",
+        "paragraphs": [
+          "Các điều khoản này điều chỉnh việc bạn sử dụng bacama.vn và mọi đơn hàng, việc đăng ký khóa học, hoặc tương tác bạn thực hiện thông qua trang web. Bằng việc truy cập trang web, đặt hàng, hoặc tạo tài khoản, bạn đồng ý với các điều khoản này.",
+          "Nếu bạn không đồng ý với bất kỳ phần nào trong các điều khoản này, vui lòng không sử dụng trang web. Chúng tôi có thể cập nhật các điều khoản này theo thời gian — ngày hiển thị trên trang này cho biết phiên bản đang có hiệu lực."
+        ]
+      },
+      {
+        "title": "2. Định nghĩa",
+        "paragraphs": [
+          "\"Bacama\", \"chúng tôi\" dùng để chỉ xưởng rang cà phê, tiệm bánh, quán cà phê, và hoạt động giảng dạy trực tuyến được vận hành từ Đà Nẵng, Việt Nam.",
+          "\"Bạn\" dùng để chỉ người truy cập trang web, đặt hàng, đăng ký khóa học, hoặc liên hệ với chúng tôi.",
+          "\"Sản phẩm\" dùng để chỉ cà phê, các mặt hàng bánh, bộ quà tặng, và bất kỳ hàng hóa vật lý nào khác được bán thông qua trang web.",
+          "\"Khóa học\" dùng để chỉ các lớp học trực tuyến hoặc trực tiếp, buổi workshop, và nội dung học tập được cung cấp thông qua trang web."
+        ]
+      },
+      {
+        "title": "3. Sử dụng trang web",
+        "paragraphs": [
+          "Bạn có thể truy cập trang web, đặt hàng, và đăng ký khóa học cho mục đích cá nhân hoặc mục đích kinh doanh. Bạn đồng ý cung cấp thông tin liên hệ và thông tin giao hàng chính xác, và sử dụng trang web theo cách không gây cản trở cho người khác hoặc cho dịch vụ.",
+          "Bạn không được cố gắng truy cập các khu vực của trang web không dành cho bạn, sử dụng trang web cho mục đích bất hợp pháp, hoặc sao chép nội dung mà không được phép. Toàn bộ nội dung trang web — bao gồm văn bản, hình ảnh, tài liệu khóa học, và thiết kế — thuộc quyền sở hữu của Bacama, trừ khi có quy định khác."
+        ]
+      },
+      {
+        "title": "4. Tài khoản",
+        "paragraphs": [
+          "Cần có tài khoản để lưu tiến độ khóa học, xem lịch sử đơn hàng, và nhận chứng chỉ. Khi tính năng tài khoản được kích hoạt, bạn có trách nhiệm bảo mật thông tin đăng nhập của mình.",
+          "Việc tạo tài khoản là miễn phí. Bạn có thể đóng tài khoản của mình vào bất kỳ lúc nào bằng cách liên hệ với chúng tôi. Chúng tôi có thể tạm ngừng hoặc đóng tài khoản nếu tài khoản bị sử dụng sai mục đích hoặc nếu các điều khoản này bị vi phạm."
+        ]
+      },
+      {
+        "title": "5. Sản phẩm và giá cả",
+        "paragraphs": [
+          "Chúng tôi nỗ lực hết mức để hiển thị sản phẩm và giá cả một cách chính xác. Giá được hiển thị bằng đồng Việt Nam và đã bao gồm các loại thuế áp dụng. Chúng tôi có quyền sửa các lỗi về giá và có quyền từ chối hoặc hủy đơn hàng nếu giá đã hiển thị không chính xác.",
+          "Tình trạng còn hàng của sản phẩm có thể thay đổi. Nếu một mặt hàng bạn đã đặt không còn hàng, chúng tôi sẽ liên hệ với bạn để đề xuất sản phẩm thay thế hoặc hoàn tiền toàn bộ.",
+          "Các túi cà phê có ghi ngày rang. Các loại bánh ngọt và bánh Tây được làm mới mỗi ngày và có thể hết hàng."
+        ]
+      },
+      {
+        "title": "6. Đặt hàng và thanh toán",
+        "paragraphs": [
+          "Một đơn hàng được xem là được chấp nhận khi khoản thanh toán được xác nhận, hoặc đối với đơn hàng thanh toán khi nhận hàng (COD), khi chúng tôi chấp nhận đơn hàng để giao đi. Bạn sẽ nhận được mã đơn hàng qua email hoặc phương thức liên hệ bạn đã cung cấp.",
+          "Chúng tôi chấp nhận thanh toán qua ZaloPay, MoMo, VNPay, Visa, chuyển khoản ngân hàng, và COD. Đối với chuyển khoản ngân hàng, đơn hàng sẽ được giữ lại cho đến khi khoản chuyển khoản được xác nhận. Chúng tôi phải nhận được đủ số tiền thanh toán trước khi đơn hàng được giao đi.",
+          "Nếu việc thanh toán không thành công, chúng tôi sẽ liên hệ với bạn. Các đơn hàng có vấn đề thanh toán chưa được giải quyết trong hơn 24 giờ có thể bị hủy tự động."
+        ]
+      },
+      {
+        "title": "7. Giao hàng và vận chuyển",
+        "paragraphs": [
+          "Đơn hàng được giao đi trong vòng 24 giờ sau khi được xác nhận hoặc sau khi rang xong. Giao hàng toàn quốc qua GHN thường mất 2–3 ngày làm việc. Giao hàng nội thành Đà Nẵng qua Ahamove hoặc GrabExpress có thể đến trong ngày.",
+          "Miễn phí vận chuyển áp dụng cho đơn hàng trên 500.000 ₫. Thời gian giao hàng là ước tính và có thể bị ảnh hưởng bởi lịch trình của đơn vị vận chuyển, thời tiết, hoặc ngày nghỉ lễ.",
+          "Vui lòng đảm bảo có người nhận hàng tại địa chỉ bạn đã cung cấp. Nếu một kiện hàng bị hoàn trả lại cho chúng tôi do địa chỉ không chính xác hoặc giao hàng không thành công, chúng tôi sẽ liên hệ với bạn để sắp xếp giao lại, việc này có thể phát sinh thêm phí."
+        ]
+      },
+      {
+        "title": "8. Đổi trả và hoàn tiền",
+        "paragraphs": [
+          "Cà phê chưa mở có thể được trả lại trong vòng 14 ngày sau khi giao hàng. Nếu sản phẩm nhận được bị hư hỏng hoặc không đúng, hãy liên hệ với chúng tôi trong vòng 48 giờ kèm hình ảnh, và chúng tôi sẽ sắp xếp đổi sản phẩm hoặc hoàn tiền.",
+          "Các mặt hàng bánh dễ hỏng không thể được trả lại. Nếu bạn không hài lòng với một sản phẩm bánh, hãy liên hệ với chúng tôi và chúng tôi sẽ khắc phục thỏa đáng.",
+          "Khoản hoàn tiền sẽ được xử lý về phương thức thanh toán ban đầu và thường sẽ về trong vòng 5–10 ngày làm việc, tùy thuộc vào ngân hàng hoặc nhà cung cấp dịch vụ thanh toán của bạn."
+        ]
+      },
+      {
+        "title": "9. Khóa học và học tập",
+        "paragraphs": [
+          "Quyền truy cập khóa học được cấp cho người đã đăng ký và không được chia sẻ, chuyển nhượng, hoặc bán lại. Mỗi khóa học có yêu cầu hoàn thành được nêu rõ, thường là một loạt bài học hoặc một bài đánh giá.",
+          "Chứng chỉ được cấp khi hoàn thành khóa học thành công. Bacama có quyền thu hồi chứng chỉ nếu bài đánh giá được hoàn thành một cách không trung thực.",
+          "Việc đăng ký khóa học trực tuyến có thể được hủy trước khi bài học đầu tiên được xem để nhận hoàn tiền toàn bộ. Các lớp học trực tiếp có thể được dời lịch với thông báo trước 7 ngày, tùy theo lịch còn trống."
+        ]
+      },
+      {
+        "title": "10. Quyền sở hữu trí tuệ",
+        "paragraphs": [
+          "Toàn bộ nội dung trên trang web này — bao gồm văn bản, hình ảnh, minh họa, video khóa học, tài liệu bài học, logo, và thiết kế — thuộc quyền sở hữu của Bacama hoặc được sử dụng có sự cho phép. Bạn không được sao chép, tải xuống, hoặc phát hành lại nội dung này mà không có sự đồng ý bằng văn bản.",
+          "Tài liệu khóa học được cung cấp cho mục đích học tập cá nhân. Các nhà giáo dục muốn sử dụng tài liệu của Bacama trong việc giảng dạy của riêng mình cần liên hệ với chúng tôi trước."
+        ]
+      },
+      {
+        "title": "11. Giới hạn trách nhiệm",
+        "paragraphs": [
+          "Bacama là một cơ sở kinh doanh nhỏ, không phải một nền tảng lớn. Chúng tôi có trách nhiệm cung cấp sản phẩm tốt và dịch vụ trung thực. Trong phạm vi được pháp luật Việt Nam cho phép, trách nhiệm của chúng tôi đối với mỗi đơn hàng được giới hạn ở giá trị của đơn hàng đó.",
+          "Chúng tôi không chịu trách nhiệm đối với các tổn thất gián tiếp hoặc tổn thất phát sinh do hậu quả, hoặc đối với các sự việc nằm ngoài khả năng kiểm soát hợp lý của chúng tôi, chẳng hạn như giao hàng bị chậm trễ, sự cố từ nhà cung cấp dịch vụ thanh toán, hoặc các hiện tượng tự nhiên."
+        ]
+      },
+      {
+        "title": "12. Trường hợp bất khả kháng",
+        "paragraphs": [
+          "Nếu các trường hợp nằm ngoài khả năng kiểm soát của chúng tôi — như thời tiết cực đoan, sự cố trong chuỗi cung ứng, hoặc hành động của cơ quan nhà nước — khiến chúng tôi không thể thực hiện đơn hàng, chúng tôi sẽ liên hệ với bạn sớm nhất có thể và sắp xếp hoàn tiền hoặc giải pháp thay thế."
+        ]
+      },
+      {
+        "title": "13. Thay đổi đối với các điều khoản này",
+        "paragraphs": [
+          "Chúng tôi có thể cập nhật các điều khoản này khi dịch vụ có thay đổi. Phiên bản được hiển thị ở đây áp dụng cho các đơn hàng và việc đăng ký được thực hiện sau ngày cập nhật của phiên bản đó. Các phiên bản trước có thể được cung cấp khi có yêu cầu."
+        ]
+      },
+      {
+        "title": "14. Luật áp dụng",
+        "paragraphs": [
+          "Các điều khoản này được điều chỉnh bởi pháp luật Việt Nam. Bất kỳ tranh chấp nào không thể giải quyết được bằng cách liên hệ với chúng tôi sẽ được xử lý thông qua tòa án tại Đà Nẵng hoặc thông qua hòa giải trên tinh thần thiện chí."
+        ]
+      },
+      {
+        "title": "15. Liên hệ",
+        "paragraphs": [""]
+      }
+    ]
+  },
+  "CookiesPage": {
+    "eyebrow": "Cookie · một lời giải thích ngắn gọn",
+    "title": "Chính sách cookie.",
+    "description": "Chúng tôi chỉ sử dụng một lượng tối thiểu cookie và bộ nhớ trình duyệt để cửa hàng hoạt động và ghi nhớ các lựa chọn của bạn. Trang này giải thích những gì chúng tôi thiết lập, vì sao chúng tôi thiết lập, và cách bạn có thể kiểm soát chúng.",
+    "onThisPage": "Trong trang này",
+    "updatedDate": "Cập nhật · 16 tháng 8, 2026",
+    "sections": [
+      { "id": "what-are-cookies", "title": "Cookie là gì" },
+      { "id": "types-we-use", "title": "Các loại cookie chúng tôi sử dụng" },
+      { "id": "essential", "title": "Cookie thiết yếu" },
+      { "id": "preferences", "title": "Cookie tuỳ chọn" },
+      { "id": "analytics", "title": "Cookie phân tích" },
+      { "id": "third-party", "title": "Cookie của bên thứ ba" },
+      { "id": "cookie-table", "title": "Các cookie chúng tôi thiết lập" },
+      { "id": "manage", "title": "Cách quản lý cookie" },
+      { "id": "contact", "title": "Liên hệ" }
+    ],
+    "whatAreCookiesTitle": "Cookie và các công nghệ tương tự là gì",
+    "whatAreCookiesBody": "Cookie là các tệp văn bản nhỏ được đặt trên thiết bị của bạn khi bạn truy cập một trang web. Chúng giúp trang web ghi nhớ một số thông tin — những gì có trong giỏ hàng của bạn, bạn đã thấy một thông báo trước đó hay chưa, hoặc bạn đã biết đến chúng tôi qua đâu. Chúng tôi cũng sử dụng bộ nhớ trình duyệt (local storage và session storage) cho các mục đích tương tự; nó hoạt động như cookie nhưng có thể lưu trữ nhiều thông tin hơn một chút mà không cần gửi kèm mỗi yêu cầu.",
+    "typesWeUseTitle": "Các loại cookie chúng tôi sử dụng",
+    "typesWeUseBody": "Chúng tôi phân loại cookie và bộ nhớ mà mình sử dụng thành bốn loại. Chỉ loại đầu tiên (thiết yếu) được thiết lập tự động. Các loại còn lại được thêm vào khi dịch vụ tương ứng được kết nối.",
+    "cookieTypes": [
+      {
+        "type": "Thiết yếu",
+        "description": "Cần thiết để trang web hoạt động. Nếu không có các cookie này, giỏ hàng và thanh toán sẽ không hoạt động."
+      },
+      {
+        "type": "Tuỳ chọn",
+        "description": "Ghi nhớ các lựa chọn của bạn — chẳng hạn như bạn đã thấy thông báo chào mừng ở trang chủ hay chưa — để trang web mượt mà hơn."
+      },
+      {
+        "type": "Phân tích",
+        "description": "Giúp chúng tôi hiểu trang nào hữu ích và nơi nào cần cải thiện. Dữ liệu ẩn danh hoặc giả danh."
+      },
+      {
+        "type": "Tiếp thị",
+        "description": "Dùng để hiển thị nội dung phù hợp trên các nền tảng bên thứ ba. Chỉ được thêm vào nếu bạn sử dụng các tính năng đó."
+      }
+    ],
+    "essentialTitle": "Cookie thiết yếu",
+    "essentialBody": "Các cookie này được thiết lập tự động và không thể tắt nếu bạn muốn sử dụng cửa hàng. Chúng không định danh bạn với chúng tôi hoặc với bất kỳ ai khác.",
+    "preferencesTitle": "Cookie tuỳ chọn",
+    "preferencesBody": "Thông báo chào mừng ở trang chủ sử dụng local storage để ghi nhớ việc bạn đã xem thông báo đó hay chưa, để nó không hiện lại mỗi lần bạn truy cập. Điều này không định danh bạn với chúng tôi.",
+    "analyticsTitle": "Cookie phân tích",
+    "analyticsBody": "Khi một dịch vụ phân tích được kết nối, dịch vụ đó có thể thiết lập cookie để hiểu cách trang web được sử dụng — trang nào được truy cập, thời gian ở lại bao lâu, và bạn đến từ đâu. Dữ liệu này là ẩn danh hoặc giả danh và chỉ được dùng để cải thiện trang web.",
+    "thirdPartyTitle": "Cookie của bên thứ ba",
+    "thirdPartyBody": "Các đơn vị thanh toán (ZaloPay, MoMo, VNPay, Visa), đơn vị vận chuyển (GHN, Ahamove, GrabExpress), và nội dung nhúng có thể thiết lập cookie riêng của họ khi bạn tương tác với các dịch vụ đó. Chính sách của họ, không phải của chúng tôi, chi phối các cookie này.",
+    "cookieTableTitle": "Các cookie chúng tôi thiết lập",
+    "cookieTableBody": "Bảng dưới đây liệt kê các cookie và bộ nhớ đang được sử dụng hoặc dự kiến sử dụng. Bảng sẽ được cập nhật khi các dịch vụ được kết nối.",
+    "tableColumnName": "Tên",
+    "tableColumnType": "Loại",
+    "tableColumnDuration": "Thời hạn",
+    "tableColumnThirdParty": "Bên thứ ba",
+    "tableColumnPurpose": "Mục đích",
+    "cookieTable": [
+      {
+        "name": "bacama-entrance-seen",
+        "type": "Local Storage",
+        "duration": "Theo phiên",
+        "thirdParty": "Không",
+        "purpose": "Ghi nhớ việc bạn đã xem thông báo chào mừng ở trang chủ hay chưa."
+      },
+      {
+        "name": "bacama.locale",
+        "type": "Local Storage",
+        "duration": "Lâu dài",
+        "thirdParty": "Không",
+        "purpose": "Lưu ngôn ngữ bạn chọn (tính năng sắp có)."
+      },
+      {
+        "name": "cart",
+        "type": "Zustand store",
+        "duration": "Theo phiên",
+        "thirdParty": "Không",
+        "purpose": "Giữ nội dung giỏ hàng của bạn trong khi bạn xem trang web."
+      },
+      {
+        "name": "__session",
+        "type": "Cookie",
+        "duration": "Theo phiên",
+        "thirdParty": "Có",
+        "purpose": "Nhận diện phiên truy cập của bạn để phục vụ giỏ hàng và thanh toán."
+      },
+      {
+        "name": "_ga",
+        "type": "Cookie",
+        "duration": "730 ngày",
+        "thirdParty": "Có",
+        "purpose": "Được Google Analytics dùng để phân biệt khách truy cập (được thêm vào khi kết nối)."
+      },
+      {
+        "name": "_gid",
+        "type": "Cookie",
+        "duration": "1 ngày",
+        "thirdParty": "Có",
+        "purpose": "Được Google Analytics dùng để phân biệt khách truy cập (được thêm vào khi kết nối)."
+      }
+    ],
+    "manageTitle": "Cách quản lý cookie",
+    "manageBodyOne": "Bạn có thể xoá cookie và bộ nhớ cục bộ từ cài đặt trình duyệt của mình bất kỳ lúc nào. Trên hầu hết các trình duyệt, mục này nằm trong Cài đặt → Quyền riêng tư → Dữ liệu trang web hoặc tương tự. Việc xoá dữ liệu trang web có thể làm rỗng giỏ hàng cục bộ hoặc khiến thông báo chào mừng hiện lại vào lần truy cập tiếp theo.",
+    "manageBodyTwo": "Bạn cũng có thể duyệt web ở chế độ riêng tư hoặc ẩn danh, chế độ này sẽ xoá dữ liệu lưu trữ khi bạn đóng cửa sổ.",
+    "contactTitle": "Liên hệ",
+    "contactParagraph": "Có câu hỏi về cookie hoặc quyền riêng tư? Gửi email đến {email} và chúng tôi sẽ trả lời trong giờ mở cửa."
+  },
+  "FaqPage": {
+    "eyebrow": "Hỗ trợ · câu trả lời dễ hiểu",
+    "heading": "Các câu hỏi thường gặp.",
+    "intro": "Một vài điều hữu ích trước khi bạn đặt hàng, đăng ký lớp học, hoặc ghé quán. Tìm kiếm hoặc xem theo chủ đề.",
+    "sidebarEyebrow": "Bacama · Đà Nẵng",
+    "sidebarText": "Rang theo lô nhỏ, nướng từ sớm, và luôn có người thật trả lời bạn.",
+    "searchPlaceholder": "Tìm câu hỏi…",
+    "searchAriaLabel": "Tìm trong FAQ",
+    "allTopics": "Tất cả chủ đề",
+    "noResults": "Không có câu hỏi nào khớp với “{query}”. Hãy thử từ khóa khác hoặc",
+    "noResultsContactLink": "liên hệ với chúng tôi",
+    "ctaEyebrow": "Vẫn còn thắc mắc?",
+    "ctaHeading": "Trò chuyện với người đứng quầy.",
+    "ctaText": "Chúng tôi trả lời tin nhắn trong giờ mở cửa, mỗi ngày. Không có chatbot — chỉ có chúng tôi.",
+    "ctaButton": "Liên hệ với chúng tôi",
+    "groups": [
+      {
+        "id": "orders",
+        "title": "Cà phê & đơn hàng",
+        "items": [
+          {
+            "q": "Bacama rang cà phê khi nào?",
+            "a": "Chúng tôi rang theo lô nhỏ trong tuần. Ngày rang được in trên mỗi túi và hiển thị trên từng trang sản phẩm, để bạn luôn biết cà phê tươi đến đâu."
+          },
+          {
+            "q": "Giao hàng nhanh không?",
+            "a": "Đơn hàng được gửi đi trong vòng 24 giờ sau khi rang. Giao hàng toàn quốc qua GHN thường mất 2–3 ngày. Giao trong ngày có sẵn tại Đà Nẵng qua Ahamove và GrabExpress."
+          },
+          {
+            "q": "Tôi có thể đặt hàng sỉ không?",
+            "a": "Có. Chọn tùy chọn 1 kg trong cửa hàng hoặc truy cập trang bán sỉ của chúng tôi để bắt đầu trao đổi về đơn hàng định kỳ cho quán café."
+          },
+          {
+            "q": "Bacama bán hạt nguyên hay đã xay sẵn?",
+            "a": "Cả hai. Mỗi trang sản phẩm cho phép bạn chọn kiểu xay — hạt nguyên, phin, espresso, pour-over — để bạn nhận được cà phê phù hợp với cách pha của mình."
+          },
+          {
+            "q": "Tôi nên bảo quản cà phê như thế nào?",
+            "a": "Giữ túi đóng kín, tránh ánh nắng trực tiếp, nhiệt độ cao và độ ẩm. Sau khi mở, nên dùng hết trong 2–3 tuần. Cà phê không cần để trong tủ lạnh."
+          }
+        ]
+      },
+      {
+        "id": "bakery",
+        "title": "Bánh & tiệm bánh",
+        "items": [
+          {
+            "q": "Bacama nướng bánh vào lúc nào?",
+            "a": "Bánh ra lò từ 05:00 mỗi sáng. Nếu bạn muốn ăn croissant, hãy đến sớm — bánh hết rất nhanh và chúng tôi không giữ lại bánh qua đêm."
+          },
+          {
+            "q": "Tôi có thể đặt một chiếc bánh nguyên không?",
+            "a": "Có, cần báo trước 48 giờ. Hãy liên hệ với chúng tôi cho biết bạn cần gì và vào lúc nào, chúng tôi sẽ xác nhận những gì có thể làm được."
+          },
+          {
+            "q": "Bánh có được giao hàng không?",
+            "a": "Bánh chỉ nhận tại quán hoặc giao trong ngày, vì bánh ngon nhất khi ăn ngay trong ngày làm ra."
+          }
+        ]
+      },
+      {
+        "id": "courses",
+        "title": "Khóa học & học tập",
+        "items": [
+          {
+            "q": "Tôi cần tài khoản để xem khóa học không?",
+            "a": "Không. Bạn có thể xem mọi khóa học và xem bài học xem trước công khai mà không cần đăng nhập. Tài khoản chỉ cần khi lưu tiến độ học, làm bài kiểm tra, và nhận chứng chỉ."
+          },
+          {
+            "q": "Lớp học trực tiếp có dạy bằng tiếng Anh không?",
+            "a": "Lớp học được hỗ trợ bằng tiếng Anh và tiếng Việt. Hãy liên hệ với chúng tôi trước khi đăng ký nếu bạn có câu hỏi về khả năng tiếp cận hoặc ngôn ngữ."
+          },
+          {
+            "q": "Tôi có được nhận chứng chỉ không?",
+            "a": "Có. Hoàn thành các bài học và bài kiểm tra bắt buộc của một khóa học sẽ giúp bạn nhận chứng chỉ Bacama, hiển thị trên trang học tập của bạn khi hệ thống đăng nhập được kết nối."
+          },
+          {
+            "q": "Tôi có thể được hoàn tiền cho khóa học không?",
+            "a": "Đăng ký khóa học trực tuyến có thể được hủy trước khi xem bài học đầu tiên để được hoàn tiền toàn bộ. Sau đó, hãy liên hệ với chúng tôi và chúng tôi sẽ xem có thể hỗ trợ gì."
+          }
+        ]
+      },
+      {
+        "id": "shipping",
+        "title": "Vận chuyển & đổi trả",
+        "items": [
+          {
+            "q": "Nếu bưu phẩm bị hư hỏng khi nhận thì sao?",
+            "a": "Hãy chụp ảnh trước khi mở bưu phẩm và liên hệ với chúng tôi trong vòng 48 giờ. Chúng tôi sẽ đổi hoặc hoàn tiền — không có gì phải tranh cãi ở điểm này."
+          },
+          {
+            "q": "Tôi có thể thay đổi đơn hàng không?",
+            "a": "Hãy liên hệ với chúng tôi càng sớm càng tốt. Khi bưu phẩm đã được đơn vị vận chuyển lấy đi, việc thay đổi có thể không còn thực hiện được."
+          },
+          {
+            "q": "Bacama có giao hàng quốc tế không?",
+            "a": "Chưa. Hiện tại chúng tôi chỉ giao hàng trong Việt Nam. Nếu bạn ở nước ngoài, hãy liên hệ với chúng tôi để cùng tìm phương án cho đơn hàng lớn."
+          }
+        ]
+      }
+    ]
+  },
+  "StoryPage": {
+    "tagline": "Bánh nướng mỗi sáng",
+    "eyebrow": "Câu chuyện của chúng tôi · từ 2017",
+    "heading": "Một gian bếp, một lò nướng, một gia đình.",
+    "lead": "Chúng tôi không bắt đầu bằng một bản kế hoạch kinh doanh. Chúng tôi bắt đầu bằng chiếc chảo rang của bà và chiếc lò nướng của mẹ.",
+    "heroImageAlt": "Xưởng rang trong ánh nắng sớm",
+    "chapters": [
+      {
+        "year": "2017",
+        "label": "Khởi đầu",
+        "title": "Chiếc chảo của bà, mỗi sáng thứ Bảy",
+        "paragraphs": [
+          "Bà rang cà phê trên bếp củi sau nhà, tự tay đảo đều, chờ đến tiếng nổ đầu tiên mới nhấc xuống. Không nhiệt kế, không hẹn giờ — bà lắng nghe bằng tai. Chúng tôi mở quán năm 2017 với một máy rang 3kg và một tủ kính nhỏ.",
+          "Mẹ tôi đã nướng bánh cho bà con lối xóm từ nhiều năm trước. Khi chúng tôi mở quán, mẹ hỏi: \"Bán cà phê thì bánh để đâu?\" Vậy là có bánh."
+        ],
+        "alt": "Bánh mì đang để nguội trên khay",
+        "caption": "Mẻ bánh đầu tiên ở Ngô Quyền, 2017"
+      },
+      {
+        "year": "2019",
+        "label": "Về với nông trại",
+        "title": "Chúng tôi lên Cầu Đất và không mua qua thương lái nữa",
+        "paragraphs": [
+          "Ba vườn nhỏ ở độ cao 1.450–1.600 mét. Chúng tôi trả cao hơn giá thị trường và mua đúng những lô cà phê đó mỗi năm, để người trồng biết trước vụ mùa của mình sẽ đi đâu. Từ đó, mỗi túi cà phê chúng tôi bán ra đều biết rõ mình từ đâu tới."
+        ]
+      },
+      {
+        "year": "2022",
+        "label": "Dạy nghề",
+        "title": "Có người hỏi cách kéo hình trái tim, và một lớp học ra đời",
+        "paragraphs": [
+          "Bắt đầu chỉ là một buổi chiều thứ Ba, bốn người, một máy espresso. Giờ đây là một khóa học trực tuyến cho những ai ở xa và một lớp học cuối tuần ở Hội An cho những ai muốn tự tay đứng máy. Chúng tôi dạy đúng như cách chúng tôi làm — không giữ lại điều gì."
+        ],
+        "alt": "Một lớp học vẽ latte art",
+        "caption": "Lớp latte art tại Hội An"
+      },
+      {
+        "year": "2026",
+        "label": "Quán cà phê thứ ba",
+        "title": "An Thuận — một xưởng rang, một lớp học và một khu vườn",
+        "paragraphs": [
+          "Tháng Chín này, chúng tôi mở quán cà phê thứ ba ở Ngũ Hành Sơn. Lần đầu tiên, máy rang, lớp học và khu vực ngồi chung một mái nhà — để bạn có thể ngửi thấy mẻ rang hôm nay khi đang uống mẻ rang hôm qua."
+        ]
+      }
+    ],
+    "quote": "\"Cà phê ngon phải có ngày rang. Nếu bạn không in ngày rang trên túi, thì đừng bán nó.\"",
+    "valuesEyebrow": "Cách chúng tôi làm việc",
+    "valuesHeading": "Ba điều chúng tôi không đánh đổi.",
+    "values": [
+      {
+        "number": "01",
+        "title": "Ngày rang trên mỗi túi cà phê",
+        "description": "Không phải ngày hết hạn — mà là ngày rang. Bạn có quyền biết cà phê của mình được rang từ khi nào."
+      },
+      {
+        "number": "02",
+        "title": "Nướng buổi sáng, hết là hết",
+        "description": "Chúng tôi không giữ bánh qua đêm. Nếu bạn đến lúc hai giờ và bánh croissant đã hết, đó chính là bằng chứng."
+      },
+      {
+        "number": "03",
+        "title": "Mua trực tiếp từ người trồng",
+        "description": "Vẫn ba nông trại đó, mỗi năm, với giá cao hơn thị trường. Mối quan hệ lâu dài mới cho ra cà phê ổn định."
+      }
+    ],
+    "peopleEyebrow": "Gia đình",
+    "peopleHeading": "Ai đang đứng sau quầy.",
+    "people": [
+      {
+        "name": "Cô Hằng",
+        "role": "Chủ quán & thợ rang",
+        "description": "Đã rang từng mẻ cà phê từ năm 2017. Vẫn lắng nghe tiếng nổ đầu tiên trước khi nhìn đồng hồ."
+      },
+      {
+        "name": "Chị Mai",
+        "role": "Bếp trưởng bánh",
+        "description": "Có mặt từ ba giờ sáng. Bánh croissant của chị được cán lớp hoàn toàn bằng tay, không qua máy."
+      },
+      {
+        "name": "Anh Minh",
+        "role": "Giảng viên",
+        "description": "Dạy pha chế và thử nếm cà phê. Trả lời mọi câu hỏi của học viên trong vòng 24 giờ."
+      }
+    ],
+    "visitEyebrow": "Ghé qua quán",
+    "visitHeadingLead": "Sáng Chủ nhật,",
+    "visitHeadingEmphasis": "đưa cả gia đình đi cùng.",
+    "visitLead": "Ba quán cà phê ở Đà Nẵng và Hội An. Bánh có từ năm giờ sáng, cà phê rang trong tuần này.",
+    "findCafe": "Tìm quán gần bạn",
+    "shopRoast": "Mua cà phê rang"
+  },
+  "WholesalePage": {
+    "eyebrow": "Bán sỉ · cho quán cà phê và nhà bếp",
+    "title": "Giá thật, điều khoản thật.",
+    "description": "Túi 1 kg, rang theo đơn, với giá theo số lượng ưu đãi hơn khi bạn đặt nhiều hơn. Liên hệ trực tiếp với chúng tôi qua {hotline}.",
+    "coreLineTitle": "Dòng Core",
+    "coreLineDescription": "Quả chín 85–90%, sơ chế natural (rửa với Arabica), túi 1 kg. Phù hợp pha máy và phin truyền thống, rang vừa đến đậm.",
+    "signatureLineTitle": "Dòng Signature",
+    "signatureLineDescription": "Quả chín 98–99%, sơ chế honey/washed, túi 1 kg. Dòng cao cấp của chúng tôi, dành cho espresso specialty.",
+    "tableHeadBean": "Loại hạt",
+    "tableHeadProcessSize": "Sơ chế · kích cỡ",
+    "tableHeadPricePerKg": "Giá / kg",
+    "tableHeadMonthlyVolume": "Sản lượng hàng tháng",
+    "tableHeadVolume": "Sản lượng",
+    "vatExcludedNote": "Giá chưa bao gồm 8% VAT.",
+    "volumePricingHeading": "Giá theo số lượng (kênh quán cà phê)",
+    "volumePricingDescription": "Giá mỗi kg tự động ưu đãi hơn khi sản lượng hàng tháng cao hơn — không cần đàm phán riêng.",
+    "oemHeading": "Rang gia công theo hợp đồng (OEM)",
+    "oemDescription": "Rang theo yêu cầu của bạn, không đóng gói.",
+    "deliveryAfterSalesEyebrow": "Giao hàng & hậu mãi",
+    "deliveryAfterSales": [
+      "Miễn phí giao hàng cho đơn từ 10 kg; dưới 10 kg áp dụng phí ứng dụng giao hàng.",
+      "Nếu quán đóng cửa, chúng tôi mua lại hàng chưa mở với giá lên đến 50% giá gốc, trong vòng 1 tháng kể từ ngày giao.",
+      "Hỗ trợ liên tục: độ ổn định của mẻ rang, vệ sinh máy, bảo trì máy xay.",
+      "Hướng dẫn chiết xuất espresso và đào tạo pha chế, theo yêu cầu."
+    ],
+    "creditTermsHeading": "Thanh toán & điều khoản tín dụng",
+    "creditTerms": [
+      "Đơn hàng ngoài tỉnh: thanh toán trước 100% qua chuyển khoản ngân hàng trước khi giao.",
+      "Khách hàng thường xuyên đặt từ 30 kg/tháng trở lên có thể thanh toán theo hình thức tín dụng — ký nhận khi giao, chốt vào ngày 25, thanh toán trước ngày 30.",
+      "Đơn hàng xuất hóa đơn VAT: thanh toán trước 100% giá trị đơn hàng cộng 8% VAT; hóa đơn điện tử chính thức được xuất trong ngày làm việc (không tính thứ Bảy, Chủ Nhật và ngày lễ)."
+    ],
+    "startConversationCta": "Bắt đầu trao đổi bán sỉ",
+    "reachUsEyebrow": "Liên hệ",
+    "reachUsLines": [
+      "Hotline · 0934 856 938",
+      "154/6 Lý Tự Trọng, Hải Châu, Đà Nẵng",
+      "Xưởng rang · Thủy Yên, Chân Mây & Lăng Cô, Huế"
+    ]
+  },
+  "CareersPage": {
+    "eyebrow": "Tuyển dụng · Đà Nẵng & Hội An",
+    "title": "Việc tốt là do người tốt làm ra.",
+    "description": "Chúng tôi là một nhóm nhỏ, có mặt ở khắp xưởng rang, xưởng bánh, các quán cà phê và lớp học. Chúng tôi coi trọng sự tận tâm với nghề, ca làm rõ ràng, và luôn để nơi làm việc tốt hơn khi mình đến.",
+    "role1Eyebrow": "Đang tuyển · Cơ sở 01",
+    "role1Title": "Nhân viên pha chế / phục vụ quán",
+    "role1Description": "Làm toàn thời gian hoặc cuối tuần. Có kinh nghiệm là một lợi thế, nhưng sự tò mò và tận tâm quan trọng hơn nhiều.",
+    "role2Eyebrow": "Đang tuyển · Cơ sở 02",
+    "role2Title": "Trợ giảng lớp học cuối tuần",
+    "role2Description": "Hỗ trợ chuẩn bị nguyên vật liệu, chào đón học viên, và giữ không khí lớp học luôn ổn định, sẵn sàng.",
+    "askAboutRole": "Hỏi thêm về công việc này",
+    "noMatchHeading": "Chưa thấy vị trí phù hợp?",
+    "noMatchBody": "Hãy gửi cho chúng tôi một tin ngắn về những gì bạn làm tốt, bạn đang ở đâu, và loại công việc bạn muốn học hỏi thêm. Chúng tôi luôn lưu lại những lời giới thiệu hay.",
+    "introduceYourself": "Giới thiệu về bạn"
+  },
+  "ContactPage": {
+    "eyebrow": "Liên hệ · {hours}",
+    "title": "Ghé qua, gọi điện, hoặc viết cho chúng tôi.",
+    "description": "Có câu hỏi về một lô cà phê, một khóa học, hay một chiếc bánh sinh nhật? Sẽ có một người thật đọc từng tin nhắn của bạn.",
+    "sendMessageHeading": "Gửi tin nhắn",
+    "siteHeading": "{siteName} · Cơ sở 01",
+    "preferEmailHeading": "Thích gửi email hơn?"
+  },
+  "ContactForm": {
+    "nameLabel": "Họ và tên",
+    "emailLabel": "Địa chỉ email",
+    "messageLabel": "Lời nhắn",
+    "messagePlaceholder": "Chúng tôi có thể giúp gì cho bạn?",
+    "submit": "Gửi tin nhắn",
+    "nameValidation": "Vui lòng nhập họ tên của bạn.",
+    "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
+    "messageValidation": "Hãy viết thêm một chút để chúng tôi hiểu và hỗ trợ tốt hơn.",
+    "successToast": "Đã nhận được tin nhắn của bạn. Chúng tôi sẽ phản hồi trong giờ mở cửa."
+  },
+  "GiftCardsPage": {
+    "eyebrow": "Quà tặng · cà phê, bánh, thời gian",
+    "title": "Tặng họ một buổi sáng ở Bacama.",
+    "description": "Thẻ quà tặng điện tử sẽ sớm ra mắt. Trong lúc chờ đợi, chúng tôi có thể sắp xếp một món quà cà phê, bánh ngọt, hoặc lớp học thật ý nghĩa qua email.",
+    "optionDetail1": "Một túi cà phê đầu tiên và một chiếc bánh sáng",
+    "optionDetail2": "Cà phê, bánh, và một chỗ trong lớp học",
+    "optionDetail3": "Một món quà xứng đáng cho gia đình yêu cà phê",
+    "askAboutGift": "Hỏi thêm về món quà này",
+    "notSureHeading": "Chưa chắc họ sẽ thích gì?",
+    "notSureBody": "Chọn một mức thẻ quà tặng và cho chúng tôi biết đó là dành cho cà phê, một lớp học, hay một buổi sáng ở quán. Chúng tôi sẽ giúp bạn biến nó thành một món quà thật riêng, trong khi hệ thống điện tử đang được hoàn thiện.",
+    "emailRoastery": "Gửi email cho xưởng rang"
+  },
+  "PressPage": {
+    "eyebrow": "Báo chí · thông tin và tài liệu",
+    "title": "Một câu chuyện nhỏ, được kể đúng sự thật.",
+    "description": "Nếu bạn cần thông tin báo chí, hợp tác, hoặc đang viết một bài về cà phê và làm bánh ở miền Trung Việt Nam, hãy bắt đầu từ đây.",
+    "briefHeading": "Vài dòng về Bacama",
+    "briefBody1": "Bacama là một xưởng rang, xưởng bánh, chuỗi quán cà phê nhỏ, và một studio học trực tuyến có trụ sở tại Đà Nẵng. Chúng tôi rang cà phê Việt Nam theo từng lô mỗi ngày, nướng bánh kiểu phương Tây vào buổi sáng, và dạy về cà phê, làm bánh ngay cạnh những chiếc máy.",
+    "briefBody2": "Thành lập năm 2017. Có cơ sở tại Đà Nẵng và Hội An. Cơ sở thứ ba sẽ khai trương vào tháng 9 năm 2026.",
+    "contactForPress": "Liên hệ báo chí",
+    "quickFactsHeading": "Thông tin nhanh",
+    "foundedLabel": "Thành lập",
+    "basedInLabel": "Trụ sở",
+    "focusLabel": "Trọng tâm",
+    "focusValue": "Cà phê · bánh mì · học tập",
+    "pressEmailLabel": "Email báo chí"
+  },
+  "ShippingReturnsPage": {
+    "eyebrow": "Giao hàng & đổi trả · toàn quốc",
+    "title": "Từ lò của chúng tôi đến trước cửa nhà bạn.",
+    "description": "Chúng tôi đóng gói cà phê cẩn thận, giao hàng nhanh, và luôn thích giải quyết vấn đề hơn là trốn sau một chính sách.",
+    "step1Title": "Đóng hàng",
+    "step1Body": "Đơn hàng được gửi đi trong vòng 24 giờ sau khi rang. Các sản phẩm bánh chỉ nhận tại quán hoặc giao trong ngày.",
+    "step2Title": "Giao hàng",
+    "step2Body": "GHN giao hàng toàn quốc trong 2–3 ngày. Ahamove và GrabExpress phục vụ khu vực Đà Nẵng và lân cận. Miễn phí giao hàng cho đơn từ 500.000 ₫.",
+    "step3Title": "Nếu có gì không đúng",
+    "step3Body": "Hãy gửi cho chúng tôi một tấm ảnh trong vòng 48 giờ sau khi nhận hàng. Chúng tôi sẽ đổi hoặc hoàn tiền cho các sản phẩm bị hư hỏng, thiếu, hoặc sai.",
+    "coffeeReturnsHeading": "Đổi trả cà phê",
+    "coffeeReturnsBody": "Cà phê ngon nhất khi vừa đến tay bạn, vì vậy cà phê còn nguyên seal có thể được đổi trả trong 14 ngày. Nếu đã mở mà chưa hài lòng, cứ liên hệ với chúng tôi — chúng tôi sẽ giúp bạn tìm cách pha ngon hơn trước khi quyết định bước tiếp theo.",
+    "coursesBookingsHeading": "Khóa học và đặt lịch",
+    "coursesBookingsBody": "Khóa học trực tuyến có thể được hủy trước khi bạn xem bài học đầu tiên. Lớp học trực tiếp có thể đổi sang ngày khác nếu báo trước 7 ngày, tùy vào tình trạng còn chỗ.",
+    "askAboutOrder": "Hỏi về một đơn hàng"
+  },
+  "SubscribePage": {
+    "eyebrow": "Một lời nhắn từ xưởng rang",
+    "title": "Những điều hay, không thường xuyên.",
+    "description": "Ngày rang mới, ghi chú từ mẻ bánh sớm, chỗ trống trong lớp học, và đôi lúc là một câu chuyện từ các nông trại. Không ồn ào, không mã giảm giá mỗi ngày.",
+    "whatArrives": "Bạn sẽ nhận được gì",
+    "noteHeading": "Một lời nhắn nhỏ, không phải một chiến dịch quảng cáo.",
+    "noteBody": "Chúng tôi chỉ viết khi có điều gì đáng để biết: một lô hàng mới, một ngày khai giảng lớp học, hoặc một buổi sáng ở một trong những nông trại chúng tôi thu mua.",
+    "perk1Title": "Ghi chú rang xay",
+    "perk1Description": "Trong lồng rang có gì và vì sao lại có vị như vậy.",
+    "perk2Title": "Lớp học mới mở",
+    "perk2Description": "Một lời báo trước nhẹ nhàng trước khi chỗ ngồi cuối tuần hết.",
+    "perk3Title": "Tin tức từ quán",
+    "perk3Description": "Không gian mới, những mẻ bánh sớm, và những người đáng gặp.",
+    "joinLetterHeading": "Đăng ký bản tin Bacama",
+    "agreeText": "Khi đăng ký, bạn đồng ý nhận thông tin cập nhật từ Bacama. Bạn có thể hủy đăng ký bất cứ lúc nào."
+  },
+  "NewsletterForm": {
+    "emailLabel": "Địa chỉ email",
+    "subscribe": "Đăng ký",
+    "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
+    "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
   }
 }
