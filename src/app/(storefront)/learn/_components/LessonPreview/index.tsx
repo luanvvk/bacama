@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Lock, Play } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { toast } from '@/lib/toast';
 import { cn } from '@/lib/utils';
@@ -36,13 +37,14 @@ export interface LessonPreviewProps {
 }
 
 export const LessonPreview = ({ preview }: LessonPreviewProps) => {
+  const t = useTranslations('Learn');
   const { course, lesson, moduleLabel } = preview;
   const totalLessons = course.modules.reduce(
     (sum, courseModule) => sum + courseModule.lessons.length,
     0,
   );
 
-  const handlePlayClick = () => toast('Sign in to watch the full lesson.');
+  const handlePlayClick = () => toast(t('signInToWatch'));
 
   return (
     <div className="grid gap-10 py-8 lg:grid-cols-[1fr_320px]">
@@ -50,16 +52,14 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
         <div className="border-primary bg-primary/5 flex flex-wrap items-center gap-3 rounded-lg border p-4 text-sm">
           <Lock className="text-primary size-4 shrink-0" aria-hidden="true" />
           <p className="min-w-52 flex-1">
-            <b>You&rsquo;re watching the free preview.</b>{' '}
-            <span className="text-muted-foreground">
-              Sign in to save your progress and unlock paid lessons.
-            </span>
+            <b>{t('freePreviewBold')}</b>{' '}
+            <span className="text-muted-foreground">{t('signInHint')}</span>
           </p>
           <Button asChild size="sm">
-            <Link href="/login">Log in</Link>
+            <Link href="/login">{t('logIn')}</Link>
           </Button>
           <Button asChild variant="outline" size="sm">
-            <Link href="/courses">All courses →</Link>
+            <Link href="/courses">{t('allCourses')}</Link>
           </Button>
         </div>
 
@@ -67,7 +67,7 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
           <button
             type="button"
             onClick={handlePlayClick}
-            aria-label="Play preview"
+            aria-label={t('playAriaLabel')}
             className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors hover:bg-black/30"
           >
             <span className="bg-background/90 flex size-16 items-center justify-center rounded-full">
@@ -89,24 +89,22 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
 
         <Tabs defaultValue="overview" className="mt-6">
           <TabsList variant="line">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
+            <TabsTrigger value="overview">{t('tabOverview')}</TabsTrigger>
+            <TabsTrigger value="documents">{t('tabDocuments')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
             <div className="flex flex-col gap-4 py-6">
-              <Text variant="muted">{lesson.body ?? 'No overview added for this lesson yet.'}</Text>
+              <Text variant="muted">{lesson.body ?? t('noOverview')}</Text>
               <Button asChild className="w-fit">
-                <Link href="/login">Sign in to track your progress</Link>
+                <Link href="/login">{t('signInTrackProgress')}</Link>
               </Button>
             </div>
           </TabsContent>
 
           <TabsContent value="documents">
             {lesson.documents.length === 0 ? (
-              <p className="text-muted-foreground py-6 text-sm">
-                No documents added for this lesson yet.
-              </p>
+              <p className="text-muted-foreground py-6 text-sm">{t('noDocuments')}</p>
             ) : (
               <ul className="flex flex-col gap-2 py-6">
                 {lesson.documents.map((document) => (
@@ -117,7 +115,7 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
                       <p className="text-muted-foreground text-xs">{document.size}</p>
                     </div>
                     <span className="text-muted-foreground font-mono text-xs uppercase">
-                      Sign in to download
+                      {t('signInToDownload')}
                     </span>
                   </li>
                 ))}
@@ -129,12 +127,14 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
 
       <aside className="flex flex-col gap-8">
         <div>
-          <p className="text-primary font-mono text-xs tracking-widest uppercase">Course</p>
+          <p className="text-primary font-mono text-xs tracking-widest uppercase">
+            {t('courseLabel')}
+          </p>
           <Heading as="h2" size="xs" className="mt-1">
             {course.name}
           </Heading>
           <p className="text-muted-foreground mt-1 font-mono text-xs">
-            {totalLessons} lesson{totalLessons === 1 ? '' : 's'}
+            {t('lessonCount', { count: totalLessons })}
           </p>
 
           <div className="mt-4 flex flex-col gap-4">
@@ -169,7 +169,7 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
 
         <div className="rounded-lg border">
           <div className="border-b px-4 py-3">
-            <p className="text-sm font-semibold">Discussion</p>
+            <p className="text-sm font-semibold">{t('discussionTitle')}</p>
           </div>
           <ul className="flex flex-col gap-4 px-4 py-4">
             {DISCUSSION_SAMPLE.map((message, index) => (
@@ -178,7 +178,7 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
                   <span className="font-medium">{message.author}</span>
                   {message.role && (
                     <span className="text-primary font-mono text-[10px] tracking-widest uppercase">
-                      {message.role}
+                      {t('teacherRoleLabel')}
                     </span>
                   )}
                   <span className="text-muted-foreground ml-auto font-mono text-xs">
@@ -191,7 +191,7 @@ export const LessonPreview = ({ preview }: LessonPreviewProps) => {
           </ul>
           <div className="border-t p-3">
             <Button asChild variant="outline" size="sm" className="w-full">
-              <Link href="/login">Log in to join the discussion</Link>
+              <Link href="/login">{t('logInToJoin')}</Link>
             </Button>
           </div>
         </div>

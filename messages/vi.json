@@ -184,5 +184,165 @@
     "formatOnline": "Online",
     "formatInPerson": "Tại lớp",
     "formatHybrid": "Kết hợp"
+  },
+  "Learn": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbWorkshops": "Khóa học",
+    "breadcrumbFallback": "Xem trước",
+    "noPreview": "Hiện chưa có bài học xem trước miễn phí.",
+    "freePreviewBold": "Bạn đang xem bài học miễn phí.",
+    "signInHint": "Đăng nhập để lưu tiến trình và mở khóa các bài học trả phí.",
+    "signInToWatch": "Đăng nhập để xem toàn bộ bài học.",
+    "logIn": "Đăng nhập",
+    "allCourses": "Tất cả khóa học →",
+    "playAriaLabel": "Xem trước",
+    "tabOverview": "Tổng quan",
+    "tabDocuments": "Tài liệu",
+    "noOverview": "Bài học này chưa có phần tổng quan.",
+    "signInTrackProgress": "Đăng nhập để lưu tiến trình",
+    "noDocuments": "Bài học này chưa có tài liệu.",
+    "signInToDownload": "Đăng nhập để tải xuống",
+    "courseLabel": "Khóa học",
+    "lessonCount": "{count} bài học",
+    "discussionTitle": "Thảo luận",
+    "logInToJoin": "Đăng nhập để tham gia thảo luận",
+    "teacherRoleLabel": "Giáo viên"
+  },
+  "Teach": {
+    "eyebrow": "Trang giảng viên · chưa hoàn thiện",
+    "title": "Trang giảng viên chưa được xây dựng.",
+    "description": "Soạn bài, tải video, và hỏi đáp với học viên đều cần tài khoản nhân viên và lưu trữ file mà chúng tôi chưa triển khai. Khi những phần đó sẵn sàng, đây sẽ là trang giảng viên thật sự.",
+    "browseCourses": "Xem khóa học",
+    "backToShop": "Về trang mua sắm"
+  },
+  "Checkout": {
+    "paymentHeading": "Bạn muốn thanh toán thế nào?",
+    "paymentSubtext": "Chọn một phương thức dưới đây. Chúng tôi không bao giờ lưu thông tin thẻ của bạn — mọi thanh toán diễn ra trên trang của nhà cung cấp.",
+    "whereShipHeading": "Giao đến đâu?",
+    "fullNameLabel": "Họ và tên",
+    "phoneLabel": "Số điện thoại",
+    "addressLabel": "Địa chỉ",
+    "provinceLabel": "Tỉnh / Thành phố",
+    "deliveryLabel": "Cách nhận hàng",
+    "pickupForcedNote": "Bánh và thức uống trong giỏ chỉ nhận tại quán, nên toàn bộ đơn sẽ được nhận tại Lý Tự Trọng.",
+    "noteLabel": "Ghi chú cho cửa hàng",
+    "notePlaceholder": "ví dụ: xay cho phin, giao vào buổi chiều…",
+    "shippingLabelGhn": "Giao hàng · GHN",
+    "shippingLabelPickup": "Nhận tại quán",
+    "orderHint": "Cà phê của bạn được rang trước khi gửi. Đơn hôm nay đi theo mẻ rang ngày mai.",
+    "totalLabel": "Tổng cộng"
+  },
+  "CheckoutSteps": {
+    "choosePayment": "Chọn thanh toán",
+    "confirm": "Xác nhận",
+    "done": "Hoàn tất"
+  },
+  "OrderSummary": {
+    "yourOrder": "Đơn hàng của bạn",
+    "total": "Tổng cộng",
+    "subtotal": "Tạm tính",
+    "shippingGhn": "Giao hàng · GHN",
+    "free": "Miễn phí",
+    "shipTo": "Giao đến"
+  },
+  "PaymentProcessing": {
+    "bankHeading": "Chuyển khoản để hoàn tất.",
+    "bankSubtext": "Chuyển đúng số tiền vào tài khoản dưới đây, dùng mã đơn hàng làm nội dung chuyển khoản. Chúng tôi xác nhận thủ công khi tiền về — thường trong vòng một giờ.",
+    "bankLabel": "Ngân hàng",
+    "accountNameLabel": "Tên tài khoản",
+    "accountNumberLabel": "Số tài khoản",
+    "amountLabel": "Số tiền",
+    "transferNoteLabel": "Nội dung chuyển khoản",
+    "madeTransfer": "Tôi đã chuyển khoản",
+    "cardHeading": "Đang xử lý thẻ của bạn.",
+    "qrHeading": "Quét mã để hoàn tất.",
+    "cardSubtext": "Ngân hàng của bạn có thể yêu cầu thêm một bước xác nhận. Vui lòng chờ trong chốc lát.",
+    "qrSubtext": "Mở {method} trên điện thoại, quét mã dưới đây và xác nhận. Trang này sẽ tự chuyển tiếp ngay khi {method} xác nhận.",
+    "qrPlaceholder": "Chỗ giữ vị trí — cổng thanh toán sẽ hiển thị mã thật ở đây.",
+    "orderRefLabel": "Mã đơn · {ref}",
+    "cardProcessing": "Đang xử lý thẻ của bạn…",
+    "waitingForConfirm": "Đang chờ {method} xác nhận…",
+    "changePaymentMethod": "← Đổi phương thức thanh toán",
+    "contactLabel": "Liên hệ",
+    "shipToLabel": "Giao đến"
+  },
+  "OrderConfirmation": {
+    "thankYou": "Cảm ơn {name}.",
+    "codPickupMsg": "Chúng tôi đã nhận đơn của bạn. Vui lòng chuẩn bị đủ tiền khi đến nhận.",
+    "codDeliveryMsg": "Chúng tôi đã nhận đơn của bạn. Vui lòng chuẩn bị đủ tiền cho người giao hàng.",
+    "paidMsg": "Chúng tôi đã nhận thanh toán của bạn. Chúng tôi sẽ báo cập nhật qua Zalo.",
+    "orderRefLine": "Mã đơn · {ref} · {method}",
+    "whereOrderIsPickup": "Đơn hàng của bạn đang ở đâu",
+    "whereOrderIsDelivery": "Kiện hàng của bạn đang ở đâu",
+    "pickupTrackerNote": "Chúng tôi sẽ báo qua Zalo ngay khi đơn sẵn sàng để nhận tại Lý Tự Trọng.",
+    "deliveryTrackerNote": "Cà phê của bạn đi theo mẻ rang sáng mai — đóng gói ngay khi nguội và gửi đi cùng buổi chiều. Mã vận đơn sẽ báo qua Zalo ngay khi GHN nhận hàng.",
+    "continueShopping": "Tiếp tục mua sắm",
+    "dueOnPickup": "Thanh toán khi nhận",
+    "dueOnDelivery": "Thanh toán khi giao",
+    "paid": "Đã thanh toán",
+    "shippingGhn": "Giao hàng · GHN",
+    "pickup": "Nhận tại quán",
+    "shipTo": "Giao đến",
+    "contact": "Liên hệ",
+    "stepOrderPlaced": "Đã đặt đơn",
+    "stepPaid": "Đã thanh toán",
+    "stepPreparing": "Đang chuẩn bị",
+    "stepReadyForPickup": "Sẵn sàng để nhận",
+    "stepRoasting": "Đang rang",
+    "stepGhnCollects": "GHN nhận hàng",
+    "stepOutForDelivery": "Đang giao",
+    "detailToday": "Hôm nay",
+    "detailWithin2Hours": "Trong vòng 2 giờ",
+    "detailTomorrow0600": "Ngày mai, 06:00",
+    "detailTomorrow1600": "Ngày mai, 16:00",
+    "detailExpected2to3Days": "Dự kiến trong 2–3 ngày"
+  },
+  "PaymentMethod": {
+    "zalopay": {
+      "label": "ZaloPay",
+      "description": "Mở ZaloPay, xác nhận, xong",
+      "meta": "Phổ biến",
+      "cta": "Thanh toán với ZaloPay"
+    },
+    "momo": {
+      "label": "MoMo",
+      "description": "Ví MoMo · quét mã hoặc mở app",
+      "meta": "Miễn phí",
+      "cta": "Thanh toán với MoMo"
+    },
+    "vnpay": {
+      "label": "VNPay QR",
+      "description": "Quét bằng bất kỳ app ngân hàng",
+      "meta": "Miễn phí",
+      "cta": "Tạo mã VNPay QR"
+    },
+    "bank": {
+      "label": "Chuyển khoản",
+      "description": "Vietcombank · Techcombank · BIDV",
+      "meta": "Miễn phí",
+      "cta": "Xem thông tin chuyển khoản"
+    },
+    "card": {
+      "label": "Thẻ quốc tế",
+      "description": "Visa · Mastercard · JCB",
+      "cta": "Thanh toán bằng thẻ"
+    },
+    "cod": {
+      "label": "Thanh toán khi nhận hàng",
+      "description": "Trả tiền cho người giao khi nhận hàng",
+      "meta": "Toàn quốc",
+      "cta": "Đặt đơn · thanh toán khi nhận"
+    }
+  },
+  "DeliveryOption": {
+    "ghn": "GHN giao đến nhà · 2–3 ngày",
+    "pickup": "Nhận tại quán · trong vòng 2 giờ"
+  },
+  "CheckoutValidation": {
+    "fullName": "Vui lòng nhập họ và tên",
+    "phone": "Vui lòng nhập số điện thoại hợp lệ",
+    "address": "Vui lòng nhập địa chỉ giao hàng",
+    "province": "Vui lòng chọn tỉnh hoặc thành phố",
+    "deliveryOption": "Vui lòng chọn cách nhận hàng"
   }
 }

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Loader2, QrCode } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { BANK_TRANSFER_DETAILS, getPaymentMethod } from '@/constants/checkout';
 import { formatVnd } from '@/lib/format-price';
@@ -16,6 +17,8 @@ import { OrderSummary } from '../../../_components/OrderSummary';
 const AUTO_CONFIRM_DELAY_MS = 2500;
 
 export const PaymentProcessing = () => {
+  const t = useTranslations('PaymentProcessing');
+  const tPaymentMethod = useTranslations('PaymentMethod');
   const router = useRouter();
   const order = useCheckoutStore((state) => state.order);
 
@@ -33,6 +36,7 @@ export const PaymentProcessing = () => {
   if (!order) return null;
 
   const method = getPaymentMethod(order.paymentMethod);
+  const methodLabel = tPaymentMethod(`${method.value}.label`);
   const isPickup = order.shipping.deliveryOption === 'pickup';
 
   return (
@@ -41,19 +45,18 @@ export const PaymentProcessing = () => {
         {method.kind === 'bank' ? (
           <>
             <Heading as="h1" size="lg">
-              Transfer to finish.
+              {t('bankHeading')}
             </Heading>
             <Text variant="muted" className="mt-2 max-w-prose">
-              Send the total to the account below, using your order ref as the transfer note. We
-              confirm manually once it lands — usually within the hour.
+              {t('bankSubtext')}
             </Text>
             <dl className="mt-6 flex flex-col gap-2 rounded-lg border p-4 text-sm">
               {[
-                ['Bank', BANK_TRANSFER_DETAILS.bankName],
-                ['Account name', BANK_TRANSFER_DETAILS.accountName],
-                ['Account number', BANK_TRANSFER_DETAILS.accountNumber],
-                ['Amount', formatVnd(order.totalVnd)],
-                ['Transfer note', order.orderRef],
+                [t('bankLabel'), BANK_TRANSFER_DETAILS.bankName],
+                [t('accountNameLabel'), BANK_TRANSFER_DETAILS.accountName],
+                [t('accountNumberLabel'), BANK_TRANSFER_DETAILS.accountNumber],
+                [t('amountLabel'), formatVnd(order.totalVnd)],
+                [t('transferNoteLabel'), order.orderRef],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">{label}</dt>
@@ -67,18 +70,16 @@ export const PaymentProcessing = () => {
               className="mt-6"
               onClick={() => router.push('/checkout/done')}
             >
-              I&rsquo;ve made the transfer
+              {t('madeTransfer')}
             </Button>
           </>
         ) : (
           <>
             <Heading as="h1" size="lg">
-              {method.kind === 'card' ? 'Processing your card.' : 'Scan to finish.'}
+              {method.kind === 'card' ? t('cardHeading') : t('qrHeading')}
             </Heading>
             <Text variant="muted" className="mt-2 max-w-prose">
-              {method.kind === 'card'
-                ? 'Your bank may ask for one extra confirmation step. Hang tight — this only takes a moment.'
-                : `Open ${method.label} on your phone, scan the code below and confirm. This page moves on as soon as ${method.label} confirms.`}
+              {method.kind === 'card' ? t('cardSubtext') : t('qrSubtext', { method: methodLabel })}
             </Text>
 
             {method.kind === 'qr' && (
@@ -88,12 +89,10 @@ export const PaymentProcessing = () => {
                   strokeWidth={1}
                   aria-hidden="true"
                 />
-                <p className="text-muted-foreground text-xs">
-                  Placeholder — the payment gateway renders the real code here.
-                </p>
+                <p className="text-muted-foreground text-xs">{t('qrPlaceholder')}</p>
                 <p className="font-heading text-2xl font-semibold">{formatVnd(order.totalVnd)}</p>
                 <p className="text-muted-foreground font-mono text-xs">
-                  Order ref · {order.orderRef}
+                  {t('orderRefLabel', { ref: order.orderRef })}
                 </p>
               </div>
             )}
@@ -106,15 +105,15 @@ export const PaymentProcessing = () => {
               <Loader2 className="text-primary size-5 animate-spin" aria-hidden="true" />
               <p className="text-muted-foreground text-sm">
                 {method.kind === 'card'
-                  ? 'Processing your card…'
-                  : `Waiting for ${method.label} to confirm…`}
+                  ? t('cardProcessing')
+                  : t('waitingForConfirm', { method: methodLabel })}
               </p>
             </div>
           </>
         )}
 
         <Button asChild variant="ghost" size="sm" className="mt-6">
-          <Link href="/checkout">← Change payment method</Link>
+          <Link href="/checkout">{t('changePaymentMethod')}</Link>
         </Button>
       </div>
 
@@ -123,7 +122,7 @@ export const PaymentProcessing = () => {
         subtotalVnd={order.subtotalVnd}
         totalVnd={order.totalVnd}
         showBreakdown={false}
-        shipToLabel={isPickup ? 'Contact' : 'Ship to'}
+        shipToLabel={isPickup ? t('contactLabel') : t('shipToLabel')}
         shipTo={{
           name: order.shipping.fullName,
           phone: order.shipping.phone,

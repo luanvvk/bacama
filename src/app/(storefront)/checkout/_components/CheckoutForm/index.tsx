@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 
 import {
   DELIVERY_OPTIONS,
@@ -23,21 +24,25 @@ import { ControlledSelect } from '@/components/form/ControlledSelect';
 import { ControlledTextarea } from '@/components/form/ControlledTextarea';
 
 import { OrderSummary } from '../OrderSummary';
-import { checkoutSchema, type CheckoutFormValues } from './schema';
-
-const PAYMENT_METHOD_OPTIONS = PAYMENT_METHODS.map((method) => ({
-  value: method.value,
-  label: method.label,
-  description: method.description,
-  meta: method.meta,
-}));
+import { buildCheckoutSchema, type CheckoutFormValues } from './schema';
 
 const PROVINCE_OPTIONS = PROVINCES.map((province) => ({ label: province, value: province }));
 
 export const CheckoutForm = () => {
+  const t = useTranslations('Checkout');
+  const tPaymentMethod = useTranslations('PaymentMethod');
+  const tDeliveryOption = useTranslations('DeliveryOption');
+  const tValidation = useTranslations('CheckoutValidation');
   const router = useRouter();
   const items = useCartStore((state) => state.items);
   const subtotalVnd = useCartTotalVnd();
+
+  const paymentMethodOptions = PAYMENT_METHODS.map((method) => ({
+    value: method.value,
+    label: tPaymentMethod(`${method.value}.label`),
+    description: tPaymentMethod(`${method.value}.description`),
+    meta: method.meta ? tPaymentMethod(`${method.value}.meta`) : undefined,
+  }));
   const existingOrder = useCheckoutStore((state) => state.order);
   const placeOrder = useCheckoutStore((state) => state.placeOrder);
 
@@ -45,12 +50,22 @@ export const CheckoutForm = () => {
   // a cart containing either forces the whole order to pickup rather than
   // offering nationwide GHN delivery for the parts that could ship.
   const requiresPickup = items.some((item) => item.kind === 'bakery' || item.kind === 'menu');
-  const deliveryOptions = requiresPickup
-    ? DELIVERY_OPTIONS.filter((option) => option.value === 'pickup')
-    : DELIVERY_OPTIONS;
+  const deliveryOptions = (
+    requiresPickup
+      ? DELIVERY_OPTIONS.filter((option) => option.value === 'pickup')
+      : DELIVERY_OPTIONS
+  ).map((option) => ({ value: option.value, label: tDeliveryOption(option.value) }));
 
   const { control, handleSubmit, formState } = useForm<CheckoutFormValues>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(
+      buildCheckoutSchema({
+        fullName: tValidation('fullName'),
+        phone: tValidation('phone'),
+        address: tValidation('address'),
+        province: tValidation('province'),
+        deliveryOption: tValidation('deliveryOption'),
+      }),
+    ),
     defaultValues: {
       paymentMethod: existingOrder?.paymentMethod ?? 'zalopay',
       fullName: existingOrder?.shipping.fullName ?? '',
@@ -96,57 +111,55 @@ export const CheckoutForm = () => {
       <div className="flex flex-col gap-8">
         <div>
           <Heading as="h1" size="lg">
-            How would you like to pay?
+            {t('paymentHeading')}
           </Heading>
           <Text variant="muted" className="mt-2 max-w-prose">
-            Pick one below. We never store your card details — every payment happens on the
-            provider&rsquo;s own page.
+            {t('paymentSubtext')}
           </Text>
           <div className="mt-6">
             <ControlledRadioGroup
               control={control}
               name="paymentMethod"
-              options={PAYMENT_METHOD_OPTIONS}
+              options={paymentMethodOptions}
             />
           </div>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Where should it go?</CardTitle>
+            <CardTitle>{t('whereShipHeading')}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <ControlledInput control={control} name="fullName" label="Full name" />
-              <ControlledInput control={control} name="phone" label="Phone" />
+              <ControlledInput control={control} name="fullName" label={t('fullNameLabel')} />
+              <ControlledInput control={control} name="phone" label={t('phoneLabel')} />
             </div>
-            <ControlledInput control={control} name="address" label="Address" />
+            <ControlledInput control={control} name="address" label={t('addressLabel')} />
             <div className="grid gap-4 sm:grid-cols-2">
               <ControlledSelect
                 control={control}
                 name="province"
-                label="Province / City"
+                label={t('provinceLabel')}
                 options={PROVINCE_OPTIONS}
               />
               <ControlledSelect
                 control={control}
                 name="deliveryOption"
-                label="How to receive"
+                label={t('deliveryLabel')}
                 options={deliveryOptions}
                 disabled={requiresPickup}
               />
             </div>
             {requiresPickup && (
               <Text variant="muted" className="text-xs">
-                Bakery items and drinks in your basket are pickup-only, so the whole order will be
-                collected at Lý Tự Trọng.
+                {t('pickupForcedNote')}
               </Text>
             )}
             <ControlledTextarea
               control={control}
               name="note"
-              label="Note for the shop"
-              placeholder="e.g. grind for phin, deliver in the afternoon…"
+              label={t('noteLabel')}
+              placeholder={t('notePlaceholder')}
             />
           </CardContent>
         </Card>
@@ -156,18 +169,18 @@ export const CheckoutForm = () => {
         items={items}
         subtotalVnd={subtotalVnd}
         totalVnd={subtotalVnd}
-        shippingLabel={requiresPickup ? 'Pickup' : 'Shipping · GHN'}
-        hint="Your coffee is roasted before it ships. Today's order rides tomorrow's batch."
+        shippingLabel={requiresPickup ? t('shippingLabelPickup') : t('shippingLabelGhn')}
+        hint={t('orderHint')}
       />
 
       <div className="bg-background/95 fixed inset-x-0 bottom-0 z-40 border-t backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div>
-            <p className="text-muted-foreground text-xs">Total</p>
+            <p className="text-muted-foreground text-xs">{t('totalLabel')}</p>
             <p className="font-heading text-2xl font-semibold">{formatVnd(subtotalVnd)}</p>
           </div>
           <Button type="submit" size="lg" disabled={formState.isSubmitting}>
-            {selectedMethod.cta}
+            {tPaymentMethod(`${selectedMethod.value}.cta`)}
           </Button>
         </div>
       </div>

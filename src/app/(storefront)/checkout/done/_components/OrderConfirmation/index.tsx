@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { getPaymentMethod } from '@/constants/checkout';
 import { useCartStore } from '@/stores/cart';
@@ -15,6 +16,8 @@ import { OrderSummary } from '../../../_components/OrderSummary';
 import { OrderTracker } from '../OrderTracker';
 
 export const OrderConfirmation = () => {
+  const t = useTranslations('OrderConfirmation');
+  const tPaymentMethod = useTranslations('PaymentMethod');
   const router = useRouter();
   const order = useCheckoutStore((state) => state.order);
   const clearCart = useCartStore((state) => state.clearCart);
@@ -31,21 +34,23 @@ export const OrderConfirmation = () => {
   if (!order) return null;
 
   const method = getPaymentMethod(order.paymentMethod);
+  const methodLabel = tPaymentMethod(`${method.value}.label`);
   const isCod = method.kind === 'cod';
   const isPickup = order.shipping.deliveryOption === 'pickup';
   const firstName = order.shipping.fullName.trim().split(' ').pop();
 
+  const orderPlacedOrPaid = isCod ? t('stepOrderPlaced') : t('stepPaid');
   const trackerSteps = isPickup
     ? [
-        { label: isCod ? 'Order placed' : 'Paid', detail: 'Today', done: true },
-        { label: 'Preparing', detail: 'Today', done: true },
-        { label: 'Ready for pickup', detail: 'Within 2 hours', done: false },
+        { label: orderPlacedOrPaid, detail: t('detailToday'), done: true },
+        { label: t('stepPreparing'), detail: t('detailToday'), done: true },
+        { label: t('stepReadyForPickup'), detail: t('detailWithin2Hours'), done: false },
       ]
     : [
-        { label: isCod ? 'Order placed' : 'Paid', detail: 'Today', done: true },
-        { label: 'Roasting', detail: 'Tomorrow, 06:00', done: true },
-        { label: 'GHN collects', detail: 'Tomorrow, 16:00', done: false },
-        { label: 'Out for delivery', detail: 'Expected in 2–3 days', done: false },
+        { label: orderPlacedOrPaid, detail: t('detailToday'), done: true },
+        { label: t('stepRoasting'), detail: t('detailTomorrow0600'), done: true },
+        { label: t('stepGhnCollects'), detail: t('detailTomorrow1600'), done: false },
+        { label: t('stepOutForDelivery'), detail: t('detailExpected2to3Days'), done: false },
       ];
 
   return (
@@ -57,17 +62,13 @@ export const OrderConfirmation = () => {
           aria-hidden="true"
         />
         <Heading as="h1" size="lg" className="mt-4">
-          Thank you, {firstName}.
+          {t('thankYou', { name: firstName ?? '' })}
         </Heading>
         <Text variant="muted" className="mx-auto mt-3 max-w-prose">
-          {isCod
-            ? isPickup
-              ? "We've received your order. Have the total ready when you collect it."
-              : "We've received your order. Have the total ready for the courier on delivery."
-            : "We've received your payment. We'll message you on Zalo with updates."}
+          {isCod ? (isPickup ? t('codPickupMsg') : t('codDeliveryMsg')) : t('paidMsg')}
         </Text>
         <p className="text-muted-foreground mt-4 font-mono text-xs tracking-widest uppercase">
-          Order ref · {order.orderRef} · {method.label}
+          {t('orderRefLine', { ref: order.orderRef, method: methodLabel })}
         </p>
       </div>
 
@@ -75,20 +76,18 @@ export const OrderConfirmation = () => {
         <div className="flex flex-col gap-6">
           <div className="rounded-lg border p-4">
             <p className="font-heading text-base font-medium">
-              {isPickup ? 'Where your order is' : 'Where your parcel is'}
+              {isPickup ? t('whereOrderIsPickup') : t('whereOrderIsDelivery')}
             </p>
             <div className="mt-4">
               <OrderTracker steps={trackerSteps} />
             </div>
             <p className="text-muted-foreground mt-4 text-sm">
-              {isPickup
-                ? "We'll message you on Zalo the moment it's ready to collect at Lý Tự Trọng."
-                : "Your coffee rides tomorrow morning's batch — packed as soon as it cools and shipped the same afternoon. The tracking number arrives over Zalo the moment GHN picks up."}
+              {isPickup ? t('pickupTrackerNote') : t('deliveryTrackerNote')}
             </p>
           </div>
 
           <Button asChild size="lg" className="self-start">
-            <Link href="/shop">Continue shopping</Link>
+            <Link href="/shop">{t('continueShopping')}</Link>
           </Button>
         </div>
 
@@ -96,9 +95,9 @@ export const OrderConfirmation = () => {
           items={order.items}
           subtotalVnd={order.subtotalVnd}
           totalVnd={order.totalVnd}
-          totalLabel={isCod ? (isPickup ? 'Due on pickup' : 'Due on delivery') : 'Paid'}
-          shippingLabel={isPickup ? 'Pickup' : 'Shipping · GHN'}
-          shipToLabel={isPickup ? 'Contact' : 'Ship to'}
+          totalLabel={isCod ? (isPickup ? t('dueOnPickup') : t('dueOnDelivery')) : t('paid')}
+          shippingLabel={isPickup ? t('pickup') : t('shippingGhn')}
+          shipToLabel={isPickup ? t('contact') : t('shipTo')}
           shipTo={{
             name: order.shipping.fullName,
             phone: order.shipping.phone,

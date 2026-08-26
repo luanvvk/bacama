@@ -12,6 +12,92 @@ jest.mock('next/navigation', () => ({
   useRouter: () => ({ push, replace }),
 }));
 
+const MESSAGES: Record<string, Record<string, string>> = {
+  Checkout: {
+    paymentHeading: 'How would you like to pay?',
+    paymentSubtext:
+      "Pick one below. We never store your card details — every payment happens on the provider's own page.",
+    whereShipHeading: 'Where should it go?',
+    fullNameLabel: 'Full name',
+    phoneLabel: 'Phone',
+    addressLabel: 'Address',
+    provinceLabel: 'Province / City',
+    deliveryLabel: 'How to receive',
+    pickupForcedNote:
+      'Bakery items and drinks in your basket are pickup-only, so the whole order will be collected at Lý Tự Trọng.',
+    noteLabel: 'Note for the shop',
+    notePlaceholder: 'e.g. grind for phin, deliver in the afternoon…',
+    shippingLabelGhn: 'Shipping · GHN',
+    shippingLabelPickup: 'Pickup',
+    orderHint: "Your coffee is roasted before it ships. Today's order rides tomorrow's batch.",
+    totalLabel: 'Total',
+  },
+  'PaymentMethod.zalopay': {
+    label: 'ZaloPay',
+    description: 'Open ZaloPay, confirm, done',
+    meta: 'Popular',
+    cta: 'Pay with ZaloPay',
+  },
+  'PaymentMethod.momo': {
+    label: 'MoMo',
+    description: 'MoMo wallet · scan or open the app',
+    meta: 'Free',
+    cta: 'Pay with MoMo',
+  },
+  'PaymentMethod.vnpay': {
+    label: 'VNPay QR',
+    description: 'Scan with any banking app',
+    meta: 'Free',
+    cta: 'Generate a VNPay QR',
+  },
+  'PaymentMethod.bank': {
+    label: 'Bank transfer',
+    description: 'Vietcombank · Techcombank · BIDV',
+    meta: 'Free',
+    cta: 'Show bank transfer details',
+  },
+  'PaymentMethod.card': {
+    label: 'International card',
+    description: 'Visa · Mastercard · JCB',
+    cta: 'Pay by card',
+  },
+  'PaymentMethod.cod': {
+    label: 'Cash on delivery',
+    description: 'Pay the courier when the parcel arrives',
+    meta: 'Nationwide',
+    cta: 'Place order · pay on delivery',
+  },
+  DeliveryOption: {
+    ghn: 'GHN home delivery · 2–3 days',
+    pickup: 'Collect at a café · within 2 hours',
+  },
+  CheckoutValidation: {
+    fullName: 'Enter your full name',
+    phone: 'Enter a valid phone number',
+    address: 'Enter your delivery address',
+    province: 'Choose a province or city',
+    deliveryOption: 'Choose how to receive your order',
+  },
+  OrderSummary: {
+    yourOrder: 'Your order',
+    total: 'Total',
+    subtotal: 'Subtotal',
+    shippingGhn: 'Shipping · GHN',
+    free: 'Free',
+    shipTo: 'Ship to',
+  },
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: (namespace: string) => (key: string) => {
+    if (namespace === 'PaymentMethod') {
+      const [value, field] = key.split('.');
+      return MESSAGES[`PaymentMethod.${value}`]?.[field] ?? key;
+    }
+    return MESSAGES[namespace]?.[key] ?? key;
+  },
+}));
+
 const DALAT_WASHED = { id: 'dalat-washed-250-g-phin', name: 'Đà Lạt Washed', priceVnd: 280000 };
 
 const fillShippingFields = async (user: ReturnType<typeof userEvent.setup>) => {

@@ -188,5 +188,165 @@
     "formatOnline": "Online",
     "formatInPerson": "In-person",
     "formatHybrid": "Hybrid"
+  },
+  "Learn": {
+    "breadcrumbHome": "Home",
+    "breadcrumbWorkshops": "Workshops",
+    "breadcrumbFallback": "Preview",
+    "noPreview": "No free preview is available right now.",
+    "freePreviewBold": "You're watching the free preview.",
+    "signInHint": "Sign in to save your progress and unlock paid lessons.",
+    "signInToWatch": "Sign in to watch the full lesson.",
+    "logIn": "Log in",
+    "allCourses": "All courses →",
+    "playAriaLabel": "Play preview",
+    "tabOverview": "Overview",
+    "tabDocuments": "Documents",
+    "noOverview": "No overview added for this lesson yet.",
+    "signInTrackProgress": "Sign in to track your progress",
+    "noDocuments": "No documents added for this lesson yet.",
+    "signInToDownload": "Sign in to download",
+    "courseLabel": "Course",
+    "lessonCount": "{count, plural, one {# lesson} other {# lessons}}",
+    "discussionTitle": "Discussion",
+    "logInToJoin": "Log in to join the discussion",
+    "teacherRoleLabel": "Teacher"
+  },
+  "Teach": {
+    "eyebrow": "Teacher console · not set up yet",
+    "title": "The teaching console isn't built yet.",
+    "description": "Lesson editing, video uploads, and student Q&A all need staff accounts and file storage we haven't wired up. Once those are in place, this becomes the real teacher console.",
+    "browseCourses": "Browse courses",
+    "backToShop": "Back to shop"
+  },
+  "Checkout": {
+    "paymentHeading": "How would you like to pay?",
+    "paymentSubtext": "Pick one below. We never store your card details — every payment happens on the provider's own page.",
+    "whereShipHeading": "Where should it go?",
+    "fullNameLabel": "Full name",
+    "phoneLabel": "Phone",
+    "addressLabel": "Address",
+    "provinceLabel": "Province / City",
+    "deliveryLabel": "How to receive",
+    "pickupForcedNote": "Bakery items and drinks in your basket are pickup-only, so the whole order will be collected at Lý Tự Trọng.",
+    "noteLabel": "Note for the shop",
+    "notePlaceholder": "e.g. grind for phin, deliver in the afternoon…",
+    "shippingLabelGhn": "Shipping · GHN",
+    "shippingLabelPickup": "Pickup",
+    "orderHint": "Your coffee is roasted before it ships. Today's order rides tomorrow's batch.",
+    "totalLabel": "Total"
+  },
+  "CheckoutSteps": {
+    "choosePayment": "Choose payment",
+    "confirm": "Confirm",
+    "done": "Done"
+  },
+  "OrderSummary": {
+    "yourOrder": "Your order",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "shippingGhn": "Shipping · GHN",
+    "free": "Free",
+    "shipTo": "Ship to"
+  },
+  "PaymentProcessing": {
+    "bankHeading": "Transfer to finish.",
+    "bankSubtext": "Send the total to the account below, using your order ref as the transfer note. We confirm manually once it lands — usually within the hour.",
+    "bankLabel": "Bank",
+    "accountNameLabel": "Account name",
+    "accountNumberLabel": "Account number",
+    "amountLabel": "Amount",
+    "transferNoteLabel": "Transfer note",
+    "madeTransfer": "I've made the transfer",
+    "cardHeading": "Processing your card.",
+    "qrHeading": "Scan to finish.",
+    "cardSubtext": "Your bank may ask for one extra confirmation step. Hang tight — this only takes a moment.",
+    "qrSubtext": "Open {method} on your phone, scan the code below and confirm. This page moves on as soon as {method} confirms.",
+    "qrPlaceholder": "Placeholder — the payment gateway renders the real code here.",
+    "orderRefLabel": "Order ref · {ref}",
+    "cardProcessing": "Processing your card…",
+    "waitingForConfirm": "Waiting for {method} to confirm…",
+    "changePaymentMethod": "← Change payment method",
+    "contactLabel": "Contact",
+    "shipToLabel": "Ship to"
+  },
+  "OrderConfirmation": {
+    "thankYou": "Thank you, {name}.",
+    "codPickupMsg": "We've received your order. Have the total ready when you collect it.",
+    "codDeliveryMsg": "We've received your order. Have the total ready for the courier on delivery.",
+    "paidMsg": "We've received your payment. We'll message you on Zalo with updates.",
+    "orderRefLine": "Order ref · {ref} · {method}",
+    "whereOrderIsPickup": "Where your order is",
+    "whereOrderIsDelivery": "Where your parcel is",
+    "pickupTrackerNote": "We'll message you on Zalo the moment it's ready to collect at Lý Tự Trọng.",
+    "deliveryTrackerNote": "Your coffee rides tomorrow morning's batch — packed as soon as it cools and shipped the same afternoon. The tracking number arrives over Zalo the moment GHN picks up.",
+    "continueShopping": "Continue shopping",
+    "dueOnPickup": "Due on pickup",
+    "dueOnDelivery": "Due on delivery",
+    "paid": "Paid",
+    "shippingGhn": "Shipping · GHN",
+    "pickup": "Pickup",
+    "shipTo": "Ship to",
+    "contact": "Contact",
+    "stepOrderPlaced": "Order placed",
+    "stepPaid": "Paid",
+    "stepPreparing": "Preparing",
+    "stepReadyForPickup": "Ready for pickup",
+    "stepRoasting": "Roasting",
+    "stepGhnCollects": "GHN collects",
+    "stepOutForDelivery": "Out for delivery",
+    "detailToday": "Today",
+    "detailWithin2Hours": "Within 2 hours",
+    "detailTomorrow0600": "Tomorrow, 06:00",
+    "detailTomorrow1600": "Tomorrow, 16:00",
+    "detailExpected2to3Days": "Expected in 2–3 days"
+  },
+  "PaymentMethod": {
+    "zalopay": {
+      "label": "ZaloPay",
+      "description": "Open ZaloPay, confirm, done",
+      "meta": "Popular",
+      "cta": "Pay with ZaloPay"
+    },
+    "momo": {
+      "label": "MoMo",
+      "description": "MoMo wallet · scan or open the app",
+      "meta": "Free",
+      "cta": "Pay with MoMo"
+    },
+    "vnpay": {
+      "label": "VNPay QR",
+      "description": "Scan with any banking app",
+      "meta": "Free",
+      "cta": "Generate a VNPay QR"
+    },
+    "bank": {
+      "label": "Bank transfer",
+      "description": "Vietcombank · Techcombank · BIDV",
+      "meta": "Free",
+      "cta": "Show bank transfer details"
+    },
+    "card": {
+      "label": "International card",
+      "description": "Visa · Mastercard · JCB",
+      "cta": "Pay by card"
+    },
+    "cod": {
+      "label": "Cash on delivery",
+      "description": "Pay the courier when the parcel arrives",
+      "meta": "Nationwide",
+      "cta": "Place order · pay on delivery"
+    }
+  },
+  "DeliveryOption": {
+    "ghn": "GHN home delivery · 2–3 days",
+    "pickup": "Collect at a café · within 2 hours"
+  },
+  "CheckoutValidation": {
+    "fullName": "Enter your full name",
+    "phone": "Enter a valid phone number",
+    "address": "Enter your delivery address",
+    "province": "Choose a province or city",
+    "deliveryOption": "Choose how to receive your order"
   }
 }

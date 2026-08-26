@@ -1,13 +1,22 @@
 import { z } from 'zod';
 
-export const checkoutSchema = z.object({
-  paymentMethod: z.enum(['zalopay', 'momo', 'vnpay', 'bank', 'card', 'cod']),
-  fullName: z.string().min(1, 'Enter your full name'),
-  phone: z.string().min(8, 'Enter a valid phone number'),
-  address: z.string().min(1, 'Enter your delivery address'),
-  province: z.string().min(1, 'Choose a province or city'),
-  deliveryOption: z.string().min(1, 'Choose how to receive your order'),
-  note: z.string().optional(),
-});
+export interface CheckoutValidationMessages {
+  fullName: string;
+  phone: string;
+  address: string;
+  province: string;
+  deliveryOption: string;
+}
 
-export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+export const buildCheckoutSchema = (messages: CheckoutValidationMessages) =>
+  z.object({
+    paymentMethod: z.enum(['zalopay', 'momo', 'vnpay', 'bank', 'card', 'cod']),
+    fullName: z.string().min(1, messages.fullName),
+    phone: z.string().min(8, messages.phone),
+    address: z.string().min(1, messages.address),
+    province: z.string().min(1, messages.province),
+    deliveryOption: z.string().min(1, messages.deliveryOption),
+    note: z.string().optional(),
+  });
+
+export type CheckoutFormValues = z.infer<ReturnType<typeof buildCheckoutSchema>>;

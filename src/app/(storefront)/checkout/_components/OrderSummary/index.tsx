@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import { type ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { type CartItem } from '@/stores/cart';
 import { formatVnd } from '@/lib/format-price';
@@ -27,88 +30,92 @@ export interface OrderSummaryProps {
 }
 
 export const OrderSummary = ({
-  title = 'Your order',
+  title,
   items,
   subtotalVnd,
   totalVnd,
-  totalLabel = 'Total',
-  shippingLabel = 'Shipping · GHN',
+  totalLabel,
+  shippingLabel,
   showBreakdown = true,
   shipTo,
-  shipToLabel = 'Ship to',
+  shipToLabel,
   hint,
   className,
-}: OrderSummaryProps) => (
-  <Card className={className}>
-    <CardHeader>
-      <CardTitle>{title}</CardTitle>
-    </CardHeader>
-    <CardContent className="flex flex-col gap-4">
-      <ul className="flex flex-col gap-4">
-        {items.map((item) => (
-          <li key={item.id} className="flex gap-3">
-            {item.imageUrl && (
-              <Image
-                src={item.imageUrl}
-                alt=""
-                width={56}
-                height={56}
-                className="size-14 shrink-0 rounded-lg object-cover"
-              />
-            )}
-            <div className="flex flex-1 flex-col gap-1">
-              <p className="text-sm font-medium">{item.name}</p>
-              {item.options && (
-                <p className="text-muted-foreground text-xs">
-                  {item.options} · × {item.quantity}
-                </p>
+}: OrderSummaryProps) => {
+  const t = useTranslations('OrderSummary');
+
+  return (
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>{title ?? t('yourOrder')}</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-4">
+          {items.map((item) => (
+            <li key={item.id} className="flex gap-3">
+              {item.imageUrl && (
+                <Image
+                  src={item.imageUrl}
+                  alt=""
+                  width={56}
+                  height={56}
+                  className="size-14 shrink-0 rounded-lg object-cover"
+                />
               )}
-            </div>
-            <span className="font-mono text-sm font-semibold tabular-nums">
-              {formatVnd(item.priceVnd * item.quantity)}
-            </span>
-          </li>
-        ))}
-      </ul>
+              <div className="flex flex-1 flex-col gap-1">
+                <p className="text-sm font-medium">{item.name}</p>
+                {item.options && (
+                  <p className="text-muted-foreground text-xs">
+                    {item.options} · × {item.quantity}
+                  </p>
+                )}
+              </div>
+              <span className="font-mono text-sm font-semibold tabular-nums">
+                {formatVnd(item.priceVnd * item.quantity)}
+              </span>
+            </li>
+          ))}
+        </ul>
 
-      <Separator />
+        <Separator />
 
-      <div className="flex flex-col gap-2 text-sm">
-        {showBreakdown && (
+        <div className="flex flex-col gap-2 text-sm">
+          {showBreakdown && (
+            <>
+              <div className="flex justify-between">
+                <span>{t('subtotal')}</span>
+                <span className="font-mono">{formatVnd(subtotalVnd)}</span>
+              </div>
+              <div className="text-muted-foreground flex justify-between">
+                <span>{shippingLabel ?? t('shippingGhn')}</span>
+                <span className="text-success font-mono">{t('free')}</span>
+              </div>
+            </>
+          )}
+          <div className="flex justify-between text-base font-semibold">
+            <span>{totalLabel ?? t('total')}</span>
+            <span className="font-mono">{formatVnd(totalVnd)}</span>
+          </div>
+        </div>
+
+        {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+
+        {shipTo && (
           <>
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span className="font-mono">{formatVnd(subtotalVnd)}</span>
-            </div>
-            <div className="text-muted-foreground flex justify-between">
-              <span>{shippingLabel}</span>
-              <span className="text-success font-mono">Free</span>
+            <Separator />
+            <div>
+              <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+                {shipToLabel ?? t('shipTo')}
+              </p>
+              <p className="mt-1.5 text-sm">
+                {shipTo.name} · {shipTo.phone}
+                <br />
+                {shipTo.address}
+              </p>
             </div>
           </>
         )}
-        <div className="flex justify-between text-base font-semibold">
-          <span>{totalLabel}</span>
-          <span className="font-mono">{formatVnd(totalVnd)}</span>
-        </div>
-      </div>
-
-      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
-
-      {shipTo && (
-        <>
-          <Separator />
-          <div>
-            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
-              {shipToLabel}
-            </p>
-            <p className="mt-1.5 text-sm">
-              {shipTo.name} · {shipTo.phone}
-              <br />
-              {shipTo.address}
-            </p>
-          </div>
-        </>
-      )}
-    </CardContent>
-  </Card>
-);
+      </CardContent>
+    </Card>
+  );
+};

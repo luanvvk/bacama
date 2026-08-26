@@ -7,6 +7,30 @@ import type { CoursePreview } from '@/services/courses/get-preview-course';
 
 jest.mock('@/lib/toast', () => ({ toast: jest.fn() }));
 
+const MESSAGES: Record<string, string> = {
+  freePreviewBold: "You're watching the free preview.",
+  signInHint: 'Sign in to save your progress and unlock paid lessons.',
+  signInToWatch: 'Sign in to watch the full lesson.',
+  logIn: 'Log in',
+  allCourses: 'All courses →',
+  playAriaLabel: 'Play preview',
+  tabOverview: 'Overview',
+  tabDocuments: 'Documents',
+  noOverview: 'No overview added for this lesson yet.',
+  signInTrackProgress: 'Sign in to track your progress',
+  noDocuments: 'No documents added for this lesson yet.',
+  signInToDownload: 'Sign in to download',
+  courseLabel: 'Course',
+  discussionTitle: 'Discussion',
+  logInToJoin: 'Log in to join the discussion',
+  teacherRoleLabel: 'Teacher',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string, params?: { count: number }) =>
+    key === 'lessonCount' ? `${params?.count} lesson(s)` : MESSAGES[key],
+}));
+
 const PREVIEW: CoursePreview = {
   course: {
     id: 'course-1',
