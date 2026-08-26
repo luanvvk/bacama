@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -16,22 +18,19 @@ import { MenuSections } from './_components/MenuSections';
 
 export const revalidate = 3600;
 
-// `section` is a locale-neutral key on MenuItem, not editorial copy —
-// translated to a display heading here rather than via a full i18n system
-// that doesn't exist yet (see ProductCard's CATEGORY_LABEL for the same
-// pattern).
-const SECTION_LABELS: Record<string, string> = {
-  phin: 'Vietnamese',
-  espresso: 'Espresso',
-  hand_brew: 'Hand Brew',
-  cold_brew: 'Signature Cold Brew',
-  tea: 'Trà · Tea',
-  matcha: 'Japanese Matcha',
-  chocolate: 'Chocolate',
-  juice: 'Refresher',
-};
-
-const SECTION_ORDER = Object.keys(SECTION_LABELS);
+// `section` is a locale-neutral key on MenuItem, not editorial copy — its
+// display heading comes from messages/{en,vi}.json's Menu.sections (see
+// ProductCard's CATEGORY_LABEL for the same category-key-to-label pattern).
+const SECTION_ORDER = [
+  'phin',
+  'espresso',
+  'hand_brew',
+  'cold_brew',
+  'tea',
+  'matcha',
+  'chocolate',
+  'juice',
+];
 
 const groupBySection = (items: MenuCatalogItem[]) => {
   const bySection = new Map<string, MenuCatalogItem[]>();
@@ -45,38 +44,41 @@ const groupBySection = (items: MenuCatalogItem[]) => {
   );
 };
 
-const ANNOUNCEMENTS = ['Order ahead, collect at Lý Tự Trọng', 'One size, every drink'];
-
 const MenuPage = async () => {
-  const items = await getMenuItems();
+  const [t, tAnnouncements, items] = await Promise.all([
+    getTranslations('Menu'),
+    getTranslations('Announcements'),
+    getMenuItems(),
+  ]);
   const sections = groupBySection(items);
+  const sectionLabels = t.raw('sections') as Record<string, string>;
 
   return (
     <>
-      <AnnouncementBar items={ANNOUNCEMENTS} />
+      <AnnouncementBar items={tAnnouncements.raw('menu')} />
       <main>
         <Container>
           <Breadcrumb className="pt-6">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t('breadcrumbHome')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Menu</BreadcrumbPage>
+                <BreadcrumbPage>{t('breadcrumbCurrent')}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="py-8">
             <Heading as="h1" size="lg">
-              Drinks menu
+              {t('heading')}
             </Heading>
             <Text variant="muted" className="mt-2 max-w-2xl">
-              Order ahead and collect at the café — pickup only, no delivery for drinks.
+              {t('subtext')}
             </Text>
 
-            <MenuSections sections={sections} sectionLabels={SECTION_LABELS} />
+            <MenuSections sections={sections} sectionLabels={sectionLabels} />
           </div>
         </Container>
       </main>

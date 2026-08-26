@@ -78,7 +78,8 @@
   "Announcements": {
     "home": ["Rang trong xưởng, từng mẻ", "Bánh mới mỗi sáng", "Giao toàn quốc trong 2–3 ngày"],
     "shop": ["Rang trong xưởng, từng mẻ", "Miễn phí vận chuyển từ 500.000 ₫", "COD toàn quốc"],
-    "product": ["Rang trong xưởng, từng mẻ", "Gửi trong 24 giờ sau khi rang"]
+    "product": ["Rang trong xưởng, từng mẻ", "Gửi trong 24 giờ sau khi rang"],
+    "menu": ["Đặt trước, nhận tại Lý Tự Trọng", "Một cỡ duy nhất, mọi loại thức uống"]
   },
   "Shop": {
     "breadcrumbHome": "Trang chủ",
@@ -109,5 +110,23 @@
     "tabOrigin": "Nguồn gốc",
     "tabShipping": "Vận chuyển & đổi trả",
     "shippingCopy": "GHN giao toàn quốc trong 2–3 ngày, miễn phí từ 500.000 ₫. Nhận tại quán trong vòng 2 giờ. Túi đã mở không thể đổi trả, nhưng nếu mẻ cà phê có vấn đề, hãy nhắn cho chúng tôi qua Zalo và chúng tôi sẽ gửi một túi mới."
+  },
+  "Menu": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbCurrent": "Menu",
+    "heading": "Menu thức uống",
+    "subtext": "Đặt trước và nhận tại quán — chỉ nhận tại quán, không giao hàng cho thức uống.",
+    "add": "Thêm",
+    "addItemLabel": "Thêm {name} vào giỏ",
+    "sections": {
+      "phin": "Cà phê phin",
+      "espresso": "Espresso",
+      "hand_brew": "Pha tay",
+      "cold_brew": "Cold Brew đặc trưng",
+      "tea": "Trà",
+      "matcha": "Matcha Nhật",
+      "chocolate": "Chocolate",
+      "juice": "Đồ giải khát"
+    }
   }
 }

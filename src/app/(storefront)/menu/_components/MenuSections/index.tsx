@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { type MenuCatalogItem } from '@/services/catalog/get-menu-items';
 import { formatVnd } from '@/lib/format-price';
 import { useCartStore } from '@/stores/cart';
@@ -11,6 +13,7 @@ export interface MenuSectionsProps {
 }
 
 export const MenuSections = ({ sections, sectionLabels }: MenuSectionsProps) => {
+  const t = useTranslations('Menu');
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useCartStore((state) => state.open);
 
@@ -38,10 +41,10 @@ export const MenuSections = ({ sections, sectionLabels }: MenuSectionsProps) => 
                     type="button"
                     size="sm"
                     variant="outline"
-                    aria-label={`Add ${item.name} to cart`}
+                    aria-label={t('addItemLabel', { name: item.name })}
                     onClick={() => handleAdd(item)}
                   >
-                    Add
+                    {t('add')}
                   </Button>
                 </div>
               </li>

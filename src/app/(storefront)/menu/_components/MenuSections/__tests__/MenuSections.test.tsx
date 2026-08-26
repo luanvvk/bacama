@@ -5,6 +5,13 @@ import { MenuSections } from '../index';
 import { useCartStore } from '@/stores/cart';
 import { type MenuCatalogItem } from '@/services/catalog/get-menu-items';
 
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string, params?: { name: string }) => {
+    if (key === 'addItemLabel') return `Add ${params?.name} to cart`;
+    return key === 'add' ? 'Add' : key;
+  },
+}));
+
 const ESPRESSO: MenuCatalogItem = {
   id: 'm1',
   slug: 'espresso',

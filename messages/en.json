@@ -82,7 +82,8 @@
       "Nationwide in 2–3 days"
     ],
     "shop": ["Roasted in-house, every batch", "Free shipping over 500,000 ₫", "COD nationwide"],
-    "product": ["Roasted in-house, every batch", "Shipped within 24h of roasting"]
+    "product": ["Roasted in-house, every batch", "Shipped within 24h of roasting"],
+    "menu": ["Order ahead, collect at Lý Tự Trọng", "One size, every drink"]
   },
   "Shop": {
     "breadcrumbHome": "Home",
@@ -113,5 +114,23 @@
     "tabOrigin": "Origin",
     "tabShipping": "Shipping & returns",
     "shippingCopy": "GHN nationwide in 2–3 days, free over 500,000 ₫. Collect at a café within 2 hours. Opened bags cannot be returned, but if a batch is off, message us on Zalo and we will send a fresh bag."
+  },
+  "Menu": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCurrent": "Menu",
+    "heading": "Drinks menu",
+    "subtext": "Order ahead and collect at the café — pickup only, no delivery for drinks.",
+    "add": "Add",
+    "addItemLabel": "Add {name} to cart",
+    "sections": {
+      "phin": "Vietnamese",
+      "espresso": "Espresso",
+      "hand_brew": "Hand Brew",
+      "cold_brew": "Signature Cold Brew",
+      "tea": "Trà · Tea",
+      "matcha": "Japanese Matcha",
+      "chocolate": "Chocolate",
+      "juice": "Refresher"
+    }
   }
 }
