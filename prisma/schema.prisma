@@ -241,15 +241,19 @@ model Order {
 }
 
 model OrderItem {
-  id           String   @id @default(cuid())
+  id           String      @id @default(cuid())
   orderId      String
-  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order        Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId    String?
-  product      Product? @relation(fields: [productId], references: [id], onDelete: Restrict)
+  product      Product?    @relation(fields: [productId], references: [id], onDelete: Restrict)
   courseId     String?
-  course       Course?  @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  course       Course?     @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  bakeryItemId String?
+  bakeryItem   BakeryItem? @relation(fields: [bakeryItemId], references: [id], onDelete: Restrict)
+  menuItemId   String?
+  menuItem     MenuItem?   @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
   nameSnapshot String
-  quantity     Int      @default(1)
+  quantity     Int         @default(1)
   unitPriceVnd Int
   weight       String?
   grind        String?
@@ -257,6 +261,8 @@ model OrderItem {
   @@index([orderId])
   @@index([productId])
   @@index([courseId])
+  @@index([bakeryItemId])
+  @@index([menuItemId])
 }
 
 model Shipment {
@@ -295,6 +301,8 @@ model BakeryItem {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
+  orderItems OrderItem[]
+
   @@unique([siteId, slug])
   @@index([siteId])
 }
@@ -312,6 +320,8 @@ model MenuItem {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
 
   @@unique([siteId, slug])
   @@index([siteId, section])
