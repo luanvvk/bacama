@@ -82,6 +82,7 @@ const ORDER = {
   shipping: {
     fullName: 'Lê Thị Ngọc',
     phone: '0905 123 456',
+    email: 'ngoc@example.com',
     address: '27 Ngô Quyền, Hải Châu, Đà Nẵng',
     province: 'Đà Nẵng',
     deliveryOption: 'ghn',

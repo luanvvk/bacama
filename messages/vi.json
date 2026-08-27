@@ -245,6 +245,8 @@
     "whereShipHeading": "Giao đến đâu?",
     "fullNameLabel": "Họ và tên",
     "phoneLabel": "Số điện thoại",
+    "emailLabel": "Email",
+    "emailHint": "Chúng tôi sẽ gửi hoá đơn về đây sau khi đơn hàng được xác nhận.",
     "addressLabel": "Địa chỉ",
     "provinceLabel": "Tỉnh / Thành phố",
     "deliveryLabel": "Cách nhận hàng",
@@ -365,6 +367,7 @@
   "CheckoutValidation": {
     "fullName": "Vui lòng nhập họ và tên",
     "phone": "Vui lòng nhập số điện thoại hợp lệ",
+    "email": "Vui lòng nhập địa chỉ email hợp lệ",
     "address": "Vui lòng nhập địa chỉ giao hàng",
     "province": "Vui lòng chọn tỉnh hoặc thành phố",
     "deliveryOption": "Vui lòng chọn cách nhận hàng"

@@ -249,6 +249,8 @@
     "whereShipHeading": "Where should it go?",
     "fullNameLabel": "Full name",
     "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "emailHint": "We'll send your receipt here once the order is confirmed.",
     "addressLabel": "Address",
     "provinceLabel": "Province / City",
     "deliveryLabel": "How to receive",
@@ -369,6 +371,7 @@
   "CheckoutValidation": {
     "fullName": "Enter your full name",
     "phone": "Enter a valid phone number",
+    "email": "Enter a valid email address",
     "address": "Enter your delivery address",
     "province": "Choose a province or city",
     "deliveryOption": "Choose how to receive your order"

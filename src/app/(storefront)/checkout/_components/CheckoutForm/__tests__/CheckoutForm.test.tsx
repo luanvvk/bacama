@@ -20,6 +20,8 @@ const MESSAGES: Record<string, Record<string, string>> = {
     whereShipHeading: 'Where should it go?',
     fullNameLabel: 'Full name',
     phoneLabel: 'Phone',
+    emailLabel: 'Email',
+    emailHint: "We'll send your receipt here once the order is confirmed.",
     addressLabel: 'Address',
     provinceLabel: 'Province / City',
     deliveryLabel: 'How to receive',
@@ -74,6 +76,7 @@ const MESSAGES: Record<string, Record<string, string>> = {
   CheckoutValidation: {
     fullName: 'Enter your full name',
     phone: 'Enter a valid phone number',
+    email: 'Enter a valid email address',
     address: 'Enter your delivery address',
     province: 'Choose a province or city',
     deliveryOption: 'Choose how to receive your order',
@@ -103,6 +106,7 @@ const DALAT_WASHED = { id: 'dalat-washed-250-g-phin', name: 'Đà Lạt Washed',
 const fillShippingFields = async (user: ReturnType<typeof userEvent.setup>) => {
   await user.type(screen.getByLabelText('Full name'), 'Lê Thị Ngọc');
   await user.type(screen.getByLabelText('Phone'), '0905123456');
+  await user.type(screen.getByLabelText('Email'), 'ngoc@example.com');
   await user.type(screen.getByLabelText('Address'), '27 Ngô Quyền, Hải Châu, Đà Nẵng');
 };
 
@@ -124,7 +128,7 @@ describe('CheckoutForm', () => {
     expect(useCheckoutStore.getState().order).toMatchObject({
       paymentMethod: 'zalopay',
       subtotalVnd: 280000,
-      shipping: { fullName: 'Lê Thị Ngọc', phone: '0905123456' },
+      shipping: { fullName: 'Lê Thị Ngọc', phone: '0905123456', email: 'ngoc@example.com' },
     });
     expect(push).toHaveBeenCalledWith('/checkout/pay');
   });

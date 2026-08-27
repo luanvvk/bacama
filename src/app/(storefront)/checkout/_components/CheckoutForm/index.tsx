@@ -61,6 +61,7 @@ export const CheckoutForm = () => {
       buildCheckoutSchema({
         fullName: tValidation('fullName'),
         phone: tValidation('phone'),
+        email: tValidation('email'),
         address: tValidation('address'),
         province: tValidation('province'),
         deliveryOption: tValidation('deliveryOption'),
@@ -70,6 +71,7 @@ export const CheckoutForm = () => {
       paymentMethod: existingOrder?.paymentMethod ?? 'zalopay',
       fullName: existingOrder?.shipping.fullName ?? '',
       phone: existingOrder?.shipping.phone ?? '',
+      email: existingOrder?.shipping.email ?? '',
       address: existingOrder?.shipping.address ?? '',
       province: existingOrder?.shipping.province ?? PROVINCES[0],
       deliveryOption: requiresPickup
@@ -88,14 +90,15 @@ export const CheckoutForm = () => {
   if (items.length === 0) return null;
 
   const onSubmit = (values: CheckoutFormValues) => {
-    const { paymentMethod, fullName, phone, address, province, deliveryOption, note } = values;
+    const { paymentMethod, fullName, phone, email, address, province, deliveryOption, note } =
+      values;
 
     placeOrder({
       items,
       subtotalVnd,
       totalVnd: subtotalVnd,
       paymentMethod,
-      shipping: { fullName, phone, address, province, deliveryOption, note },
+      shipping: { fullName, phone, email, address, province, deliveryOption, note },
     });
 
     router.push(
@@ -134,6 +137,10 @@ export const CheckoutForm = () => {
               <ControlledInput control={control} name="fullName" label={t('fullNameLabel')} />
               <ControlledInput control={control} name="phone" label={t('phoneLabel')} />
             </div>
+            <ControlledInput control={control} name="email" type="email" label={t('emailLabel')} />
+            <Text variant="muted" className="text-xs">
+              {t('emailHint')}
+            </Text>
             <ControlledInput control={control} name="address" label={t('addressLabel')} />
             <div className="grid gap-4 sm:grid-cols-2">
               <ControlledSelect

@@ -6,6 +6,7 @@ import type { PaymentMethodValue } from '@/constants/checkout';
 export interface ShippingDetails {
   fullName: string;
   phone: string;
+  email: string;
   address: string;
   province: string;
   deliveryOption: string;
