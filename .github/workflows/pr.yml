@@ -21,3 +21,10 @@ jobs:
     uses: ./.github/workflows/quality-checks.yml
     with:
       node-version: '22'
+
+  lighthouse:
+    needs: quality-checks
+    uses: ./.github/workflows/lighthouse.yml
+    with:
+      node-version: '22'
+    secrets: inherit
