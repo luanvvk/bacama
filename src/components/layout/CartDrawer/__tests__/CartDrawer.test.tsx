@@ -4,6 +4,49 @@ import userEvent from '@testing-library/user-event';
 import { CartDrawer } from '../index';
 import { useCartStore } from '@/stores/cart';
 
+const MESSAGES: Record<string, string> = {
+  title: 'Your basket',
+  itemsDescription: 'Items in your shopping cart',
+  pickupOnlyNotice: 'Bakery items and drinks are pickup-only.',
+  freeShippingQualified: 'You qualify for free shipping.',
+  freeShippingRemaining: 'Add <b>{amount}</b> more for free shipping.',
+  emptyBasket: 'Your basket is empty.',
+  remove: 'Remove {name}',
+  subtotal: 'Subtotal',
+  pickup: 'Pickup',
+  shippingGhn: 'Shipping · GHN',
+  free: 'Free',
+  total: 'Total',
+  checkOut: 'Check out',
+  paymentMethods: 'ZaloPay · MoMo · VNPay QR · COD',
+};
+
+const interpolate = (template: string, params?: Record<string, unknown>) =>
+  params
+    ? Object.entries(params).reduce<string>(
+        (acc, [key, value]) => acc.replaceAll(`{${key}}`, String(value)),
+        template,
+      )
+    : template;
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => {
+    const t = (key: string, params?: Record<string, unknown>) => interpolate(MESSAGES[key], params);
+    t.rich = (key: string, params: Record<string, unknown>) => {
+      const { b, ...rest } = params;
+      const [before, bold, after] = interpolate(MESSAGES[key], rest).split(/<b>|<\/b>/);
+      return (
+        <>
+          {before}
+          {typeof b === 'function' ? (b as (chunks: string) => unknown)(bold) : bold}
+          {after}
+        </>
+      );
+    };
+    return t;
+  },
+}));
+
 const CROISSANT = { id: 'croissant', name: 'Croissant', priceVnd: 45000 };
 
 afterEach(() => {

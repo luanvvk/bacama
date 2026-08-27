@@ -4,6 +4,22 @@
     "openMenu": "Mở menu",
     "menu": "Menu"
   },
+  "CartDrawer": {
+    "title": "Giỏ hàng của bạn",
+    "itemsDescription": "Các món trong giỏ hàng",
+    "pickupOnlyNotice": "Bánh và đồ uống chỉ nhận tại chỗ — cả đơn hàng sẽ được nhận tại Lý Tự Trọng.",
+    "freeShippingQualified": "Bạn được miễn phí vận chuyển.",
+    "freeShippingRemaining": "Thêm <b>{amount}</b> để được miễn phí vận chuyển.",
+    "emptyBasket": "Giỏ hàng của bạn đang trống.",
+    "remove": "Xóa {name}",
+    "subtotal": "Tạm tính",
+    "pickup": "Nhận tại chỗ",
+    "shippingGhn": "Giao hàng · GHN",
+    "free": "Miễn phí",
+    "total": "Tổng cộng",
+    "checkOut": "Thanh toán",
+    "paymentMethods": "ZaloPay · MoMo · VNPay QR · COD"
+  },
   "Footer": {
     "tagline": "Xưởng rang nhỏ, mẻ bánh mỗi ngày, nướng từ sớm — Đà Nẵng, 2017.",
     "columns": {

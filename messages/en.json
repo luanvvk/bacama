@@ -4,6 +4,22 @@
     "openMenu": "Open menu",
     "menu": "Menu"
   },
+  "CartDrawer": {
+    "title": "Your basket",
+    "itemsDescription": "Items in your shopping cart",
+    "pickupOnlyNotice": "Bakery items and drinks are pickup-only — the whole order will be collected at Lý Tự Trọng.",
+    "freeShippingQualified": "You qualify for free shipping.",
+    "freeShippingRemaining": "Add <b>{amount}</b> more for free shipping.",
+    "emptyBasket": "Your basket is empty.",
+    "remove": "Remove {name}",
+    "subtotal": "Subtotal",
+    "pickup": "Pickup",
+    "shippingGhn": "Shipping · GHN",
+    "free": "Free",
+    "total": "Total",
+    "checkOut": "Check out",
+    "paymentMethods": "ZaloPay · MoMo · VNPay QR · COD"
+  },
   "Footer": {
     "tagline": "Small roastery, daily batches, an early bake — Đà Nẵng, 2017.",
     "columns": {

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { useCartStore, useCartTotalVnd } from '@/stores/cart';
 import { Button } from '@/components/ui/Button';
@@ -20,6 +21,7 @@ import { formatVnd } from '@/lib/format-price';
 const FREE_SHIPPING_THRESHOLD_VND = 500000;
 
 export const CartDrawer = () => {
+  const t = useTranslations('CartDrawer');
   const isOpen = useCartStore((state) => state.isOpen);
   const close = useCartStore((state) => state.close);
   const items = useCartStore((state) => state.items);
@@ -32,31 +34,30 @@ export const CartDrawer = () => {
   // shipping copy below would be misleading.
   const requiresPickup = items.some((item) => item.kind === 'bakery' || item.kind === 'menu');
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD_VND - subtotalVnd);
-  const shippingValueLabel = remainingForFreeShipping === 0 ? 'Free' : formatVnd(0);
+  const shippingValueLabel = remainingForFreeShipping === 0 ? t('free') : formatVnd(0);
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => (open ? undefined : close())}>
       <SheetContent className="flex w-full flex-col sm:max-w-md">
         <SheetHeader>
-          <SheetTitle>Your basket</SheetTitle>
-          <SheetDescription className="sr-only">Items in your shopping cart</SheetDescription>
+          <SheetTitle>{t('title')}</SheetTitle>
+          <SheetDescription className="sr-only">{t('itemsDescription')}</SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto px-4">
           <p className="bg-muted mb-4 rounded-lg px-3 py-2 text-sm">
-            {requiresPickup ? (
-              'Bakery items and drinks are pickup-only — the whole order will be collected at Lý Tự Trọng.'
-            ) : remainingForFreeShipping === 0 ? (
-              'You qualify for free shipping.'
-            ) : (
-              <>
-                Add <b>{formatVnd(remainingForFreeShipping)}</b> more for free shipping.
-              </>
-            )}
+            {requiresPickup
+              ? t('pickupOnlyNotice')
+              : remainingForFreeShipping === 0
+                ? t('freeShippingQualified')
+                : t.rich('freeShippingRemaining', {
+                    amount: formatVnd(remainingForFreeShipping),
+                    b: (chunks) => <b>{chunks}</b>,
+                  })}
           </p>
 
           {items.length === 0 && (
-            <p className="text-muted-foreground py-8 text-center text-sm">Your basket is empty.</p>
+            <p className="text-muted-foreground py-8 text-center text-sm">{t('emptyBasket')}</p>
           )}
 
           <ul className="flex flex-col gap-4">
@@ -83,7 +84,7 @@ export const CartDrawer = () => {
                       type="button"
                       variant="ghost"
                       size="icon-sm"
-                      aria-label={`Remove ${item.name}`}
+                      aria-label={t('remove', { name: item.name })}
                       onClick={() => removeItem(item.id)}
                     >
                       <X />
@@ -100,29 +101,27 @@ export const CartDrawer = () => {
 
         <SheetFooter className="border-t">
           <div className="flex justify-between text-sm">
-            <span>Subtotal</span>
+            <span>{t('subtotal')}</span>
             <span className="font-mono font-semibold">{formatVnd(subtotalVnd)}</span>
           </div>
           <div className="text-muted-foreground flex justify-between text-sm">
-            <span>{requiresPickup ? 'Pickup' : 'Shipping · GHN'}</span>
+            <span>{requiresPickup ? t('pickup') : t('shippingGhn')}</span>
             <span className="font-mono">{shippingValueLabel}</span>
           </div>
           <div className="flex justify-between border-t pt-2 text-base font-semibold">
-            <span>Total</span>
+            <span>{t('total')}</span>
             <span className="font-mono">{formatVnd(subtotalVnd)}</span>
           </div>
           {items.length === 0 ? (
             <Button size="lg" className="mt-2 w-full" disabled>
-              Check out
+              {t('checkOut')}
             </Button>
           ) : (
             <Button asChild size="lg" className="mt-2 w-full" onClick={close}>
-              <Link href="/checkout">Check out</Link>
+              <Link href="/checkout">{t('checkOut')}</Link>
             </Button>
           )}
-          <p className="text-muted-foreground text-center text-xs">
-            ZaloPay · MoMo · VNPay QR · COD
-          </p>
+          <p className="text-muted-foreground text-center text-xs">{t('paymentMethods')}</p>
         </SheetFooter>
       </SheetContent>
     </Sheet>
