@@ -137,7 +137,7 @@ export const CheckoutForm = () => {
         shipping,
         orderRef: ref,
       });
-      router.push('/checkout/done');
+      router.push(`/checkout/done?ref=${ref}`);
       return;
     }
 

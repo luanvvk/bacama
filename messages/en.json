@@ -308,6 +308,7 @@
     "pickupTrackerNote": "We'll message you on Zalo the moment it's ready to collect at Lý Tự Trọng.",
     "deliveryTrackerNote": "Your coffee rides tomorrow morning's batch — packed as soon as it cools and shipped the same afternoon. The tracking number arrives over Zalo the moment GHN picks up.",
     "continueShopping": "Continue shopping",
+    "trackOrder": "Track this order",
     "dueOnPickup": "Due on pickup",
     "dueOnDelivery": "Due on delivery",
     "paid": "Paid",
@@ -327,6 +328,15 @@
     "detailTomorrow0600": "Tomorrow, 06:00",
     "detailTomorrow1600": "Tomorrow, 16:00",
     "detailExpected2to3Days": "Expected in 2–3 days"
+  },
+  "OrderTracking": {
+    "heading": "Track order {ref}",
+    "subtext": "Enter the phone number used at checkout to see its status.",
+    "phoneLabel": "Phone",
+    "phoneValidation": "Enter a valid phone number",
+    "submit": "Track order",
+    "notFound": "We couldn't find an order with that reference and phone number.",
+    "orderRefLine": "Order ref · {ref} · {method}"
   },
   "PaymentMethod": {
     "zalopay": {

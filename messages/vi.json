@@ -304,6 +304,7 @@
     "pickupTrackerNote": "Chúng tôi sẽ báo qua Zalo ngay khi đơn sẵn sàng để nhận tại Lý Tự Trọng.",
     "deliveryTrackerNote": "Cà phê của bạn đi theo mẻ rang sáng mai — đóng gói ngay khi nguội và gửi đi cùng buổi chiều. Mã vận đơn sẽ báo qua Zalo ngay khi GHN nhận hàng.",
     "continueShopping": "Tiếp tục mua sắm",
+    "trackOrder": "Theo dõi đơn hàng này",
     "dueOnPickup": "Thanh toán khi nhận",
     "dueOnDelivery": "Thanh toán khi giao",
     "paid": "Đã thanh toán",
@@ -323,6 +324,15 @@
     "detailTomorrow0600": "Ngày mai, 06:00",
     "detailTomorrow1600": "Ngày mai, 16:00",
     "detailExpected2to3Days": "Dự kiến trong 2–3 ngày"
+  },
+  "OrderTracking": {
+    "heading": "Theo dõi đơn {ref}",
+    "subtext": "Nhập số điện thoại đã dùng khi đặt hàng để xem trạng thái đơn.",
+    "phoneLabel": "Số điện thoại",
+    "phoneValidation": "Vui lòng nhập số điện thoại hợp lệ",
+    "submit": "Theo dõi đơn hàng",
+    "notFound": "Không tìm thấy đơn hàng khớp với mã đơn và số điện thoại này.",
+    "orderRefLine": "Mã đơn · {ref} · {method}"
   },
   "PaymentMethod": {
     "zalopay": {

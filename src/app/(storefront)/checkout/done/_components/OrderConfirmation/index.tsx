@@ -8,19 +8,29 @@ import { useTranslations } from 'next-intl';
 
 import { getPaymentMethod } from '@/constants/checkout';
 import { useCartStore } from '@/stores/cart';
-import { useCheckoutStore } from '@/stores/checkout';
+import { useCheckoutStore, type CheckoutOrder } from '@/stores/checkout';
 import { Button } from '@/components/ui/Button';
 import { Heading, Text } from '@/components/ui/Typography';
 
 import { OrderSummary } from '../../../_components/OrderSummary';
 import { OrderTracker } from '../OrderTracker';
 
-export const OrderConfirmation = () => {
+export interface OrderConfirmationProps {
+  /** A real DB-fetched order (undefined = no ref in the URL, fall back to
+   * client state; null = a ref was given but no matching order exists). */
+  initialOrder?: CheckoutOrder | null;
+}
+
+export const OrderConfirmation = ({ initialOrder }: OrderConfirmationProps) => {
   const t = useTranslations('OrderConfirmation');
   const tPaymentMethod = useTranslations('PaymentMethod');
   const router = useRouter();
-  const order = useCheckoutStore((state) => state.order);
+  const storeOrder = useCheckoutStore((state) => state.order);
   const clearCart = useCartStore((state) => state.clearCart);
+  const order = initialOrder !== undefined ? initialOrder : storeOrder;
+  // Only a DB-backed order has a real row the tracking route can find —
+  // the still-simulated flow's ref never made it to the database.
+  const isRealOrder = initialOrder !== undefined && initialOrder !== null;
 
   useEffect(() => {
     if (!order) {
@@ -86,9 +96,16 @@ export const OrderConfirmation = () => {
             </p>
           </div>
 
-          <Button asChild size="lg" className="self-start">
-            <Link href="/shop">{t('continueShopping')}</Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild size="lg">
+              <Link href="/shop">{t('continueShopping')}</Link>
+            </Button>
+            {isRealOrder && (
+              <Button asChild variant="outline" size="lg">
+                <Link href={`/orders/${order.orderRef}`}>{t('trackOrder')}</Link>
+              </Button>
+            )}
+          </div>
         </div>
 
         <OrderSummary

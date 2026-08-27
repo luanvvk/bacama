@@ -166,7 +166,7 @@ describe('CheckoutForm', () => {
       paymentMethod: 'cod',
       orderRef: 'BCM-ABCD1234',
     });
-    expect(push).toHaveBeenCalledWith('/checkout/done');
+    expect(push).toHaveBeenCalledWith('/checkout/done?ref=BCM-ABCD1234');
   });
 
   it('shows a toast and does not navigate when the order API call fails', async () => {

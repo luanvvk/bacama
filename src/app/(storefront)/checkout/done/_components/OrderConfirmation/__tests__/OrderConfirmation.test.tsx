@@ -24,6 +24,7 @@ const MESSAGES: Record<string, Record<string, string>> = {
     deliveryTrackerNote:
       "Your coffee rides tomorrow morning's batch — packed as soon as it cools and shipped the same afternoon. The tracking number arrives over Zalo the moment GHN picks up.",
     continueShopping: 'Continue shopping',
+    trackOrder: 'Track this order',
     dueOnPickup: 'Due on pickup',
     dueOnDelivery: 'Due on delivery',
     paid: 'Paid',
@@ -121,5 +122,34 @@ describe('OrderConfirmation', () => {
 
     expect(screen.getByText(/ready for the courier/)).toBeInTheDocument();
     expect(screen.getByText('Order placed')).toBeInTheDocument();
+  });
+
+  it('renders a real DB-fetched order (initialOrder) instead of client state, with a track-order link', () => {
+    useCheckoutStore.setState({ order: null });
+
+    render(<OrderConfirmation initialOrder={{ ...ORDER, paymentMethod: 'cod' }} />);
+
+    expect(screen.getByRole('heading', { name: 'Thank you, Ngọc.' })).toBeInTheDocument();
+    expect(replace).not.toHaveBeenCalled();
+    expect(screen.getByRole('link', { name: 'Track this order' })).toHaveAttribute(
+      'href',
+      '/orders/BCM-2419',
+    );
+  });
+
+  it('does not show a track-order link for the still-simulated (non-DB) flow', () => {
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
+
+    render(<OrderConfirmation />);
+
+    expect(screen.queryByRole('link', { name: 'Track this order' })).not.toBeInTheDocument();
+  });
+
+  it('redirects to checkout when a ref was given but no matching order exists', () => {
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
+
+    render(<OrderConfirmation initialOrder={null} />);
+
+    expect(replace).toHaveBeenCalledWith('/checkout');
   });
 });
