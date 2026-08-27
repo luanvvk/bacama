@@ -256,7 +256,8 @@
     "shippingLabelGhn": "Giao hàng · GHN",
     "shippingLabelPickup": "Nhận tại quán",
     "orderHint": "Cà phê của bạn được rang trước khi gửi. Đơn hôm nay đi theo mẻ rang ngày mai.",
-    "totalLabel": "Tổng cộng"
+    "totalLabel": "Tổng cộng",
+    "orderFailed": "Không thể đặt đơn hàng — vui lòng kiểm tra giỏ hàng và thử lại."
   },
   "CheckoutSteps": {
     "choosePayment": "Chọn thanh toán",

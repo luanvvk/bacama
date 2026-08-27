@@ -1,10 +1,11 @@
 jest.mock('@/lib/prisma', () => ({
   prisma: {
-    product: { findMany: jest.fn() },
+    product: { findMany: jest.fn(), updateMany: jest.fn() },
     bakeryItem: { findMany: jest.fn() },
     menuItem: { findMany: jest.fn() },
     site: { findFirst: jest.fn() },
     order: { create: jest.fn() },
+    $transaction: jest.fn(),
   },
 }));
 
@@ -13,10 +14,12 @@ import { prisma } from '@/lib/prisma';
 import { createOrder, OrderValidationError } from '../create-order';
 
 const mockProductFindMany = prisma.product.findMany as jest.Mock;
+const mockProductUpdateMany = prisma.product.updateMany as jest.Mock;
 const mockBakeryFindMany = prisma.bakeryItem.findMany as jest.Mock;
 const mockMenuFindMany = prisma.menuItem.findMany as jest.Mock;
 const mockSiteFindFirst = prisma.site.findFirst as jest.Mock;
 const mockOrderCreate = prisma.order.create as jest.Mock;
+const mockTransaction = prisma.$transaction as jest.Mock;
 
 const PRODUCT = {
   id: 'p1',
@@ -47,12 +50,14 @@ const BASE_INPUT = {
 
 beforeEach(() => {
   mockProductFindMany.mockResolvedValue([]);
+  mockProductUpdateMany.mockResolvedValue({ count: 1 });
   mockBakeryFindMany.mockResolvedValue([]);
   mockMenuFindMany.mockResolvedValue([]);
   mockSiteFindFirst.mockResolvedValue({ id: 'site-1' });
   mockOrderCreate.mockImplementation(({ data }) =>
     Promise.resolve({ id: 'order-1', ref: data.ref }),
   );
+  mockTransaction.mockImplementation((callback) => callback(prisma));
 });
 
 afterEach(() => {
@@ -188,6 +193,41 @@ describe('createOrder', () => {
     expect(mockOrderCreate).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ status: 'awaiting_cod' }) }),
     );
+  });
+
+  it('decrements stock immediately for a COD order, inside a transaction', async () => {
+    mockProductFindMany.mockResolvedValue([PRODUCT]);
+
+    await createOrder({ ...BASE_INPUT, paymentMethod: 'cod', items: [{ id: 'p1', quantity: 3 }] });
+
+    expect(mockTransaction).toHaveBeenCalled();
+    expect(mockProductUpdateMany).toHaveBeenCalledWith({
+      where: { id: 'p1', stock: { gte: 3 } },
+      data: { stock: { decrement: 3 } },
+    });
+  });
+
+  it('does not decrement stock for a non-COD order (waits for payment confirmation)', async () => {
+    mockProductFindMany.mockResolvedValue([PRODUCT]);
+
+    await createOrder({
+      ...BASE_INPUT,
+      paymentMethod: 'zalopay',
+      items: [{ id: 'p1', quantity: 1 }],
+    });
+
+    expect(mockTransaction).not.toHaveBeenCalled();
+    expect(mockProductUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it('throws when stock sold out between validation and the COD decrement', async () => {
+    mockProductFindMany.mockResolvedValue([PRODUCT]);
+    mockProductUpdateMany.mockResolvedValue({ count: 0 });
+
+    await expect(
+      createOrder({ ...BASE_INPUT, paymentMethod: 'cod', items: [{ id: 'p1', quantity: 1 }] }),
+    ).rejects.toThrow(OrderValidationError);
+    expect(mockOrderCreate).not.toHaveBeenCalled();
   });
 
   it('creates a non-COD order as pending', async () => {

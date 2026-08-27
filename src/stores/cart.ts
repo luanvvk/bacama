@@ -10,6 +10,14 @@ export interface CartItem {
   // Absent/'product' = shippable (GHN or pickup). 'bakery'/'menu' items are
   // pickup-only — see CheckoutForm's pickup-forcing logic.
   kind?: 'product' | 'bakery' | 'menu';
+  // Products with weight/grind variants use a composite `id`
+  // (`${productId}-${weight}-${grind}`) to keep each variant a distinct
+  // cart line — productId/weight/grind recover the real DB row and
+  // selection for order creation. Absent for bakery/menu (their `id` is
+  // already the real DB id) and for variant-less products.
+  productId?: string;
+  weight?: string;
+  grind?: string;
 }
 
 interface CartState {

@@ -28,6 +28,8 @@ interface PlaceOrderInput {
   totalVnd: number;
   paymentMethod: PaymentMethodValue;
   shipping: ShippingDetails;
+  /** Use a real order ref (e.g. from createOrder) instead of generating one. */
+  orderRef?: string;
 }
 
 interface CheckoutState {
@@ -41,7 +43,7 @@ const generateOrderRef = () => `BCM-${Math.floor(1000 + Math.random() * 9000)}`;
 export const useCheckoutStore = create<CheckoutState>((set) => ({
   order: null,
   placeOrder: (input) => {
-    const order: CheckoutOrder = { ...input, orderRef: generateOrderRef() };
+    const order: CheckoutOrder = { ...input, orderRef: input.orderRef ?? generateOrderRef() };
     set({ order });
     return order;
   },

@@ -33,6 +33,7 @@ const MESSAGES: Record<string, Record<string, string>> = {
     shippingLabelPickup: 'Pickup',
     orderHint: "Your coffee is roasted before it ships. Today's order rides tomorrow's batch.",
     totalLabel: 'Total',
+    orderFailed: "We couldn't place your order — please check your basket and try again.",
   },
   'PaymentMethod.zalopay': {
     label: 'ZaloPay',
@@ -99,7 +100,14 @@ jest.mock('next-intl', () => ({
     }
     return MESSAGES[namespace]?.[key] ?? key;
   },
+  useLocale: () => 'vi',
 }));
+
+const mockToast = jest.fn();
+jest.mock('@/lib/toast', () => ({ toast: (...args: unknown[]) => mockToast(...args) }));
+
+const mockFetch = jest.fn();
+global.fetch = mockFetch as unknown as typeof fetch;
 
 const DALAT_WASHED = { id: 'dalat-washed-250-g-phin', name: 'Đà Lạt Washed', priceVnd: 280000 };
 
@@ -115,6 +123,12 @@ beforeEach(() => {
   useCheckoutStore.setState({ order: null });
   push.mockClear();
   replace.mockClear();
+  mockToast.mockClear();
+  mockFetch.mockReset();
+  mockFetch.mockResolvedValue({
+    ok: true,
+    json: () => Promise.resolve({ id: 'order-1', ref: 'BCM-ABCD1234' }),
+  });
 });
 
 describe('CheckoutForm', () => {
@@ -133,7 +147,7 @@ describe('CheckoutForm', () => {
     expect(push).toHaveBeenCalledWith('/checkout/pay');
   });
 
-  it('places the order and routes straight to done for cash on delivery', async () => {
+  it('persists a real order via the API and routes straight to done for cash on delivery', async () => {
     const user = userEvent.setup();
     render(<CheckoutForm />);
 
@@ -141,8 +155,34 @@ describe('CheckoutForm', () => {
     await fillShippingFields(user);
     await user.click(screen.getByRole('button', { name: 'Place order · pay on delivery' }));
 
-    expect(useCheckoutStore.getState().order).toMatchObject({ paymentMethod: 'cod' });
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/orders',
+      expect.objectContaining({
+        method: 'POST',
+        body: expect.stringContaining('"paymentMethod":"cod"'),
+      }),
+    );
+    expect(useCheckoutStore.getState().order).toMatchObject({
+      paymentMethod: 'cod',
+      orderRef: 'BCM-ABCD1234',
+    });
     expect(push).toHaveBeenCalledWith('/checkout/done');
+  });
+
+  it('shows a toast and does not navigate when the order API call fails', async () => {
+    mockFetch.mockResolvedValue({ ok: false, json: () => Promise.resolve({ message: 'nope' }) });
+    const user = userEvent.setup();
+    render(<CheckoutForm />);
+
+    await user.click(screen.getByRole('radio', { name: /Cash on delivery/ }));
+    await fillShippingFields(user);
+    await user.click(screen.getByRole('button', { name: 'Place order · pay on delivery' }));
+
+    expect(mockToast).toHaveBeenCalledWith(
+      "We couldn't place your order — please check your basket and try again.",
+    );
+    expect(useCheckoutStore.getState().order).toBeNull();
+    expect(push).not.toHaveBeenCalled();
   });
 
   it('does not submit when required shipping fields are missing', async () => {

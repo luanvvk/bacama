@@ -44,6 +44,9 @@ export const BuyBox = ({ product }: BuyBoxProps) => {
         priceVnd: product.priceVnd,
         imageUrl: product.imageUrl,
         options: `${weight} · ${grind}`,
+        productId: product.id,
+        weight,
+        grind,
       },
       quantity,
     );

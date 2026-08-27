@@ -79,6 +79,7 @@ export const createOrder = async (
 
   const orderItems: Prisma.OrderItemCreateManyOrderInput[] = [];
   const pickupSiteIds = new Set<string>();
+  const productQuantities = new Map<string, number>();
   let subtotalVnd = 0;
 
   for (const item of input.items) {
@@ -91,6 +92,7 @@ export const createOrder = async (
         throw new OrderValidationError(`Only ${product.stock} left of "${product.nameEn}".`);
       }
       subtotalVnd += product.priceVnd * item.quantity;
+      productQuantities.set(product.id, (productQuantities.get(product.id) ?? 0) + item.quantity);
       orderItems.push({
         productId: product.id,
         nameSnapshot: input.locale === 'vi' ? product.nameVi : product.nameEn,
@@ -155,28 +157,46 @@ export const createOrder = async (
     );
   }
 
-  const order = await prisma.order.create({
-    data: {
-      ref: generateOrderRef(),
-      userId: input.userId ?? null,
-      status: input.paymentMethod === 'cod' ? 'awaiting_cod' : 'pending',
-      customerName: input.customerName,
-      phone: input.phone,
-      email: input.email,
-      deliveryMode,
-      addressLine: deliveryMode === 'home_delivery' ? input.address : null,
-      province: deliveryMode === 'home_delivery' ? input.province : null,
-      pickupSiteId,
-      note: input.note,
-      subtotalVnd,
-      shippingVnd: 0,
-      totalVnd: subtotalVnd,
-      locale: input.locale,
-      paymentProvider: PAYMENT_METHOD_MAP[input.paymentMethod],
-      items: { create: orderItems },
-    },
-    select: { id: true, ref: true },
-  });
+  const status: $Enums.OrderStatus = input.paymentMethod === 'cod' ? 'awaiting_cod' : 'pending';
+  const orderData: Prisma.OrderUncheckedCreateInput = {
+    ref: generateOrderRef(),
+    userId: input.userId ?? null,
+    status,
+    customerName: input.customerName,
+    phone: input.phone,
+    email: input.email,
+    deliveryMode,
+    addressLine: deliveryMode === 'home_delivery' ? input.address : null,
+    province: deliveryMode === 'home_delivery' ? input.province : null,
+    pickupSiteId,
+    note: input.note,
+    subtotalVnd,
+    shippingVnd: 0,
+    totalVnd: subtotalVnd,
+    locale: input.locale,
+    paymentProvider: PAYMENT_METHOD_MAP[input.paymentMethod],
+    items: { create: orderItems },
+  };
 
-  return order;
+  // COD has no online payment gate — the order is accepted at creation, so
+  // stock is committed now rather than waiting for a "paid" webhook that
+  // will never come. Every other method stays a soft reservation: stock is
+  // only decremented once payment is actually confirmed (task 2.8).
+  if (status !== 'awaiting_cod') {
+    return prisma.order.create({ data: orderData, select: { id: true, ref: true } });
+  }
+
+  return prisma.$transaction(async (tx) => {
+    for (const [productId, quantity] of productQuantities) {
+      const { count } = await tx.product.updateMany({
+        where: { id: productId, stock: { gte: quantity } },
+        data: { stock: { decrement: quantity } },
+      });
+      if (count === 0) {
+        throw new OrderValidationError('One of the items in your order just sold out.');
+      }
+    }
+
+    return tx.order.create({ data: orderData, select: { id: true, ref: true } });
+  });
 };

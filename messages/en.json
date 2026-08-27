@@ -260,7 +260,8 @@
     "shippingLabelGhn": "Shipping · GHN",
     "shippingLabelPickup": "Pickup",
     "orderHint": "Your coffee is roasted before it ships. Today's order rides tomorrow's batch.",
-    "totalLabel": "Total"
+    "totalLabel": "Total",
+    "orderFailed": "We couldn't place your order — please check your basket and try again."
   },
   "CheckoutSteps": {
     "choosePayment": "Choose payment",
