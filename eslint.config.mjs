@@ -29,6 +29,8 @@ const eslintConfig = defineConfig([
     // Static design mockups, not part of the app codebase:
     'design/**',
     'coverage/**',
+    // Vendored third-party skill toolchain, not part of the app codebase:
+    '.claude/skills/impeccable/**',
   ]),
 ]);
 

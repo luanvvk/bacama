@@ -20,6 +20,9 @@ next-env.d.ts
 # Design mockups (kept as-is, not part of the app codebase)
 design/
 
+# Vendored third-party skill toolchains (kept as-is, not part of the app codebase)
+.claude/skills/impeccable/
+
 # Misc
 .vscode/
 .idea/
