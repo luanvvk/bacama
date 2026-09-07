@@ -243,6 +243,20 @@
     "browseCourses": "Browse courses",
     "backToShop": "Back to shop"
   },
+  "Me": {
+    "eyebrow": "Your learning · signed in",
+    "title": "Welcome back, {name}.",
+    "description": "Your courses, progress, and certificates will live here as the learning area comes online.",
+    "browseCourses": "Browse courses",
+    "viewOrders": "View orders"
+  },
+  "Account": {
+    "eyebrow": "Your orders · signed in",
+    "title": "Your orders.",
+    "description": "Order history for {name} will appear here once the account data service is connected.",
+    "shop": "Continue shopping",
+    "profile": "My profile"
+  },
   "Checkout": {
     "paymentHeading": "How would you like to pay?",
     "paymentSubtext": "Pick one below. We never store your card details — every payment happens on the provider's own page.",

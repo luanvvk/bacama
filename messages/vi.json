@@ -239,6 +239,20 @@
     "browseCourses": "Xem khóa học",
     "backToShop": "Về trang mua sắm"
   },
+  "Me": {
+    "eyebrow": "Việc học của bạn · đã đăng nhập",
+    "title": "Chào mừng trở lại, {name}.",
+    "description": "Các khóa học, tiến độ và chứng chỉ của bạn sẽ hiển thị tại đây khi khu vực học tập được hoàn thiện.",
+    "browseCourses": "Xem khóa học",
+    "viewOrders": "Xem đơn hàng"
+  },
+  "Account": {
+    "eyebrow": "Đơn hàng của bạn · đã đăng nhập",
+    "title": "Đơn hàng của bạn.",
+    "description": "Lịch sử đơn hàng của {name} sẽ hiển thị tại đây khi dịch vụ dữ liệu tài khoản được kết nối.",
+    "shop": "Tiếp tục mua sắm",
+    "profile": "Hồ sơ của tôi"
+  },
   "Checkout": {
     "paymentHeading": "Bạn muốn thanh toán thế nào?",
     "paymentSubtext": "Chọn một phương thức dưới đây. Chúng tôi không bao giờ lưu thông tin thẻ của bạn — mọi thanh toán diễn ra trên trang của nhà cung cấp.",
