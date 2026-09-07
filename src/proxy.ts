@@ -1,5 +1,5 @@
+import { clerkMiddleware } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
 import { routing } from './i18n/routing';
 
@@ -9,14 +9,14 @@ const COOKIE_NAME = 'NEXT_LOCALE';
 // notwithstanding (AGENTS.md D6) — English is opt-in only, via the toggle.
 // This just persists that default as a cookie so it's stable across requests
 // until the visitor switches it themselves.
-export default function proxy(request: NextRequest) {
+export default clerkMiddleware((_auth, request) => {
   if (request.cookies.has(COOKIE_NAME)) return NextResponse.next();
 
   const response = NextResponse.next();
   response.cookies.set(COOKIE_NAME, routing.defaultLocale, { path: '/', sameSite: 'lax' });
   return response;
-}
+});
 
 export const config = {
-  matcher: ['/((?!_next|api|.*\\..*).*)'],
+  matcher: ['/((?!_next|.*\\..*).*)', '/(api|trpc)(.*)'],
 };

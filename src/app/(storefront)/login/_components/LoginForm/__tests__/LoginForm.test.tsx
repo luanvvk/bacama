@@ -2,13 +2,20 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { LoginForm } from '../index';
-import { toast } from '@/lib/toast';
 
-jest.mock('@/lib/toast', () => ({ toast: jest.fn() }));
-
-afterEach(() => {
-  jest.clearAllMocks();
-});
+jest.mock('@clerk/nextjs/legacy', () => ({
+  useSignIn: () => ({
+    isLoaded: true,
+    signIn: {
+      create: jest.fn().mockResolvedValue({ status: 'complete', createdSessionId: 'session' }),
+      attemptFirstFactor: jest.fn(),
+      attemptSecondFactor: jest.fn(),
+      resetPassword: jest.fn(),
+      authenticateWithRedirect: jest.fn(),
+    },
+    setActive: jest.fn(),
+  }),
+}));
 
 describe('LoginForm', () => {
   it('links to /register for people without an account', () => {
@@ -17,7 +24,7 @@ describe('LoginForm', () => {
     expect(screen.getByRole('link', { name: 'Create one' })).toHaveAttribute('href', '/register');
   });
 
-  it('shows a toast instead of a real sign-in on submit', async () => {
+  it('submits credentials through Clerk', async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
 
@@ -25,7 +32,7 @@ describe('LoginForm', () => {
     await user.type(screen.getByLabelText('Password'), 'password123');
     await user.click(screen.getByRole('button', { name: 'Log in' }));
 
-    expect(toast).toHaveBeenCalledWith("Sign-in isn't wired up yet — this is UI only for now.");
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('validates the email and password fields', async () => {
@@ -36,6 +43,5 @@ describe('LoginForm', () => {
 
     expect(await screen.findByText('Enter a valid email address')).toBeInTheDocument();
     expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument();
-    expect(toast).not.toHaveBeenCalled();
   });
 });

@@ -3,6 +3,10 @@
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/ui/Button';
 
+export interface SocialAuthButtonProps {
+  onGoogleClick?: () => void;
+}
+
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
     <path
@@ -21,12 +25,12 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export const SocialAuthButton = () => (
+export const SocialAuthButton = ({ onGoogleClick }: SocialAuthButtonProps) => (
   <Button
     type="button"
     variant="outline"
     className="w-full"
-    onClick={() => toast("Google sign-in isn't wired up yet.")}
+    onClick={onGoogleClick ?? (() => toast("Google sign-in isn't wired up yet."))}
   >
     <GoogleIcon />
     Continue with Google

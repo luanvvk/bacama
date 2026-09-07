@@ -20,6 +20,12 @@ jest.mock('@/components/layout/LocaleToggle', () => ({
   LocaleToggle: () => null,
 }));
 
+jest.mock('@clerk/nextjs', () => ({
+  Show: ({ children }: { children: React.ReactNode }) => children,
+  useClerk: () => ({ signOut: jest.fn() }),
+  useUser: () => ({ isLoaded: true, user: null }),
+}));
+
 afterEach(() => {
   useCartStore.setState({ items: [], isOpen: false });
 });

@@ -1,5 +1,4 @@
 import type { AuthProvider } from './types';
+import { getClerkAuthProvider } from './clerk';
 
-export const getAuthProvider = (): AuthProvider => {
-  throw new Error('AuthProvider not implemented until Phase 2');
-};
+export const getAuthProvider = (): AuthProvider => getClerkAuthProvider();
