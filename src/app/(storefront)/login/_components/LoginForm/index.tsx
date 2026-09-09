@@ -13,13 +13,11 @@ import { ControlledInput } from '@/components/form/ControlledInput';
 import { FormField } from '@/components/form/FormField';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
+import { getErrorMessage } from '@/lib/utils';
 
 import { loginSchema, type LoginFormValues } from './schema';
 
 type LoginMode = 'credentials' | 'second-factor' | 'forgot' | 'reset-code' | 'reset-password';
-
-const getErrorMessage = (error: unknown) =>
-  error instanceof Error ? error.message : 'Authentication failed.';
 
 export const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -31,7 +29,12 @@ export const LoginForm = () => {
       ? loginSchema
       : mode === 'forgot'
         ? z.object({ email: z.string().email('Enter a valid email address'), password: z.string() })
-        : z.object({ email: z.string(), password: z.string() });
+        : mode === 'reset-password'
+          ? z.object({
+              email: z.string(),
+              password: z.string().min(8, 'Password must be at least 8 characters'),
+            })
+          : z.object({ email: z.string(), password: z.string() });
   const { control, handleSubmit, formState } = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '', password: '' },
@@ -74,7 +77,7 @@ export const LoginForm = () => {
         setMode('second-factor');
       }
     } catch (submissionError) {
-      setError(getErrorMessage(submissionError));
+      setError(getErrorMessage(submissionError, 'Authentication failed.'));
     }
   };
 

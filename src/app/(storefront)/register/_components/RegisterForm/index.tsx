@@ -12,11 +12,9 @@ import { ControlledInput } from '@/components/form/ControlledInput';
 import { FormField } from '@/components/form/FormField';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
+import { getErrorMessage } from '@/lib/utils';
 
 import { registerSchema, type RegisterFormValues } from './schema';
-
-const getErrorMessage = (error: unknown) =>
-  error instanceof Error ? error.message : 'Registration failed.';
 
 export const RegisterForm = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -50,7 +48,7 @@ export const RegisterForm = () => {
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
       setVerificationPending(true);
     } catch (submissionError) {
-      setError(getErrorMessage(submissionError));
+      setError(getErrorMessage(submissionError, 'Registration failed.'));
     }
   };
 

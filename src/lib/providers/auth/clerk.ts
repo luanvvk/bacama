@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { auth } from '@clerk/nextjs/server';
 
 import { prisma } from '@/lib/prisma';
@@ -19,13 +20,15 @@ const toAuthUser = async (clerkId: string): Promise<AuthUser | null> => {
   };
 };
 
-const getCurrentUser = async (): Promise<AuthUser | null> => {
+// Layouts and pages down the same tree both call this to guard + read the
+// user — cache() dedupes those into one auth() + Prisma lookup per request.
+const getCurrentUser = cache(async (): Promise<AuthUser | null> => {
   const { userId } = await auth();
 
   if (!userId) return null;
 
   return toAuthUser(userId);
-};
+});
 
 const requireRole = async (roles: Role | Role[]): Promise<AuthUser> => {
   const user = await getCurrentUser();
