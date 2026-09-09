@@ -15,14 +15,4 @@ describe('AuthCard', () => {
     expect(screen.getByText('Form fields')).toBeInTheDocument();
     expect(screen.getByText('Footer content')).toBeInTheDocument();
   });
-
-  it('links the logo back to home', () => {
-    render(
-      <AuthCard title="Welcome back" description="Log in to continue." footer="Footer">
-        <p>Form fields</p>
-      </AuthCard>,
-    );
-
-    expect(screen.getByRole('link', { name: /Bacama/ })).toHaveAttribute('href', '/');
-  });
 });

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { type ReactNode } from 'react';
 
 import { Card, CardContent } from '@/components/ui/Card';
@@ -12,12 +11,9 @@ export interface AuthCardProps {
 }
 
 export const AuthCard = ({ title, description, children, footer }: AuthCardProps) => (
-  <div className="mx-auto flex max-w-sm flex-col py-16">
+  <div className="auth-surface-enter mx-auto flex max-w-sm flex-col py-16">
     <div className="text-center">
-      <Link href="/" className="font-heading text-2xl">
-        Bacama<span className="text-primary">·</span>
-      </Link>
-      <Heading as="h1" size="sm" className="mt-6">
+      <Heading as="h1" size="sm">
         {title}
       </Heading>
       <Text variant="muted" className="mt-2">
