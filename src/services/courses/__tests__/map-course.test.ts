@@ -1,4 +1,4 @@
-import { mapCourse, mapCourseWithOutline } from '../map-course';
+import { formatSessionDate, mapCourse, mapCourseDetail, mapCourseWithOutline } from '../map-course';
 
 const courseRow = {
   id: 'course-1',
@@ -159,6 +159,95 @@ describe('mapCourseWithOutline', () => {
 
     expect(result.modules[0].lessons[0].documents).toEqual([
       { id: 'file-1', name: 'Milk ratio chart', size: 'PDF · 240 KB' },
+    ]);
+  });
+});
+
+describe('formatSessionDate', () => {
+  it('formats in the Vietnam timezone regardless of the reader’s local one', () => {
+    expect(formatSessionDate(new Date('2026-09-14T02:00:00.000Z'))).toBe('Mon, Sep 14 · 09:00');
+  });
+});
+
+describe('mapCourseDetail', () => {
+  it('computes seats left and never lets it go negative', () => {
+    const result = mapCourseDetail({
+      ...courseRow,
+      format: 'in_person',
+      modules: [],
+      sessions: [
+        {
+          id: 'session-1',
+          courseId: 'course-1',
+          siteId: 'site-1',
+          startsAt: new Date('2026-09-14T02:00:00.000Z'),
+          capacity: 8,
+          seatsBooked: 5,
+          site: {
+            id: 'site-1',
+            slug: 'hoi-an',
+            city: 'Hoi An',
+            nameVi: 'Hội An',
+            nameEn: 'Hoi An',
+            addressVi: '',
+            addressEn: '',
+            hoursVi: '',
+            hoursEn: '',
+            timezone: 'Asia/Ho_Chi_Minh',
+            imageUrl: null,
+            opensAt: null,
+            isActive: true,
+            createdAt: new Date('2026-01-01'),
+            updatedAt: new Date('2026-01-01'),
+            todaysRoastProductId: null,
+          },
+        },
+        {
+          id: 'session-2',
+          courseId: 'course-1',
+          siteId: 'site-1',
+          startsAt: new Date('2026-09-21T02:00:00.000Z'),
+          capacity: 8,
+          seatsBooked: 9,
+          site: {
+            id: 'site-1',
+            slug: 'hoi-an',
+            city: 'Hoi An',
+            nameVi: 'Hội An',
+            nameEn: 'Hoi An',
+            addressVi: '',
+            addressEn: '',
+            hoursVi: '',
+            hoursEn: '',
+            timezone: 'Asia/Ho_Chi_Minh',
+            imageUrl: null,
+            opensAt: null,
+            isActive: true,
+            createdAt: new Date('2026-01-01'),
+            updatedAt: new Date('2026-01-01'),
+            todaysRoastProductId: null,
+          },
+        },
+      ],
+    });
+
+    expect(result.sessions).toEqual([
+      {
+        id: 'session-1',
+        startsAt: 'Mon, Sep 14 · 09:00',
+        siteName: 'Hoi An',
+        siteSlug: 'hoi-an',
+        capacity: 8,
+        seatsLeft: 3,
+      },
+      {
+        id: 'session-2',
+        startsAt: 'Mon, Sep 21 · 09:00',
+        siteName: 'Hoi An',
+        siteSlug: 'hoi-an',
+        capacity: 8,
+        seatsLeft: 0,
+      },
     ]);
   });
 });

@@ -24,14 +24,15 @@ describe('CourseCard', () => {
     expect(screen.getByText('790.000 ₫')).toBeInTheDocument();
   });
 
-  it('links the preview image/title to /learn and the CTA to /me', () => {
+  it('links the image/title and the CTA to the course detail page', () => {
     render(<CourseCard course={latteArt} />);
 
-    expect(screen.getByRole('link', { name: 'Preview Latte Art' })).toHaveAttribute(
+    const links = screen.getAllByRole('link', { name: 'Latte Art' });
+    expect(links[0]).toHaveAttribute('href', '/courses/latte-art');
+    expect(screen.getByRole('link', { name: 'Enrol →' })).toHaveAttribute(
       'href',
-      '/learn',
+      '/courses/latte-art',
     );
-    expect(screen.getByRole('link', { name: 'Enrol →' })).toHaveAttribute('href', '/me');
   });
 
   it('flags a seat-limited course with the warning badge variant', () => {

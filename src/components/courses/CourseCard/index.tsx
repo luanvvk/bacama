@@ -20,12 +20,11 @@ export const CourseCard = ({ course }: CourseCardProps) => {
     hybrid: t('formatHybrid'),
   };
   const formatLabel = formatLabels[course.format];
-  const previewHref = '/learn';
-  const enrolHref = '/me';
+  const href = `/courses/${course.slug}`;
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border">
-      <Link href={previewHref} aria-label={`Preview ${course.name}`}>
+      <Link href={href} aria-label={course.name}>
         <CardMedia
           src={course.imageUrl}
           alt={course.name}
@@ -41,7 +40,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
           {course.meta ? `${formatLabel} · ${course.meta}` : formatLabel}
         </p>
         <h2 className="font-heading text-xl">
-          <Link href={previewHref}>{course.name}</Link>
+          <Link href={href}>{course.name}</Link>
         </h2>
         <p className="text-muted-foreground text-sm">{course.description}</p>
 
@@ -52,7 +51,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
             </Badge>
           )}
           <PriceTag priceVnd={course.priceVnd} className="ml-auto" />
-          <Link href={enrolHref} className="text-primary text-sm font-medium hover:underline">
+          <Link href={href} className="text-primary text-sm font-medium hover:underline">
             {course.ctaLabel} →
           </Link>
         </div>

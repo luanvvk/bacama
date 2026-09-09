@@ -216,6 +216,23 @@
     "formatInPerson": "Tại lớp",
     "formatHybrid": "Kết hợp"
   },
+  "CourseDetail": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbWorkshops": "Khóa học",
+    "formatOnline": "Online",
+    "formatInPerson": "Tại lớp",
+    "formatHybrid": "Kết hợp",
+    "outlineTab": "Nội dung",
+    "sessionsTab": "Buổi học",
+    "freePreview": "Học thử miễn phí",
+    "seatsLeft": "Còn {count} chỗ",
+    "soldOut": "Đã hết chỗ",
+    "noSessions": "Chưa có buổi học sắp tới — quay lại sau nhé.",
+    "enrol": "Đăng ký học",
+    "bookSeat": "Đặt chỗ",
+    "loginToEnrol": "Đăng nhập để đăng ký",
+    "enrolNotReady": "Chức năng đăng ký chưa được kích hoạt."
+  },
   "Learn": {
     "breadcrumbHome": "Trang chủ",
     "breadcrumbWorkshops": "Khóa học",

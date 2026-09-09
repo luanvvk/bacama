@@ -46,6 +46,20 @@ export interface CourseWithOutline extends Course {
   modules: CourseModule[];
 }
 
+export interface CourseSession {
+  id: string;
+  /** Pre-formatted for display, e.g. "Sat, 14 Sep · 09:00". */
+  startsAt: string;
+  siteName: string;
+  siteSlug: string;
+  capacity: number;
+  seatsLeft: number;
+}
+
+export interface CourseDetail extends CourseWithOutline {
+  sessions: CourseSession[];
+}
+
 export const COURSE_OUTLINE_INCLUDE = {
   modules: {
     orderBy: { order: 'asc' },
@@ -58,10 +72,44 @@ export const COURSE_OUTLINE_INCLUDE = {
   },
 } satisfies Prisma.CourseInclude;
 
+// Sessions filter on `now`, so this has to be a factory rather than a static
+// `satisfies`-typed constant like COURSE_OUTLINE_INCLUDE above.
+export const courseDetailInclude = (now: Date) =>
+  ({
+    ...COURSE_OUTLINE_INCLUDE,
+    sessions: {
+      where: { startsAt: { gte: now } },
+      orderBy: { startsAt: 'asc' as const },
+      include: { site: true },
+    },
+  }) satisfies Prisma.CourseInclude;
+
 export type DatabaseCourse = CourseRow;
 export type DatabaseCourseWithOutline = Prisma.CourseGetPayload<{
   include: typeof COURSE_OUTLINE_INCLUDE;
 }>;
+export type DatabaseCourseDetail = Prisma.CourseGetPayload<{
+  include: ReturnType<typeof courseDetailInclude>;
+}>;
+
+// Every session is in Vietnam (Site.timezone defaults to it) — pinned so a
+// UTC-stored startsAt never renders as the previous day for a reader west
+// of UTC.
+const SESSION_DAY = new Intl.DateTimeFormat('en-US', {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'Asia/Ho_Chi_Minh',
+});
+const SESSION_TIME = new Intl.DateTimeFormat('en-US', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+  timeZone: 'Asia/Ho_Chi_Minh',
+});
+
+export const formatSessionDate = (startsAt: Date) =>
+  `${SESSION_DAY.format(startsAt)} · ${SESSION_TIME.format(startsAt)}`;
 
 // The database spells the enum `in_person`; the UI has always used the hyphen.
 const FORMAT: Record<CourseRow['format'], CourseFormat> = {
@@ -116,3 +164,15 @@ export const mapCourseWithOutline = (course: DatabaseCourseWithOutline): CourseW
     })),
   };
 };
+
+export const mapCourseDetail = (course: DatabaseCourseDetail): CourseDetail => ({
+  ...mapCourseWithOutline(course),
+  sessions: course.sessions.map((session) => ({
+    id: session.id,
+    startsAt: formatSessionDate(session.startsAt),
+    siteName: session.site.nameEn,
+    siteSlug: session.site.slug,
+    capacity: session.capacity,
+    seatsLeft: Math.max(session.capacity - session.seatsBooked, 0),
+  })),
+});

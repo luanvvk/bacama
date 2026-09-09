@@ -220,6 +220,23 @@
     "formatInPerson": "In-person",
     "formatHybrid": "Hybrid"
   },
+  "CourseDetail": {
+    "breadcrumbHome": "Home",
+    "breadcrumbWorkshops": "Workshops",
+    "formatOnline": "Online",
+    "formatInPerson": "In-person",
+    "formatHybrid": "Hybrid",
+    "outlineTab": "Outline",
+    "sessionsTab": "Sessions",
+    "freePreview": "Free preview",
+    "seatsLeft": "{count, plural, one {# seat left} other {# seats left}}",
+    "soldOut": "Sold out",
+    "noSessions": "No upcoming sessions — check back soon.",
+    "enrol": "Enrol",
+    "bookSeat": "Book a seat",
+    "loginToEnrol": "Log in to enrol",
+    "enrolNotReady": "Enrolment isn't wired up yet."
+  },
   "Learn": {
     "breadcrumbHome": "Home",
     "breadcrumbWorkshops": "Workshops",
