@@ -4,6 +4,21 @@
     "openMenu": "Open menu",
     "menu": "Menu"
   },
+  "AccountMenu": {
+    "loadingAccount": "Loading account",
+    "welcome": "Welcome",
+    "notSignedIn": "Not signed in",
+    "signIn": "Log in",
+    "signInCta": "Sign in / Create account",
+    "yourAccount": "Your Bacama account",
+    "profile": "My profile",
+    "myLearning": "My learning",
+    "myOrders": "My orders",
+    "staffAccess": "Staff access",
+    "teacherConsole": "Teacher console",
+    "adminConsole": "Admin console",
+    "logOut": "Log out"
+  },
   "CartDrawer": {
     "title": "Your basket",
     "itemsDescription": "Items in your shopping cart",

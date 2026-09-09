@@ -4,6 +4,21 @@
     "openMenu": "Mở menu",
     "menu": "Menu"
   },
+  "AccountMenu": {
+    "loadingAccount": "Đang tải tài khoản",
+    "welcome": "Xin chào",
+    "notSignedIn": "Chưa đăng nhập",
+    "signIn": "Đăng nhập",
+    "signInCta": "Đăng nhập / Tạo tài khoản",
+    "yourAccount": "Tài khoản Bacama của bạn",
+    "profile": "Hồ sơ của tôi",
+    "myLearning": "Việc học của tôi",
+    "myOrders": "Đơn hàng của tôi",
+    "staffAccess": "Dành cho nhân viên",
+    "teacherConsole": "Bảng điều khiển giảng viên",
+    "adminConsole": "Bảng điều khiển quản trị",
+    "logOut": "Đăng xuất"
+  },
   "CartDrawer": {
     "title": "Giỏ hàng của bạn",
     "itemsDescription": "Các món trong giỏ hàng",
