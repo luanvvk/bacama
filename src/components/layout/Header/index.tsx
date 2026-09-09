@@ -5,6 +5,7 @@ import { Menu, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { NAV_ITEMS, type NavItem } from '@/constants/nav';
+import type { Role } from '@/lib/providers/auth/types';
 import { useCartCount, useCartStore } from '@/stores/cart';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -25,9 +26,10 @@ import { MobileNav } from '@/components/layout/MobileNav';
 
 export interface HeaderProps {
   navItems?: NavItem[];
+  role?: Role | null;
 }
 
-export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
+export const Header = ({ navItems = NAV_ITEMS, role = null }: HeaderProps) => {
   const t = useTranslations('Header');
   const cartCount = useCartCount();
   const openCart = useCartStore((state) => state.open);
@@ -111,7 +113,7 @@ export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
           </Button>
 
           <div className="hidden lg:block">
-            <AccountMenu />
+            <AccountMenu role={role} />
           </div>
 
           <Sheet>
@@ -131,7 +133,7 @@ export const Header = ({ navItems = NAV_ITEMS }: HeaderProps) => {
                 <SheetTitle>{t('menu')}</SheetTitle>
               </SheetHeader>
               <div className="px-4 pb-6">
-                <MobileNav navItems={navItems} />
+                <MobileNav navItems={navItems} role={role} />
               </div>
             </SheetContent>
           </Sheet>

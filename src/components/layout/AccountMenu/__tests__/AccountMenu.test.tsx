@@ -57,9 +57,9 @@ describe('AccountMenu', () => {
     );
   });
 
-  it('shows account links and staff links when signed in', async () => {
+  it('shows account links but not staff links for a customer', async () => {
     mockUseUser = () => ({ isLoaded: true, user: { fullName: 'Ada Lovelace' } });
-    render(<AccountMenu />);
+    render(<AccountMenu role="customer" />);
 
     await userEvent.click(screen.getByRole('button', { name: 'Ada Lovelace' }));
 
@@ -69,7 +69,17 @@ describe('AccountMenu', () => {
     );
     expect(screen.getByRole('menuitem', { name: /My learning/ })).toHaveAttribute('href', '/me');
     expect(screen.getByRole('menuitem', { name: /My orders/ })).toHaveAttribute('href', '/account');
-    expect(screen.getByRole('menuitem', { name: /Teacher console/ })).toHaveAttribute(
+    expect(screen.queryByRole('menuitem', { name: /Teacher console/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('menuitem', { name: /Admin console/ })).not.toBeInTheDocument();
+  });
+
+  it('shows staff links for an instructor or admin', async () => {
+    mockUseUser = () => ({ isLoaded: true, user: { fullName: 'Ada Lovelace' } });
+    render(<AccountMenu role="admin" />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Ada Lovelace' }));
+
+    expect(await screen.findByRole('menuitem', { name: /Teacher console/ })).toHaveAttribute(
       'href',
       '/teach',
     );

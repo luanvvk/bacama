@@ -1,11 +1,16 @@
 import { buildNavItems } from '@/constants/nav';
+import { getAuthProvider } from '@/lib/providers/auth';
 import { getBakeryItems } from '@/services/catalog/get-bakery-items';
 import { getFeaturedProducts } from '@/services/catalog/get-featured-products';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { Header } from '@/components/layout/Header';
 
 const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => {
-  const [products, bakeryItems] = await Promise.all([getFeaturedProducts(), getBakeryItems()]);
+  const [products, bakeryItems, user] = await Promise.all([
+    getFeaturedProducts(),
+    getBakeryItems(),
+    getAuthProvider().getCurrentUser(),
+  ]);
 
   const navItems = buildNavItems(
     products.slice(0, 2).map((product) => ({
@@ -17,7 +22,7 @@ const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => 
 
   return (
     <>
-      <Header navItems={navItems} />
+      <Header navItems={navItems} role={user?.role ?? null} />
       {children}
       <CartDrawer />
     </>

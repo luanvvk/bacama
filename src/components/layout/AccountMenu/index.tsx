@@ -4,6 +4,7 @@ import { LogIn, LogOut, UserRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { ACCOUNT_MENU_ITEMS, STAFF_MENU_ITEMS } from '@/constants/account-menu';
+import type { Role } from '@/lib/providers/auth/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 import {
@@ -15,11 +16,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu';
 
-export const AccountMenu = () => {
+export interface AccountMenuProps {
+  role?: Role | null;
+}
+
+export const AccountMenu = ({ role = null }: AccountMenuProps) => {
   const t = useTranslations('AccountMenu');
   const { signOut } = useClerk();
   const { isLoaded, user } = useUser();
   const accountName = user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? 'Account';
+  const isStaff = role != null && role !== 'customer';
 
   if (!isLoaded) {
     return (
@@ -92,15 +98,19 @@ export const AccountMenu = () => {
                 </Link>
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>{t('staffAccess')}</DropdownMenuLabel>
-            {STAFF_MENU_ITEMS.map(({ labelKey, icon: Icon, href }) => (
-              <DropdownMenuItem key={href} asChild>
-                <Link href={href}>
-                  <Icon /> {t(labelKey)}
-                </Link>
-              </DropdownMenuItem>
-            ))}
+            {isStaff && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>{t('staffAccess')}</DropdownMenuLabel>
+                {STAFF_MENU_ITEMS.map(({ labelKey, icon: Icon, href }) => (
+                  <DropdownMenuItem key={href} asChild>
+                    <Link href={href}>
+                      <Icon /> {t(labelKey)}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => void signOut({ redirectUrl: '/' })}>
               <LogOut /> {t('logOut')}
