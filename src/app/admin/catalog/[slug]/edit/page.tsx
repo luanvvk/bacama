@@ -3,12 +3,14 @@ import { notFound } from 'next/navigation';
 import { ProductEditor } from '@/components/admin/ProductEditor';
 import { Badge } from '@/components/ui/Badge';
 import { getProductBySlug } from '@/constants/products';
+import { requireRoles } from '@/lib/auth/guards';
 
 interface AdminProductEditPageProps {
   params: Promise<{ slug: string }>;
 }
 
 const AdminProductEditPage = async ({ params }: AdminProductEditPageProps) => {
+  await requireRoles(['staff', 'admin']);
   const { slug } = await params;
   const product = getProductBySlug(slug);
 
