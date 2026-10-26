@@ -27,3 +27,8 @@ design/
 .vscode/
 .idea/
 *.log
+
+# Planning docs and a vendored skill template (not app code; one has invalid HTML)
+coffee-plan.html
+coffee-shop-ui.html
+.claude/skills/improve-animations/PLAN-TEMPLATE.md
