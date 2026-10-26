@@ -22,28 +22,7 @@ import { COURSES } from '@/constants/courses';
 import { toast } from '@/lib/toast';
 import { formatVnd } from '@/lib/format-price';
 
-type DirectoryKind = 'announcements' | 'sites' | 'courses' | 'staff' | 'students';
-
-const ANNOUNCEMENTS = [
-  [
-    'New batch: Đà Lạt Washed',
-    'Out this morning, 10% off 1 kg bags until Sunday.',
-    'Live',
-    'All sites · until 17 Aug',
-  ],
-  [
-    'Site 03 opens in September',
-    'An Thuận — a roastery, classroom and garden.',
-    'Scheduled',
-    'Starts 1 Sep · all sites',
-  ],
-  [
-    'Viennoiserie · 3 seats left',
-    '21–22 Sep in Hội An · French butter.',
-    'Draft',
-    'Site 02 · unscheduled',
-  ],
-];
+type DirectoryKind = 'sites' | 'courses' | 'staff' | 'students';
 
 const STAFF = [
   ['CH', 'Cô Hằng', 'hang@bacama.vn', 'Admin', 'All sites', 'Online now', 'Active'],
@@ -64,12 +43,6 @@ const SCREEN_COPY: Record<
   DirectoryKind,
   { title: string; eyebrow: string; description: string; action: string }
 > = {
-  announcements: {
-    title: 'Announcements',
-    eyebrow: '2 live · 1 scheduled · 1 draft',
-    description: 'Short notices on the home page, per site or across all sites.',
-    action: 'New announcement',
-  },
   sites: {
     title: 'Sites',
     eyebrow: '3 cafés · 2 open · 1 opens Sep',
@@ -186,25 +159,6 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
                 className="pl-9"
               />
             </div>
-            {kind === 'announcements' && (
-              <div className="space-y-1">
-                {ANNOUNCEMENTS.filter((item) => matches(item.join(' '))).map(
-                  ([title, description, status, meta]) => (
-                    <div key={title} className="border-b py-4 last:border-0">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="font-medium">{title}</p>
-                        <Badge variant={statusVariant(status)}>{status}</Badge>
-                      </div>
-                      <p className="text-muted-foreground mt-1 text-sm">{description}</p>
-                      <p className="text-muted-foreground mt-2 font-mono text-xs">{meta}</p>
-                      <Button size="sm" variant="link" className="mt-2 px-0" onClick={action}>
-                        Edit
-                      </Button>
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
             {kind === 'courses' && (
               <Table>
                 <TableHeader>

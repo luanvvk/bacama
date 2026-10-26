@@ -191,25 +191,3 @@ export const LOW_STOCK_ALERT = {
   title: 'Sơn La Natural is running low',
   detail: '6 × 250 g left at Site 01. Roasted 09 Aug (4 days ago).',
 };
-
-export interface AdminAnnouncement {
-  title: string;
-  description: string;
-  status: 'Live' | 'Scheduled';
-  meta: string;
-}
-
-export const ADMIN_ANNOUNCEMENTS: AdminAnnouncement[] = [
-  {
-    title: 'New batch: Đà Lạt Washed',
-    description: 'Out this morning, 10% off 1 kg bags until Sunday.',
-    status: 'Live',
-    meta: 'All sites · until 17 Aug',
-  },
-  {
-    title: 'Site 03 opens in September',
-    description: 'An Thuận — roastery, classroom and garden.',
-    status: 'Scheduled',
-    meta: 'Starts 1 Sep',
-  },
-];
