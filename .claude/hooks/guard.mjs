@@ -57,13 +57,30 @@ function checkMerge(c, cwd, prInfo) {
   return null;
 }
 
-export function check(command, cwd = process.cwd(), prInfo = ghPrInfo) {
-  const c = command.replace(/\s+/g, ' ');
+// Remove text that only describes things (heredoc bodies, commit/PR messages)
+// so words like "dev" or "merge" inside them don't look like commands.
+function stripProse(command) {
+  return command
+    .replace(/<<-?\s*(['"]?)(\w+)\1[\s\S]*?\n\s*\2\b/g, ' ')
+    .replace(/(-m|--message|-b|--body|--title|--notes)(\s+|=)("[^"]*"|'[^']*')/g, '$1 ""');
+}
 
+// Judge each command of a chain on its own: `a && b` is two commands.
+export function check(command, cwd = process.cwd(), prInfo = ghPrInfo) {
+  let softest = null;
+  for (const segment of stripProse(command).split(/&&|\|\||;|\||\n/)) {
+    const result = checkCommand(segment.replace(/\s+/g, ' ').trim(), cwd, prInfo);
+    if (result?.decision === 'deny') return result;
+    softest ??= result;
+  }
+  return softest;
+}
+
+function checkCommand(c, cwd, prInfo) {
   if (/\bgit\b.*\bpush\b/.test(c)) {
     if (/(\s-f\b|--force\b|--force-with-lease)/.test(c)) return deny('Force-push is blocked.');
     const targetsProtected = PROTECTED.some((b) =>
-      new RegExp(`(\\s|:|/)${b}(\\s|$)`).test(c.replace(/^.*\bpush\b/, '')),
+      new RegExp(`(\\s|:|/|["'])${b}(["']|\\s|$)`).test(c.replace(/^.*\bpush\b/, '')),
     );
     if (targetsProtected)
       return deny('Pushing to main/staging/dev is blocked. Push a feature branch and open a PR.');
