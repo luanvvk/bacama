@@ -33,13 +33,18 @@ describe('updateProduct', () => {
     expect(data.featuredUntil).toBeNull();
   });
 
-  it.each([{ priceVnd: -1 }, { stock: -5 }, { reorderLevel: 1.5 }, {}, { nameEn: 'x' }])(
-    'rejects invalid input %p without touching the database',
-    async (input) => {
-      await expect(updateProduct('p1', input as never)).rejects.toThrow();
-      expect(mockUpdate).not.toHaveBeenCalled();
-    },
-  );
+  it.each([
+    { priceVnd: -1 },
+    { stock: -5 },
+    { reorderLevel: 1.5 },
+    { stock: 2 ** 31 },
+    { roastDate: '2026-02-30' },
+    {},
+    { nameEn: 'x' },
+  ])('rejects invalid input %p without touching the database', async (input) => {
+    await expect(updateProduct('p1', input as never)).rejects.toThrow();
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
 
   it('returns null when the product does not exist', async () => {
     mockUpdate.mockRejectedValue({ code: 'P2025' });

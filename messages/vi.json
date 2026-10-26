@@ -708,42 +708,15 @@
     "onThisPage": "Trong trang này",
     "updatedDate": "Cập nhật · 16 tháng 8, 2026",
     "sections": [
-      {
-        "id": "what-are-cookies",
-        "title": "Cookie là gì"
-      },
-      {
-        "id": "types-we-use",
-        "title": "Các loại cookie chúng tôi sử dụng"
-      },
-      {
-        "id": "essential",
-        "title": "Cookie thiết yếu"
-      },
-      {
-        "id": "preferences",
-        "title": "Cookie tuỳ chọn"
-      },
-      {
-        "id": "analytics",
-        "title": "Cookie phân tích"
-      },
-      {
-        "id": "third-party",
-        "title": "Cookie của bên thứ ba"
-      },
-      {
-        "id": "cookie-table",
-        "title": "Các cookie chúng tôi thiết lập"
-      },
-      {
-        "id": "manage",
-        "title": "Cách quản lý cookie"
-      },
-      {
-        "id": "contact",
-        "title": "Liên hệ"
-      }
+      { "id": "what-are-cookies", "title": "Cookie là gì" },
+      { "id": "types-we-use", "title": "Các loại cookie chúng tôi sử dụng" },
+      { "id": "essential", "title": "Cookie thiết yếu" },
+      { "id": "preferences", "title": "Cookie tuỳ chọn" },
+      { "id": "analytics", "title": "Cookie phân tích" },
+      { "id": "third-party", "title": "Cookie của bên thứ ba" },
+      { "id": "cookie-table", "title": "Các cookie chúng tôi thiết lập" },
+      { "id": "manage", "title": "Cách quản lý cookie" },
+      { "id": "contact", "title": "Liên hệ" }
     ],
     "whatAreCookiesTitle": "Cookie và các công nghệ tương tự là gì",
     "whatAreCookiesBody": "Cookie là các tệp văn bản nhỏ được đặt trên thiết bị của bạn khi bạn truy cập một trang web. Chúng giúp trang web ghi nhớ một số thông tin — những gì có trong giỏ hàng của bạn, bạn đã thấy một thông báo trước đó hay chưa, hoặc bạn đã biết đến chúng tôi qua đâu. Chúng tôi cũng sử dụng bộ nhớ trình duyệt (local storage và session storage) cho các mục đích tương tự; nó hoạt động như cookie nhưng có thể lưu trữ nhiều thông tin hơn một chút mà không cần gửi kèm mỗi yêu cầu.",

@@ -63,6 +63,7 @@ describe('PATCH /api/admin/products/[id]', () => {
 
   it('returns 400 for unknown keys, negatives, empty and malformed bodies', async () => {
     expect((await patch({ nameEn: 'Hacked' })).status).toBe(400);
+    expect((await patch({ stock: 1, nameEn: 'Hacked' })).status).toBe(400);
     expect((await patch({ priceVnd: -1 })).status).toBe(400);
     expect((await patch({})).status).toBe(400);
     expect((await patch('not json')).status).toBe(400);

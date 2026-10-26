@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
-import { endOfHcmDay, startOfHcmDay } from '@/lib/hcm-date';
+import { endOfHcmDay, startOfHcmDay, toHcmDateString } from '@/lib/hcm-date';
 import { prisma } from '@/lib/prisma';
 
 const calendarDate = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/)
-  .refine((value) => !Number.isNaN(startOfHcmDay(value).getTime()));
+  .refine((value) => toHcmDateString(startOfHcmDay(value)) === value);
 
-const nonNegativeInt = z.number().int().min(0);
+const nonNegativeInt = z.number().int().min(0).max(2_147_483_647);
 
 export const updateProductSchema = z
   .strictObject({
