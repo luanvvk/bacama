@@ -14,7 +14,8 @@
       "Bash(pnpm format*)",
       "Bash(npx tsc *)",
       "Bash(npx eslint *)",
-      "Bash(npx prettier *)"
+      "Bash(npx prettier *)",
+      "Bash(gh pr merge*)"
     ],
     "deny": [
       "Read(./.env*)",
@@ -25,6 +26,16 @@
     ]
   },
   "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/usage-report.mjs\""
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash|PowerShell",
