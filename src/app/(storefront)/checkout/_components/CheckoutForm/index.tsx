@@ -96,53 +96,48 @@ export const CheckoutForm = () => {
       values;
     const shipping = { fullName, phone, email, address, province, deliveryOption, note };
 
-    // COD needs no payment gateway, so it's the one method that can persist a
-    // real order today — everything else still runs the simulated /pay flow
-    // until real payment adapters exist (task 2.6).
-    if (getPaymentMethod(paymentMethod).kind === 'cod') {
-      const response = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: items.map((item) => ({
-            id: item.productId ?? item.id,
-            kind: item.kind,
-            quantity: item.quantity,
-            weight: item.weight,
-            grind: item.grind,
-          })),
-          customerName: fullName,
-          phone,
-          email,
-          note,
-          paymentMethod,
-          deliveryOption,
-          address,
-          province,
-          locale,
-        }),
-      });
-
-      if (!response.ok) {
-        toast(t('orderFailed'));
-        return;
-      }
-
-      const { ref } = (await response.json()) as { id: string; ref: string };
-      placeOrder({
-        items,
-        subtotalVnd,
-        totalVnd: subtotalVnd,
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: items.map((item) => ({
+          id: item.productId ?? item.id,
+          kind: item.kind,
+          quantity: item.quantity,
+          weight: item.weight,
+          grind: item.grind,
+        })),
+        customerName: fullName,
+        phone,
+        email,
+        note,
         paymentMethod,
-        shipping,
-        orderRef: ref,
-      });
-      router.push(`/checkout/done?ref=${ref}`);
+        deliveryOption,
+        address,
+        province,
+        locale,
+      }),
+    });
+
+    if (!response.ok) {
+      toast(t('orderFailed'));
       return;
     }
 
-    placeOrder({ items, subtotalVnd, totalVnd: subtotalVnd, paymentMethod, shipping });
-    router.push('/checkout/pay');
+    const { ref } = (await response.json()) as { id: string; ref: string };
+    placeOrder({
+      items,
+      subtotalVnd,
+      totalVnd: subtotalVnd,
+      paymentMethod,
+      shipping,
+      orderRef: ref,
+    });
+    router.push(
+      getPaymentMethod(paymentMethod).kind === 'cod'
+        ? `/checkout/done?ref=${ref}`
+        : `/checkout/pay?ref=${ref}`,
+    );
   };
 
   return (

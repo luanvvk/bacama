@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, render, screen } from '@testing-library/react';
 
 import { PaymentProcessing } from '../index';
 import { useCheckoutStore } from '@/stores/checkout';
@@ -35,6 +34,9 @@ const MESSAGES: Record<string, Record<string, string>> = {
     changePaymentMethod: '← Change payment method',
     contactLabel: 'Contact',
     shipToLabel: 'Ship to',
+    paymentFailed: 'The payment failed.',
+    stillProcessing: 'Not confirmed yet. Order {ref} is saved.',
+    trackOrder: 'Check order status',
   },
   'PaymentMethod.zalopay': { label: 'ZaloPay' },
   'PaymentMethod.bank': { label: 'Bank transfer' },
@@ -81,10 +83,25 @@ const ORDER = {
   },
 };
 
+const mockFetch = jest.fn();
+global.fetch = mockFetch as unknown as typeof fetch;
+
+const respondWith = (status: string) =>
+  mockFetch.mockResolvedValue({ ok: true, json: () => Promise.resolve({ status }) });
+
+const advance = (ms: number) => act(() => jest.advanceTimersByTimeAsync(ms));
+
 beforeEach(() => {
   push.mockClear();
   replace.mockClear();
+  mockFetch.mockReset();
+  respondWith('pending');
+  jest.useFakeTimers();
   useCheckoutStore.setState({ order: null });
+});
+
+afterEach(() => {
+  jest.useRealTimers();
 });
 
 describe('PaymentProcessing', () => {
@@ -94,28 +111,72 @@ describe('PaymentProcessing', () => {
     expect(replace).toHaveBeenCalledWith('/checkout');
   });
 
-  it('auto-advances to done for a QR wallet method', () => {
-    jest.useFakeTimers();
+  it('keeps waiting while pending, then navigates to done once paid', async () => {
     useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
 
-    render(<PaymentProcessing />);
+    render(<PaymentProcessing orderRef="BCM-2419" />);
     expect(screen.getByText('Waiting for ZaloPay to confirm…')).toBeInTheDocument();
 
-    jest.runAllTimers();
-    expect(push).toHaveBeenCalledWith('/checkout/done');
-
-    jest.useRealTimers();
-  });
-
-  it('shows bank details and waits for manual confirmation', async () => {
-    const user = userEvent.setup();
-    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'bank' } });
-
-    render(<PaymentProcessing />);
-    expect(screen.getByText('BACAMA COFFEE')).toBeInTheDocument();
+    await advance(3000);
+    expect(mockFetch).toHaveBeenCalledWith('/api/orders/BCM-2419/status');
     expect(push).not.toHaveBeenCalled();
 
-    await user.click(screen.getByRole('button', { name: /made the transfer/ }));
-    expect(push).toHaveBeenCalledWith('/checkout/done');
+    respondWith('paid');
+    await advance(3000);
+    expect(push).toHaveBeenCalledWith('/checkout/done?ref=BCM-2419');
+  });
+
+  it('shows an honest still-processing message after 30s and never navigates', async () => {
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
+
+    render(<PaymentProcessing orderRef="BCM-2419" />);
+    await advance(30000);
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Not confirmed yet. Order BCM-2419 is saved.',
+    );
+    expect(screen.getByRole('link', { name: 'Check order status' })).toHaveAttribute(
+      'href',
+      '/orders/BCM-2419',
+    );
+
+    const calls = mockFetch.mock.calls.length;
+    await advance(9000);
+    expect(mockFetch).toHaveBeenCalledTimes(calls);
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it('shows the failure state when the order failed', async () => {
+    respondWith('failed');
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
+
+    render(<PaymentProcessing orderRef="BCM-2419" />);
+    await advance(3000);
+
+    expect(screen.getByRole('alert')).toHaveTextContent('The payment failed.');
+    expect(screen.getByRole('link', { name: '← Change payment method' })).toBeInTheDocument();
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it('stops polling on unmount', async () => {
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
+
+    const { unmount } = render(<PaymentProcessing orderRef="BCM-2419" />);
+    await advance(3000);
+    const calls = mockFetch.mock.calls.length;
+
+    unmount();
+    await advance(9000);
+    expect(mockFetch).toHaveBeenCalledTimes(calls);
+  });
+
+  it('shows bank details; the transfer button goes to order tracking, not done', () => {
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'bank' } });
+
+    render(<PaymentProcessing orderRef="BCM-2419" />);
+    expect(screen.getByText('BACAMA COFFEE')).toBeInTheDocument();
+
+    act(() => screen.getByRole('button', { name: /made the transfer/ }).click());
+    expect(push).toHaveBeenCalledWith('/orders/BCM-2419');
   });
 });
