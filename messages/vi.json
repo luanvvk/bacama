@@ -231,7 +231,14 @@
     "enrol": "Đăng ký học",
     "bookSeat": "Đặt chỗ",
     "loginToEnrol": "Đăng nhập để đăng ký",
-    "enrolNotReady": "Chức năng đăng ký chưa được kích hoạt."
+    "chooseSession": "Chọn buổi học",
+    "sessionFull": "Hết chỗ",
+    "seatHeld": "Chỗ của bạn được giữ đến {time}.",
+    "enrolled": "Bạn đã đăng ký khóa học.",
+    "enrolPending": "Đăng ký của bạn đã được lưu.",
+    "alreadyEnrolled": "Bạn đã đăng ký khóa học này rồi.",
+    "sessionJustFilled": "Buổi học này vừa hết chỗ — vui lòng chọn buổi khác.",
+    "enrolFailed": "Chưa thể đăng ký. Vui lòng thử lại."
   },
   "Learn": {
     "breadcrumbHome": "Trang chủ",
