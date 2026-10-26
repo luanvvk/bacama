@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 
+import { getAuthProvider } from '@/lib/providers/auth';
 import { createOrder, OrderValidationError } from '@/services/orders/create-order';
 
 const orderItemSchema = z.object({
@@ -32,8 +33,10 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ message: 'Invalid order payload.' }, { status: 400 });
   }
 
+  const userId = (await getAuthProvider().getCurrentUser())?.id ?? null;
+
   try {
-    const order = await createOrder(parsed.data);
+    const order = await createOrder({ ...parsed.data, userId });
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
     if (error instanceof OrderValidationError) {

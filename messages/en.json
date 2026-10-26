@@ -287,14 +287,19 @@
     "title": "Welcome back, {name}.",
     "description": "Your courses, progress, and certificates will live here as the learning area comes online.",
     "browseCourses": "Browse courses",
-    "viewOrders": "View orders"
+    "viewOrders": "View orders",
+    "orderCount": "Orders",
+    "activeEnrollmentCount": "Active courses"
   },
   "Account": {
     "eyebrow": "Your orders · signed in",
     "title": "Your orders.",
-    "description": "Order history for {name} will appear here once the account data service is connected.",
+    "description": "Your recent orders, newest first.",
     "shop": "Continue shopping",
-    "profile": "My profile"
+    "profile": "My profile",
+    "breadcrumbHome": "Home",
+    "breadcrumbOrders": "My orders",
+    "empty": "You haven't placed any orders yet."
   },
   "Checkout": {
     "paymentHeading": "How would you like to pay?",
@@ -685,15 +690,42 @@
     "onThisPage": "On this page",
     "updatedDate": "Updated · 16 August 2026",
     "sections": [
-      { "id": "what-are-cookies", "title": "What are cookies" },
-      { "id": "types-we-use", "title": "Types of cookies we use" },
-      { "id": "essential", "title": "Essential cookies" },
-      { "id": "preferences", "title": "Preference cookies" },
-      { "id": "analytics", "title": "Analytics cookies" },
-      { "id": "third-party", "title": "Third-party cookies" },
-      { "id": "cookie-table", "title": "Cookies we set" },
-      { "id": "manage", "title": "How to manage cookies" },
-      { "id": "contact", "title": "Contact" }
+      {
+        "id": "what-are-cookies",
+        "title": "What are cookies"
+      },
+      {
+        "id": "types-we-use",
+        "title": "Types of cookies we use"
+      },
+      {
+        "id": "essential",
+        "title": "Essential cookies"
+      },
+      {
+        "id": "preferences",
+        "title": "Preference cookies"
+      },
+      {
+        "id": "analytics",
+        "title": "Analytics cookies"
+      },
+      {
+        "id": "third-party",
+        "title": "Third-party cookies"
+      },
+      {
+        "id": "cookie-table",
+        "title": "Cookies we set"
+      },
+      {
+        "id": "manage",
+        "title": "How to manage cookies"
+      },
+      {
+        "id": "contact",
+        "title": "Contact"
+      }
     ],
     "whatAreCookiesTitle": "What are cookies and similar technologies",
     "whatAreCookiesBody": "Cookies are small text files placed on your device when you visit a website. They let the site remember things — what is in your cart, whether you have seen a message before, or how you found us. We also use browser storage (local storage and session storage) for similar purposes; it works like a cookie but can hold slightly more information without being sent with every request.",
@@ -1112,5 +1144,15 @@
     "subscribe": "Subscribe",
     "emailValidation": "Enter a valid email address.",
     "successToast": "You are on the list. Newsletter delivery will be connected soon."
+  },
+  "OrderStatus": {
+    "pending": "Pending",
+    "awaiting_cod": "Pay on delivery",
+    "paid": "Paid",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "completed": "Completed",
+    "failed": "Failed",
+    "refunded": "Refunded"
   }
 }

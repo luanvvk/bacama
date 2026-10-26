@@ -11,11 +11,14 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/Breadcrumb';
 import { requireUser } from '@/lib/auth/guards';
+import { getOrdersForUser } from '@/services/orders/get-orders-for-user';
+import { OrdersList } from './_components/OrdersList';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 const AccountPage = async () => {
   const [user, t] = await Promise.all([requireUser(), getTranslations('Account')]);
+  const orders = await getOrdersForUser(user.id);
 
   return (
     <>
@@ -24,11 +27,11 @@ const AccountPage = async () => {
           <Breadcrumb className="pt-6">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t('breadcrumbHome')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>My orders</BreadcrumbPage>
+                <BreadcrumbPage>{t('breadcrumbOrders')}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -41,6 +44,7 @@ const AccountPage = async () => {
             <Text variant="lead" className="text-muted-foreground mt-4">
               {t('description', { name: user.name })}
             </Text>
+            <OrdersList orders={orders} />
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
                 <Link href="/shop">{t('shop')}</Link>
