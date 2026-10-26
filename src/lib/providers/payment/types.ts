@@ -17,6 +17,16 @@ export type PaymentWebhookStatus = 'paid' | 'failed' | 'pending';
 export interface PaymentWebhookResult {
   providerRef: string;
   status: PaymentWebhookStatus;
+  /** Compared with the stored order total; never persisted from the payload. */
+  amountVnd?: number;
+}
+
+/** Thrown by an adapter's parseWebhook when the signature does not verify. */
+export class InvalidWebhookSignatureError extends Error {
+  constructor() {
+    super('Invalid webhook signature');
+    this.name = 'InvalidWebhookSignatureError';
+  }
 }
 
 export interface PaymentProvider {
