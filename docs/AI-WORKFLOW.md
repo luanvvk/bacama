@@ -83,8 +83,10 @@ Each cycle: fresh worktree from `origin/dev`, one `claude -p` session on one
 ticket, logs in `..\bacama-wt\_logs`. It makes no model call when nothing is
 `ai-ready`, refuses an env file whose database user isn't `agents`, refuses a
 worktree without the guard hook, and stops after two failed cycles in a row
-or when the budget is spent. Keep payment/auth tickets (`security-gate`) as
-supervised runs: start `claude` yourself and run `/ship`.
+or when the budget is spent. Payment/auth tickets (`security-gate`) run too,
+with `reviewer` and `route-handler-auditor` both required to PASS and a
+Security Gate section in the PR. BUILD-PLAN section 8 still expects the owner
+to review those areas; the loop only flags them.
 
 ## Review focus (human)
 
