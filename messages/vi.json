@@ -283,14 +283,29 @@
     "title": "Chào mừng trở lại, {name}.",
     "description": "Các khóa học, tiến độ và chứng chỉ của bạn sẽ hiển thị tại đây khi khu vực học tập được hoàn thiện.",
     "browseCourses": "Xem khóa học",
-    "viewOrders": "Xem đơn hàng"
+    "viewOrders": "Xem đơn hàng",
+    "orderCount": "Đơn hàng",
+    "activeEnrollmentCount": "Khóa học đang học"
   },
   "Account": {
     "eyebrow": "Đơn hàng của bạn · đã đăng nhập",
     "title": "Đơn hàng của bạn.",
-    "description": "Lịch sử đơn hàng của {name} sẽ hiển thị tại đây khi dịch vụ dữ liệu tài khoản được kết nối.",
+    "description": "Các đơn hàng gần đây của bạn, mới nhất trước.",
     "shop": "Tiếp tục mua sắm",
-    "profile": "Hồ sơ của tôi"
+    "profile": "Hồ sơ của tôi",
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbOrders": "Đơn hàng của tôi",
+    "empty": "Bạn chưa đặt đơn hàng nào."
+  },
+  "OrderStatus": {
+    "pending": "Chờ xử lý",
+    "awaiting_cod": "Thanh toán khi nhận hàng",
+    "paid": "Đã thanh toán",
+    "shipped": "Đang giao",
+    "delivered": "Đã giao",
+    "completed": "Hoàn tất",
+    "failed": "Thất bại",
+    "refunded": "Đã hoàn tiền"
   },
   "Checkout": {
     "paymentHeading": "Bạn muốn thanh toán thế nào?",
