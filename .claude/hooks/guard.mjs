@@ -17,7 +17,7 @@ function currentBranch(cwd) {
 }
 
 function ghPrInfo(args, cwd) {
-  const out = execSync(`gh pr view ${args} --json baseRefName,statusCheckRollup`, {
+  const out = execSync(`gh pr view ${args} --json baseRefName,mergeStateStatus,statusCheckRollup`, {
     cwd,
     encoding: 'utf8',
   });
@@ -28,7 +28,11 @@ function ghPrInfo(args, cwd) {
 // staging stay human-only (docs/AI-WORKFLOW.md, "Autonomous loop").
 function checkMerge(c, cwd, prInfo) {
   if (/--admin\b/.test(c)) return deny('Admin merge is blocked.');
-  const args = c.replace(/^.*\bgh pr merge\b/, '').trim().split(' ').filter((a) => a && !a.startsWith('-'));
+  const args = c
+    .replace(/^.*\bgh pr merge\b/, '')
+    .trim()
+    .split(' ')
+    .filter((a) => a && !a.startsWith('-'));
   const target = args[0] ?? '';
   let info;
   try {
@@ -37,11 +41,19 @@ function checkMerge(c, cwd, prInfo) {
     return deny('Could not read the PR from GitHub; merge blocked. Pass an explicit PR number.');
   }
   if (info.baseRefName !== 'dev') {
-    return deny(`Merging into ${info.baseRefName} is a human gate. Only PRs into dev may be agent-merged.`);
+    return deny(
+      `Merging into ${info.baseRefName} is a human gate. Only PRs into dev may be agent-merged.`,
+    );
   }
-  const checks = info.statusCheckRollup ?? [];
-  const green = checks.length > 0 && checks.every((k) => ['SUCCESS', 'SKIPPED', 'NEUTRAL'].includes(k.conclusion));
+  // GitHub Actions jobs are CheckRuns and must all be green. Deployment
+  // statuses (Vercel previews) are StatusContexts and don't gate a merge.
+  const runs = (info.statusCheckRollup ?? []).filter((k) => k.__typename !== 'StatusContext');
+  const green =
+    runs.length > 0 && runs.every((k) => ['SUCCESS', 'SKIPPED', 'NEUTRAL'].includes(k.conclusion));
   if (!green) return deny('CI checks are not all green yet; merge blocked.');
+  if (['BLOCKED', 'DIRTY', 'BEHIND'].includes(info.mergeStateStatus)) {
+    return deny(`GitHub reports the PR as ${info.mergeStateStatus}; merge blocked.`);
+  }
   return null;
 }
 
