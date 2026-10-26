@@ -15,6 +15,7 @@ const config = {
     '/.next/',
     '<rootDir>/design/',
     '<rootDir>/tests/e2e/',
+    '/__tests__/fake-provider\\.ts$',
   ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
