@@ -1135,5 +1135,42 @@
     "subscribe": "Đăng ký",
     "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
     "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
+  },
+  "Admin": {
+    "bakery": {
+      "title": "Bánh",
+      "description": "Các món bánh hiển thị trên cửa hàng, theo từng cơ sở.",
+      "new": "+ Món mới",
+      "createTitle": "Món bánh mới",
+      "editTitle": "Sửa món bánh",
+      "create": "Tạo",
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy",
+      "site": "Cơ sở",
+      "nameVi": "Tên (tiếng Việt)",
+      "nameEn": "Tên (tiếng Anh)",
+      "descriptionVi": "Mô tả (tiếng Việt)",
+      "descriptionEn": "Mô tả (tiếng Anh)",
+      "price": "Giá (VND)",
+      "bakesAt": "Giờ nướng",
+      "sellOutBy": "Hết hàng lúc",
+      "handoff": "Hình thức nhận",
+      "handoff_pickup": "Nhận tại quán",
+      "handoff_grabfood": "GrabFood",
+      "handoff_courier": "Giao hàng",
+      "handoffUrl": "Liên kết nhận hàng (tùy chọn)",
+      "active": "Đang bán",
+      "colItem": "Món",
+      "colStatus": "Trạng thái",
+      "colActions": "Thao tác",
+      "statusActive": "Đang bán",
+      "statusInactive": "Ngừng bán",
+      "edit": "Sửa",
+      "deactivate": "Ngừng bán",
+      "empty": "Chưa có món bánh nào.",
+      "saved": "Đã lưu món bánh.",
+      "deactivated": "Đã ngừng bán món bánh.",
+      "saveFailed": "Không thể lưu món bánh."
+    }
   }
 }

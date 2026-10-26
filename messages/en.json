@@ -1139,5 +1139,42 @@
     "subscribe": "Subscribe",
     "emailValidation": "Enter a valid email address.",
     "successToast": "You are on the list. Newsletter delivery will be connected soon."
+  },
+  "Admin": {
+    "bakery": {
+      "title": "Bakery",
+      "description": "Bakery items shown in the shop, per site.",
+      "new": "+ New bake",
+      "createTitle": "New bakery item",
+      "editTitle": "Edit bakery item",
+      "create": "Create",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "site": "Site",
+      "nameVi": "Name (Vietnamese)",
+      "nameEn": "Name (English)",
+      "descriptionVi": "Description (Vietnamese)",
+      "descriptionEn": "Description (English)",
+      "price": "Price (VND)",
+      "bakesAt": "Bakes at",
+      "sellOutBy": "Sells out by",
+      "handoff": "Handoff",
+      "handoff_pickup": "Pickup",
+      "handoff_grabfood": "GrabFood",
+      "handoff_courier": "Courier",
+      "handoffUrl": "Handoff link (optional)",
+      "active": "Active",
+      "colItem": "Item",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "empty": "No bakery items yet.",
+      "saved": "Bakery item saved.",
+      "deactivated": "Bakery item deactivated.",
+      "saveFailed": "Could not save the bakery item."
+    }
   }
 }
