@@ -70,6 +70,15 @@ node .claude/scripts/agent-loop.mjs --env-file D:\bacama-wt\agents.env --dry-run
 node .claude/scripts/agent-loop.mjs --env-file D:\bacama-wt\agents.env --cycles 3 --cycle-budget 5 --total-budget 15
 ```
 
+After a PR merges, the cycle waits for the Vercel deployment of that commit,
+runs `tests/e2e` against it (`playwright.remote.config.ts`) and drives the
+changed flow in a browser, then files tickets for what it finds: confirmed
+bugs as `bug` + `ai-ready` (capped at 3 per cycle and 5 open at once),
+improvements as `proposed` for you to approve. Previews are behind Vercel's
+login wall, so put `VERCEL_BYPASS_TOKEN=<token>` (Project > Settings >
+Deployment Protection > Protection Bypass for Automation) in the agents env
+file. Without it the cycle skips deployment testing instead of filing bugs.
+
 Each cycle: fresh worktree from `origin/dev`, one `claude -p` session on one
 ticket, logs in `..\bacama-wt\_logs`. It makes no model call when nothing is
 `ai-ready`, refuses an env file whose database user isn't `agents`, refuses a
