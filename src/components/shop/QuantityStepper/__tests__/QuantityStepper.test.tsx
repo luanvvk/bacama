@@ -3,6 +3,15 @@ import userEvent from '@testing-library/user-event';
 
 import { QuantityStepper } from '../index';
 
+const MESSAGES: Record<string, string> = {
+  decrease: 'Decrease quantity',
+  increase: 'Increase quantity',
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
+
 describe('QuantityStepper', () => {
   it('calls onChange with an incremented value', async () => {
     const onChange = jest.fn();

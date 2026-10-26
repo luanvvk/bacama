@@ -1139,5 +1139,18 @@
     "subscribe": "Subscribe",
     "emailValidation": "Enter a valid email address.",
     "successToast": "You are on the list. Newsletter delivery will be connected soon."
+  },
+  "QuantityStepper": {
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "SocialAuth": {
+    "continueWithGoogle": "Continue with Google",
+    "googleNotWired": "Google sign-in isn't wired up yet."
+  },
+  "ProfilePage": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProfile": "My profile",
+    "loading": "Loading profile"
   }
 }

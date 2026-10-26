@@ -4,6 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { SocialAuthButton } from '../index';
 import { toast } from '@/lib/toast';
 
+const MESSAGES: Record<string, string> = {
+  continueWithGoogle: 'Continue with Google',
+  googleNotWired: "Google sign-in isn't wired up yet.",
+};
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => MESSAGES[key],
+}));
 jest.mock('@/lib/toast', () => ({ toast: jest.fn() }));
 
 describe('SocialAuthButton', () => {

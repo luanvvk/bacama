@@ -1135,5 +1135,18 @@
     "subscribe": "Đăng ký",
     "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
     "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
+  },
+  "QuantityStepper": {
+    "decrease": "Giảm số lượng",
+    "increase": "Tăng số lượng"
+  },
+  "SocialAuth": {
+    "continueWithGoogle": "Tiếp tục với Google",
+    "googleNotWired": "Đăng nhập bằng Google chưa được kết nối."
+  },
+  "ProfilePage": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbProfile": "Hồ sơ của tôi",
+    "loading": "Đang tải hồ sơ"
   }
 }
