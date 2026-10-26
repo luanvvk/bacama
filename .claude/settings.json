@@ -21,8 +21,7 @@
       "Edit(./.env*)",
       "Write(./.env*)",
       "Bash(git push --force*)",
-      "Bash(git push -f*)",
-      "Bash(gh pr merge*)"
+      "Bash(git push -f*)"
     ]
   },
   "hooks": {

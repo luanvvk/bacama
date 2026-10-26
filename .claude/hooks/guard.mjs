@@ -16,13 +16,73 @@ function currentBranch(cwd) {
   }
 }
 
-export function check(command, cwd = process.cwd()) {
-  const c = command.replace(/\s+/g, ' ');
+function ghPrInfo(args, cwd) {
+  const out = execSync(`gh pr view ${args} --json baseRefName,mergeStateStatus,statusCheckRollup`, {
+    cwd,
+    encoding: 'utf8',
+  });
+  return JSON.parse(out);
+}
 
+// Agents may merge a PR only into dev, with every CI check green. main and
+// staging stay human-only (docs/AI-WORKFLOW.md, "Autonomous loop").
+function checkMerge(c, cwd, prInfo) {
+  if (/--admin\b/.test(c)) return deny('Admin merge is blocked.');
+  const args = c
+    .replace(/^.*\bgh pr merge\b/, '')
+    .trim()
+    .split(' ')
+    .filter((a) => a && !a.startsWith('-'));
+  const target = args[0] ?? '';
+  let info;
+  try {
+    info = prInfo(target, cwd);
+  } catch {
+    return deny('Could not read the PR from GitHub; merge blocked. Pass an explicit PR number.');
+  }
+  if (info.baseRefName !== 'dev') {
+    return deny(
+      `Merging into ${info.baseRefName} is a human gate. Only PRs into dev may be agent-merged.`,
+    );
+  }
+  // GitHub Actions jobs are CheckRuns and must all be green. Deployment
+  // statuses (Vercel previews) are StatusContexts and don't gate a merge.
+const runs = (info.statusCheckRollup ?? []).filter(
+  (k) => k.__typename !== 'StatusContext' && !/^lighthouse/i.test(k.name ?? ''),
+);
+  const green =
+    runs.length > 0 && runs.every((k) => ['SUCCESS', 'SKIPPED', 'NEUTRAL'].includes(k.conclusion));
+  if (!green) return deny('CI checks are not all green yet; merge blocked.');
+  if (['BLOCKED', 'DIRTY', 'BEHIND'].includes(info.mergeStateStatus)) {
+    return deny(`GitHub reports the PR as ${info.mergeStateStatus}; merge blocked.`);
+  }
+  return null;
+}
+
+// Remove text that only describes things (heredoc bodies, commit/PR messages)
+// so words like "dev" or "merge" inside them don't look like commands.
+function stripProse(command) {
+  return command
+    .replace(/<<-?\s*(['"]?)(\w+)\1[\s\S]*?\n\s*\2\b/g, ' ')
+    .replace(/(-m|--message|-b|--body|--title|--notes)(\s+|=)("[^"]*"|'[^']*')/g, '$1 ""');
+}
+
+// Judge each command of a chain on its own: `a && b` is two commands.
+export function check(command, cwd = process.cwd(), prInfo = ghPrInfo) {
+  let softest = null;
+  for (const segment of stripProse(command).split(/&&|\|\||;|\||\n/)) {
+    const result = checkCommand(segment.replace(/\s+/g, ' ').trim(), cwd, prInfo);
+    if (result?.decision === 'deny') return result;
+    softest ??= result;
+  }
+  return softest;
+}
+
+function checkCommand(c, cwd, prInfo) {
   if (/\bgit\b.*\bpush\b/.test(c)) {
     if (/(\s-f\b|--force\b|--force-with-lease)/.test(c)) return deny('Force-push is blocked.');
     const targetsProtected = PROTECTED.some((b) =>
-      new RegExp(`(\\s|:|/)${b}(\\s|$)`).test(c.replace(/^.*\bpush\b/, '')),
+      new RegExp(`(\\s|:|/|["'])${b}(["']|\\s|$)`).test(c.replace(/^.*\bpush\b/, '')),
     );
     if (targetsProtected)
       return deny('Pushing to main/staging/dev is blocked. Push a feature branch and open a PR.');
@@ -34,7 +94,7 @@ export function check(command, cwd = process.cwd()) {
 
   if (/\bgit\b.*--no-verify\b|\bgit commit\b.*\s-n\b/.test(c))
     return deny('Skipping git hooks is blocked.');
-  if (/\bgh pr merge\b/.test(c)) return deny('Merging is a human gate. Ask the user to merge.');
+  if (/\bgh pr merge\b/.test(c)) return checkMerge(c, cwd, prInfo);
   if (/\bprisma migrate (deploy|reset)\b|\bprisma db push\b.*--force-reset/.test(c)) {
     return deny('Destructive Prisma command is blocked.');
   }
