@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Loader2, QrCode } from 'lucide-react';
@@ -14,26 +14,64 @@ import { Heading, Text } from '@/components/ui/Typography';
 
 import { OrderSummary } from '../../../_components/OrderSummary';
 
-const AUTO_CONFIRM_DELAY_MS = 2500;
+const POLL_INTERVAL_MS = 3000;
+const POLL_TIMEOUT_MS = 30000;
 
-export const PaymentProcessing = () => {
+type PollState = 'waiting' | 'paid' | 'failed' | 'timeout';
+
+export interface PaymentProcessingProps {
+  orderRef?: string;
+}
+
+export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingProps) => {
   const t = useTranslations('PaymentProcessing');
   const tPaymentMethod = useTranslations('PaymentMethod');
   const router = useRouter();
   const order = useCheckoutStore((state) => state.order);
+  const [pollState, setPollState] = useState<PollState>('waiting');
+  const orderRef = refFromUrl ?? order?.orderRef;
 
   useEffect(() => {
     if (!order) router.replace('/checkout');
   }, [order, router]);
 
   useEffect(() => {
-    if (!order || order.paymentMethod === 'bank') return undefined;
+    if (!orderRef || pollState !== 'waiting') return undefined;
 
-    const timer = setTimeout(() => router.push('/checkout/done'), AUTO_CONFIRM_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, [order, router]);
+    let stopped = false;
+    const poll = async () => {
+      try {
+        const response = await fetch(`/api/orders/${orderRef}/status`);
+        if (stopped || !response.ok) return;
+        const { status } = (await response.json()) as { status: string };
+        if (stopped) return;
+        if (status === 'paid') {
+          setPollState('paid');
+          router.push(`/checkout/done?ref=${orderRef}`);
+        } else if (status === 'failed') setPollState('failed');
+      } catch {
+        // transient network error: the next tick retries
+      }
+    };
 
-  if (!order) return null;
+    const interval = setInterval(poll, POLL_INTERVAL_MS);
+    return () => {
+      stopped = true;
+      clearInterval(interval);
+    };
+  }, [orderRef, pollState, router]);
+
+  useEffect(() => {
+    if (!orderRef) return undefined;
+
+    const timeout = setTimeout(
+      () => setPollState((state) => (state === 'waiting' ? 'timeout' : state)),
+      POLL_TIMEOUT_MS,
+    );
+    return () => clearTimeout(timeout);
+  }, [orderRef]);
+
+  if (!order || !orderRef) return null;
 
   const method = getPaymentMethod(order.paymentMethod);
   const methodLabel = tPaymentMethod(`${method.value}.label`);
@@ -56,7 +94,7 @@ export const PaymentProcessing = () => {
                 [t('accountNameLabel'), BANK_TRANSFER_DETAILS.accountName],
                 [t('accountNumberLabel'), BANK_TRANSFER_DETAILS.accountNumber],
                 [t('amountLabel'), formatVnd(order.totalVnd)],
-                [t('transferNoteLabel'), order.orderRef],
+                [t('transferNoteLabel'), orderRef],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">{label}</dt>
@@ -68,7 +106,7 @@ export const PaymentProcessing = () => {
               type="button"
               size="lg"
               className="mt-6"
-              onClick={() => router.push('/checkout/done')}
+              onClick={() => router.push(`/orders/${orderRef}`)}
             >
               {t('madeTransfer')}
             </Button>
@@ -92,24 +130,40 @@ export const PaymentProcessing = () => {
                 <p className="text-muted-foreground text-xs">{t('qrPlaceholder')}</p>
                 <p className="font-heading text-2xl font-semibold">{formatVnd(order.totalVnd)}</p>
                 <p className="text-muted-foreground font-mono text-xs">
-                  {t('orderRefLabel', { ref: order.orderRef })}
+                  {t('orderRefLabel', { ref: orderRef })}
                 </p>
               </div>
             )}
 
-            <div
-              className="mt-6 flex items-center gap-3 border-t pt-6"
-              role="status"
-              aria-live="polite"
-            >
-              <Loader2 className="text-primary size-5 animate-spin" aria-hidden="true" />
-              <p className="text-muted-foreground text-sm">
-                {method.kind === 'card'
-                  ? t('cardProcessing')
-                  : t('waitingForConfirm', { method: methodLabel })}
-              </p>
-            </div>
+            {pollState === 'waiting' && (
+              <div
+                className="mt-6 flex items-center gap-3 border-t pt-6"
+                role="status"
+                aria-live="polite"
+              >
+                <Loader2 className="text-primary size-5 animate-spin" aria-hidden="true" />
+                <p className="text-muted-foreground text-sm">
+                  {method.kind === 'card'
+                    ? t('cardProcessing')
+                    : t('waitingForConfirm', { method: methodLabel })}
+                </p>
+              </div>
+            )}
           </>
+        )}
+
+        {pollState === 'failed' && (
+          <p className="text-destructive mt-6 border-t pt-6 text-sm" role="alert">
+            {t('paymentFailed')}
+          </p>
+        )}
+        {pollState === 'timeout' && (
+          <div className="mt-6 border-t pt-6" role="status">
+            <p className="text-sm">{t('stillProcessing', { ref: orderRef })}</p>
+            <Button asChild variant="outline" size="sm" className="mt-3">
+              <Link href={`/orders/${orderRef}`}>{t('trackOrder')}</Link>
+            </Button>
+          </div>
         )}
 
         <Button asChild variant="ghost" size="sm" className="mt-6">

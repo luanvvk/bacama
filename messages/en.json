@@ -341,7 +341,10 @@
     "waitingForConfirm": "Waiting for {method} to confirm…",
     "changePaymentMethod": "← Change payment method",
     "contactLabel": "Contact",
-    "shipToLabel": "Ship to"
+    "shipToLabel": "Ship to",
+    "paymentFailed": "The payment didn't go through. Try again or pick another payment method.",
+    "stillProcessing": "We haven't received confirmation of your payment yet. Your order {ref} is saved — you can check its status at any time.",
+    "trackOrder": "Check order status"
   },
   "OrderConfirmation": {
     "thankYou": "Thank you, {name}.",

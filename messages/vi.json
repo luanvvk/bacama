@@ -337,7 +337,10 @@
     "waitingForConfirm": "Đang chờ {method} xác nhận…",
     "changePaymentMethod": "← Đổi phương thức thanh toán",
     "contactLabel": "Liên hệ",
-    "shipToLabel": "Giao đến"
+    "shipToLabel": "Giao đến",
+    "paymentFailed": "Thanh toán chưa thành công. Hãy thử lại hoặc chọn phương thức thanh toán khác.",
+    "stillProcessing": "Chúng tôi chưa nhận được xác nhận thanh toán. Đơn hàng {ref} đã được lưu — bạn có thể kiểm tra trạng thái bất cứ lúc nào.",
+    "trackOrder": "Xem trạng thái đơn hàng"
   },
   "OrderConfirmation": {
     "thankYou": "Cảm ơn {name}.",

@@ -132,19 +132,24 @@ beforeEach(() => {
 });
 
 describe('CheckoutForm', () => {
-  it('places the order and routes to the pay step for an online method', async () => {
+  it('persists a real order via the API and routes to the pay step for an online method', async () => {
     const user = userEvent.setup();
     render(<CheckoutForm />);
 
     await fillShippingFields(user);
     await user.click(screen.getByRole('button', { name: 'Pay with ZaloPay' }));
 
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/orders',
+      expect.objectContaining({ body: expect.stringContaining('"paymentMethod":"zalopay"') }),
+    );
     expect(useCheckoutStore.getState().order).toMatchObject({
       paymentMethod: 'zalopay',
+      orderRef: 'BCM-ABCD1234',
       subtotalVnd: 280000,
       shipping: { fullName: 'Lê Thị Ngọc', phone: '0905123456', email: 'ngoc@example.com' },
     });
-    expect(push).toHaveBeenCalledWith('/checkout/pay');
+    expect(push).toHaveBeenCalledWith('/checkout/pay?ref=BCM-ABCD1234');
   });
 
   it('persists a real order via the API and routes straight to done for cash on delivery', async () => {
