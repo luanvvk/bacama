@@ -8,13 +8,13 @@ import './globals.css';
 
 const fraunces = Fraunces({
   variable: '--font-heading',
-  subsets: ['latin'],
+  subsets: ['latin', 'vietnamese'],
   axes: ['opsz', 'SOFT', 'WONK'],
 });
 
 const beVietnamPro = Be_Vietnam_Pro({
   variable: '--font-sans',
-  subsets: ['latin'],
+  subsets: ['latin', 'vietnamese'],
   weight: ['400', '500', '600', '700'],
 });
 
