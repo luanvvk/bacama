@@ -58,6 +58,25 @@ claude --remote-control "Bacama <task-name>"
 Each new worktree needs `.env` copied in and `pnpm install`. Run a second dev
 server with `pnpm dev -p 3001`. Review and merge PRs from the phone.
 
+## Running the board loop
+
+Tickets live in GitHub Issues and the Bacama project board. Labels are the
+state: `proposed` → (you approve) `ai-ready` → `agent-working` → closed, with
+`needs-human` and `blocked` as exits. Agents only ever take `ai-ready`.
+
+```powershell
+# keep the agents-branch .env OUTSIDE the repo, e.g. D:\bacama-wt\agents.env
+node .claude/scripts/agent-loop.mjs --env-file D:\bacama-wt\agents.env --dry-run
+node .claude/scripts/agent-loop.mjs --env-file D:\bacama-wt\agents.env --cycles 3 --cycle-budget 5 --total-budget 15
+```
+
+Each cycle: fresh worktree from `origin/dev`, one `claude -p` session on one
+ticket, logs in `..\bacama-wt\_logs`. It makes no model call when nothing is
+`ai-ready`, refuses an env file whose database user isn't `agents`, refuses a
+worktree without the guard hook, and stops after two failed cycles in a row
+or when the budget is spent. Keep payment/auth tickets (`security-gate`) as
+supervised runs: start `claude` yourself and run `/ship`.
+
 ## Review focus (human)
 
 AI reviews first. You read closely where it flags something large, and always
