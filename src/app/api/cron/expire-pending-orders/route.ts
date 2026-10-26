@@ -5,9 +5,9 @@ import { isAuthorizedCronRequest } from '@/lib/sweeps/verify-cron-request';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   if (!isAuthorizedCronRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   return NextResponse.json(await expirePendingOrders());
-}
+};
