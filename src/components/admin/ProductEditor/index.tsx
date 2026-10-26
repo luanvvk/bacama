@@ -1,114 +1,148 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  ControlledCheckbox,
-  ControlledInput,
-  ControlledSelect,
-  ControlledTextarea,
-} from '@/components/form';
+import { ControlledInput } from '@/components/form';
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import type { Product } from '@/constants/products';
 import { toast } from '@/lib/toast';
+import type { AdminProduct } from '@/services/catalog/admin-product';
+import { patchProduct } from '@/services/catalog/patch-product';
+import type { UpdateProductInput } from '@/services/catalog/update-product';
 
-const productSchema = z.object({
-  name: z.string().min(2, 'Enter a product name.'),
-  description: z.string().min(10, 'Add a useful product description.'),
-  origin: z.string().optional(),
-  roastLevel: z.string().optional(),
-  price: z.string().regex(/^\d+$/, 'Enter a whole VND amount.'),
-  stock: z.string().regex(/^\d+$/, 'Enter a whole stock quantity.'),
-  reorderPoint: z.string().regex(/^\d+$/, 'Enter a whole reorder point.'),
-  featured: z.boolean(),
-});
-
-type ProductFormValues = z.infer<typeof productSchema>;
-
-interface ProductEditorProps {
-  product: Product;
-}
-
-export const ProductEditor = ({ product }: ProductEditorProps) => {
-  const { control, handleSubmit } = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-      name: product.name,
-      description: product.description,
-      origin: product.origin ?? '',
-      roastLevel: product.roastLevel ?? '',
-      price: String(product.priceVnd),
-      stock: product.id === 'dalat-washed' ? '42' : '12',
-      reorderPoint: '12',
-      featured: product.id === 'dalat-washed',
-    },
+const buildSchema = (t: (key: string) => string) =>
+  z.object({
+    price: z.string().regex(/^\d+$/, t('wholeVnd')),
+    stock: z.string().regex(/^\d+$/, t('wholeStock')),
+    reorderLevel: z.string().regex(/^\d+$/, t('wholeReorder')),
+    roastDate: z.string().regex(/^(\d{4}-\d{2}-\d{2})?$/, t('invalidDate')),
+    featuredUntil: z.string().regex(/^(\d{4}-\d{2}-\d{2})?$/, t('invalidDate')),
   });
 
-  const onSubmit = () =>
-    toast(`Saved ${product.name} locally. Connect a catalogue service to persist it.`);
+type ProductFormValues = z.infer<ReturnType<typeof buildSchema>>;
+
+interface ProductEditorProps {
+  product: AdminProduct;
+}
+
+const toFormValues = (product: AdminProduct): ProductFormValues => ({
+  price: String(product.priceVnd),
+  stock: String(product.stock),
+  reorderLevel: String(product.reorderLevel),
+  roastDate: product.roastDate,
+  featuredUntil: product.featuredUntil,
+});
+
+export const ProductEditor = ({ product }: ProductEditorProps) => {
+  const t = useTranslations('Admin.editor');
+  const [saved, setSaved] = useState(() => toFormValues(product));
+  const [isActive, setIsActive] = useState(product.isActive);
+  const { control, handleSubmit } = useForm<ProductFormValues>({
+    resolver: zodResolver(buildSchema(t)),
+    defaultValues: saved,
+  });
+
+  const save = async (changes: UpdateProductInput) => {
+    if (await patchProduct(product.id, changes)) {
+      toast.success(t('saved', { name: product.name }));
+      return true;
+    }
+    toast.error(t('saveFailed', { name: product.name }));
+    return false;
+  };
+
+  const onSubmit = async (values: ProductFormValues) => {
+    const before = saved;
+    const changes: UpdateProductInput = {};
+    if (values.price !== before.price) changes.priceVnd = Number(values.price);
+    if (values.stock !== before.stock) changes.stock = Number(values.stock);
+    if (values.reorderLevel !== before.reorderLevel) {
+      changes.reorderLevel = Number(values.reorderLevel);
+    }
+    if (values.roastDate !== before.roastDate) changes.roastDate = values.roastDate || null;
+    if (values.featuredUntil !== before.featuredUntil) {
+      changes.featuredUntil = values.featuredUntil || null;
+    }
+
+    if (Object.keys(changes).length === 0) {
+      toast(t('noChanges'));
+      return;
+    }
+    if (await save(changes)) setSaved(values);
+  };
+
+  const toggleListing = async () => {
+    if (await save({ isActive: !isActive })) setIsActive(!isActive);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 xl:grid-cols-[1fr_320px]">
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Basics</CardTitle>
+            <CardTitle>{t('basics')}</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-2">
-            <ControlledInput control={control} name="name" label="Product name" />
-            <ControlledInput control={control} name="origin" label="Origin" />
-            <ControlledTextarea
-              control={control}
-              name="description"
-              label="Description"
-              className="sm:col-span-2"
-            />
-            <ControlledSelect
-              control={control}
-              name="roastLevel"
-              label="Roast level"
-              options={[
-                { label: 'Light', value: 'light' },
-                { label: 'Medium', value: 'medium' },
-                { label: 'Dark', value: 'dark' },
-              ]}
-              placeholder="Select roast level"
-            />
+          <CardContent className="grid gap-4 text-sm sm:grid-cols-2">
+            <div>
+              <p className="text-muted-foreground">{t('name')}</p>
+              <p className="font-medium">{product.name}</p>
+            </div>
+            {product.origin && (
+              <div>
+                <p className="text-muted-foreground">{t('origin')}</p>
+                <p className="font-medium">{product.origin}</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Price & stock</CardTitle>
+            <CardTitle>{t('priceStock')}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-3">
             <ControlledInput
               control={control}
               name="price"
-              label="Price · VND"
+              label={t('price')}
               inputMode="numeric"
             />
-            <ControlledInput control={control} name="stock" label="Stock now" inputMode="numeric" />
             <ControlledInput
               control={control}
-              name="reorderPoint"
-              label="Reorder point"
+              name="stock"
+              label={t('stock')}
               inputMode="numeric"
             />
+            <ControlledInput
+              control={control}
+              name="reorderLevel"
+              label={t('reorderLevel')}
+              inputMode="numeric"
+            />
+            <ControlledInput
+              control={control}
+              name="roastDate"
+              label={t('roastDate')}
+              type="date"
+            />
+            <p className="text-muted-foreground text-xs sm:col-span-2">{t('roastDateHint')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Featured</CardTitle>
+            <CardTitle>{t('featured')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <ControlledCheckbox
+            <ControlledInput
               control={control}
-              name="featured"
-              label="Show this product in Today's stock"
+              name="featuredUntil"
+              label={t('featuredUntil')}
+              type="date"
+              className="max-w-56"
             />
           </CardContent>
         </Card>
@@ -117,38 +151,31 @@ export const ProductEditor = ({ product }: ProductEditorProps) => {
       <div className="space-y-6">
         <Card>
           <CardContent className="space-y-4 pt-5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={product.imageUrl}
               alt=""
               className="aspect-[4/5] w-full rounded-lg object-cover"
             />
             <div>
-              <p className="font-medium">Current photo</p>
-              <p className="text-muted-foreground mt-1 text-xs">
-                Image uploads require the storage service.
-              </p>
+              <p className="font-medium">{t('currentPhoto')}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{t('photoNote')}</p>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full"
-              onClick={() => toast('Photo uploads are not wired up yet.')}
-            >
-              Replace photo
-            </Button>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Listing</CardTitle>
+            <CardTitle>{t('listing')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Shop</span>
-              <Badge variant="success">Listed</Badge>
+              <span className="text-muted-foreground">{t('shop')}</span>
+              <Badge variant={isActive ? 'success' : 'destructive'}>
+                {isActive ? t('listed') : t('notListed')}
+              </Badge>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Product URL</span>
+              <span className="text-muted-foreground">{t('productUrl')}</span>
               <code>/product/{product.slug}</code>
             </div>
           </CardContent>
@@ -156,13 +183,9 @@ export const ProductEditor = ({ product }: ProductEditorProps) => {
       </div>
 
       <div className="flex gap-2 xl:col-span-2">
-        <Button type="submit">Save changes</Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => toast('Hiding products is not wired up yet.')}
-        >
-          Pause listing
+        <Button type="submit">{t('save')}</Button>
+        <Button type="button" variant="outline" onClick={toggleListing}>
+          {isActive ? t('pause') : t('resume')}
         </Button>
       </div>
     </form>

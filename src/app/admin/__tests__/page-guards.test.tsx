@@ -8,7 +8,8 @@ jest.mock('@/lib/auth/guards', () => ({
   requireRoles: jest.fn(),
 }));
 
-jest.mock('@/components/admin/CatalogBrowser', () => ({ CatalogBrowser: () => null }));
+jest.mock('@/components/admin/ProductsBrowser', () => ({ ProductsBrowser: () => null }));
+jest.mock('@/services/catalog/get-admin-products', () => ({ getAdminProducts: jest.fn() }));
 jest.mock('@/components/admin/AdminDirectory', () => ({ AdminDirectory: () => null }));
 
 beforeEach(() => {

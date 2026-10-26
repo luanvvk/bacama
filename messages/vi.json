@@ -708,15 +708,42 @@
     "onThisPage": "Trong trang này",
     "updatedDate": "Cập nhật · 16 tháng 8, 2026",
     "sections": [
-      { "id": "what-are-cookies", "title": "Cookie là gì" },
-      { "id": "types-we-use", "title": "Các loại cookie chúng tôi sử dụng" },
-      { "id": "essential", "title": "Cookie thiết yếu" },
-      { "id": "preferences", "title": "Cookie tuỳ chọn" },
-      { "id": "analytics", "title": "Cookie phân tích" },
-      { "id": "third-party", "title": "Cookie của bên thứ ba" },
-      { "id": "cookie-table", "title": "Các cookie chúng tôi thiết lập" },
-      { "id": "manage", "title": "Cách quản lý cookie" },
-      { "id": "contact", "title": "Liên hệ" }
+      {
+        "id": "what-are-cookies",
+        "title": "Cookie là gì"
+      },
+      {
+        "id": "types-we-use",
+        "title": "Các loại cookie chúng tôi sử dụng"
+      },
+      {
+        "id": "essential",
+        "title": "Cookie thiết yếu"
+      },
+      {
+        "id": "preferences",
+        "title": "Cookie tuỳ chọn"
+      },
+      {
+        "id": "analytics",
+        "title": "Cookie phân tích"
+      },
+      {
+        "id": "third-party",
+        "title": "Cookie của bên thứ ba"
+      },
+      {
+        "id": "cookie-table",
+        "title": "Các cookie chúng tôi thiết lập"
+      },
+      {
+        "id": "manage",
+        "title": "Cách quản lý cookie"
+      },
+      {
+        "id": "contact",
+        "title": "Liên hệ"
+      }
     ],
     "whatAreCookiesTitle": "Cookie và các công nghệ tương tự là gì",
     "whatAreCookiesBody": "Cookie là các tệp văn bản nhỏ được đặt trên thiết bị của bạn khi bạn truy cập một trang web. Chúng giúp trang web ghi nhớ một số thông tin — những gì có trong giỏ hàng của bạn, bạn đã thấy một thông báo trước đó hay chưa, hoặc bạn đã biết đến chúng tôi qua đâu. Chúng tôi cũng sử dụng bộ nhớ trình duyệt (local storage và session storage) cho các mục đích tương tự; nó hoạt động như cookie nhưng có thể lưu trữ nhiều thông tin hơn một chút mà không cần gửi kèm mỗi yêu cầu.",
@@ -1135,5 +1162,95 @@
     "subscribe": "Đăng ký",
     "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
     "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
+  },
+  "Admin": {
+    "catalog": {
+      "eyebrow": "Danh mục",
+      "title": "Cà phê & blend",
+      "description": "Giá, tồn kho và ngày rang của mọi sản phẩm cà phê. Thay đổi áp dụng cho danh mục chung của tất cả cơ sở.",
+      "importCsv": "Nhập CSV",
+      "newProduct": "Sản phẩm mới",
+      "notAvailable": "Chưa khả dụng",
+      "liveLabel": "Đang bán",
+      "listedProducts": "sản phẩm đang bán",
+      "totalStock": "Tổng tồn kho",
+      "unitsInStock": "đơn vị trong kho",
+      "runningLow": "Sắp hết",
+      "needsAttention": "cần chú ý",
+      "searchPlaceholder": "Tên, xuất xứ…",
+      "searchLabel": "Tìm trong danh mục",
+      "filterLabel": "Lọc theo trạng thái",
+      "filterAll": "Tất cả",
+      "filterLive": "Đang bán",
+      "filterLow": "Sắp hết",
+      "colProduct": "Sản phẩm",
+      "colCategory": "Loại",
+      "colPrice": "Giá",
+      "colStock": "Tồn kho",
+      "colRoast": "Ngày rang",
+      "colStatus": "Trạng thái",
+      "colActions": "Thao tác",
+      "statusPaused": "Tạm ngưng",
+      "statusSoldOut": "Hết hàng",
+      "statusLow": "Sắp hết",
+      "statusLive": "Đang bán",
+      "edit": "Sửa",
+      "view": "Xem",
+      "noMatch": "Không có sản phẩm nào khớp bộ lọc."
+    },
+    "editor": {
+      "breadcrumb": "Danh mục",
+      "title": "Sửa sản phẩm",
+      "subtitle": "Giá, tồn kho, ngày rang và trạng thái hiển thị. Các thông tin khác được quản lý ở nơi khác.",
+      "statusLive": "Đang bán",
+      "statusPaused": "Tạm ngưng",
+      "basics": "Thông tin cơ bản",
+      "name": "Tên sản phẩm",
+      "origin": "Xuất xứ",
+      "priceStock": "Giá & tồn kho",
+      "price": "Giá · VND",
+      "stock": "Tồn kho hiện tại",
+      "reorderLevel": "Mức đặt hàng lại",
+      "roastDate": "Ngày rang",
+      "roastDateHint": "Ngày theo giờ Việt Nam.",
+      "featured": "Nổi bật",
+      "featuredUntil": "Nổi bật đến ngày",
+      "currentPhoto": "Ảnh hiện tại",
+      "photoNote": "Chưa hỗ trợ tải ảnh lên.",
+      "listing": "Hiển thị",
+      "shop": "Cửa hàng",
+      "listed": "Đang hiển thị",
+      "notListed": "Đã ẩn",
+      "productUrl": "Đường dẫn sản phẩm",
+      "save": "Lưu thay đổi",
+      "pause": "Tạm ngưng bán",
+      "resume": "Bán lại",
+      "noChanges": "Không có thay đổi để lưu.",
+      "saved": "Đã lưu {name}.",
+      "saveFailed": "Không thể lưu {name}. Vui lòng thử lại.",
+      "wholeVnd": "Nhập số tiền VND nguyên.",
+      "wholeStock": "Nhập số lượng tồn kho nguyên.",
+      "wholeReorder": "Nhập mức đặt hàng lại nguyên.",
+      "invalidDate": "Nhập ngày hợp lệ."
+    },
+    "stock": {
+      "title": "Tồn kho & ngày rang",
+      "roasted": "rang {date}",
+      "noRoast": "chưa có ngày rang",
+      "stockLabel": "Tồn kho {name}",
+      "save": "Lưu thay đổi",
+      "onlineOnly": "Chỉ tồn kho bán online. Nguyên liệu quán thuộc về POS.",
+      "empty": "Chưa có sản phẩm đang bán.",
+      "noChanges": "Không có thay đổi để lưu.",
+      "saved": "Đã cập nhật tồn kho.",
+      "saveFailed": "Không thể cập nhật một số tồn kho. Vui lòng thử lại."
+    },
+    "lowStock": {
+      "title": "{name} sắp hết hàng",
+      "detail": "Còn {stock}, mức đặt hàng lại {level}.",
+      "many": "{count} sản phẩm sắp hết hàng",
+      "manyDetail": "Xem mức tồn kho trong danh mục.",
+      "update": "Cập nhật"
+    }
   }
 }
