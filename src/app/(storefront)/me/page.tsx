@@ -38,6 +38,9 @@ const MePage = async () => {
                 <Link href="/courses">{t('browseCourses')}</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
+                <Link href="/me/learning">{t('myLearning')}</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
                 <Link href="/account">{t('viewOrders')}</Link>
               </Button>
             </div>
