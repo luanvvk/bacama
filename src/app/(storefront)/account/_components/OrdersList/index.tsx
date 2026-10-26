@@ -33,7 +33,10 @@ export const OrdersList = ({ orders }: OrdersListProps) => {
           <div className="min-w-0">
             <Text className="font-medium">{order.ref}</Text>
             <Text className="text-muted-foreground text-sm">
-              {format.dateTime(order.createdAt, { dateStyle: 'medium' })}
+              {format.dateTime(order.createdAt, {
+                dateStyle: 'medium',
+                timeZone: 'Asia/Ho_Chi_Minh',
+              })}
             </Text>
             <Text className="text-muted-foreground mt-1 text-sm">{order.itemNames.join(', ')}</Text>
           </div>

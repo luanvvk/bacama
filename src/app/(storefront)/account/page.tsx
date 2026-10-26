@@ -42,7 +42,7 @@ const AccountPage = async () => {
               {t('title')}
             </Heading>
             <Text variant="lead" className="text-muted-foreground mt-4">
-              {t('description', { name: user.name })}
+              {t('description')}
             </Text>
             <OrdersList orders={orders} />
             <div className="mt-8 flex flex-wrap gap-3">

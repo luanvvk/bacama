@@ -1,19 +1,18 @@
 import { render, screen } from '@testing-library/react';
-import { NextIntlClientProvider } from 'next-intl';
-
 import { OrdersList } from '../index';
 
-const MESSAGES = {
+const MESSAGES: Record<string, Record<string, string>> = {
   Account: { empty: 'No orders yet.', shop: 'Continue shopping' },
   OrderStatus: { paid: 'Paid' },
 };
 
+jest.mock('next-intl', () => ({
+  useTranslations: (namespace: string) => (key: string) => MESSAGES[namespace]?.[key] ?? key,
+  useFormatter: () => ({ dateTime: (date: Date) => date.toISOString().slice(0, 10) }),
+}));
+
 const renderList = (orders: Parameters<typeof OrdersList>[0]['orders']) =>
-  render(
-    <NextIntlClientProvider locale="en" messages={MESSAGES}>
-      <OrdersList orders={orders} />
-    </NextIntlClientProvider>,
-  );
+  render(<OrdersList orders={orders} />);
 
 describe('OrdersList', () => {
   it('shows an empty state linking to the shop', () => {
