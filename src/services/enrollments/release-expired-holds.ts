@@ -17,15 +17,16 @@ export const releaseExpiredHoldsIn = async (
   });
   if (expired.length === 0) return { released: 0 };
 
-  // Only rows still pending count, so a concurrent release never double-decrements.
-  const { count } = await tx.enrollment.updateMany({
+  // Seats are freed only for rows this call actually cancelled, so a concurrent
+  // release of the same holds never decrements twice.
+  const cancelled = await tx.enrollment.updateManyAndReturn({
     where: { id: { in: expired.map((e) => e.id) }, status: 'pending' },
     data: { status: 'cancelled', holdExpiresAt: null },
+    select: { sessionId: true },
   });
-  if (count === 0) return { released: 0 };
 
   const perSession = new Map<string, number>();
-  for (const { sessionId: id } of expired) {
+  for (const { sessionId: id } of cancelled) {
     if (id) perSession.set(id, (perSession.get(id) ?? 0) + 1);
   }
   for (const [id, n] of perSession) {
@@ -37,7 +38,7 @@ export const releaseExpiredHoldsIn = async (
       await tx.courseSession.updateMany({ where: { id }, data: { seatsBooked: 0 } });
     }
   }
-  return { released: count };
+  return { released: cancelled.length };
 };
 
 /** Cancels expired pending seat holds and frees their seats; `active` rows are never touched. */

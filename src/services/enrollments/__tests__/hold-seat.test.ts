@@ -8,7 +8,7 @@ jest.mock('@/lib/prisma', () => ({
     enrollment: {
       findMany: jest.fn(),
       findUnique: jest.fn(),
-      updateMany: jest.fn(),
+      updateManyAndReturn: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
     },
@@ -101,7 +101,7 @@ describe('holdSeat', () => {
 
   it('releases expired holds before claiming a seat', async () => {
     enrollment.findMany.mockResolvedValue([{ id: 'x', sessionId: 's1' }]);
-    enrollment.updateMany.mockResolvedValue({ count: 1 });
+    enrollment.updateManyAndReturn.mockResolvedValue([{ sessionId: 's1' }]);
     await holdSeat(args);
     expect(session.updateMany).toHaveBeenNthCalledWith(1, {
       where: { id: 's1', seatsBooked: { gte: 1 } },
@@ -110,6 +110,35 @@ describe('holdSeat', () => {
     expect(session.updateMany).toHaveBeenNthCalledWith(2, {
       where: { id: 's1', seatsBooked: { lt: 'CAPACITY_REF' } },
       data: { seatsBooked: { increment: 1 } },
+    });
+  });
+
+  it("releases the user's own lapsed hold on another session of the course", async () => {
+    enrollment.findUnique
+      .mockResolvedValueOnce({
+        id: 'e0',
+        status: 'pending',
+        sessionId: 's0',
+        holdExpiresAt: new Date('2025-12-31'),
+      })
+      .mockResolvedValueOnce({
+        id: 'e0',
+        status: 'cancelled',
+        sessionId: 's0',
+        holdExpiresAt: null,
+      });
+    enrollment.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([{ id: 'e0', sessionId: 's0' }]);
+    enrollment.updateManyAndReturn.mockResolvedValue([{ sessionId: 's0' }]);
+    await holdSeat(args);
+    expect(session.updateMany).toHaveBeenCalledWith({
+      where: { id: 's0', seatsBooked: { gte: 1 } },
+      data: { seatsBooked: { decrement: 1 } },
+    });
+    expect(enrollment.update).toHaveBeenCalledWith({
+      where: { id: 'e0' },
+      data: expect.objectContaining({ sessionId: 's1', status: 'pending' }),
     });
   });
 });

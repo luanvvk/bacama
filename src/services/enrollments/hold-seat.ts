@@ -48,10 +48,23 @@ export const holdSeat = ({
 
     await releaseExpiredHoldsIn(tx, { sessionId, now });
 
-    const existing = await tx.enrollment.findUnique({
-      where: { userId_courseId: { userId, courseId } },
-      select: { id: true, status: true },
-    });
+    const findExisting = () =>
+      tx.enrollment.findUnique({
+        where: { userId_courseId: { userId, courseId } },
+        select: { id: true, status: true, sessionId: true, holdExpiresAt: true },
+      });
+    let existing = await findExisting();
+    // The user's own lapsed hold may sit on another session of this course.
+    if (
+      existing?.status === 'pending' &&
+      existing.sessionId &&
+      existing.sessionId !== sessionId &&
+      existing.holdExpiresAt &&
+      existing.holdExpiresAt < now
+    ) {
+      await releaseExpiredHoldsIn(tx, { sessionId: existing.sessionId, now });
+      existing = await findExisting();
+    }
     if (existing && existing.status !== 'cancelled') throw new AlreadyEnrolledError();
 
     // One conditional statement: the capacity check and the increment cannot interleave.

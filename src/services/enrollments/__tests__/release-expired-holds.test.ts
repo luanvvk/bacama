@@ -1,7 +1,7 @@
 jest.mock('@/lib/prisma', () => ({
   prisma: {
     courseSession: { updateMany: jest.fn() },
-    enrollment: { findMany: jest.fn(), updateMany: jest.fn() },
+    enrollment: { findMany: jest.fn(), updateManyAndReturn: jest.fn() },
     $transaction: jest.fn(),
   },
 }));
@@ -27,7 +27,11 @@ describe('releaseExpiredHolds', () => {
       { id: 'b', sessionId: 's1' },
       { id: 'c', sessionId: 's2' },
     ]);
-    enrollment.updateMany.mockResolvedValue({ count: 3 });
+    enrollment.updateManyAndReturn.mockResolvedValue([
+      { sessionId: 's1' },
+      { sessionId: 's1' },
+      { sessionId: 's2' },
+    ]);
 
     expect(await releaseExpiredHolds({ now })).toEqual({ released: 3 });
     expect(enrollment.findMany).toHaveBeenCalledWith(
@@ -35,9 +39,10 @@ describe('releaseExpiredHolds', () => {
         where: { status: 'pending', holdExpiresAt: { lt: now }, sessionId: { not: null } },
       }),
     );
-    expect(enrollment.updateMany).toHaveBeenCalledWith({
+    expect(enrollment.updateManyAndReturn).toHaveBeenCalledWith({
       where: { id: { in: ['a', 'b', 'c'] }, status: 'pending' },
       data: { status: 'cancelled', holdExpiresAt: null },
+      select: { sessionId: true },
     });
     expect(session.updateMany).toHaveBeenCalledWith({
       where: { id: 's1', seatsBooked: { gte: 2 } },
@@ -60,18 +65,31 @@ describe('releaseExpiredHolds', () => {
   it('returns 0 on a second call and touches nothing', async () => {
     enrollment.findMany.mockResolvedValue([]);
     expect(await releaseExpiredHolds({ now })).toEqual({ released: 0 });
-    expect(enrollment.updateMany).not.toHaveBeenCalled();
+    expect(enrollment.updateManyAndReturn).not.toHaveBeenCalled();
     expect(session.updateMany).not.toHaveBeenCalled();
   });
 
   it('clamps seatsBooked to 0 instead of going negative', async () => {
     enrollment.findMany.mockResolvedValue([{ id: 'a', sessionId: 's1' }]);
-    enrollment.updateMany.mockResolvedValue({ count: 1 });
+    enrollment.updateManyAndReturn.mockResolvedValue([{ sessionId: 's1' }]);
     session.updateMany.mockResolvedValueOnce({ count: 0 });
     await releaseExpiredHolds({ now });
     expect(session.updateMany).toHaveBeenLastCalledWith({
       where: { id: 's1' },
       data: { seatsBooked: 0 },
+    });
+  });
+
+  it('frees only the seats of rows this call actually cancelled', async () => {
+    enrollment.findMany.mockResolvedValue([
+      { id: 'a', sessionId: 's1' },
+      { id: 'b', sessionId: 's1' },
+    ]);
+    enrollment.updateManyAndReturn.mockResolvedValue([{ sessionId: 's1' }]);
+    expect(await releaseExpiredHolds({ now })).toEqual({ released: 1 });
+    expect(session.updateMany).toHaveBeenCalledWith({
+      where: { id: 's1', seatsBooked: { gte: 1 } },
+      data: { seatsBooked: { decrement: 1 } },
     });
   });
 });
