@@ -8,6 +8,6 @@ export const getOrderStatus = async (ref: string): Promise<$Enums.OrderStatus | 
   return order ? order.status : null;
 };
 
-/** `/checkout/done` only shows for orders that are actually paid or payable on delivery. */
+/** `/checkout/done` must not claim success for an order still waiting on, or failed at, payment. */
 export const canShowOrderDone = (status: $Enums.OrderStatus): boolean =>
-  status === 'paid' || status === 'awaiting_cod';
+  status !== 'pending' && status !== 'failed';

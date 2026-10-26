@@ -17,7 +17,7 @@ import { OrderSummary } from '../../../_components/OrderSummary';
 const POLL_INTERVAL_MS = 3000;
 const POLL_TIMEOUT_MS = 30000;
 
-type PollState = 'waiting' | 'failed' | 'timeout';
+type PollState = 'waiting' | 'paid' | 'failed' | 'timeout';
 
 export interface PaymentProcessingProps {
   orderRef?: string;
@@ -30,7 +30,6 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
   const order = useCheckoutStore((state) => state.order);
   const [pollState, setPollState] = useState<PollState>('waiting');
   const orderRef = refFromUrl ?? order?.orderRef;
-  const isBank = order?.paymentMethod === 'bank';
 
   useEffect(() => {
     if (!order) router.replace('/checkout');
@@ -46,8 +45,10 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
         if (stopped || !response.ok) return;
         const { status } = (await response.json()) as { status: string };
         if (stopped) return;
-        if (status === 'paid') router.push(`/checkout/done?ref=${orderRef}`);
-        else if (status === 'failed') setPollState('failed');
+        if (status === 'paid') {
+          setPollState('paid');
+          router.push(`/checkout/done?ref=${orderRef}`);
+        } else if (status === 'failed') setPollState('failed');
       } catch {
         // transient network error: the next tick retries
       }
@@ -61,17 +62,16 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
   }, [orderRef, pollState, router]);
 
   useEffect(() => {
-    // Bank transfers are confirmed by hand and can take an hour, so they never time out.
-    if (!orderRef || isBank) return undefined;
+    if (!orderRef) return undefined;
 
     const timeout = setTimeout(
       () => setPollState((state) => (state === 'waiting' ? 'timeout' : state)),
       POLL_TIMEOUT_MS,
     );
     return () => clearTimeout(timeout);
-  }, [orderRef, isBank]);
+  }, [orderRef]);
 
-  if (!order) return null;
+  if (!order || !orderRef) return null;
 
   const method = getPaymentMethod(order.paymentMethod);
   const methodLabel = tPaymentMethod(`${method.value}.label`);
@@ -94,7 +94,7 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
                 [t('accountNameLabel'), BANK_TRANSFER_DETAILS.accountName],
                 [t('accountNumberLabel'), BANK_TRANSFER_DETAILS.accountNumber],
                 [t('amountLabel'), formatVnd(order.totalVnd)],
-                [t('transferNoteLabel'), order.orderRef],
+                [t('transferNoteLabel'), orderRef],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">{label}</dt>
@@ -106,7 +106,7 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
               type="button"
               size="lg"
               className="mt-6"
-              onClick={() => router.push(`/orders/${order.orderRef}`)}
+              onClick={() => router.push(`/orders/${orderRef}`)}
             >
               {t('madeTransfer')}
             </Button>
@@ -130,7 +130,7 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
                 <p className="text-muted-foreground text-xs">{t('qrPlaceholder')}</p>
                 <p className="font-heading text-2xl font-semibold">{formatVnd(order.totalVnd)}</p>
                 <p className="text-muted-foreground font-mono text-xs">
-                  {t('orderRefLabel', { ref: order.orderRef })}
+                  {t('orderRefLabel', { ref: orderRef })}
                 </p>
               </div>
             )}
@@ -149,20 +149,21 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
                 </p>
               </div>
             )}
-            {pollState === 'failed' && (
-              <p className="text-destructive mt-6 border-t pt-6 text-sm" role="alert">
-                {t('paymentFailed')}
-              </p>
-            )}
-            {pollState === 'timeout' && (
-              <div className="mt-6 border-t pt-6" role="status">
-                <p className="text-sm">{t('stillProcessing', { ref: order.orderRef })}</p>
-                <Button asChild variant="outline" size="sm" className="mt-3">
-                  <Link href={`/orders/${order.orderRef}`}>{t('trackOrder')}</Link>
-                </Button>
-              </div>
-            )}
           </>
+        )}
+
+        {pollState === 'failed' && (
+          <p className="text-destructive mt-6 border-t pt-6 text-sm" role="alert">
+            {t('paymentFailed')}
+          </p>
+        )}
+        {pollState === 'timeout' && (
+          <div className="mt-6 border-t pt-6" role="status">
+            <p className="text-sm">{t('stillProcessing', { ref: orderRef })}</p>
+            <Button asChild variant="outline" size="sm" className="mt-3">
+              <Link href={`/orders/${orderRef}`}>{t('trackOrder')}</Link>
+            </Button>
+          </div>
         )}
 
         <Button asChild variant="ghost" size="sm" className="mt-6">

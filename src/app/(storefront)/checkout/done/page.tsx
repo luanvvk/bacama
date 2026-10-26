@@ -12,10 +12,8 @@ interface CheckoutDonePageProps {
   searchParams: Promise<{ ref?: string }>;
 }
 
-// Real orders carry their ref in the URL and are read
-// straight from the DB, so refreshing this page doesn't lose them the way
-// the still-simulated flow (client-only Zustand state, no ref in the URL)
-// does. See OrderConfirmation for the fallback.
+// Orders carry their ref in the URL and are read straight from the DB, so
+// refreshing doesn't lose them. Orders still awaiting payment go back to /pay.
 const CheckoutDonePage = async ({ searchParams }: CheckoutDonePageProps) => {
   const { ref } = await searchParams;
   const status = ref ? await getOrderStatus(ref) : null;

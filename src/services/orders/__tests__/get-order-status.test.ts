@@ -34,6 +34,10 @@ describe('canShowOrderDone', () => {
     ['awaiting_cod', true],
     ['pending', false],
     ['failed', false],
+    ['shipped', true],
+    ['delivered', true],
+    ['completed', true],
+    ['refunded', true],
   ] as const)('%s -> %s', (status, expected) => {
     expect(canShowOrderDone(status)).toBe(expected);
   });
