@@ -47,9 +47,9 @@ function checkMerge(c, cwd, prInfo) {
   }
   // GitHub Actions jobs are CheckRuns and must all be green. Deployment
   // statuses (Vercel previews) are StatusContexts and don't gate a merge.
-const runs = (info.statusCheckRollup ?? []).filter(
-  (k) => k.__typename !== 'StatusContext' && !/^lighthouse/i.test(k.name ?? ''),
-);
+  const runs = (info.statusCheckRollup ?? []).filter(
+    (k) => k.__typename !== 'StatusContext' && !/^lighthouse/i.test(k.name ?? ''),
+  );
   const green =
     runs.length > 0 && runs.every((k) => ['SUCCESS', 'SKIPPED', 'NEUTRAL'].includes(k.conclusion));
   if (!green) return deny('CI checks are not all green yet; merge blocked.');
