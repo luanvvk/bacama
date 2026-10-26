@@ -50,6 +50,7 @@ export const EnrolPanel = ({ course }: EnrolPanelProps) => {
       });
       if (response.status === 409) {
         const { error } = await response.json();
+        if (error === 'session_full') setSessionId(undefined);
         setOutcome({ kind: error === 'session_full' ? 'session-full' : 'already-enrolled' });
       } else if (response.ok) {
         const { status, holdExpiresAt } = await response.json();
@@ -144,7 +145,14 @@ export const EnrolPanel = ({ course }: EnrolPanelProps) => {
           type="button"
           size="lg"
           className="w-full"
-          disabled={isSoldOut || isSubmitting || (needsSession && !sessionId)}
+          disabled={
+            isSoldOut ||
+            isSubmitting ||
+            (outcome !== undefined &&
+              outcome.kind !== 'failed' &&
+              outcome.kind !== 'session-full') ||
+            (needsSession && !sessionId)
+          }
           onClick={enrol}
         >
           {isSoldOut ? t('soldOut') : ctaLabel}
