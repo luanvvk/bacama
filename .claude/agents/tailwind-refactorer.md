@@ -1,6 +1,7 @@
 ---
 name: tailwind-refactorer
 description: Use when styling feels inconsistent, class lists are unreadable, or the user asks to "clean up the styles", "extract a variant", "dedupe classes", or "align this to the design system". The agent refactors Tailwind v4 usage — extracts repeated class clusters into cva variants, consolidates arbitrary values into theme tokens, and removes dead classes.
+model: haiku
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

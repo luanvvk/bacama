@@ -1,6 +1,7 @@
 ---
 name: test-writer
 description: Use when writing or updating Jest + React Testing Library tests (pnpm test, pnpm test:watch, pnpm test:coverage) for components, hooks, and utilities. Delegate tasks like "add tests for this component", "cover this hook", or "write a test for the bug you just fixed".
+model: sonnet
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

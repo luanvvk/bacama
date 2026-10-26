@@ -1,6 +1,7 @@
 ---
 name: react-performance-reviewer
 description: Use when a screen feels slow, a component re-renders too often, or the user asks to "optimize", "profile", "investigate slowness", or "reduce re-renders". Delegate performance-focused reviews of React components, hooks, and data flow — especially product listing/grid pages and admin tables, which are the most render-heavy screens in this app.
+model: sonnet
 tools: Read, Glob, Grep, Bash
 ---
 

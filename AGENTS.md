@@ -36,6 +36,10 @@ markup verbatim (no Tailwind classes, no component structure).
 > For _how much_ to build and how to work sustainably with agents, read
 > [docs/DESIGN-PRINCIPLES.md](docs/DESIGN-PRINCIPLES.md).
 
+> **Running tasks with agents:** use `/ship` (features) or `/fix` (small bugs) —
+> see [docs/AI-WORKFLOW.md](docs/AI-WORKFLOW.md) for roles, models, gates,
+> guardrails, and token rules.
+
 ## Working principles
 
 Four principles that apply to every task, adapted from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on common LLM coding pitfalls (via [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills), MIT):

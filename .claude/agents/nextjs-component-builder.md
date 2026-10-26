@@ -1,6 +1,7 @@
 ---
 name: nextjs-component-builder
 description: Use when building or composing React components for this Next.js + React app. Delegate any task that says "create a component", "add a form", "build a modal", "implement a screen section", or similar UI construction work. The agent follows repo conventions (Tailwind v4, cva/clsx/cn) and places files under src/components/<Area>/ or src/app/**.
+model: sonnet
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

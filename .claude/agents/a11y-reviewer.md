@@ -1,6 +1,7 @@
 ---
 name: a11y-reviewer
 description: Use when reviewing components for accessibility, when the user mentions a11y, ARIA, keyboard navigation, screen readers, or focus management, and before shipping any interactive UI (modals, menus, form controls, custom buttons). Especially relevant for checkout, cart, and admin table/form screens. The agent checks semantics, focus order, keyboard interaction, ARIA roles/attributes, contrast hints, and alt text, using the project's eslint-plugin-jsx-a11y rules (bundled in eslint-config-next) as a floor not a ceiling.
+model: sonnet
 tools: Read, Glob, Grep, Bash
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: route-handler-auditor
 description: Use when reviewing or writing Next.js App Router route handlers (src/app/**/route.ts) or server actions. Delegate tasks like "audit the API routes", "review the route handler", or before shipping new backend endpoints (e.g. checkout, cart, admin CRUD).
+model: opus
 tools: Read, Glob, Grep, Bash
 ---
 
