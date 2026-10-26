@@ -91,6 +91,7 @@ describe('POST /api/admin/bakery-items', () => {
   it.each([
     ['a non-https link', { handoffUrl: 'http://example.com' }],
     ['a negative price', { priceVnd: -1 }],
+    ['an empty price', { priceVnd: '' }],
     ['a missing name', { nameEn: '' }],
     ['an unknown handoff', { handoff: 'drone' }],
   ])('returns 400 for %s', async (_label, override) => {

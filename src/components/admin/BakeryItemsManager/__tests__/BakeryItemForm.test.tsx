@@ -46,6 +46,7 @@ describe('BakeryItemForm', () => {
 
     expect(await screen.findByText('Enter the English name.')).toBeInTheDocument();
     expect(screen.getByText('Enter the Vietnamese name.')).toBeInTheDocument();
+    expect(screen.getByText('Enter a price.')).toBeInTheDocument();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 

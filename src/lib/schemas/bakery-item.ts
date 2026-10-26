@@ -18,10 +18,16 @@ export const bakeryItemSchema = z.object({
   nameEn: required('Enter the English name.'),
   descriptionVi: required('Enter the Vietnamese description.'),
   descriptionEn: required('Enter the English description.'),
-  priceVnd: z.coerce
-    .number<unknown>('Enter a price.')
-    .int('Price must be a whole number of VND.')
-    .min(0, 'Price cannot be negative.'),
+  priceVnd: z
+    .preprocess(
+      (value) => (typeof value === 'string' && value.trim() === '' ? undefined : value),
+      z.coerce
+        .number<unknown>('Enter a price.')
+        .int('Price must be a whole number of VND.')
+        .min(0, 'Price cannot be negative.')
+        .max(2_147_483_647, 'Price is too large.'),
+    )
+    .refine((value) => value !== undefined, 'Enter a price.'),
   bakesAt: required('Enter when it bakes.'),
   sellOutBy: z
     .string()
