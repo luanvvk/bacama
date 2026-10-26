@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
+import { MENU_SECTIONS, type MenuSection } from '@/constants/menu';
 import { getMenuItems, type MenuCatalogItem } from '@/services/catalog/get-menu-items';
 import {
   Breadcrumb,
@@ -21,17 +22,6 @@ export const revalidate = 3600;
 // `section` is a locale-neutral key on MenuItem, not editorial copy — its
 // display heading comes from messages/{en,vi}.json's Menu.sections (see
 // ProductCard's CATEGORY_LABEL for the same category-key-to-label pattern).
-const SECTION_ORDER = [
-  'phin',
-  'espresso',
-  'hand_brew',
-  'cold_brew',
-  'tea',
-  'matcha',
-  'chocolate',
-  'juice',
-];
-
 const groupBySection = (items: MenuCatalogItem[]) => {
   const bySection = new Map<string, MenuCatalogItem[]>();
   for (const item of items) {
@@ -40,7 +30,7 @@ const groupBySection = (items: MenuCatalogItem[]) => {
     bySection.set(item.section, group);
   }
   return [...bySection.entries()].sort(
-    ([a], [b]) => SECTION_ORDER.indexOf(a) - SECTION_ORDER.indexOf(b),
+    ([a], [b]) => MENU_SECTIONS.indexOf(a as MenuSection) - MENU_SECTIONS.indexOf(b as MenuSection),
   );
 };
 

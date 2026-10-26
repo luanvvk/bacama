@@ -1139,5 +1139,47 @@
     "subscribe": "Subscribe",
     "emailValidation": "Enter a valid email address.",
     "successToast": "You are on the list. Newsletter delivery will be connected soon."
+  },
+  "Admin": {
+    "menu": {
+      "title": "Café menu",
+      "description": "Drinks shown on the public menu. Prices are per site.",
+      "new": "New menu item",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "inactive": "Inactive",
+      "empty": "No menu items yet.",
+      "noSite": "Your account is not assigned to a site yet, so there are no menu items to manage.",
+      "site": "Site",
+      "name": "Name",
+      "price": "Price",
+      "order": "Order",
+      "actions": "Actions",
+      "createTitle": "New menu item",
+      "editTitle": "Edit menu item",
+      "fields": {
+        "siteId": "Site",
+        "section": "Section",
+        "nameVi": "Name (Vietnamese)",
+        "nameEn": "Name (English)",
+        "priceVnd": "Price (VND)",
+        "order": "Display order",
+        "isActive": "Active on the menu"
+      },
+      "validation": {
+        "required": "This field is required.",
+        "price": "Enter a whole price above 0.",
+        "order": "Enter a whole number, 0 or more.",
+        "maxLength": "Keep it under 120 characters."
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "Menu item saved.",
+      "deactivated": "Menu item deactivated.",
+      "saveFailed": "Could not save the menu item. Try again.",
+      "forbidden": "You cannot change items at this site.",
+      "duplicate": "An item with this name already exists at this site.",
+      "deactivateFailed": "Could not deactivate the menu item. Try again."
+    }
   }
 }
