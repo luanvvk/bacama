@@ -39,8 +39,5 @@ jobs:
             http://localhost:3000/
             http://localhost:3000/product/bag-arabica-250g
           configPath: ./lighthouserc.json
-          startServerCommand: pnpm start
-          startServerReadyPattern: 'Ready in'
-          startServerReadyTimeout: 30000
           uploadArtifacts: true
           temporaryPublicStorage: false

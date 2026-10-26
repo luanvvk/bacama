@@ -1,6 +1,9 @@
 {
   "ci": {
     "collect": {
+      "startServerCommand": "pnpm start",
+      "startServerReadyPattern": "Ready in",
+      "startServerReadyTimeout": 30000,
       "numberOfRuns": 3,
       "settings": {
         "formFactor": "mobile",
