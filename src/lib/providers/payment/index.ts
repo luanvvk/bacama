@@ -17,7 +17,7 @@ const defaultRegistry: PaymentRegistry = {
 
 export const createPaymentFactory = (registry: PaymentRegistry) => {
   const getPaymentProviderByMethod = (method: PaymentMethodValue): PaymentProvider => {
-    const provider = registry[method];
+    const provider = Object.hasOwn(registry, method) ? registry[method] : undefined;
     if (!provider) throw new PaymentMethodUnavailableError(method);
     return provider;
   };
