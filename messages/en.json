@@ -289,7 +289,19 @@
     "browseCourses": "Browse courses",
     "viewOrders": "View orders",
     "orderCount": "Orders",
-    "activeEnrollmentCount": "Active courses"
+    "activeEnrollmentCount": "Active courses",
+    "myLearning": "My learning"
+  },
+  "MeLearning": {
+    "eyebrow": "Your learning · signed in",
+    "title": "My learning.",
+    "description": "Your courses, newest first.",
+    "empty": "You haven't enrolled in any course yet.",
+    "browseCourses": "Browse courses",
+    "continue": "Continue",
+    "completed": "Completed",
+    "seatHeldUntil": "Seat held until {time}",
+    "progressLabel": "Progress in {name}"
   },
   "Account": {
     "eyebrow": "Your orders · signed in",

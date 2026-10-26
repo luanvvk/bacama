@@ -5,7 +5,7 @@ test.beforeEach(async ({ context }) => {
 });
 
 test.describe('protected routes', () => {
-  for (const path of ['/me', '/account', '/account/profile', '/admin']) {
+  for (const path of ['/me', '/me/learning', '/account', '/account/profile', '/admin']) {
     test(`signed-out visit to ${path} ends on /login`, async ({ page }) => {
       await page.goto(path);
 

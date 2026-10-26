@@ -285,7 +285,19 @@
     "browseCourses": "Xem khóa học",
     "viewOrders": "Xem đơn hàng",
     "orderCount": "Đơn hàng",
-    "activeEnrollmentCount": "Khóa học đang học"
+    "activeEnrollmentCount": "Khóa học đang học",
+    "myLearning": "Việc học của tôi"
+  },
+  "MeLearning": {
+    "eyebrow": "Việc học của bạn · đã đăng nhập",
+    "title": "Việc học của tôi.",
+    "description": "Các khóa học của bạn, mới nhất trước.",
+    "empty": "Bạn chưa đăng ký khóa học nào.",
+    "browseCourses": "Xem khóa học",
+    "continue": "Tiếp tục",
+    "completed": "Đã hoàn thành",
+    "seatHeldUntil": "Giữ chỗ đến {time}",
+    "progressLabel": "Tiến độ khóa {name}"
   },
   "Account": {
     "eyebrow": "Đơn hàng của bạn · đã đăng nhập",
