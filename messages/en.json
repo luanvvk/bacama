@@ -235,7 +235,14 @@
     "enrol": "Enrol",
     "bookSeat": "Book a seat",
     "loginToEnrol": "Log in to enrol",
-    "enrolNotReady": "Enrolment isn't wired up yet."
+    "chooseSession": "Choose a session",
+    "sessionFull": "Full",
+    "seatHeld": "Seat held until {time}.",
+    "enrolled": "You're enrolled.",
+    "enrolPending": "Your enrolment is saved.",
+    "alreadyEnrolled": "You're already enrolled in this course.",
+    "sessionJustFilled": "That session just filled up — please choose another.",
+    "enrolFailed": "We couldn't enrol you. Please try again."
   },
   "Learn": {
     "breadcrumbHome": "Home",
