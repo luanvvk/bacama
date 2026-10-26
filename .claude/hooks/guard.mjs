@@ -16,7 +16,36 @@ function currentBranch(cwd) {
   }
 }
 
-export function check(command, cwd = process.cwd()) {
+function ghPrInfo(args, cwd) {
+  const out = execSync(`gh pr view ${args} --json baseRefName,statusCheckRollup`, {
+    cwd,
+    encoding: 'utf8',
+  });
+  return JSON.parse(out);
+}
+
+// Agents may merge a PR only into dev, with every CI check green. main and
+// staging stay human-only (docs/AI-WORKFLOW.md, "Autonomous loop").
+function checkMerge(c, cwd, prInfo) {
+  if (/--admin\b/.test(c)) return deny('Admin merge is blocked.');
+  const args = c.replace(/^.*\bgh pr merge\b/, '').trim().split(' ').filter((a) => a && !a.startsWith('-'));
+  const target = args[0] ?? '';
+  let info;
+  try {
+    info = prInfo(target, cwd);
+  } catch {
+    return deny('Could not read the PR from GitHub; merge blocked. Pass an explicit PR number.');
+  }
+  if (info.baseRefName !== 'dev') {
+    return deny(`Merging into ${info.baseRefName} is a human gate. Only PRs into dev may be agent-merged.`);
+  }
+  const checks = info.statusCheckRollup ?? [];
+  const green = checks.length > 0 && checks.every((k) => ['SUCCESS', 'SKIPPED', 'NEUTRAL'].includes(k.conclusion));
+  if (!green) return deny('CI checks are not all green yet; merge blocked.');
+  return null;
+}
+
+export function check(command, cwd = process.cwd(), prInfo = ghPrInfo) {
   const c = command.replace(/\s+/g, ' ');
 
   if (/\bgit\b.*\bpush\b/.test(c)) {
@@ -34,7 +63,7 @@ export function check(command, cwd = process.cwd()) {
 
   if (/\bgit\b.*--no-verify\b|\bgit commit\b.*\s-n\b/.test(c))
     return deny('Skipping git hooks is blocked.');
-  if (/\bgh pr merge\b/.test(c)) return deny('Merging is a human gate. Ask the user to merge.');
+  if (/\bgh pr merge\b/.test(c)) return checkMerge(c, cwd, prInfo);
   if (/\bprisma migrate (deploy|reset)\b|\bprisma db push\b.*--force-reset/.test(c)) {
     return deny('Destructive Prisma command is blocked.');
   }
