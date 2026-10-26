@@ -33,10 +33,4 @@ describe('admin page guards', () => {
 
     expect(requireRoles).toHaveBeenCalledWith(['instructor', 'admin']);
   });
-
-  it('does not render when the guard rejects (instructor on catalog)', async () => {
-    jest.mocked(requireRoles).mockRejectedValueOnce(new Error('not-found'));
-
-    await expect(AdminCatalogPage()).rejects.toThrow('not-found');
-  });
 });

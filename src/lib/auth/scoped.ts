@@ -9,7 +9,7 @@ export const canAccessSite = (user: AuthUser, siteId: string): boolean => {
 
 export const siteScopeFilter = (user: AuthUser): { siteId?: string } => {
   if (user.role === 'admin') return {};
-  if (!user.homeSiteId) throw new Error('User has no home site');
+  if (user.role === 'customer' || !user.homeSiteId) throw new Error('User cannot be site-scoped');
 
   return { siteId: user.homeSiteId };
 };

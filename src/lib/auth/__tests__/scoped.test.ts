@@ -39,6 +39,10 @@ describe('siteScopeFilter', () => {
     expect(siteScopeFilter(makeUser('staff', 'site-a'))).toEqual({ siteId: 'site-a' });
   });
 
+  it('throws for customers', () => {
+    expect(() => siteScopeFilter(makeUser('customer', 'site-a'))).toThrow();
+  });
+
   it('throws for staff without a home site', () => {
     expect(() => siteScopeFilter(makeUser('staff', null))).toThrow();
   });
