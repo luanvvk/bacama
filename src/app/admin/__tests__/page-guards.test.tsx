@@ -49,7 +49,6 @@ jest.mock('@/services/users/get-admin-staff', () => ({ getAdminStaff: jest.fn() 
 jest.mock('../students/_components/StudentsDirectory', () => ({ StudentsDirectory: () => null }));
 jest.mock('../staff/_components/StaffDirectory', () => ({ StaffDirectory: () => null }));
 
-jest.mock('@/components/admin/CatalogBrowser', () => ({ CatalogBrowser: () => null }));
 jest.mock('@/components/admin/AdminDirectory', () => ({ AdminDirectory: () => null }));
 
 beforeEach(() => {

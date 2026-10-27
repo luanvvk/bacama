@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import type { Product } from '@/constants/products';
+import type { Product } from '@/services/catalog/types';
 
 import { PRODUCT_INCLUDE, mapProduct } from './map-product';
 

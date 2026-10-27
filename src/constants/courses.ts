@@ -139,5 +139,3 @@ export const COURSES: Course[] = [
     ctaLabel: 'Enrol',
   },
 ];
-
-export const getCourseBySlug = (slug: string) => COURSES.find((course) => course.slug === slug);

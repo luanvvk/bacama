@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { ProductCard } from '../index';
-import { PRODUCTS } from '@/constants/products';
+import { PRODUCTS } from '@/services/catalog/__fixtures__/products';
 
 const [dalatWashed] = PRODUCTS;
 const soldOutProduct = { ...dalatWashed, soldOut: true };
