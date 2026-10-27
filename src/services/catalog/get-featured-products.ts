@@ -1,9 +1,10 @@
+import type { AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 import type { Product } from '@/services/catalog/types';
 
 import { mapProduct } from './map-product';
 
-export const getFeaturedProducts = async (): Promise<Product[]> => {
+export const getFeaturedProducts = async (locale: AppLocale): Promise<Product[]> => {
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -16,5 +17,5 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
     take: 3,
   });
 
-  return products.map(mapProduct);
+  return products.map((product) => mapProduct(product, locale));
 };

@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
+import { toAppLocale } from '@/lib/localize';
 import { Button } from '@/components/ui/Button';
 import { Heading, Text } from '@/components/ui/Typography';
 import { Container } from '@/components/layout/Container';
@@ -10,9 +11,10 @@ const PAYMENT_METHODS = ['ZaloPay', 'MoMo', 'VNPay QR', 'COD', 'Visa · MC', 'GH
 
 export const CtaBandSection = async () => {
   const t = await getTranslations('CtaBand');
+  const locale = toAppLocale(await getLocale());
   // Named the featured bag rather than a hardcoded slug — the previous link
   // pointed at Đà Lạt Washed, which the real-data seed retired.
-  const [featured] = await getFeaturedProducts();
+  const [featured] = await getFeaturedProducts(locale);
 
   return (
     <section className="dark bg-background border-t">

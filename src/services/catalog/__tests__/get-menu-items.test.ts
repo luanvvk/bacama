@@ -16,7 +16,7 @@ describe('getMenuItems', () => {
   it('queries active items at active sites, ordered by section then position', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getMenuItems();
+    await getMenuItems('en');
 
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -46,7 +46,7 @@ describe('getMenuItems', () => {
       },
     ]);
 
-    const result = await getMenuItems();
+    const result = await getMenuItems('en');
 
     expect(result).toEqual([
       {
@@ -59,5 +59,25 @@ describe('getMenuItems', () => {
         priceVnd: 45000,
       },
     ]);
+  });
+
+  it('returns Vi fields for vi and falls back to En when Vi is empty', async () => {
+    const row = {
+      id: 'm1',
+      slug: 'espresso',
+      section: 'espresso',
+      nameVi: 'Cà phê espresso',
+      nameEn: 'Espresso',
+      priceVnd: 45000,
+      imageUrl: null,
+      descriptionVi: '',
+      descriptionEn: 'Bold.',
+    };
+    mockFindMany.mockResolvedValue([row]);
+
+    const [item] = await getMenuItems('vi');
+
+    expect(item.name).toBe('Cà phê espresso');
+    expect(item.description).toBe('Bold.');
   });
 });

@@ -1,13 +1,17 @@
+import type { AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 import type { Product } from '@/services/catalog/types';
 
 import { PRODUCT_INCLUDE, mapProduct } from './map-product';
 
-export const getProductBySlug = async (slug: string): Promise<Product | null> => {
+export const getProductBySlug = async (
+  slug: string,
+  locale: AppLocale,
+): Promise<Product | null> => {
   const product = await prisma.product.findFirst({
     where: { slug, isActive: true },
     include: PRODUCT_INCLUDE,
   });
 
-  return product ? mapProduct(product) : null;
+  return product ? mapProduct(product, locale) : null;
 };

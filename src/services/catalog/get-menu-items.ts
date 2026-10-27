@@ -1,3 +1,4 @@
+import { pickLocalized, type AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 
 export interface MenuCatalogItem {
@@ -10,7 +11,7 @@ export interface MenuCatalogItem {
   priceVnd: number;
 }
 
-export const getMenuItems = async (): Promise<MenuCatalogItem[]> => {
+export const getMenuItems = async (locale: AppLocale): Promise<MenuCatalogItem[]> => {
   const items = await prisma.menuItem.findMany({
     where: { isActive: true, site: { isActive: true } },
     orderBy: [{ section: 'asc' }, { order: 'asc' }],
@@ -20,8 +21,8 @@ export const getMenuItems = async (): Promise<MenuCatalogItem[]> => {
     id: item.id,
     slug: item.slug,
     section: item.section,
-    name: item.nameEn,
-    description: item.descriptionEn,
+    name: pickLocalized(locale, item.nameVi, item.nameEn),
+    description: pickLocalized(locale, item.descriptionVi, item.descriptionEn),
     imageUrl: item.imageUrl,
     priceVnd: item.priceVnd,
   }));
