@@ -24,6 +24,7 @@ import { BakeryItemForm, type BakerySiteOption } from './BakeryItemForm';
 
 interface BakeryItemsManagerProps {
   items: AdminBakeryItem[];
+  nextCursor: string | null;
   sites: BakerySiteOption[];
   /** Set for staff: their home site. Null for admin, who may pick any site. */
   lockedSiteId: string | null;
@@ -45,10 +46,26 @@ const toFormInput = (item: AdminBakeryItem): BakeryItemFormInput => ({
   isActive: item.isActive,
 });
 
-export const BakeryItemsManager = ({ items, sites, lockedSiteId }: BakeryItemsManagerProps) => {
+export const BakeryItemsManager = ({
+  items: initialItems,
+  nextCursor: initialCursor,
+  sites,
+  lockedSiteId,
+}: BakeryItemsManagerProps) => {
   const t = useTranslations('Admin.bakery');
   const router = useRouter();
   const [editing, setEditing] = useState<Editing>(null);
+  const [items, setItems] = useState(initialItems);
+  const [nextCursor, setNextCursor] = useState(initialCursor);
+  const [loading, setLoading] = useState(false);
+
+  // router.refresh() re-renders the page with a fresh first page; adopt it.
+  const [seenItems, setSeenItems] = useState(initialItems);
+  if (seenItems !== initialItems) {
+    setSeenItems(initialItems);
+    setItems(initialItems);
+    setNextCursor(initialCursor);
+  }
   const showSiteColumn = lockedSiteId === null;
 
   const request = async (url: string, method: string, body?: BakeryItemValues) => {
@@ -59,6 +76,24 @@ export const BakeryItemsManager = ({ items, sites, lockedSiteId }: BakeryItemsMa
     });
     if (!response.ok) throw new Error(String(response.status));
     router.refresh();
+  };
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `/api/admin/bakery-items?cursor=${encodeURIComponent(nextCursor)}`,
+      );
+      if (!response.ok) throw new Error(String(response.status));
+      const page: { items: AdminBakeryItem[]; nextCursor: string | null } = await response.json();
+      setItems((current) => [...current, ...page.items]);
+      setNextCursor(page.nextCursor);
+    } catch {
+      toast.error(t('loadMoreFailed'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const save = async (values: BakeryItemValues) => {
@@ -183,6 +218,19 @@ export const BakeryItemsManager = ({ items, sites, lockedSiteId }: BakeryItemsMa
           </Table>
           {items.length === 0 && (
             <p className="text-muted-foreground py-8 text-center text-sm">{t('empty')}</p>
+          )}
+          {nextCursor && (
+            <div className="flex justify-center pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11 min-w-32"
+                onClick={loadMore}
+                disabled={loading}
+              >
+                {t('loadMore')}
+              </Button>
+            </div>
           )}
         </CardContent>
       </Card>

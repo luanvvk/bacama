@@ -1382,7 +1382,9 @@
       "empty": "Chưa có món bánh nào.",
       "saved": "Đã lưu món bánh.",
       "deactivated": "Đã ngừng bán món bánh.",
-      "saveFailed": "Không thể lưu món bánh."
+      "saveFailed": "Không thể lưu món bánh.",
+      "loadMore": "Tải thêm",
+      "loadMoreFailed": "Không thể tải thêm."
     },
     "catalog": {
       "eyebrow": "Danh mục",
@@ -1416,7 +1418,9 @@
       "statusLive": "Đang bán",
       "edit": "Sửa",
       "view": "Xem",
-      "noMatch": "Không có sản phẩm nào khớp bộ lọc."
+      "noMatch": "Không có sản phẩm nào khớp bộ lọc.",
+      "loadMore": "Tải thêm",
+      "loadMoreFailed": "Không thể tải thêm."
     },
     "editor": {
       "breadcrumb": "Danh mục",

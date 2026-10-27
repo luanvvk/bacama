@@ -6,7 +6,7 @@ import { getSites } from '@/services/sites/get-sites';
 
 const AdminBakeryPage = async () => {
   const user = await requireRoles(['staff', 'admin']);
-  const [items, sites] = await Promise.all([
+  const [{ items, nextCursor }, sites] = await Promise.all([
     getAdminBakeryItems(siteScopeFilter(user)),
     getSites('en'),
   ]);
@@ -15,6 +15,7 @@ const AdminBakeryPage = async () => {
   return (
     <BakeryItemsManager
       items={items}
+      nextCursor={nextCursor}
       sites={sites
         .filter((site) => lockedSiteId === null || site.id === lockedSiteId)
         .map((site) => ({ id: site.id, name: site.name }))}

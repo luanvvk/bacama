@@ -1,6 +1,7 @@
 import type { Prisma } from '@/generated/prisma/client';
 import { toHcmDateString } from '@/lib/hcm-date';
 import { prisma } from '@/lib/prisma';
+import { pageArgs, toPage, type Page, type PageParams } from '@/services/paging';
 
 import type { AdminProduct } from './admin-product';
 
@@ -23,6 +24,18 @@ export const getAdminProducts = async (): Promise<AdminProduct[]> => {
   const products = await prisma.product.findMany({ orderBy: { nameEn: 'asc' } });
 
   return products.map(mapAdminProduct);
+};
+
+export const getAdminProductsPage = async (
+  params: PageParams = {},
+): Promise<Page<AdminProduct>> => {
+  const rows = await prisma.product.findMany({
+    orderBy: [{ nameEn: 'asc' }, { id: 'asc' }],
+    ...pageArgs(params),
+  });
+  const { items, nextCursor } = toPage(rows, params);
+
+  return { items: items.map(mapAdminProduct), nextCursor };
 };
 
 export const getAdminProductBySlug = async (slug: string): Promise<AdminProduct | null> => {

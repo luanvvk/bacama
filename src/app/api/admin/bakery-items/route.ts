@@ -2,9 +2,21 @@ import { revalidatePath } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { requireApiRole } from '@/lib/auth/api-guards';
-import { canAccessSite } from '@/lib/auth/scoped';
+import { canAccessSite, siteScopeFilter } from '@/lib/auth/scoped';
 import { bakeryItemSchema } from '@/lib/schemas/bakery-item';
-import { createBakeryItem } from '@/services/catalog/bakery-item-admin';
+import { createBakeryItem, getAdminBakeryItems } from '@/services/catalog/bakery-item-admin';
+
+export const GET = async (request: NextRequest) => {
+  const guard = await requireApiRole(['staff', 'admin']);
+  if (!guard.ok) return guard.response;
+
+  const { searchParams } = request.nextUrl;
+  const page = await getAdminBakeryItems(siteScopeFilter(guard.user), {
+    cursor: searchParams.get('cursor'),
+  });
+
+  return NextResponse.json(page);
+};
 
 export const POST = async (request: NextRequest) => {
   const guard = await requireApiRole(['staff', 'admin']);

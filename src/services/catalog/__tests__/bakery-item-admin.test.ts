@@ -91,6 +91,21 @@ describe('deactivateBakeryItem', () => {
 });
 
 describe('getAdminBakeryItems', () => {
+  it('pages with a cursor and reports the next one', async () => {
+    db.findMany.mockResolvedValue([
+      { ...VALUES, id: 'i1', slug: 'a', site: { nameEn: 'S' } },
+      { ...VALUES, id: 'i2', slug: 'b', site: { nameEn: 'S' } },
+    ]);
+
+    const result = await getAdminBakeryItems({}, { take: 1, cursor: 'i0' });
+
+    expect(db.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ take: 2, cursor: { id: 'i0' }, skip: 1 }),
+    );
+    expect(result.items.map((item) => item.id)).toEqual(['i1']);
+    expect(result.nextCursor).toBe('i1');
+  });
+
   it('applies the site scope and flattens the site name', async () => {
     db.findMany.mockResolvedValue([
       { ...VALUES, id: 'i1', slug: 's', site: { nameEn: 'Site One' } },
@@ -101,7 +116,8 @@ describe('getAdminBakeryItems', () => {
     expect(db.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { siteId: 'site-1' } }),
     );
-    expect(result[0]).toMatchObject({
+    expect(result.nextCursor).toBeNull();
+    expect(result.items[0]).toMatchObject({
       id: 'i1',
       siteName: 'Site One',
       nameEn: 'Garlic Butter Roll',

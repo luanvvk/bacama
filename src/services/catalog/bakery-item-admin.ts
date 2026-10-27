@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import type { BakeryItemValues } from '@/lib/schemas/bakery-item';
+import { pageArgs, toPage, type Page, type PageParams } from '@/services/paging';
 
 export const slugify = (text: string): string =>
   text
@@ -64,29 +65,35 @@ export interface AdminBakeryItem {
   isActive: boolean;
 }
 
-export const getAdminBakeryItems = async (scope: {
-  siteId?: string;
-}): Promise<AdminBakeryItem[]> => {
-  const items = await prisma.bakeryItem.findMany({
+export const getAdminBakeryItems = async (
+  scope: { siteId?: string },
+  params: PageParams = {},
+): Promise<Page<AdminBakeryItem>> => {
+  const rows = await prisma.bakeryItem.findMany({
     where: scope,
     include: { site: { select: { nameEn: true } } },
-    orderBy: [{ siteId: 'asc' }, { createdAt: 'asc' }],
+    orderBy: [{ siteId: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
+    ...pageArgs(params),
   });
+  const { items, nextCursor } = toPage(rows, params);
 
-  return items.map(({ site, ...item }) => ({
-    id: item.id,
-    slug: item.slug,
-    siteId: item.siteId,
-    siteName: site.nameEn,
-    nameVi: item.nameVi,
-    nameEn: item.nameEn,
-    descriptionVi: item.descriptionVi,
-    descriptionEn: item.descriptionEn,
-    priceVnd: item.priceVnd,
-    bakesAt: item.bakesAt,
-    sellOutBy: item.sellOutBy,
-    handoff: item.handoff,
-    handoffUrl: item.handoffUrl,
-    isActive: item.isActive,
-  }));
+  return {
+    nextCursor,
+    items: items.map(({ site, ...item }) => ({
+      id: item.id,
+      slug: item.slug,
+      siteId: item.siteId,
+      siteName: site.nameEn,
+      nameVi: item.nameVi,
+      nameEn: item.nameEn,
+      descriptionVi: item.descriptionVi,
+      descriptionEn: item.descriptionEn,
+      priceVnd: item.priceVnd,
+      bakesAt: item.bakesAt,
+      sellOutBy: item.sellOutBy,
+      handoff: item.handoff,
+      handoffUrl: item.handoffUrl,
+      isActive: item.isActive,
+    })),
+  };
 };

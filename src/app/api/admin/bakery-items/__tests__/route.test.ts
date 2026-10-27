@@ -2,14 +2,17 @@
 import { revalidatePath } from 'next/cache';
 import { NextRequest } from 'next/server';
 
-import { POST } from '../route';
+import { GET, POST } from '../route';
 import { getAuthProvider } from '@/lib/providers/auth';
-import { createBakeryItem } from '@/services/catalog/bakery-item-admin';
+import { createBakeryItem, getAdminBakeryItems } from '@/services/catalog/bakery-item-admin';
 
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 jest.mock('@/lib/providers/auth', () => ({ getAuthProvider: jest.fn() }));
 jest.mock('@/lib/prisma', () => ({ prisma: {} }));
-jest.mock('@/services/catalog/bakery-item-admin', () => ({ createBakeryItem: jest.fn() }));
+jest.mock('@/services/catalog/bakery-item-admin', () => ({
+  createBakeryItem: jest.fn(),
+  getAdminBakeryItems: jest.fn(),
+}));
 
 const getCurrentUser = jest.fn();
 const create = jest.mocked(createBakeryItem);
@@ -44,6 +47,29 @@ beforeEach(() => {
 });
 
 afterEach(() => jest.resetAllMocks());
+
+describe('GET /api/admin/bakery-items', () => {
+  const list = jest.mocked(getAdminBakeryItems);
+  const get = (query = '') =>
+    GET(new NextRequest(`http://localhost/api/admin/bakery-items${query}`));
+
+  it('returns 401 when signed out', async () => {
+    getCurrentUser.mockResolvedValue(null);
+
+    expect((await get()).status).toBe(401);
+    expect(list).not.toHaveBeenCalled();
+  });
+
+  it('scopes staff to their home site and passes the cursor', async () => {
+    getCurrentUser.mockResolvedValue({ ...USER, role: 'staff' });
+    list.mockResolvedValue({ items: [], nextCursor: 'b9' });
+
+    const response = await get('?cursor=b5');
+
+    expect(list).toHaveBeenCalledWith({ siteId: 'site-1' }, { cursor: 'b5' });
+    expect(await response.json()).toEqual({ items: [], nextCursor: 'b9' });
+  });
+});
 
 describe('POST /api/admin/bakery-items', () => {
   it('returns 401 when signed out', async () => {

@@ -1386,7 +1386,9 @@
       "empty": "No bakery items yet.",
       "saved": "Bakery item saved.",
       "deactivated": "Bakery item deactivated.",
-      "saveFailed": "Could not save the bakery item."
+      "saveFailed": "Could not save the bakery item.",
+      "loadMore": "Load more",
+      "loadMoreFailed": "Could not load more."
     },
     "catalog": {
       "eyebrow": "Catalogue",
@@ -1420,7 +1422,9 @@
       "statusLive": "Live",
       "edit": "Edit",
       "view": "View",
-      "noMatch": "No products match these filters."
+      "noMatch": "No products match these filters.",
+      "loadMore": "Load more",
+      "loadMoreFailed": "Could not load more."
     },
     "editor": {
       "breadcrumb": "Catalogue",
