@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 
+import {
+  createOrderAccessToken,
+  ORDER_ACCESS_MAX_AGE_SECONDS,
+  orderAccessCookieName,
+} from '@/lib/order-access';
 import { getAuthProvider } from '@/lib/providers/auth';
 import { createOrder, OrderValidationError } from '@/services/orders/create-order';
 
@@ -37,7 +42,15 @@ export const POST = async (request: NextRequest) => {
 
   try {
     const order = await createOrder({ ...parsed.data, userId });
-    return NextResponse.json(order, { status: 201 });
+    const response = NextResponse.json(order, { status: 201 });
+    response.cookies.set(orderAccessCookieName(order.ref), createOrderAccessToken(order.ref), {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/checkout',
+      maxAge: ORDER_ACCESS_MAX_AGE_SECONDS,
+    });
+    return response;
   } catch (error) {
     if (error instanceof OrderValidationError) {
       return NextResponse.json({ message: error.message }, { status: 400 });

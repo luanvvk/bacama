@@ -3,14 +3,25 @@ import type { CheckoutOrder } from '@/stores/checkout';
 
 import { mapOrderToCheckoutOrder } from './map-order';
 
+export interface OrderViewer {
+  userId: string | null;
+  /** The visitor holds a valid signed access cookie for this ref. */
+  hasAccessCookie: boolean;
+}
+
 /**
- * Ref-alone lookup for the checkout confirmation page. Safe without a phone
- * check because `ref` is a fresh 32-bit-random token the browser only sees
- * once, immediately after placing the order — unlike the guest order
- * tracking route (getOrderForTracking), which must assume the ref could be
- * typed in or shared later.
+ * Lookup for the checkout confirmation page. The order carries customer PII,
+ * so it is only returned to its owner: the signed-in user who placed it, or
+ * the browser that placed it (signed cookie set at order creation). Anyone
+ * else gets null, same as "no such order".
  */
-export const getOrderByRef = async (ref: string): Promise<CheckoutOrder | null> => {
+export const getOrderByRef = async (
+  ref: string,
+  viewer: OrderViewer,
+): Promise<CheckoutOrder | null> => {
   const order = await prisma.order.findUnique({ where: { ref }, include: { items: true } });
-  return order ? mapOrderToCheckoutOrder(order) : null;
+  if (!order) return null;
+
+  const isOwner = viewer.hasAccessCookie || (!!viewer.userId && order.userId === viewer.userId);
+  return isOwner ? mapOrderToCheckoutOrder(order) : null;
 };

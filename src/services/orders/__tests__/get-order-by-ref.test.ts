@@ -8,7 +8,10 @@ import { getOrderByRef } from '../get-order-by-ref';
 
 const mockFindUnique = prisma.order.findUnique as jest.Mock;
 
+const COOKIE_VIEWER = { userId: null, hasAccessCookie: true };
+
 const ORDER = {
+  userId: 'user-1',
   ref: 'BCM-ABCD1234',
   customerName: 'Test Buyer',
   phone: '0905999888',
@@ -39,7 +42,7 @@ describe('getOrderByRef', () => {
   it('queries by ref, including items', async () => {
     mockFindUnique.mockResolvedValue(null);
 
-    await getOrderByRef('BCM-ABCD1234');
+    await getOrderByRef('BCM-ABCD1234', COOKIE_VIEWER);
 
     expect(mockFindUnique).toHaveBeenCalledWith({
       where: { ref: 'BCM-ABCD1234' },
@@ -50,13 +53,13 @@ describe('getOrderByRef', () => {
   it('returns null when no order matches', async () => {
     mockFindUnique.mockResolvedValue(null);
 
-    await expect(getOrderByRef('nope')).resolves.toBeNull();
+    await expect(getOrderByRef('nope', COOKIE_VIEWER)).resolves.toBeNull();
   });
 
   it('maps a found order to the CheckoutOrder shape', async () => {
     mockFindUnique.mockResolvedValue(ORDER);
 
-    const result = await getOrderByRef('BCM-ABCD1234');
+    const result = await getOrderByRef('BCM-ABCD1234', COOKIE_VIEWER);
 
     expect(result).toEqual({
       orderRef: 'BCM-ABCD1234',
@@ -86,7 +89,7 @@ describe('getOrderByRef', () => {
   it('maps deliveryMode pickup to deliveryOption pickup', async () => {
     mockFindUnique.mockResolvedValue({ ...ORDER, deliveryMode: 'pickup' });
 
-    const result = await getOrderByRef('BCM-ABCD1234');
+    const result = await getOrderByRef('BCM-ABCD1234', COOKIE_VIEWER);
 
     expect(result?.shipping.deliveryOption).toBe('pickup');
   });
@@ -101,8 +104,35 @@ describe('getOrderByRef', () => {
   ] as const)('returns the stored payment method %s as %s', async (stored, expected) => {
     mockFindUnique.mockResolvedValue({ ...ORDER, paymentProvider: stored });
 
-    const result = await getOrderByRef('BCM-ABCD1234');
+    const result = await getOrderByRef('BCM-ABCD1234', COOKIE_VIEWER);
 
     expect(result?.paymentMethod).toBe(expected);
+  });
+
+  it('returns the order to the signed-in user who placed it', async () => {
+    mockFindUnique.mockResolvedValue(ORDER);
+
+    const result = await getOrderByRef('BCM-ABCD1234', {
+      userId: 'user-1',
+      hasAccessCookie: false,
+    });
+
+    expect(result?.orderRef).toBe('BCM-ABCD1234');
+  });
+
+  it('returns null for a different signed-in user', async () => {
+    mockFindUnique.mockResolvedValue(ORDER);
+
+    await expect(
+      getOrderByRef('BCM-ABCD1234', { userId: 'user-2', hasAccessCookie: false }),
+    ).resolves.toBeNull();
+  });
+
+  it('returns null for a guest without the access cookie', async () => {
+    mockFindUnique.mockResolvedValue({ ...ORDER, userId: null });
+
+    await expect(
+      getOrderByRef('BCM-ABCD1234', { userId: null, hasAccessCookie: false }),
+    ).resolves.toBeNull();
   });
 });

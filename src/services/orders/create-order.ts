@@ -36,7 +36,7 @@ export interface CreateOrderInput {
   locale: 'vi' | 'en';
 }
 
-const generateOrderRef = () => `BCM-${randomBytes(4).toString('hex').toUpperCase()}`;
+const generateOrderRef = () => `BCM-${randomBytes(8).toString('hex').toUpperCase()}`;
 
 /**
  * Validates the cart against live prices/stock, enforces the §4.2 invariants
