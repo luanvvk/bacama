@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -85,11 +85,20 @@ export const CheckoutForm = () => {
 
   const selectedMethod = getPaymentMethod(useWatch({ control, name: 'paymentMethod' }));
 
-  useEffect(() => {
-    if (items.length === 0) router.replace('/shop');
-  }, [items.length, router]);
+  // The persisted cart rehydrates on the client; wait for it before treating
+  // an empty list as an empty cart.
+  // Never hydrates on the server, where localStorage does not exist.
+  const hydrated = useSyncExternalStore(
+    (onChange) => useCartStore.persist?.onFinishHydration(onChange) ?? (() => {}),
+    () => useCartStore.persist?.hasHydrated() ?? false,
+    () => false,
+  );
 
-  if (items.length === 0) return null;
+  useEffect(() => {
+    if (hydrated && items.length === 0) router.replace('/shop');
+  }, [hydrated, items.length, router]);
+
+  if (!hydrated || items.length === 0) return null;
 
   const onSubmit = async (values: CheckoutFormValues) => {
     const { paymentMethod, fullName, phone, email, address, province, deliveryOption, note } =

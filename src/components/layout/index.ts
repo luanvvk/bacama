@@ -1,6 +1,7 @@
 export * from './AccountMenu';
 export * from './AnnouncementBar';
 export * from './CartDrawer';
+export * from './CartHydrator';
 export * from './Container';
 export * from './Footer';
 export * from './Header';

@@ -86,3 +86,45 @@ describe('useCartTotalVnd', () => {
     expect(result.current).toBe(CROISSANT.priceVnd * 2 + BAGUETTE.priceVnd);
   });
 });
+
+describe('useCartStore quantity bounds and persistence', () => {
+  it('clamps quantity to an integer between 1 and 99', () => {
+    act(() => {
+      useCartStore.getState().addItem(CROISSANT, 98);
+      useCartStore.getState().addItem(CROISSANT, 5);
+    });
+    expect(useCartStore.getState().items[0].quantity).toBe(99);
+
+    act(() => useCartStore.getState().updateQuantity('croissant', 0));
+    expect(useCartStore.getState().items[0].quantity).toBe(1);
+    act(() => useCartStore.getState().updateQuantity('croissant', -4));
+    expect(useCartStore.getState().items[0].quantity).toBe(1);
+    act(() => useCartStore.getState().updateQuantity('croissant', NaN));
+    expect(useCartStore.getState().items[0].quantity).toBe(1);
+    act(() => useCartStore.getState().updateQuantity('croissant', 2.7));
+    expect(useCartStore.getState().items[0].quantity).toBe(2);
+  });
+
+  it('persists items (not isOpen) and restores them on rehydrate', async () => {
+    act(() => {
+      useCartStore.getState().addItem(CROISSANT, 2);
+      useCartStore.getState().open();
+    });
+    const saved = JSON.parse(localStorage.getItem('bacama-cart-v1') as string);
+    expect(saved.state).toEqual({ items: [{ ...CROISSANT, quantity: 2 }] });
+
+    useCartStore.setState({ items: [] });
+    localStorage.setItem('bacama-cart-v1', JSON.stringify(saved));
+    await useCartStore.persist.rehydrate();
+    expect(useCartStore.getState().items).toEqual([{ ...CROISSANT, quantity: 2 }]);
+  });
+
+  it('clamps quantities restored from storage', async () => {
+    localStorage.setItem(
+      'bacama-cart-v1',
+      JSON.stringify({ state: { items: [{ ...CROISSANT, quantity: 500 }] }, version: 1 }),
+    );
+    await useCartStore.persist.rehydrate();
+    expect(useCartStore.getState().items[0].quantity).toBe(99);
+  });
+});
