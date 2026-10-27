@@ -1180,6 +1180,57 @@
       "forbidden": "You cannot change items at this site.",
       "duplicate": "An item with this name already exists at this site.",
       "deactivateFailed": "Could not deactivate the menu item. Try again."
+    },
+    "announcements": {
+      "title": "Announcements",
+      "description": "Short notices on the home page, per site or across all sites.",
+      "new": "New announcement",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Confirm delete",
+      "cancelDelete": "Keep",
+      "empty": "No announcements yet.",
+      "noSite": "Your account is not assigned to a site yet, so there are no announcements to manage.",
+      "allSites": "All sites",
+      "scope": "Scope",
+      "announcement": "Announcement",
+      "window": "Window",
+      "status": "Status",
+      "actions": "Actions",
+      "until": "until {date}",
+      "noEnd": "no end",
+      "createTitle": "New announcement",
+      "editTitle": "Edit announcement",
+      "statuses": {
+        "live": "Live",
+        "scheduled": "Scheduled",
+        "expired": "Expired",
+        "draft": "Draft"
+      },
+      "fields": {
+        "siteId": "Show on",
+        "titleVi": "Title (Vietnamese)",
+        "titleEn": "Title (English)",
+        "bodyVi": "Message (Vietnamese)",
+        "bodyEn": "Message (English)",
+        "startsAt": "Starts (Vietnam time)",
+        "endsAt": "Ends (Vietnam time, optional)",
+        "isActive": "Published"
+      },
+      "validation": {
+        "required": "This field is required.",
+        "titleMax": "Keep it under 160 characters.",
+        "bodyMax": "Keep it under 2000 characters.",
+        "endsAfterStart": "The end must be after the start."
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "Announcement saved.",
+      "deleted": "Announcement deleted.",
+      "saveFailed": "Could not save the announcement. Try again.",
+      "deleteFailed": "Could not delete the announcement. Try again.",
+      "forbidden": "You cannot change announcements for this site.",
+      "notFound": "This announcement no longer exists."
     }
   }
 }

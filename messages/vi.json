@@ -1176,6 +1176,57 @@
       "forbidden": "Bạn không thể thay đổi món ở cơ sở này.",
       "duplicate": "Món cùng tên đã tồn tại ở cơ sở này.",
       "deactivateFailed": "Không thể ngừng bán món. Vui lòng thử lại."
+    },
+    "announcements": {
+      "title": "Thông báo",
+      "description": "Thông báo ngắn trên trang chủ, theo từng cơ sở hoặc toàn bộ cơ sở.",
+      "new": "Thông báo mới",
+      "edit": "Sửa",
+      "delete": "Xóa",
+      "confirmDelete": "Xác nhận xóa",
+      "cancelDelete": "Giữ lại",
+      "empty": "Chưa có thông báo nào.",
+      "noSite": "Tài khoản của bạn chưa được gán cơ sở nên chưa có thông báo để quản lý.",
+      "allSites": "Tất cả cơ sở",
+      "scope": "Phạm vi",
+      "announcement": "Thông báo",
+      "window": "Thời gian",
+      "status": "Trạng thái",
+      "actions": "Thao tác",
+      "until": "đến {date}",
+      "noEnd": "không kết thúc",
+      "createTitle": "Thông báo mới",
+      "editTitle": "Sửa thông báo",
+      "statuses": {
+        "live": "Đang hiển thị",
+        "scheduled": "Đã lên lịch",
+        "expired": "Hết hạn",
+        "draft": "Nháp"
+      },
+      "fields": {
+        "siteId": "Hiển thị tại",
+        "titleVi": "Tiêu đề (tiếng Việt)",
+        "titleEn": "Tiêu đề (tiếng Anh)",
+        "bodyVi": "Nội dung (tiếng Việt)",
+        "bodyEn": "Nội dung (tiếng Anh)",
+        "startsAt": "Bắt đầu (giờ Việt Nam)",
+        "endsAt": "Kết thúc (giờ Việt Nam, tùy chọn)",
+        "isActive": "Đã đăng"
+      },
+      "validation": {
+        "required": "Trường này là bắt buộc.",
+        "titleMax": "Tối đa 160 ký tự.",
+        "bodyMax": "Tối đa 2000 ký tự.",
+        "endsAfterStart": "Thời điểm kết thúc phải sau thời điểm bắt đầu."
+      },
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "saved": "Đã lưu thông báo.",
+      "deleted": "Đã xóa thông báo.",
+      "saveFailed": "Không thể lưu thông báo. Vui lòng thử lại.",
+      "deleteFailed": "Không thể xóa thông báo. Vui lòng thử lại.",
+      "forbidden": "Bạn không thể thay đổi thông báo của cơ sở này.",
+      "notFound": "Thông báo này không còn tồn tại."
     }
   }
 }

@@ -1,7 +1,9 @@
 import { requireRoles } from '@/lib/auth/guards';
+import { getAdminAnnouncements } from '@/services/sites/get-admin-announcements';
 import { getAdminMenuItems } from '@/services/catalog/get-admin-menu-items';
 import { getSites } from '@/services/sites/get-sites';
 
+import AdminAnnouncementsPage from '../announcements/page';
 import AdminCatalogPage from '../catalog/page';
 import AdminCoursesPage from '../courses/page';
 import AdminMenuPage from '../menu/page';
@@ -13,6 +15,12 @@ jest.mock('@/lib/auth/guards', () => ({
 
 jest.mock('next-intl/server', () => ({ getTranslations: jest.fn() }));
 jest.mock('@/services/catalog/get-admin-menu-items', () => ({ getAdminMenuItems: jest.fn() }));
+jest.mock('@/services/sites/get-admin-announcements', () => ({
+  getAdminAnnouncements: jest.fn(),
+}));
+jest.mock('../announcements/_components/AnnouncementsManager', () => ({
+  AnnouncementsManager: () => null,
+}));
 jest.mock('@/services/sites/get-sites', () => ({ getSites: jest.fn() }));
 jest.mock('../menu/_components/MenuItemsManager', () => ({ MenuItemsManager: () => null }));
 
@@ -36,6 +44,16 @@ describe('admin page guards', () => {
     (getAdminMenuItems as jest.Mock).mockResolvedValue([]);
 
     await AdminMenuPage();
+
+    expect(requireRoles).toHaveBeenCalledWith(['staff', 'admin']);
+  });
+
+  it('limits announcements to staff and admin', async () => {
+    jest.mocked(requireRoles).mockResolvedValue({ role: 'admin', homeSiteId: null } as never);
+    (getSites as jest.Mock).mockResolvedValue([]);
+    (getAdminAnnouncements as jest.Mock).mockResolvedValue([]);
+
+    await AdminAnnouncementsPage();
 
     expect(requireRoles).toHaveBeenCalledWith(['staff', 'admin']);
   });
