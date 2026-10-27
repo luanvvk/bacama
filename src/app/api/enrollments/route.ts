@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 
 import { getAuthProvider } from '@/lib/providers/auth';
+import { hitRateLimit, type RateLimit } from '@/lib/rate-limit';
 import {
   CourseUnavailableError,
   enrolInCourse,
@@ -12,6 +13,7 @@ import {
   AlreadyEnrolledError,
   SessionFullError,
   SessionUnavailableError,
+  TooManyHoldsError,
 } from '@/services/enrollments/hold-seat';
 
 const enrolSchema = z.object({
@@ -26,6 +28,9 @@ const BAD_REQUEST_ERRORS = [
   SessionUnavailableError,
 ];
 
+// Every attempt counts, so throwaway accounts cannot cycle holds faster than they lapse.
+const USER_LIMIT: RateLimit = { max: 10, windowMs: 60 * 60_000 };
+
 export const POST = async (request: NextRequest) => {
   const user = await getAuthProvider().getCurrentUser();
   if (!user) {
@@ -36,6 +41,14 @@ export const POST = async (request: NextRequest) => {
   const parsed = enrolSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
+  }
+
+  const hit = await hitRateLimit(`enrol:user:${user.id}`, USER_LIMIT);
+  if (!hit.allowed) {
+    return NextResponse.json(
+      { error: 'rate_limited' },
+      { status: 429, headers: { 'Retry-After': String(hit.retryAfterSeconds) } },
+    );
   }
 
   try {
@@ -54,6 +67,9 @@ export const POST = async (request: NextRequest) => {
     }
     if (error instanceof SessionFullError) {
       return NextResponse.json({ error: 'session_full' }, { status: 409 });
+    }
+    if (error instanceof TooManyHoldsError) {
+      return NextResponse.json({ error: 'too_many_holds' }, { status: 429 });
     }
     if (BAD_REQUEST_ERRORS.some((ErrorClass) => error instanceof ErrorClass)) {
       return NextResponse.json({ error: 'invalid_request' }, { status: 400 });

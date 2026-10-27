@@ -105,6 +105,16 @@ describe('enrolInCourse', () => {
     expect(holdSeat).toHaveBeenCalledWith({ userId: 'u1', courseId: 'c1', sessionId: 's1' });
   });
 
+  it('maps a P2002 from the seat hold to AlreadyEnrolledError', async () => {
+    course.findFirst.mockResolvedValue({ format: 'in_person', priceVnd: 1 });
+    (holdSeat as jest.Mock).mockRejectedValue(
+      Object.assign(new Error('unique'), { code: 'P2002' }),
+    );
+    await expect(enrolInCourse({ ...args, sessionId: 's1' })).rejects.toBeInstanceOf(
+      AlreadyEnrolledError,
+    );
+  });
+
   it('requires a session for in-person courses', async () => {
     course.findFirst.mockResolvedValue({ format: 'in_person', priceVnd: 1 });
     await expect(enrolInCourse(args)).rejects.toBeInstanceOf(SessionRequiredError);

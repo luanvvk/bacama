@@ -44,7 +44,12 @@ export const enrolInCourse = async ({
 
   if (course.format !== 'online') {
     if (!sessionId) throw new SessionRequiredError();
-    return holdSeat({ userId, courseId, sessionId });
+    try {
+      return await holdSeat({ userId, courseId, sessionId });
+    } catch (error) {
+      if (isUniqueViolation(error)) throw new AlreadyEnrolledError();
+      throw error;
+    }
   }
   if (sessionId) throw new SessionNotAllowedError();
 
