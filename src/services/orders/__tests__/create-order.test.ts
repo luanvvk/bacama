@@ -255,19 +255,26 @@ describe('createOrder', () => {
   it.each([
     ['zalopay', 'zalopay'],
     ['momo', 'momo'],
-    ['vnpay', 'vnpay_qr'],
-    ['bank', 'bank_transfer'],
+    ['vnpay_qr', 'vnpay_qr'],
+    ['bank_transfer', 'bank_transfer'],
     ['card', 'card'],
     ['cod', 'cod'],
-  ] as const)('maps checkout payment method %s to the Prisma enum %s', async (input, expected) => {
-    mockProductFindMany.mockResolvedValue([PRODUCT]);
+  ] as const)(
+    'stores checkout payment method %s as the Prisma enum %s',
+    async (input, expected) => {
+      mockProductFindMany.mockResolvedValue([PRODUCT]);
 
-    await createOrder({ ...BASE_INPUT, paymentMethod: input, items: [{ id: 'p1', quantity: 1 }] });
+      await createOrder({
+        ...BASE_INPUT,
+        paymentMethod: input,
+        items: [{ id: 'p1', quantity: 1 }],
+      });
 
-    expect(mockOrderCreate).toHaveBeenCalledWith(
-      expect.objectContaining({ data: expect.objectContaining({ paymentProvider: expected }) }),
-    );
-  });
+      expect(mockOrderCreate).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ paymentProvider: expected }) }),
+      );
+    },
+  );
 
   it('returns the created order id and ref', async () => {
     mockProductFindMany.mockResolvedValue([PRODUCT]);

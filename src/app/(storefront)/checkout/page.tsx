@@ -1,6 +1,8 @@
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 
+import { getAvailablePaymentMethods } from '@/lib/providers/payment';
+
 import { CheckoutForm } from './_components/CheckoutForm';
 import { CheckoutSteps } from './_components/CheckoutSteps';
 
@@ -10,7 +12,7 @@ const CheckoutPage = () => (
       <Container className="py-8">
         <CheckoutSteps currentStep={1} />
         <div className="mt-6">
-          <CheckoutForm />
+          <CheckoutForm availableMethods={getAvailablePaymentMethods()} />
         </div>
       </Container>
     </main>

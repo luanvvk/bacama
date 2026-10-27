@@ -171,7 +171,7 @@ describe('PaymentProcessing', () => {
   });
 
   it('shows bank details; the transfer button goes to order tracking, not done', () => {
-    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'bank' } });
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'bank_transfer' } });
 
     render(<PaymentProcessing orderRef="BCM-2419" />);
     expect(screen.getByText('BACAMA COFFEE')).toBeInTheDocument();

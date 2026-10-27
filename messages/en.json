@@ -439,13 +439,13 @@
       "meta": "Free",
       "cta": "Pay with MoMo"
     },
-    "vnpay": {
+    "vnpay_qr": {
       "label": "VNPay QR",
       "description": "Scan with any banking app",
       "meta": "Free",
       "cta": "Generate a VNPay QR"
     },
-    "bank": {
+    "bank_transfer": {
       "label": "Bank transfer",
       "description": "Vietcombank · Techcombank · BIDV",
       "meta": "Free",

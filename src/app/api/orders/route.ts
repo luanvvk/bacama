@@ -18,7 +18,7 @@ const createOrderSchema = z.object({
   phone: z.string().min(8).max(20),
   email: z.string().email().max(254),
   note: z.string().max(1000).optional(),
-  paymentMethod: z.enum(['zalopay', 'momo', 'vnpay', 'bank', 'card', 'cod']),
+  paymentMethod: z.enum(['zalopay', 'momo', 'vnpay_qr', 'bank_transfer', 'card', 'cod']),
   deliveryOption: z.string().min(1).max(100),
   address: z.string().max(500).optional(),
   province: z.string().max(100).optional(),

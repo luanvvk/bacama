@@ -61,3 +61,14 @@ describe('payment factory routing', () => {
     );
   });
 });
+
+describe('getAvailablePaymentMethods', () => {
+  it('lists only registered methods', () => {
+    const f = createPaymentFactory({ cod: codProvider, momo: stub() });
+    expect(f.getAvailablePaymentMethods()).toEqual(['cod', 'momo']);
+  });
+
+  it('is empty when nothing is registered', () => {
+    expect(createPaymentFactory({}).getAvailablePaymentMethods()).toEqual([]);
+  });
+});

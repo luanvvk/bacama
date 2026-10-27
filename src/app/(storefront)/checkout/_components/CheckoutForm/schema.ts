@@ -11,7 +11,7 @@ export interface CheckoutValidationMessages {
 
 export const buildCheckoutSchema = (messages: CheckoutValidationMessages) =>
   z.object({
-    paymentMethod: z.enum(['zalopay', 'momo', 'vnpay', 'bank', 'card', 'cod']),
+    paymentMethod: z.enum(['zalopay', 'momo', 'vnpay_qr', 'bank_transfer', 'card', 'cod']),
     fullName: z.string().min(1, messages.fullName),
     phone: z.string().min(8, messages.phone),
     email: z.string().email(messages.email),
