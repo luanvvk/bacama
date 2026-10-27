@@ -1,6 +1,6 @@
 /** @jest-environment node */
 jest.mock('@/lib/prisma', () => ({
-  prisma: { order: { updateMany: jest.fn() } },
+  prisma: { order: { updateMany: jest.fn(), findMany: jest.fn() } },
 }));
 
 import { prisma } from '@/lib/prisma';
@@ -8,6 +8,7 @@ import { prisma } from '@/lib/prisma';
 import { GET } from '../route';
 
 const mockUpdateMany = prisma.order.updateMany as jest.Mock;
+const mockFindMany = prisma.order.findMany as jest.Mock;
 
 const call = (authorization?: string) =>
   GET(
@@ -47,8 +48,9 @@ describe('GET /api/cron/expire-pending-orders', () => {
 
   it('runs the sweep with the right secret', async () => {
     mockUpdateMany.mockResolvedValue({ count: 2 });
+    mockFindMany.mockResolvedValue([]);
     const res = await call('Bearer s3cret');
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ expired: 2 });
+    expect(await res.json()).toEqual({ expired: 2, expiredCod: 0 });
   });
 });

@@ -1,6 +1,6 @@
 # Abandoned checkout test plan
 
-Non-COD orders are created as `pending` (`createOrder`). Stock is only decremented when the order moves to `paid` (`markOrderPaid`), so a `pending` order holds no stock. `GET /api/cron/expire-pending-orders` (daily, bearer `CRON_SECRET`) sets `pending` orders older than 24 h (`PENDING_ORDER_TTL_MS`) to `failed`.
+Non-COD orders are created as `pending` (`createOrder`). Stock is only decremented when the order moves to `paid` (`markOrderPaid`), so a `pending` order holds no stock. `GET /api/cron/expire-pending-orders` (daily, bearer `CRON_SECRET`) sets `pending` orders older than 24 h (`PENDING_ORDER_TTL_MS`) to `failed`. The same route also cancels `awaiting_cod` orders older than `COD_ORDER_TTL_DAYS` (default 3) and returns their stock.
 
 Test names below are Jest tests; `manual` means checked by hand against a deployment.
 

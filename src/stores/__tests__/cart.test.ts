@@ -88,12 +88,12 @@ describe('useCartTotalVnd', () => {
 });
 
 describe('useCartStore quantity bounds and persistence', () => {
-  it('clamps quantity to an integer between 1 and 99', () => {
+  it('clamps quantity to an integer between 1 and 20', () => {
     act(() => {
       useCartStore.getState().addItem(CROISSANT, 98);
       useCartStore.getState().addItem(CROISSANT, 5);
     });
-    expect(useCartStore.getState().items[0].quantity).toBe(99);
+    expect(useCartStore.getState().items[0].quantity).toBe(20);
 
     act(() => useCartStore.getState().updateQuantity('croissant', 0));
     expect(useCartStore.getState().items[0].quantity).toBe(1);
@@ -125,6 +125,6 @@ describe('useCartStore quantity bounds and persistence', () => {
       JSON.stringify({ state: { items: [{ ...CROISSANT, quantity: 500 }] }, version: 1 }),
     );
     await useCartStore.persist.rehydrate();
-    expect(useCartStore.getState().items[0].quantity).toBe(99);
+    expect(useCartStore.getState().items[0].quantity).toBe(20);
   });
 });
