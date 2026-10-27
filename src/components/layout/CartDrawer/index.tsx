@@ -90,7 +90,7 @@ export const CartDrawer = () => {
                     <Button
                       type="button"
                       variant="ghost"
-                      size="icon-sm"
+                      size="touch-icon-sm"
                       aria-label={t('remove', { name: item.name })}
                       onClick={() => removeItem(item.id)}
                     >

@@ -100,7 +100,7 @@ export const LessonPreview = ({
         {(previousHref || nextHref) && (
           <nav aria-label={t('lessonNavLabel')} className="mt-4 flex justify-between gap-3">
             {previousHref ? (
-              <Button asChild variant="outline" size="sm">
+              <Button asChild variant="outline" size="touch-sm">
                 <Link href={previousHref}>
                   <ChevronLeft aria-hidden="true" />
                   {t('previousLesson')}
@@ -110,7 +110,7 @@ export const LessonPreview = ({
               <span />
             )}
             {nextHref && (
-              <Button asChild variant="outline" size="sm">
+              <Button asChild variant="outline" size="touch-sm">
                 <Link href={nextHref}>
                   {t('nextLesson')}
                   <ChevronRight aria-hidden="true" />

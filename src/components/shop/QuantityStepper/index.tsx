@@ -25,7 +25,7 @@ export const QuantityStepper = ({
       <Button
         type="button"
         variant="ghost"
-        size="icon-sm"
+        size="touch-icon-sm"
         aria-label={name ? t('decreaseNamed', { name }) : t('decrease')}
         disabled={value <= min}
         onClick={() => onChange(Math.max(min, value - 1))}
@@ -41,7 +41,7 @@ export const QuantityStepper = ({
       <Button
         type="button"
         variant="ghost"
-        size="icon-sm"
+        size="touch-icon-sm"
         aria-label={name ? t('increaseNamed', { name }) : t('increase')}
         disabled={value >= max}
         onClick={() => onChange(Math.min(max, value + 1))}
