@@ -11,7 +11,7 @@ const MESSAGES: Record<string, string> = {
   weightLabel: 'Weight',
   grindLabel: 'Grind for',
   addToCart: 'Add to cart',
-  buyNowZalopay: 'Buy now with ZaloPay',
+  soldOut: 'Sold out today',
   assuranceRoasted: 'Roasted, then posted. Ships within 24 hours of the batch.',
   assuranceShipping: 'GHN nationwide in 2–3 days. Free over 500,000 ₫.',
   assuranceCod: 'Cash on delivery available nationwide.',
@@ -53,5 +53,20 @@ describe('BuyBox', () => {
     render(<BuyBox product={dalatWashed} />);
 
     expect(screen.getByRole('button', { name: 'Cold brew' })).toBeDisabled();
+  });
+
+  it('disables adding to cart and shows a sold-out label when the product is sold out', async () => {
+    render(<BuyBox product={{ ...dalatWashed, soldOut: true }} />);
+
+    const button = screen.getByRole('button', { name: 'Sold out today' });
+    expect(button).toBeDisabled();
+    await userEvent.click(button);
+    expect(useCartStore.getState().items).toHaveLength(0);
+  });
+
+  it('does not render a dead ZaloPay buy-now button', () => {
+    render(<BuyBox product={dalatWashed} />);
+
+    expect(screen.queryByRole('button', { name: /zalopay/i })).not.toBeInTheDocument();
   });
 });

@@ -119,13 +119,15 @@ export const BuyBox = ({ product }: BuyBoxProps) => {
 
       <div className="flex gap-3">
         <QuantityStepper value={quantity} onChange={setQuantity} />
-        <Button type="button" className="flex-1" onClick={handleAddToCart}>
-          {t('addToCart')}
+        <Button
+          type="button"
+          className="flex-1"
+          disabled={product.soldOut}
+          onClick={handleAddToCart}
+        >
+          {product.soldOut ? t('soldOut') : t('addToCart')}
         </Button>
       </div>
-      <Button type="button" variant="outline" className="mt-3 w-full">
-        {t('buyNowZalopay')}
-      </Button>
 
       <div className="mt-6 flex flex-col gap-3 border-t pt-4">
         {assurances.map(({ icon: Icon, text }) => (
