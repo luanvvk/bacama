@@ -59,39 +59,6 @@ export const ADMIN_NAV: AdminNavSection[] = [
   },
 ];
 
-export interface KpiTile {
-  label: string;
-  value: string;
-  delta: string;
-  deltaDirection: 'up' | 'down';
-  detail: string;
-}
-
-export const KPI_TILES: KpiTile[] = [
-  {
-    label: 'Online orders',
-    value: '14',
-    delta: '+3',
-    deltaDirection: 'up',
-    detail: 'vs yesterday',
-  },
-  { label: 'Online revenue', value: '4.2 tr ₫', delta: '+11%', deltaDirection: 'up', detail: '' },
-  {
-    label: 'Awaiting despatch',
-    value: '9',
-    delta: '',
-    deltaDirection: 'up',
-    detail: 'GHN collects at 16:00',
-  },
-  {
-    label: 'Course sign-ups',
-    value: '6',
-    delta: '−2',
-    deltaDirection: 'down',
-    detail: 'this week',
-  },
-];
-
 export interface AdminOrderRow {
   ref: string;
   customer: string;
