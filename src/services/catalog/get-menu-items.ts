@@ -5,6 +5,8 @@ export interface MenuCatalogItem {
   slug: string;
   section: string;
   name: string;
+  description: string | null;
+  imageUrl: string | null;
   priceVnd: number;
 }
 
@@ -19,6 +21,8 @@ export const getMenuItems = async (): Promise<MenuCatalogItem[]> => {
     slug: item.slug,
     section: item.section,
     name: item.nameEn,
+    description: item.descriptionEn,
+    imageUrl: item.imageUrl,
     priceVnd: item.priceVnd,
   }));
 };

@@ -1212,13 +1212,19 @@
         "nameEn": "Name (English)",
         "priceVnd": "Price (VND)",
         "order": "Display order",
+        "imageUrl": "Image URL (https)",
+        "descriptionVi": "Description (Vietnamese)",
+        "descriptionEn": "Description (English)",
         "isActive": "Active on the menu"
       },
       "validation": {
         "required": "This field is required.",
         "price": "Enter a whole price above 0.",
         "order": "Enter a whole number, 0 or more.",
-        "maxLength": "Keep it under 120 characters."
+        "maxLength": "Keep it under 120 characters.",
+        "https": "Enter an https:// link.",
+        "maxDescription": "Keep it under 160 characters.",
+        "maxUrl": "Keep it under 500 characters."
       },
       "save": "Save",
       "cancel": "Cancel",

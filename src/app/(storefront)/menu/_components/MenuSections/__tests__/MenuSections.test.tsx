@@ -17,6 +17,8 @@ const ESPRESSO: MenuCatalogItem = {
   slug: 'espresso',
   section: 'espresso',
   name: 'Espresso',
+  description: 'Bold espresso.',
+  imageUrl: null,
   priceVnd: 45000,
 };
 
@@ -35,6 +37,28 @@ describe('MenuSections', () => {
 
     expect(screen.getAllByText('Espresso')).toHaveLength(2);
     expect(screen.getByText('45.000 ₫')).toBeInTheDocument();
+  });
+
+  it('shows the description and a photo when the drink has one, else an initial', () => {
+    render(
+      <MenuSections
+        sections={[
+          [
+            'espresso',
+            [
+              { ...ESPRESSO, imageUrl: 'https://images.unsplash.com/photo-1' },
+              { ...ESPRESSO, id: 'm2', name: 'Latte', description: null },
+            ],
+          ],
+        ]}
+        sectionLabels={{ espresso: 'Espresso' }}
+      />,
+    );
+
+    expect(screen.getByText('Bold espresso.')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Espresso' })).toBeInTheDocument();
+    expect(screen.queryByRole('img', { name: 'Latte' })).not.toBeInTheDocument();
+    expect(screen.getByText('L')).toBeInTheDocument();
   });
 
   it('adds a drink to the cart as a menu item and opens the drawer', async () => {

@@ -36,6 +36,9 @@ describe('getMenuItems', () => {
         nameVi: 'Espresso',
         nameEn: 'Espresso',
         priceVnd: 45000,
+        imageUrl: 'https://images.unsplash.com/photo-1',
+        descriptionVi: 'Mô tả',
+        descriptionEn: 'Bold.',
         order: 0,
         isActive: true,
         createdAt: new Date('2026-08-16T00:00:00.000Z'),
@@ -46,7 +49,15 @@ describe('getMenuItems', () => {
     const result = await getMenuItems();
 
     expect(result).toEqual([
-      { id: 'm1', slug: 'espresso', section: 'espresso', name: 'Espresso', priceVnd: 45000 },
+      {
+        id: 'm1',
+        slug: 'espresso',
+        section: 'espresso',
+        name: 'Espresso',
+        description: 'Bold.',
+        imageUrl: 'https://images.unsplash.com/photo-1',
+        priceVnd: 45000,
+      },
     ]);
   });
 });

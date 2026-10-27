@@ -54,8 +54,22 @@ describe('MenuItemForm', () => {
       nameVi: 'Trà',
       nameEn: 'Tea',
       priceVnd: 45000,
+      imageUrl: null,
+      descriptionVi: null,
+      descriptionEn: null,
       order: 0,
     });
     expect(refresh).toHaveBeenCalled();
+  });
+
+  it('rejects a non-https image url', async () => {
+    const user = userEvent.setup();
+    render(<MenuItemForm defaultSiteId="s1" onDone={jest.fn()} />);
+
+    await user.type(screen.getByLabelText('fields.imageUrl'), 'http://example.com/a.jpg');
+    await user.click(screen.getByRole('button', { name: 'save' }));
+
+    expect(await screen.findByText('validation.https')).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

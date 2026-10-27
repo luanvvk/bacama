@@ -27,6 +27,13 @@ const buildSchema = (t: (key: string) => string) =>
     nameVi: z.string().trim().min(1, t('validation.required')).max(120, t('validation.maxLength')),
     nameEn: z.string().trim().min(1, t('validation.required')).max(120, t('validation.maxLength')),
     priceVnd: z.string().regex(/^[1-9]\d*$/, t('validation.price')),
+    imageUrl: z
+      .string()
+      .trim()
+      .max(500, t('validation.maxUrl'))
+      .refine((value) => value === '' || /^https:\/\/\S+$/.test(value), t('validation.https')),
+    descriptionVi: z.string().trim().max(160, t('validation.maxDescription')),
+    descriptionEn: z.string().trim().max(160, t('validation.maxDescription')),
     order: z.string().regex(/^\d+$/, t('validation.order')),
     isActive: z.boolean(),
   });
@@ -47,6 +54,9 @@ export const MenuItemForm = ({ item, siteOptions, defaultSiteId, onDone }: MenuI
       nameVi: item?.nameVi ?? '',
       nameEn: item?.nameEn ?? '',
       priceVnd: item ? String(item.priceVnd) : '',
+      imageUrl: item?.imageUrl ?? '',
+      descriptionVi: item?.descriptionVi ?? '',
+      descriptionEn: item?.descriptionEn ?? '',
       order: item ? String(item.order) : '0',
       isActive: item?.isActive ?? true,
     },
@@ -58,6 +68,9 @@ export const MenuItemForm = ({ item, siteOptions, defaultSiteId, onDone }: MenuI
       nameVi: values.nameVi,
       nameEn: values.nameEn,
       priceVnd: Number(values.priceVnd),
+      imageUrl: values.imageUrl || null,
+      descriptionVi: values.descriptionVi || null,
+      descriptionEn: values.descriptionEn || null,
       order: Number(values.order),
     };
     const response = await fetch(
@@ -111,6 +124,9 @@ export const MenuItemForm = ({ item, siteOptions, defaultSiteId, onDone }: MenuI
         label={t('fields.priceVnd')}
         inputMode="numeric"
       />
+      <ControlledInput control={control} name="imageUrl" label={t('fields.imageUrl')} />
+      <ControlledInput control={control} name="descriptionVi" label={t('fields.descriptionVi')} />
+      <ControlledInput control={control} name="descriptionEn" label={t('fields.descriptionEn')} />
       <ControlledInput
         control={control}
         name="order"
