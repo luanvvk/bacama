@@ -11,26 +11,6 @@ import { CardMedia } from '@/components/ui/CardMedia';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Heading, Text } from '@/components/ui/Typography';
 
-const DISCUSSION_SAMPLE = [
-  {
-    author: 'Anh Minh',
-    role: 'Teacher',
-    when: '09:12',
-    text: 'Reminder for everyone: milk at 60–65 °C only. Any hotter and the foam collapses before you finish the pour.',
-  },
-  {
-    author: 'Thu Hà',
-    when: '09:31',
-    text: "My hearts keep leaning to the right. Is that because I'm tilting the jug?",
-  },
-  {
-    author: 'Anh Minh',
-    role: 'Teacher',
-    when: '09:38',
-    text: "Usually it's the cup angle, not the jug. Rewatch from 6:05 — there's a close-up of the cup tilt.",
-  },
-];
-
 export interface LessonPreviewProps {
   preview: CoursePreview;
   /** Null when the lesson has no video yet. */
@@ -151,7 +131,9 @@ export const LessonPreview = ({
               <ul className="flex flex-col gap-2 py-6">
                 {lesson.documents.map((document) => (
                   <li key={document.id} className="flex items-center gap-3 rounded-lg border p-3">
-                    <Lock className="text-muted-foreground size-4 shrink-0" aria-hidden="true" />
+                    {isGuest && (
+                      <Lock className="text-muted-foreground size-4 shrink-0" aria-hidden="true" />
+                    )}
                     <div className="flex-1">
                       <p className="text-sm font-medium">{document.name}</p>
                       <p className="text-muted-foreground text-xs">{document.size}</p>
@@ -203,16 +185,16 @@ export const LessonPreview = ({
                         </span>
                         <span className="flex-1">{moduleLesson.title}</span>
                         {isLocked && (
-                          <Lock
-                            className="text-muted-foreground size-3.5"
-                            aria-label={t('lessonLocked')}
-                          />
+                          <>
+                            <Lock className="text-muted-foreground size-3.5" aria-hidden="true" />
+                            <span className="sr-only">{t('lessonLocked')}</span>
+                          </>
                         )}
                         {isCompleted && (
-                          <Check
-                            className="text-success size-3.5"
-                            aria-label={t('lessonCompleted')}
-                          />
+                          <>
+                            <Check className="text-success size-3.5" aria-hidden="true" />
+                            <span className="sr-only">{t('lessonCompleted')}</span>
+                          </>
                         )}
                         <span className="text-muted-foreground text-xs">
                           {moduleLesson.duration}
@@ -223,7 +205,9 @@ export const LessonPreview = ({
                     return (
                       <li key={moduleLesson.id}>
                         {isLocked ? (
-                          <div className={cn(rowClass, 'opacity-60')}>{rowContent}</div>
+                          <div aria-disabled="true" className={cn(rowClass, 'opacity-60')}>
+                            {rowContent}
+                          </div>
                         ) : (
                           <Link
                             href={`/learn/${course.slug}/${moduleLesson.id}`}
@@ -240,37 +224,6 @@ export const LessonPreview = ({
               </div>
             ))}
           </div>
-        </div>
-
-        <div className="rounded-lg border">
-          <div className="border-b px-4 py-3">
-            <p className="text-sm font-semibold">{t('discussionTitle')}</p>
-          </div>
-          <ul className="flex flex-col gap-4 px-4 py-4">
-            {DISCUSSION_SAMPLE.map((message, index) => (
-              <li key={index} className="text-sm">
-                <p className="flex items-baseline gap-2">
-                  <span className="font-medium">{message.author}</span>
-                  {message.role && (
-                    <span className="text-primary font-mono text-[10px] tracking-widest uppercase">
-                      {t('teacherRoleLabel')}
-                    </span>
-                  )}
-                  <span className="text-muted-foreground ml-auto font-mono text-xs">
-                    {message.when}
-                  </span>
-                </p>
-                <p className="text-muted-foreground mt-1">{message.text}</p>
-              </li>
-            ))}
-          </ul>
-          {isGuest && (
-            <div className="border-t p-3">
-              <Button asChild variant="outline" size="sm" className="w-full">
-                <Link href="/login">{t('logInToJoin')}</Link>
-              </Button>
-            </div>
-          )}
         </div>
       </aside>
     </div>

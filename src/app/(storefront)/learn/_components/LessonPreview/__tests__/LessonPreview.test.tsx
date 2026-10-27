@@ -16,9 +16,6 @@ const MESSAGES: Record<string, string> = {
   noDocuments: 'No documents added for this lesson yet.',
   signInToDownload: 'Sign in to download',
   courseLabel: 'Course',
-  discussionTitle: 'Discussion',
-  logInToJoin: 'Log in to join the discussion',
-  teacherRoleLabel: 'Teacher',
   videoComingSoon: 'Video coming soon.',
   lessonNavLabel: 'Lesson navigation',
   previousLesson: 'Previous',
@@ -124,7 +121,24 @@ describe('LessonPreview', () => {
     render(<LessonPreview {...guestProps} isGuest={false} lockedLessonIds={[]} />);
 
     expect(screen.queryByText(/watching the free preview/)).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: 'Log in to join the discussion' })).toBeNull();
+  });
+
+  it('shows no discussion section or invented messages', () => {
+    render(<LessonPreview {...guestProps} />);
+
+    expect(screen.queryByText('Discussion')).not.toBeInTheDocument();
+    expect(screen.queryByText('Anh Minh')).not.toBeInTheDocument();
+  });
+
+  it('shows the lock icon on documents only for guests', async () => {
+    const { container, unmount } = render(<LessonPreview {...guestProps} />);
+    await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
+    expect(container.querySelector('li svg.lucide-lock')).not.toBeNull();
+    unmount();
+
+    const signedIn = render(<LessonPreview {...guestProps} isGuest={false} lockedLessonIds={[]} />);
+    await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
+    expect(signedIn.container.querySelector('li svg.lucide-lock')).toBeNull();
   });
 
   it('gates the documents tab behind sign-in for a guest', async () => {
@@ -152,7 +166,11 @@ describe('LessonPreview', () => {
     render(<LessonPreview {...guestProps} />);
 
     expect(screen.queryByRole('link', { name: /Milk and microfoam/ })).not.toBeInTheDocument();
-    expect(screen.getByLabelText('Locked')).toBeInTheDocument();
+    expect(screen.getByText('Locked')).toHaveClass('sr-only');
+    expect(screen.getByText('Milk and microfoam').closest('[aria-disabled]')).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
     expect(screen.getByRole('link', { name: /The heart/, current: 'page' })).toHaveAttribute(
       'href',
       '/learn/latte-art/lesson-3',
@@ -169,7 +187,7 @@ describe('LessonPreview', () => {
       />,
     );
 
-    expect(screen.getByLabelText('Completed')).toBeInTheDocument();
+    expect(screen.getByText('Completed')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Milk and microfoam/ })).toHaveAttribute(
       'href',
       '/learn/latte-art/lesson-1',
