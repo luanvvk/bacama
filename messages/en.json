@@ -712,15 +712,42 @@
     "onThisPage": "On this page",
     "updatedDate": "Updated · 16 August 2026",
     "sections": [
-      { "id": "what-are-cookies", "title": "What are cookies" },
-      { "id": "types-we-use", "title": "Types of cookies we use" },
-      { "id": "essential", "title": "Essential cookies" },
-      { "id": "preferences", "title": "Preference cookies" },
-      { "id": "analytics", "title": "Analytics cookies" },
-      { "id": "third-party", "title": "Third-party cookies" },
-      { "id": "cookie-table", "title": "Cookies we set" },
-      { "id": "manage", "title": "How to manage cookies" },
-      { "id": "contact", "title": "Contact" }
+      {
+        "id": "what-are-cookies",
+        "title": "What are cookies"
+      },
+      {
+        "id": "types-we-use",
+        "title": "Types of cookies we use"
+      },
+      {
+        "id": "essential",
+        "title": "Essential cookies"
+      },
+      {
+        "id": "preferences",
+        "title": "Preference cookies"
+      },
+      {
+        "id": "analytics",
+        "title": "Analytics cookies"
+      },
+      {
+        "id": "third-party",
+        "title": "Third-party cookies"
+      },
+      {
+        "id": "cookie-table",
+        "title": "Cookies we set"
+      },
+      {
+        "id": "manage",
+        "title": "How to manage cookies"
+      },
+      {
+        "id": "contact",
+        "title": "Contact"
+      }
     ],
     "whatAreCookiesTitle": "What are cookies and similar technologies",
     "whatAreCookiesBody": "Cookies are small text files placed on your device when you visit a website. They let the site remember things — what is in your cart, whether you have seen a message before, or how you found us. We also use browser storage (local storage and session storage) for similar purposes; it works like a cookie but can hold slightly more information without being sent with every request.",
@@ -1144,10 +1171,22 @@
     "overview": {
       "allSites": "All sites",
       "kpis": {
-        "orders": { "label": "Online orders", "detail": "vs yesterday" },
-        "revenue": { "label": "Online revenue", "detail": "vs yesterday" },
-        "awaiting": { "label": "Awaiting despatch", "detail": "home delivery, no shipment yet" },
-        "signUps": { "label": "Course sign-ups", "detail": "vs previous 7 days" }
+        "orders": {
+          "label": "Online orders",
+          "detail": "vs yesterday"
+        },
+        "revenue": {
+          "label": "Online revenue",
+          "detail": "vs yesterday"
+        },
+        "awaiting": {
+          "label": "Awaiting despatch",
+          "detail": "home delivery, no shipment yet"
+        },
+        "signUps": {
+          "label": "Course sign-ups",
+          "detail": "vs previous 7 days"
+        }
       }
     },
     "menu": {
@@ -1221,8 +1260,16 @@
       "searchLabel": "Search staff",
       "empty": "No staff found.",
       "noSite": "All sites",
-      "columns": { "name": "Name", "role": "Role", "homeSite": "Home site" },
-      "roles": { "staff": "Staff", "instructor": "Instructor", "admin": "Admin" }
+      "columns": {
+        "name": "Name",
+        "role": "Role",
+        "homeSite": "Home site"
+      },
+      "roles": {
+        "staff": "Staff",
+        "instructor": "Instructor",
+        "admin": "Admin"
+      }
     },
     "announcements": {
       "title": "Announcements",
@@ -1274,6 +1321,41 @@
       "deleteFailed": "Could not delete the announcement. Try again.",
       "forbidden": "You cannot change announcements for this site.",
       "notFound": "This announcement no longer exists."
+    },
+    "bakery": {
+      "title": "Bakery",
+      "description": "Bakery items shown in the shop, per site.",
+      "new": "+ New bake",
+      "createTitle": "New bakery item",
+      "editTitle": "Edit bakery item",
+      "create": "Create",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "site": "Site",
+      "nameVi": "Name (Vietnamese)",
+      "nameEn": "Name (English)",
+      "descriptionVi": "Description (Vietnamese)",
+      "descriptionEn": "Description (English)",
+      "price": "Price (VND)",
+      "bakesAt": "Bakes at",
+      "sellOutBy": "Sells out by",
+      "handoff": "Handoff",
+      "handoff_pickup": "Pickup",
+      "handoff_grabfood": "GrabFood",
+      "handoff_courier": "Courier",
+      "handoffUrl": "Handoff link (optional)",
+      "active": "Active",
+      "colItem": "Item",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "empty": "No bakery items yet.",
+      "saved": "Bakery item saved.",
+      "deactivated": "Bakery item deactivated.",
+      "saveFailed": "Could not save the bakery item."
     }
   }
 }

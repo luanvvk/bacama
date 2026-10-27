@@ -708,15 +708,42 @@
     "onThisPage": "Trong trang này",
     "updatedDate": "Cập nhật · 16 tháng 8, 2026",
     "sections": [
-      { "id": "what-are-cookies", "title": "Cookie là gì" },
-      { "id": "types-we-use", "title": "Các loại cookie chúng tôi sử dụng" },
-      { "id": "essential", "title": "Cookie thiết yếu" },
-      { "id": "preferences", "title": "Cookie tuỳ chọn" },
-      { "id": "analytics", "title": "Cookie phân tích" },
-      { "id": "third-party", "title": "Cookie của bên thứ ba" },
-      { "id": "cookie-table", "title": "Các cookie chúng tôi thiết lập" },
-      { "id": "manage", "title": "Cách quản lý cookie" },
-      { "id": "contact", "title": "Liên hệ" }
+      {
+        "id": "what-are-cookies",
+        "title": "Cookie là gì"
+      },
+      {
+        "id": "types-we-use",
+        "title": "Các loại cookie chúng tôi sử dụng"
+      },
+      {
+        "id": "essential",
+        "title": "Cookie thiết yếu"
+      },
+      {
+        "id": "preferences",
+        "title": "Cookie tuỳ chọn"
+      },
+      {
+        "id": "analytics",
+        "title": "Cookie phân tích"
+      },
+      {
+        "id": "third-party",
+        "title": "Cookie của bên thứ ba"
+      },
+      {
+        "id": "cookie-table",
+        "title": "Các cookie chúng tôi thiết lập"
+      },
+      {
+        "id": "manage",
+        "title": "Cách quản lý cookie"
+      },
+      {
+        "id": "contact",
+        "title": "Liên hệ"
+      }
     ],
     "whatAreCookiesTitle": "Cookie và các công nghệ tương tự là gì",
     "whatAreCookiesBody": "Cookie là các tệp văn bản nhỏ được đặt trên thiết bị của bạn khi bạn truy cập một trang web. Chúng giúp trang web ghi nhớ một số thông tin — những gì có trong giỏ hàng của bạn, bạn đã thấy một thông báo trước đó hay chưa, hoặc bạn đã biết đến chúng tôi qua đâu. Chúng tôi cũng sử dụng bộ nhớ trình duyệt (local storage và session storage) cho các mục đích tương tự; nó hoạt động như cookie nhưng có thể lưu trữ nhiều thông tin hơn một chút mà không cần gửi kèm mỗi yêu cầu.",
@@ -1140,10 +1167,22 @@
     "overview": {
       "allSites": "Tất cả cơ sở",
       "kpis": {
-        "orders": { "label": "Đơn online", "detail": "so với hôm qua" },
-        "revenue": { "label": "Doanh thu online", "detail": "so với hôm qua" },
-        "awaiting": { "label": "Chờ giao đi", "detail": "giao tận nơi, chưa có vận đơn" },
-        "signUps": { "label": "Đăng ký khoá học", "detail": "so với 7 ngày trước" }
+        "orders": {
+          "label": "Đơn online",
+          "detail": "so với hôm qua"
+        },
+        "revenue": {
+          "label": "Doanh thu online",
+          "detail": "so với hôm qua"
+        },
+        "awaiting": {
+          "label": "Chờ giao đi",
+          "detail": "giao tận nơi, chưa có vận đơn"
+        },
+        "signUps": {
+          "label": "Đăng ký khoá học",
+          "detail": "so với 7 ngày trước"
+        }
       }
     },
     "menu": {
@@ -1217,8 +1256,16 @@
       "searchLabel": "Tìm nhân viên",
       "empty": "Không tìm thấy nhân viên.",
       "noSite": "Mọi cơ sở",
-      "columns": { "name": "Tên", "role": "Vai trò", "homeSite": "Cơ sở chính" },
-      "roles": { "staff": "Nhân viên", "instructor": "Giảng viên", "admin": "Quản trị viên" }
+      "columns": {
+        "name": "Tên",
+        "role": "Vai trò",
+        "homeSite": "Cơ sở chính"
+      },
+      "roles": {
+        "staff": "Nhân viên",
+        "instructor": "Giảng viên",
+        "admin": "Quản trị viên"
+      }
     },
     "announcements": {
       "title": "Thông báo",
@@ -1270,6 +1317,41 @@
       "deleteFailed": "Không thể xóa thông báo. Vui lòng thử lại.",
       "forbidden": "Bạn không thể thay đổi thông báo của cơ sở này.",
       "notFound": "Thông báo này không còn tồn tại."
+    },
+    "bakery": {
+      "title": "Bánh",
+      "description": "Các món bánh hiển thị trên cửa hàng, theo từng cơ sở.",
+      "new": "+ Món mới",
+      "createTitle": "Món bánh mới",
+      "editTitle": "Sửa món bánh",
+      "create": "Tạo",
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy",
+      "site": "Cơ sở",
+      "nameVi": "Tên (tiếng Việt)",
+      "nameEn": "Tên (tiếng Anh)",
+      "descriptionVi": "Mô tả (tiếng Việt)",
+      "descriptionEn": "Mô tả (tiếng Anh)",
+      "price": "Giá (VND)",
+      "bakesAt": "Giờ nướng",
+      "sellOutBy": "Hết hàng lúc",
+      "handoff": "Hình thức nhận",
+      "handoff_pickup": "Nhận tại quán",
+      "handoff_grabfood": "GrabFood",
+      "handoff_courier": "Giao hàng",
+      "handoffUrl": "Liên kết nhận hàng (tùy chọn)",
+      "active": "Đang bán",
+      "colItem": "Món",
+      "colStatus": "Trạng thái",
+      "colActions": "Thao tác",
+      "statusActive": "Đang bán",
+      "statusInactive": "Ngừng bán",
+      "edit": "Sửa",
+      "deactivate": "Ngừng bán",
+      "empty": "Chưa có món bánh nào.",
+      "saved": "Đã lưu món bánh.",
+      "deactivated": "Đã ngừng bán món bánh.",
+      "saveFailed": "Không thể lưu món bánh."
     }
   }
 }
