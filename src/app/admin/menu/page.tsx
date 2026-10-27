@@ -17,7 +17,7 @@ const AdminMenuPage = async () => {
 
   const [items, sites] = await Promise.all([
     getAdminMenuItems(user),
-    user.role === 'admin' ? getSites() : Promise.resolve(null),
+    user.role === 'admin' ? getSites('en') : Promise.resolve(null),
   ]);
 
   return (

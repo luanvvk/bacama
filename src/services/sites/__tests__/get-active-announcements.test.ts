@@ -16,7 +16,7 @@ describe('getActiveAnnouncements', () => {
   it('excludes announcements that have not started or have already ended', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getActiveAnnouncements();
+    await getActiveAnnouncements('en');
 
     const { where } = mockFindMany.mock.calls[0][0];
     expect(where.isActive).toBe(true);
@@ -27,7 +27,7 @@ describe('getActiveAnnouncements', () => {
   it('includes site-wide announcements alongside the named site', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getActiveAnnouncements('ly-tu-trong');
+    await getActiveAnnouncements('en', 'ly-tu-trong');
 
     const { where } = mockFindMany.mock.calls[0][0];
     expect(where.AND[1]).toEqual({
@@ -53,11 +53,24 @@ describe('getActiveAnnouncements', () => {
       },
     ]);
 
-    const result = await getActiveAnnouncements();
+    const result = await getActiveAnnouncements('en');
 
     expect(result).toEqual([
       { id: 'a1', title: 'Cookies discounted', body: '10% off', siteSlug: 'ly-tu-trong' },
       { id: 'a2', title: 'Site-wide', body: 'Applies everywhere', siteSlug: null },
     ]);
+  });
+});
+
+describe('getActiveAnnouncements locale', () => {
+  it('returns Vi fields on vi and falls back to En when Vi is empty', async () => {
+    mockFindMany.mockResolvedValue([
+      { id: 'a1', titleVi: 'Ưu đãi', titleEn: 'Deal', bodyVi: '', bodyEn: '10% off', site: null },
+    ]);
+
+    const [result] = await getActiveAnnouncements('vi');
+
+    expect(result.title).toBe('Ưu đãi');
+    expect(result.body).toBe('10% off');
   });
 });

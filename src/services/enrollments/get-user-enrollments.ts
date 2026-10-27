@@ -1,4 +1,5 @@
 import type { $Enums } from '@/generated/prisma/client';
+import { pickLocalized, type AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 
 export interface UserEnrollment {
@@ -19,7 +20,10 @@ export interface UserEnrollment {
 
 /** The signed-in user's own enrolments, newest first, cancelled ones excluded.
  * Ownership is filtered in the query itself, never after fetching. */
-export const getUserEnrollments = async (userId: string): Promise<UserEnrollment[]> => {
+export const getUserEnrollments = async (
+  userId: string,
+  locale: AppLocale,
+): Promise<UserEnrollment[]> => {
   const enrollments = await prisma.enrollment.findMany({
     where: { userId, status: { not: 'cancelled' } },
     orderBy: { createdAt: 'desc' },
@@ -30,13 +34,14 @@ export const getUserEnrollments = async (userId: string): Promise<UserEnrollment
       course: {
         select: {
           slug: true,
+          titleVi: true,
           titleEn: true,
           imageUrl: true,
           format: true,
           modules: { select: { _count: { select: { lessons: true } } } },
         },
       },
-      session: { select: { startsAt: true, site: { select: { nameEn: true } } } },
+      session: { select: { startsAt: true, site: { select: { nameVi: true, nameEn: true } } } },
       progress: { where: { completedAt: { not: null } }, select: { id: true } },
     },
   });
@@ -53,12 +58,14 @@ export const getUserEnrollments = async (userId: string): Promise<UserEnrollment
       holdExpiresAt: enrollment.holdExpiresAt,
       course: {
         slug: enrollment.course.slug,
-        name: enrollment.course.titleEn,
+        name: pickLocalized(locale, enrollment.course.titleVi, enrollment.course.titleEn),
         imageUrl: enrollment.course.imageUrl ?? undefined,
         format: enrollment.course.format,
       },
       sessionStartsAt: enrollment.session?.startsAt ?? null,
-      siteName: enrollment.session?.site.nameEn ?? null,
+      siteName: enrollment.session
+        ? pickLocalized(locale, enrollment.session.site.nameVi, enrollment.session.site.nameEn)
+        : null,
       progressPercent:
         totalLessons === 0
           ? null

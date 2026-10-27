@@ -26,7 +26,7 @@ describe('getPreviewCourse', () => {
   it('only considers courses that actually have a free lesson', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    await getPreviewCourse();
+    await getPreviewCourse('en');
 
     expect(mockFindFirst).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -41,7 +41,7 @@ describe('getPreviewCourse', () => {
   it('returns null when no course has one', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    await expect(getPreviewCourse()).resolves.toBeNull();
+    await expect(getPreviewCourse('en')).resolves.toBeNull();
   });
 
   it('picks the free lesson and labels it with its module', async () => {
@@ -72,7 +72,7 @@ describe('getPreviewCourse', () => {
       ],
     });
 
-    const result = await getPreviewCourse();
+    const result = await getPreviewCourse('en');
 
     expect(result).toMatchObject({
       moduleLabel: 'Module 1 · Foundations · Lesson 02',

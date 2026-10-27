@@ -1,5 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -25,9 +27,10 @@ const LessonPage = async ({
   params: Promise<{ courseSlug: string; lessonId: string }>;
 }) => {
   const { courseSlug, lessonId } = await params;
+  const locale = toAppLocale(await getLocale());
   const [t, course, user] = await Promise.all([
     getTranslations('Learn'),
-    getCourseBySlug(courseSlug),
+    getCourseBySlug(courseSlug, locale),
     getAuthProvider().getCurrentUser(),
   ]);
 

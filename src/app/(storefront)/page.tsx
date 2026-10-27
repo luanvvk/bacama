@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Footer } from '@/components/layout/Footer';
@@ -21,7 +23,8 @@ const Home = async () => {
   const t = await getTranslations('Announcements');
   // Real announcements join the evergreen taglines, so a dated line ("Site 3
   // opens in September") can no longer outlive its own start/end window.
-  const announcements = await getActiveAnnouncements();
+  const locale = toAppLocale(await getLocale());
+  const announcements = await getActiveAnnouncements(locale);
   const taglines = t.raw('home') as string[];
 
   return (

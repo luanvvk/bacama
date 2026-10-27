@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { getFeaturedCourses } from '@/services/courses/get-featured-courses';
 import { Heading } from '@/components/ui/Typography';
@@ -8,7 +10,8 @@ import { CourseCard } from '@/components/courses/CourseCard';
 
 export const WorkshopsSection = async () => {
   const t = await getTranslations('Workshops');
-  const courses = await getFeaturedCourses();
+  const locale = toAppLocale(await getLocale());
+  const courses = await getFeaturedCourses(locale);
 
   if (courses.length === 0) return null;
 

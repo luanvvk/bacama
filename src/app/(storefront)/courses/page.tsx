@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Lock } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { getCourses } from '@/services/courses/get-courses';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
@@ -22,7 +24,8 @@ import { CoursesBrowser } from './_components/CoursesBrowser';
 export const revalidate = 3600;
 
 const CoursesPage = async () => {
-  const [t, courses] = await Promise.all([getTranslations('Courses'), getCourses()]);
+  const locale = toAppLocale(await getLocale());
+  const [t, courses] = await Promise.all([getTranslations('Courses'), getCourses(locale)]);
 
   const announcements = [
     t('allCoursesCount', { count: courses.length }),

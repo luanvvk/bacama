@@ -15,7 +15,7 @@ export const TodaysStockSection = async () => {
   const locale = toAppLocale(await getLocale());
   const featured = await getFeaturedProducts(locale);
   const products = featured.length >= 2 ? featured : await getProducts(locale);
-  const [course] = await getFeaturedCourses(1);
+  const [course] = await getFeaturedCourses(locale, 1);
 
   return (
     <section className="border-t py-16">

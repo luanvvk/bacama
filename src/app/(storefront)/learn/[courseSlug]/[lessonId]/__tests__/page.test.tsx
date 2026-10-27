@@ -12,7 +12,10 @@ jest.mock('next/navigation', () => ({
     throw new Error(`REDIRECT:${url}`);
   },
 }));
-jest.mock('next-intl/server', () => ({ getTranslations: async () => (key: string) => key }));
+jest.mock('next-intl/server', () => ({
+  getLocale: async () => 'en',
+  getTranslations: async () => (key: string) => key,
+}));
 jest.mock('@/lib/providers/auth', () => ({ getAuthProvider: jest.fn() }));
 jest.mock('@/services/courses/get-course-by-slug', () => ({ getCourseBySlug: jest.fn() }));
 jest.mock('@/services/courses/get-lesson-video-id', () => ({ getLessonVideoId: jest.fn() }));

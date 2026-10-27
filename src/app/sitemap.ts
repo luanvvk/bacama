@@ -29,7 +29,7 @@ const STATIC_PATHS = [
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   // Detail routes come from the database so a new product or café is listed
   // without anyone remembering to edit this file.
-  const [products, sites] = await Promise.all([getProducts('en'), getSites()]);
+  const [products, sites] = await Promise.all([getProducts('en'), getSites('en')]);
 
   const paths = [
     ...STATIC_PATHS,

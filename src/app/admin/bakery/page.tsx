@@ -8,7 +8,7 @@ const AdminBakeryPage = async () => {
   const user = await requireRoles(['staff', 'admin']);
   const [items, sites] = await Promise.all([
     getAdminBakeryItems(siteScopeFilter(user)),
-    getSites(),
+    getSites('en'),
   ]);
   const lockedSiteId = user.role === 'admin' ? null : user.homeSiteId;
 

@@ -1,3 +1,4 @@
+import type { AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 
 import {
@@ -15,7 +16,7 @@ export interface CoursePreview {
 
 /** The one lesson anyone can watch without an account, with the outline around
  * it. `/learn` has no course of its own until real enrolment exists. */
-export const getPreviewCourse = async (): Promise<CoursePreview | null> => {
+export const getPreviewCourse = async (locale: AppLocale): Promise<CoursePreview | null> => {
   const course = await prisma.course.findFirst({
     where: { isActive: true, modules: { some: { lessons: { some: { isFreePreview: true } } } } },
     include: COURSE_OUTLINE_INCLUDE,
@@ -24,7 +25,7 @@ export const getPreviewCourse = async (): Promise<CoursePreview | null> => {
 
   if (!course) return null;
 
-  const mapped = mapCourseWithOutline(course);
+  const mapped = mapCourseWithOutline(course, locale);
   const owningModule = mapped.modules.find((courseModule) =>
     courseModule.lessons.some((lesson) => lesson.isFreePreview),
   );

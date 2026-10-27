@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
@@ -56,7 +58,8 @@ const StoryPage = async () => {
   const chapters = t.raw('chapters') as Chapter[];
   const values = t.raw('values') as Value[];
   const people = t.raw('people') as Person[];
-  const announcements = await getActiveAnnouncements();
+  const locale = toAppLocale(await getLocale());
+  const announcements = await getActiveAnnouncements(locale);
 
   return (
     <>

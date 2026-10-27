@@ -17,7 +17,7 @@ describe('getCourseBySlug', () => {
     mockFindFirst.mockResolvedValue(null);
     const now = new Date('2026-09-14T00:00:00.000Z');
 
-    await getCourseBySlug('latte-art', now);
+    await getCourseBySlug('latte-art', 'en', now);
 
     expect(mockFindFirst).toHaveBeenCalledWith(
       expect.objectContaining({ where: { slug: 'latte-art', isActive: true } }),
@@ -28,7 +28,7 @@ describe('getCourseBySlug', () => {
     mockFindFirst.mockResolvedValue(null);
     const now = new Date('2026-09-14T00:00:00.000Z');
 
-    await getCourseBySlug('viennoiserie', now);
+    await getCourseBySlug('viennoiserie', 'en', now);
 
     expect(mockFindFirst).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -42,6 +42,6 @@ describe('getCourseBySlug', () => {
   it('returns null when no course matches', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    await expect(getCourseBySlug('missing')).resolves.toBeNull();
+    await expect(getCourseBySlug('missing', 'en')).resolves.toBeNull();
   });
 });

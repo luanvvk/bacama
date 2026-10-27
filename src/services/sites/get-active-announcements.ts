@@ -1,3 +1,4 @@
+import { pickLocalized, type AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 
 export interface Announcement {
@@ -10,7 +11,10 @@ export interface Announcement {
 
 // Passing a slug returns that site's announcements *plus* the site-wide ones —
 // a site page should show both, not just its own.
-export const getActiveAnnouncements = async (siteSlug?: string): Promise<Announcement[]> => {
+export const getActiveAnnouncements = async (
+  locale: AppLocale,
+  siteSlug?: string,
+): Promise<Announcement[]> => {
   const now = new Date();
 
   const announcements = await prisma.announcement.findMany({
@@ -28,8 +32,8 @@ export const getActiveAnnouncements = async (siteSlug?: string): Promise<Announc
 
   return announcements.map((announcement) => ({
     id: announcement.id,
-    title: announcement.titleEn,
-    body: announcement.bodyEn,
+    title: pickLocalized(locale, announcement.titleVi, announcement.titleEn),
+    body: pickLocalized(locale, announcement.bodyVi, announcement.bodyEn),
     siteSlug: announcement.site?.slug ?? null,
   }));
 };

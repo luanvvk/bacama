@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { Badge } from '@/components/ui/Badge';
 import { Heading } from '@/components/ui/Typography';
@@ -27,7 +29,8 @@ const buildHeadline = (
 
 export const CafesSection = async () => {
   const t = await getTranslations('Cafes');
-  const sites = await getSites();
+  const locale = toAppLocale(await getLocale());
+  const sites = await getSites(locale);
   const openCount = sites.filter((site) => !site.comingSoon).length;
 
   return (

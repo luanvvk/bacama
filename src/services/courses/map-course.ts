@@ -1,6 +1,7 @@
 import type { Course as CourseRow, Prisma } from '@/generated/prisma/client';
 
 import { formatDuration } from '@/lib/format-duration';
+import { pickLocalized, type AppLocale } from '@/lib/localize';
 
 export type CourseFormat = 'online' | 'in-person' | 'hybrid';
 
@@ -118,40 +119,43 @@ const FORMAT: Record<CourseRow['format'], CourseFormat> = {
   hybrid: 'hybrid',
 };
 
-export const mapCourse = (course: DatabaseCourse): Course => {
+export const mapCourse = (course: DatabaseCourse, locale: AppLocale): Course => {
   const format = FORMAT[course.format];
 
   return {
     id: course.id,
     slug: course.slug,
-    name: course.titleEn,
+    name: pickLocalized(locale, course.titleVi, course.titleEn),
     format,
-    meta: course.metaEn ?? undefined,
-    description: course.descriptionEn,
+    meta: pickLocalized(locale, course.metaVi, course.metaEn) ?? undefined,
+    description: pickLocalized(locale, course.descriptionVi, course.descriptionEn),
     imageUrl: course.imageUrl ?? undefined,
     priceVnd: course.priceVnd,
-    availability: course.availabilityEn ?? undefined,
+    availability: pickLocalized(locale, course.availabilityVi, course.availabilityEn) ?? undefined,
     seatLimited: format !== 'online',
     ctaLabel: format === 'in-person' ? 'Book a seat' : 'Enrol',
   };
 };
 
-export const mapCourseWithOutline = (course: DatabaseCourseWithOutline): CourseWithOutline => {
+export const mapCourseWithOutline = (
+  course: DatabaseCourseWithOutline,
+  locale: AppLocale,
+): CourseWithOutline => {
   let lessonNumber = 0;
 
   return {
-    ...mapCourse(course),
+    ...mapCourse(course, locale),
     modules: course.modules.map((courseModule) => ({
       id: courseModule.id,
-      title: courseModule.titleEn,
+      title: pickLocalized(locale, courseModule.titleVi, courseModule.titleEn),
       lessons: courseModule.lessons.map((lesson) => {
         lessonNumber += 1;
 
         return {
           id: lesson.id,
           number: String(lessonNumber).padStart(2, '0'),
-          title: lesson.titleEn,
-          body: lesson.bodyEn ?? undefined,
+          title: pickLocalized(locale, lesson.titleVi, lesson.titleEn),
+          body: pickLocalized(locale, lesson.bodyVi, lesson.bodyEn) ?? undefined,
           duration: formatDuration(lesson.durationSec) ?? undefined,
           isFreePreview: lesson.isFreePreview,
           documents: lesson.attachments.map((attachment) => ({
@@ -165,12 +169,12 @@ export const mapCourseWithOutline = (course: DatabaseCourseWithOutline): CourseW
   };
 };
 
-export const mapCourseDetail = (course: DatabaseCourseDetail): CourseDetail => ({
-  ...mapCourseWithOutline(course),
+export const mapCourseDetail = (course: DatabaseCourseDetail, locale: AppLocale): CourseDetail => ({
+  ...mapCourseWithOutline(course, locale),
   sessions: course.sessions.map((session) => ({
     id: session.id,
     startsAt: formatSessionDate(session.startsAt),
-    siteName: session.site.nameEn,
+    siteName: pickLocalized(locale, session.site.nameVi, session.site.nameEn),
     siteSlug: session.site.slug,
     capacity: session.capacity,
     seatsLeft: Math.max(session.capacity - session.seatsBooked, 0),
