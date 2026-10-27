@@ -17,6 +17,7 @@ import { getAuthProvider } from '@/lib/providers/auth';
 import { getVideoProvider } from '@/lib/providers/video';
 import { getCourseBySlug } from '@/services/courses/get-course-by-slug';
 import { getLessonVideoId } from '@/services/courses/get-lesson-video-id';
+import { getLessonPosition } from '@/services/enrollments/get-lesson-position';
 import { getLearnerEnrollment } from '@/services/enrollments/get-learner-enrollment';
 
 import { LessonPreview } from '../../_components/LessonPreview';
@@ -50,7 +51,10 @@ const LessonPage = async ({
   if (!enrollment && !video.isPreview(lesson)) redirect(`/courses/${courseSlug}?locked=1`);
 
   const videoId = await getLessonVideoId(lesson.id);
-  const playback = videoId ? await video.getSignedPlayback(videoId, user?.id ?? null) : null;
+  const startSeconds = enrollment ? await getLessonPosition(enrollment.id, lesson.id) : 0;
+  const playback = videoId
+    ? await video.getSignedPlayback(videoId, user?.id ?? null, startSeconds)
+    : null;
   const lessonHref = (target?: { item: { id: string } }) =>
     target ? `/learn/${courseSlug}/${target.item.id}` : undefined;
 
@@ -82,6 +86,7 @@ const LessonPage = async ({
             }}
             embedUrl={playback?.embedUrl ?? null}
             isGuest={!user}
+            trackProgress={Boolean(enrollment)}
             lockedLessonIds={
               enrollment
                 ? []

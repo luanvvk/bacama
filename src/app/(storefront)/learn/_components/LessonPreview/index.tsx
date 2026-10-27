@@ -11,11 +11,15 @@ import { CardMedia } from '@/components/ui/CardMedia';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Heading, Text } from '@/components/ui/Typography';
 
+import { LessonVideo } from '../LessonVideo';
+
 export interface LessonPreviewProps {
   preview: CoursePreview;
   /** Null when the lesson has no video yet. */
   embedUrl: string | null;
   isGuest: boolean;
+  /** True for an enrolled learner: the player then saves progress. */
+  trackProgress?: boolean;
   /** Lessons the viewer may not open: paid lessons without an active enrolment. */
   lockedLessonIds: string[];
   completedLessonIds: string[];
@@ -27,6 +31,7 @@ export const LessonPreview = ({
   preview,
   embedUrl,
   isGuest,
+  trackProgress = false,
   lockedLessonIds,
   completedLessonIds,
   previousHref,
@@ -60,13 +65,11 @@ export const LessonPreview = ({
 
         {embedUrl ? (
           <div className="mt-6 aspect-video overflow-hidden rounded-lg bg-black">
-            <iframe
-              src={embedUrl}
+            <LessonVideo
+              embedUrl={embedUrl}
               title={lesson.title}
-              className="size-full"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
+              lessonId={lesson.id}
+              trackProgress={trackProgress}
             />
           </div>
         ) : (
