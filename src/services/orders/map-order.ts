@@ -1,4 +1,5 @@
 import type { CheckoutOrder } from '@/stores/checkout';
+import type { Prisma } from '@/generated/prisma/client';
 
 type OrderWithItems = Prisma.OrderGetPayload<{ include: { items: true } }>;
 
