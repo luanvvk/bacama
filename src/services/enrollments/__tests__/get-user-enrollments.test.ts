@@ -37,7 +37,11 @@ describe('getUserEnrollments', () => {
     expect(args.where).toEqual({
       userId: 'user-1',
       status: { not: 'cancelled' },
-      NOT: { status: 'pending', holdExpiresAt: { lt: now } },
+      OR: [
+        { status: { not: 'pending' } },
+        { holdExpiresAt: null },
+        { holdExpiresAt: { gte: now } },
+      ],
     });
     expect(args.orderBy).toEqual({ createdAt: 'desc' });
   });

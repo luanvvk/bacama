@@ -30,7 +30,11 @@ export const getUserEnrollments = async (
     where: {
       userId,
       status: { not: 'cancelled' },
-      NOT: { status: 'pending', holdExpiresAt: { lt: now } },
+      OR: [
+        { status: { not: 'pending' } },
+        { holdExpiresAt: null },
+        { holdExpiresAt: { gte: now } },
+      ],
     },
     orderBy: { createdAt: 'desc' },
     select: {
