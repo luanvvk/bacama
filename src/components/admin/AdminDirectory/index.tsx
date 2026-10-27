@@ -22,54 +22,12 @@ import { COURSES } from '@/constants/courses';
 import { toast } from '@/lib/toast';
 import { formatVnd } from '@/lib/format-price';
 
-type DirectoryKind = 'announcements' | 'sites' | 'courses' | 'staff' | 'students';
-
-const ANNOUNCEMENTS = [
-  [
-    'New batch: Đà Lạt Washed',
-    'Out this morning, 10% off 1 kg bags until Sunday.',
-    'Live',
-    'All sites · until 17 Aug',
-  ],
-  [
-    'Site 03 opens in September',
-    'An Thuận — a roastery, classroom and garden.',
-    'Scheduled',
-    'Starts 1 Sep · all sites',
-  ],
-  [
-    'Viennoiserie · 3 seats left',
-    '21–22 Sep in Hội An · French butter.',
-    'Draft',
-    'Site 02 · unscheduled',
-  ],
-];
-
-const STAFF = [
-  ['CH', 'Cô Hằng', 'hang@bacama.vn', 'Admin', 'All sites', 'Online now', 'Active'],
-  ['AM', 'Anh Minh', 'minh@bacama.vn', 'Instructor', 'Site 02 · Hội An', '09:42', 'Active'],
-  ['CM', 'Chị Mai', 'mai@bacama.vn', 'Staff', 'Site 01 · Ngô Quyền', '05:14', 'Active'],
-  ['TR', 'Trang', 'trang@bacama.vn', 'Staff', 'Site 03 · An Thuận', 'Never', 'Pending'],
-];
-
-const STUDENTS = [
-  ['LN', 'Lê Thị Ngọc', 'ngoc.le@email.vn', 'Latte Art', 33, 'Enrolled'],
-  ['DK', 'Trần Đức Khôi', 'dockhoi@email.vn', 'Latte Art · Barista Foundations', 100, 'Certified'],
-  ['TH', 'Nguyễn Thu Hà', 'thuha@email.vn', 'Viennoiserie · Hội An', 0, 'Awaiting start'],
-  ['NP', 'Ngọc Phương', 'phuong.n@email.vn', 'Barista Foundations', 60, 'Enrolled'],
-  ['MA', 'Phạm Minh Anh', 'minhanh@email.vn', 'Latte Art', 0, 'Just enrolled'],
-];
+type DirectoryKind = 'sites' | 'courses';
 
 const SCREEN_COPY: Record<
   DirectoryKind,
   { title: string; eyebrow: string; description: string; action: string }
 > = {
-  announcements: {
-    title: 'Announcements',
-    eyebrow: '2 live · 1 scheduled · 1 draft',
-    description: 'Short notices on the home page, per site or across all sites.',
-    action: 'New announcement',
-  },
   sites: {
     title: 'Sites',
     eyebrow: '3 cafés · 2 open · 1 opens Sep',
@@ -82,18 +40,6 @@ const SCREEN_COPY: Record<
     description:
       'Price, instructor, capacity and start date. Lesson editing lives in the teacher console.',
     action: 'New course',
-  },
-  staff: {
-    title: 'Staff & permissions',
-    eyebrow: '7 people · 2 admins · 1 instructor · 4 staff',
-    description: 'Each person is scoped to a home site. Admins can cross sites.',
-    action: 'Invite staff',
-  },
-  students: {
-    title: 'Students',
-    eyebrow: '84 students · 31 completed · 53 enrolled',
-    description: 'Accounts, course enrollment, progress and certificates.',
-    action: 'Manual enroll',
   },
 };
 
@@ -186,25 +132,6 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
                 className="pl-9"
               />
             </div>
-            {kind === 'announcements' && (
-              <div className="space-y-1">
-                {ANNOUNCEMENTS.filter((item) => matches(item.join(' '))).map(
-                  ([title, description, status, meta]) => (
-                    <div key={title} className="border-b py-4 last:border-0">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="font-medium">{title}</p>
-                        <Badge variant={statusVariant(status)}>{status}</Badge>
-                      </div>
-                      <p className="text-muted-foreground mt-1 text-sm">{description}</p>
-                      <p className="text-muted-foreground mt-2 font-mono text-xs">{meta}</p>
-                      <Button size="sm" variant="link" className="mt-2 px-0" onClick={action}>
-                        Edit
-                      </Button>
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
             {kind === 'courses' && (
               <Table>
                 <TableHeader>
@@ -252,107 +179,6 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
                         <TableCell>
                           <Button size="sm" variant="ghost" onClick={action}>
                             Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ),
-                  )}
-                </TableBody>
-              </Table>
-            )}
-            {kind === 'staff' && (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Home site</TableHead>
-                    <TableHead>Last seen</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>
-                      <span className="sr-only">Actions</span>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {STAFF.filter((person) => matches(person.join(' '))).map(
-                    ([initials, name, email, role, site, lastSeen, status]) => (
-                      <TableRow key={email}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <span className="bg-secondary flex size-8 items-center justify-center rounded-full font-mono text-xs">
-                              {initials}
-                            </span>
-                            <div>
-                              <p className="font-medium">{name}</p>
-                              <p className="text-muted-foreground text-xs">{email}</p>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{role}</Badge>
-                        </TableCell>
-                        <TableCell>{site}</TableCell>
-                        <TableCell className="font-mono text-xs">{lastSeen}</TableCell>
-                        <TableCell>
-                          <Badge variant={statusVariant(String(status))}>{String(status)}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button size="sm" variant="ghost" onClick={action}>
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ),
-                  )}
-                </TableBody>
-              </Table>
-            )}
-            {kind === 'students' && (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Course</TableHead>
-                    <TableHead>Progress</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>
-                      <span className="sr-only">Actions</span>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {STUDENTS.filter((student) => matches(student.join(' '))).map(
-                    ([initials, name, email, course, progress, status]) => (
-                      <TableRow key={email}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <span className="bg-secondary flex size-8 items-center justify-center rounded-full font-mono text-xs">
-                              {initials}
-                            </span>
-                            <span className="font-medium">{name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{email}</TableCell>
-                        <TableCell>{course}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <div className="bg-secondary h-1.5 w-24 rounded-full">
-                              <div
-                                className="bg-primary h-1.5 rounded-full"
-                                style={{ width: `${progress}%` }}
-                              />
-                            </div>
-                            <span className="font-mono text-xs">{progress}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={statusVariant(String(status))}>{String(status)}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button size="sm" variant="ghost" onClick={action}>
-                            Open
                           </Button>
                         </TableCell>
                       </TableRow>
