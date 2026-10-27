@@ -17,7 +17,6 @@ export interface CourseLesson {
   title: string;
   body?: string;
   duration?: string;
-  videoId?: string;
   isFreePreview: boolean;
   documents: CourseDocument[];
 }
@@ -154,7 +153,6 @@ export const mapCourseWithOutline = (course: DatabaseCourseWithOutline): CourseW
           title: lesson.titleEn,
           body: lesson.bodyEn ?? undefined,
           duration: formatDuration(lesson.durationSec) ?? undefined,
-          videoId: lesson.videoId ?? undefined,
           isFreePreview: lesson.isFreePreview,
           documents: lesson.attachments.map((attachment) => ({
             id: attachment.id,

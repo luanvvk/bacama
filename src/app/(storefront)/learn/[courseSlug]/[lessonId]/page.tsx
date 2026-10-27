@@ -14,6 +14,7 @@ import {
 import { getAuthProvider } from '@/lib/providers/auth';
 import { getVideoProvider } from '@/lib/providers/video';
 import { getCourseBySlug } from '@/services/courses/get-course-by-slug';
+import { getLessonVideoId } from '@/services/courses/get-lesson-video-id';
 import { getLearnerEnrollment } from '@/services/enrollments/get-learner-enrollment';
 
 import { LessonPreview } from '../../_components/LessonPreview';
@@ -45,9 +46,8 @@ const LessonPage = async ({
 
   if (!enrollment && !video.isPreview(lesson)) redirect(`/courses/${courseSlug}?locked=1`);
 
-  const playback = lesson.videoId
-    ? await video.getSignedPlayback(lesson.videoId, user?.id ?? null)
-    : null;
+  const videoId = await getLessonVideoId(lesson.id);
+  const playback = videoId ? await video.getSignedPlayback(videoId, user?.id ?? null) : null;
   const lessonHref = (target?: { item: { id: string } }) =>
     target ? `/learn/${courseSlug}/${target.item.id}` : undefined;
 

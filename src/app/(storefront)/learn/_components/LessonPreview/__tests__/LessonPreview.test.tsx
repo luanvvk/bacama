@@ -7,10 +7,8 @@ import type { CoursePreview } from '@/services/courses/get-preview-course';
 const MESSAGES: Record<string, string> = {
   freePreviewBold: "You're watching the free preview.",
   signInHint: 'Sign in to save your progress and unlock paid lessons.',
-  signInToWatch: 'Sign in to watch the full lesson.',
   logIn: 'Log in',
   allCourses: 'All courses →',
-  playAriaLabel: 'Play preview',
   tabOverview: 'Overview',
   tabDocuments: 'Documents',
   noOverview: 'No overview added for this lesson yet.',

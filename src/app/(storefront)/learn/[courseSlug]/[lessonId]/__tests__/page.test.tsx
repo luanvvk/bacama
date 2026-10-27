@@ -1,6 +1,7 @@
 import LessonPage from '../page';
 import { getAuthProvider } from '@/lib/providers/auth';
 import { getCourseBySlug } from '@/services/courses/get-course-by-slug';
+import { getLessonVideoId } from '@/services/courses/get-lesson-video-id';
 import { getLearnerEnrollment } from '@/services/enrollments/get-learner-enrollment';
 
 jest.mock('next/navigation', () => ({
@@ -14,6 +15,7 @@ jest.mock('next/navigation', () => ({
 jest.mock('next-intl/server', () => ({ getTranslations: async () => (key: string) => key }));
 jest.mock('@/lib/providers/auth', () => ({ getAuthProvider: jest.fn() }));
 jest.mock('@/services/courses/get-course-by-slug', () => ({ getCourseBySlug: jest.fn() }));
+jest.mock('@/services/courses/get-lesson-video-id', () => ({ getLessonVideoId: jest.fn() }));
 jest.mock('@/services/enrollments/get-learner-enrollment', () => ({
   getLearnerEnrollment: jest.fn(),
 }));
@@ -27,12 +29,11 @@ jest.mock('@/components/layout/Container', () => ({
 }));
 jest.mock('@/components/layout/Footer', () => ({ Footer: () => null }));
 
-const lesson = (id: string, isFreePreview: boolean, videoId?: string) => ({
+const lesson = (id: string, isFreePreview: boolean) => ({
   id,
   number: id,
   title: id,
   isFreePreview,
-  videoId,
   documents: [],
 });
 
@@ -44,7 +45,7 @@ const COURSE = {
     {
       id: 'm1',
       title: 'Module 1',
-      lessons: [lesson('free', true, 'jNQXAC9IVRw'), lesson('paid', false, 'jNQXAC9IVRw')],
+      lessons: [lesson('free', true), lesson('paid', false)],
     },
   ],
 };
@@ -70,6 +71,7 @@ describe('lesson page access', () => {
   beforeEach(() => {
     (getCourseBySlug as jest.Mock).mockResolvedValue(COURSE);
     (getLearnerEnrollment as jest.Mock).mockResolvedValue(null);
+    (getLessonVideoId as jest.Mock).mockResolvedValue('jNQXAC9IVRw');
     mockUser(null);
   });
 
@@ -84,8 +86,15 @@ describe('lesson page access', () => {
     expect(preview?.props.nextHref).toBe('/learn/latte-art/paid');
   });
 
-  it('sends a guest away from a paid lesson to the course page', async () => {
+  it('sends a guest away from a paid lesson without ever reading its video id', async () => {
     await expect(render('paid')).rejects.toThrow('REDIRECT:/courses/latte-art?locked=1');
+    expect(getLessonVideoId).not.toHaveBeenCalled();
+  });
+
+  it('passes no video id for any lesson to the client component', async () => {
+    const preview = await render('free');
+
+    expect(JSON.stringify(preview?.props)).not.toContain('videoId');
   });
 
   it('sends a signed-in user without an active enrolment away from a paid lesson', async () => {

@@ -70,7 +70,7 @@ const CourseDetailPage = async ({
             </BreadcrumbList>
           </Breadcrumb>
 
-          {locked && (
+          {locked && !enrollment && (
             <p
               role="status"
               className="border-primary bg-primary/5 mt-6 rounded-lg border p-4 text-sm"
