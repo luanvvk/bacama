@@ -322,7 +322,8 @@
     "delivered": "Đã giao",
     "completed": "Hoàn tất",
     "failed": "Thất bại",
-    "refunded": "Đã hoàn tiền"
+    "refunded": "Đã hoàn tiền",
+    "needs_review": "Đang xem xét"
   },
   "Checkout": {
     "paymentHeading": "Bạn muốn thanh toán thế nào?",

@@ -326,7 +326,8 @@
     "delivered": "Delivered",
     "completed": "Completed",
     "failed": "Failed",
-    "refunded": "Refunded"
+    "refunded": "Refunded",
+    "needs_review": "Under review"
   },
   "Checkout": {
     "paymentHeading": "How would you like to pay?",

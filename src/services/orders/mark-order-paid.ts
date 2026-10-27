@@ -18,7 +18,9 @@ const findOrder = (providerRef: string) =>
  * Moves a `pending` order to `paid` and commits stock. The status change is a
  * conditional update, so a replayed webhook affects 0 rows and never
  * decrements twice. A paid event for an order the sweep already failed, or for
- * stock that ran out meanwhile, moves it to `needs_review` for a human. `amountVnd` (from the gateway) is only compared with the
+ * stock that ran out meanwhile, moves it to `needs_review` for a human (lines
+ * that did have stock stay decremented; restock by hand if it is refunded).
+ * `amountVnd` (from the gateway) is only compared with the
  * stored total, never written.
  */
 export const markOrderPaid = async (

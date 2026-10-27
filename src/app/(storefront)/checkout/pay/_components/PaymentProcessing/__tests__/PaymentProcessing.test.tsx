@@ -126,6 +126,15 @@ describe('PaymentProcessing', () => {
     expect(push).toHaveBeenCalledWith('/checkout/done?ref=BCM-2419');
   });
 
+  it('sends a paid order flagged for review to done too', async () => {
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
+
+    render(<PaymentProcessing orderRef="BCM-2419" />);
+    respondWith('needs_review');
+    await advance(3000);
+    expect(push).toHaveBeenCalledWith('/checkout/done?ref=BCM-2419');
+  });
+
   it('shows an honest still-processing message after 30s and never navigates', async () => {
     useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'zalopay' } });
 
