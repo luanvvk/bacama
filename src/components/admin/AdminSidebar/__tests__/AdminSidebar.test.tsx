@@ -25,6 +25,6 @@ describe('AdminSidebar', () => {
   it('shows counts where provided', () => {
     render(<AdminSidebar />);
 
-    expect(screen.getByText('84')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,7 @@
 export * from './AdminSidebar';
 export * from './AdminTopbar';
 export * from './CatalogBrowser';
+export * from './ProductsBrowser';
 export * from './ProductEditor';
 export * from './OrdersTable';
 export * from './ShipmentsTable';

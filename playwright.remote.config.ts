@@ -14,15 +14,14 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
   retries: 1,
+  globalSetup: './tests/e2e/remote-setup.ts',
   reporter: [['list'], ['json', { outputFile: 'test-results/remote-results.json' }]],
   use: {
     baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    extraHTTPHeaders: bypass
-      ? { 'x-vercel-protection-bypass': bypass, 'x-vercel-set-bypass-cookie': 'true' }
-      : undefined,
+    storageState: bypass ? 'test-results/remote-auth.json' : undefined,
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },

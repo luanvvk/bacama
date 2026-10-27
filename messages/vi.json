@@ -708,15 +708,42 @@
     "onThisPage": "Trong trang này",
     "updatedDate": "Cập nhật · 16 tháng 8, 2026",
     "sections": [
-      { "id": "what-are-cookies", "title": "Cookie là gì" },
-      { "id": "types-we-use", "title": "Các loại cookie chúng tôi sử dụng" },
-      { "id": "essential", "title": "Cookie thiết yếu" },
-      { "id": "preferences", "title": "Cookie tuỳ chọn" },
-      { "id": "analytics", "title": "Cookie phân tích" },
-      { "id": "third-party", "title": "Cookie của bên thứ ba" },
-      { "id": "cookie-table", "title": "Các cookie chúng tôi thiết lập" },
-      { "id": "manage", "title": "Cách quản lý cookie" },
-      { "id": "contact", "title": "Liên hệ" }
+      {
+        "id": "what-are-cookies",
+        "title": "Cookie là gì"
+      },
+      {
+        "id": "types-we-use",
+        "title": "Các loại cookie chúng tôi sử dụng"
+      },
+      {
+        "id": "essential",
+        "title": "Cookie thiết yếu"
+      },
+      {
+        "id": "preferences",
+        "title": "Cookie tuỳ chọn"
+      },
+      {
+        "id": "analytics",
+        "title": "Cookie phân tích"
+      },
+      {
+        "id": "third-party",
+        "title": "Cookie của bên thứ ba"
+      },
+      {
+        "id": "cookie-table",
+        "title": "Các cookie chúng tôi thiết lập"
+      },
+      {
+        "id": "manage",
+        "title": "Cách quản lý cookie"
+      },
+      {
+        "id": "contact",
+        "title": "Liên hệ"
+      }
     ],
     "whatAreCookiesTitle": "Cookie và các công nghệ tương tự là gì",
     "whatAreCookiesBody": "Cookie là các tệp văn bản nhỏ được đặt trên thiết bị của bạn khi bạn truy cập một trang web. Chúng giúp trang web ghi nhớ một số thông tin — những gì có trong giỏ hàng của bạn, bạn đã thấy một thông báo trước đó hay chưa, hoặc bạn đã biết đến chúng tôi qua đâu. Chúng tôi cũng sử dụng bộ nhớ trình duyệt (local storage và session storage) cho các mục đích tương tự; nó hoạt động như cookie nhưng có thể lưu trữ nhiều thông tin hơn một chút mà không cần gửi kèm mỗi yêu cầu.",
@@ -1135,6 +1162,285 @@
     "subscribe": "Đăng ký",
     "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
     "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
+  },
+  "Admin": {
+    "overview": {
+      "allSites": "Tất cả cơ sở",
+      "kpis": {
+        "orders": {
+          "label": "Đơn online",
+          "detail": "so với hôm qua"
+        },
+        "revenue": {
+          "label": "Doanh thu online",
+          "detail": "so với hôm qua"
+        },
+        "awaiting": {
+          "label": "Chờ giao đi",
+          "detail": "giao tận nơi, chưa có vận đơn"
+        },
+        "signUps": {
+          "label": "Đăng ký khoá học",
+          "detail": "so với 7 ngày trước"
+        }
+      }
+    },
+    "menu": {
+      "title": "Thực đơn quán",
+      "description": "Đồ uống hiển thị trên thực đơn công khai. Giá được đặt theo từng cơ sở.",
+      "new": "Món mới",
+      "edit": "Sửa",
+      "deactivate": "Ngừng bán",
+      "inactive": "Ngừng bán",
+      "empty": "Chưa có món nào.",
+      "noSite": "Tài khoản của bạn chưa được gán cơ sở nên chưa có món nào để quản lý.",
+      "site": "Cơ sở",
+      "name": "Tên",
+      "price": "Giá",
+      "order": "Thứ tự",
+      "actions": "Thao tác",
+      "createTitle": "Món mới",
+      "editTitle": "Sửa món",
+      "fields": {
+        "siteId": "Cơ sở",
+        "section": "Nhóm",
+        "nameVi": "Tên (tiếng Việt)",
+        "nameEn": "Tên (tiếng Anh)",
+        "priceVnd": "Giá (VND)",
+        "order": "Thứ tự hiển thị",
+        "isActive": "Đang bán trên thực đơn"
+      },
+      "validation": {
+        "required": "Vui lòng nhập trường này.",
+        "price": "Nhập giá là số nguyên lớn hơn 0.",
+        "order": "Nhập số nguyên từ 0 trở lên.",
+        "maxLength": "Tối đa 120 ký tự."
+      },
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "saved": "Đã lưu món.",
+      "deactivated": "Đã ngừng bán món.",
+      "saveFailed": "Không thể lưu món. Vui lòng thử lại.",
+      "forbidden": "Bạn không thể thay đổi món ở cơ sở này.",
+      "duplicate": "Món cùng tên đã tồn tại ở cơ sở này.",
+      "deactivateFailed": "Không thể ngừng bán món. Vui lòng thử lại."
+    },
+    "students": {
+      "title": "Học viên",
+      "eyebrow": "{count} học viên",
+      "description": "Mỗi dòng là một lượt đăng ký khoá học, kèm tiến độ.",
+      "searchPlaceholder": "Tìm học viên…",
+      "searchLabel": "Tìm học viên",
+      "empty": "Không tìm thấy học viên.",
+      "truncated": "Đang hiển thị {shown} lượt đăng ký đầu tiên.",
+      "columns": {
+        "name": "Tên",
+        "email": "Email",
+        "course": "Khoá học",
+        "progress": "Tiến độ",
+        "status": "Trạng thái"
+      },
+      "status": {
+        "pending": "Chờ xử lý",
+        "active": "Đang học",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã huỷ"
+      }
+    },
+    "staff": {
+      "title": "Nhân viên & phân quyền",
+      "eyebrow": "{count} người · {admins} quản trị viên",
+      "description": "Mỗi người thuộc một cơ sở chính. Quản trị viên có thể làm việc ở mọi cơ sở.",
+      "rolesNote": "Vai trò được cấp trong bảng điều khiển Clerk.",
+      "searchPlaceholder": "Tìm nhân viên…",
+      "searchLabel": "Tìm nhân viên",
+      "empty": "Không tìm thấy nhân viên.",
+      "noSite": "Mọi cơ sở",
+      "columns": {
+        "name": "Tên",
+        "role": "Vai trò",
+        "homeSite": "Cơ sở chính"
+      },
+      "roles": {
+        "staff": "Nhân viên",
+        "instructor": "Giảng viên",
+        "admin": "Quản trị viên"
+      }
+    },
+    "announcements": {
+      "title": "Thông báo",
+      "description": "Thông báo ngắn trên trang chủ, theo từng cơ sở hoặc toàn bộ cơ sở.",
+      "new": "Thông báo mới",
+      "edit": "Sửa",
+      "delete": "Xóa",
+      "confirmDelete": "Xác nhận xóa",
+      "cancelDelete": "Giữ lại",
+      "empty": "Chưa có thông báo nào.",
+      "noSite": "Tài khoản của bạn chưa được gán cơ sở nên chưa có thông báo để quản lý.",
+      "allSites": "Tất cả cơ sở",
+      "scope": "Phạm vi",
+      "announcement": "Thông báo",
+      "window": "Thời gian",
+      "status": "Trạng thái",
+      "actions": "Thao tác",
+      "until": "đến {date}",
+      "noEnd": "không kết thúc",
+      "createTitle": "Thông báo mới",
+      "editTitle": "Sửa thông báo",
+      "statuses": {
+        "live": "Đang hiển thị",
+        "scheduled": "Đã lên lịch",
+        "expired": "Hết hạn",
+        "draft": "Nháp"
+      },
+      "fields": {
+        "siteId": "Hiển thị tại",
+        "titleVi": "Tiêu đề (tiếng Việt)",
+        "titleEn": "Tiêu đề (tiếng Anh)",
+        "bodyVi": "Nội dung (tiếng Việt)",
+        "bodyEn": "Nội dung (tiếng Anh)",
+        "startsAt": "Bắt đầu (giờ Việt Nam)",
+        "endsAt": "Kết thúc (giờ Việt Nam, tùy chọn)",
+        "isActive": "Đã đăng"
+      },
+      "validation": {
+        "required": "Trường này là bắt buộc.",
+        "titleMax": "Tối đa 160 ký tự.",
+        "bodyMax": "Tối đa 2000 ký tự.",
+        "endsAfterStart": "Thời điểm kết thúc phải sau thời điểm bắt đầu."
+      },
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "saved": "Đã lưu thông báo.",
+      "deleted": "Đã xóa thông báo.",
+      "saveFailed": "Không thể lưu thông báo. Vui lòng thử lại.",
+      "deleteFailed": "Không thể xóa thông báo. Vui lòng thử lại.",
+      "forbidden": "Bạn không thể thay đổi thông báo của cơ sở này.",
+      "notFound": "Thông báo này không còn tồn tại."
+    },
+    "bakery": {
+      "title": "Bánh",
+      "description": "Các món bánh hiển thị trên cửa hàng, theo từng cơ sở.",
+      "new": "+ Món mới",
+      "createTitle": "Món bánh mới",
+      "editTitle": "Sửa món bánh",
+      "create": "Tạo",
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy",
+      "site": "Cơ sở",
+      "nameVi": "Tên (tiếng Việt)",
+      "nameEn": "Tên (tiếng Anh)",
+      "descriptionVi": "Mô tả (tiếng Việt)",
+      "descriptionEn": "Mô tả (tiếng Anh)",
+      "price": "Giá (VND)",
+      "bakesAt": "Giờ nướng",
+      "sellOutBy": "Hết hàng lúc",
+      "handoff": "Hình thức nhận",
+      "handoff_pickup": "Nhận tại quán",
+      "handoff_grabfood": "GrabFood",
+      "handoff_courier": "Giao hàng",
+      "handoffUrl": "Liên kết nhận hàng (tùy chọn)",
+      "active": "Đang bán",
+      "colItem": "Món",
+      "colStatus": "Trạng thái",
+      "colActions": "Thao tác",
+      "statusActive": "Đang bán",
+      "statusInactive": "Ngừng bán",
+      "edit": "Sửa",
+      "deactivate": "Ngừng bán",
+      "empty": "Chưa có món bánh nào.",
+      "saved": "Đã lưu món bánh.",
+      "deactivated": "Đã ngừng bán món bánh.",
+      "saveFailed": "Không thể lưu món bánh."
+    },
+    "catalog": {
+      "eyebrow": "Danh mục",
+      "title": "Cà phê & blend",
+      "description": "Giá, tồn kho và ngày rang của mọi sản phẩm cà phê. Thay đổi áp dụng cho danh mục chung của tất cả cơ sở.",
+      "importCsv": "Nhập CSV",
+      "newProduct": "Sản phẩm mới",
+      "notAvailable": "Chưa khả dụng",
+      "liveLabel": "Đang bán",
+      "listedProducts": "sản phẩm đang bán",
+      "totalStock": "Tổng tồn kho",
+      "unitsInStock": "đơn vị trong kho",
+      "runningLow": "Sắp hết",
+      "needsAttention": "cần chú ý",
+      "searchPlaceholder": "Tên, xuất xứ…",
+      "searchLabel": "Tìm trong danh mục",
+      "filterLabel": "Lọc theo trạng thái",
+      "filterAll": "Tất cả",
+      "filterLive": "Đang bán",
+      "filterLow": "Sắp hết",
+      "colProduct": "Sản phẩm",
+      "colCategory": "Loại",
+      "colPrice": "Giá",
+      "colStock": "Tồn kho",
+      "colRoast": "Ngày rang",
+      "colStatus": "Trạng thái",
+      "colActions": "Thao tác",
+      "statusPaused": "Tạm ngưng",
+      "statusSoldOut": "Hết hàng",
+      "statusLow": "Sắp hết",
+      "statusLive": "Đang bán",
+      "edit": "Sửa",
+      "view": "Xem",
+      "noMatch": "Không có sản phẩm nào khớp bộ lọc."
+    },
+    "editor": {
+      "breadcrumb": "Danh mục",
+      "title": "Sửa sản phẩm",
+      "subtitle": "Giá, tồn kho, ngày rang và trạng thái hiển thị. Các thông tin khác được quản lý ở nơi khác.",
+      "statusLive": "Đang bán",
+      "statusPaused": "Tạm ngưng",
+      "basics": "Thông tin cơ bản",
+      "name": "Tên sản phẩm",
+      "origin": "Xuất xứ",
+      "priceStock": "Giá & tồn kho",
+      "price": "Giá · VND",
+      "stock": "Tồn kho hiện tại",
+      "reorderLevel": "Mức đặt hàng lại",
+      "roastDate": "Ngày rang",
+      "roastDateHint": "Ngày theo giờ Việt Nam.",
+      "featured": "Nổi bật",
+      "featuredUntil": "Nổi bật đến ngày",
+      "currentPhoto": "Ảnh hiện tại",
+      "photoNote": "Chưa hỗ trợ tải ảnh lên.",
+      "listing": "Hiển thị",
+      "shop": "Cửa hàng",
+      "listed": "Đang hiển thị",
+      "notListed": "Đã ẩn",
+      "productUrl": "Đường dẫn sản phẩm",
+      "save": "Lưu thay đổi",
+      "pause": "Tạm ngưng bán",
+      "resume": "Bán lại",
+      "noChanges": "Không có thay đổi để lưu.",
+      "saved": "Đã lưu {name}.",
+      "saveFailed": "Không thể lưu {name}. Vui lòng thử lại.",
+      "wholeVnd": "Nhập số tiền VND nguyên.",
+      "wholeStock": "Nhập số lượng tồn kho nguyên.",
+      "wholeReorder": "Nhập mức đặt hàng lại nguyên.",
+      "invalidDate": "Nhập ngày hợp lệ."
+    },
+    "stock": {
+      "title": "Tồn kho & ngày rang",
+      "roasted": "rang {date}",
+      "noRoast": "chưa có ngày rang",
+      "stockLabel": "Tồn kho {name}",
+      "save": "Lưu thay đổi",
+      "onlineOnly": "Chỉ tồn kho bán online. Nguyên liệu quán thuộc về POS.",
+      "empty": "Chưa có sản phẩm đang bán.",
+      "noChanges": "Không có thay đổi để lưu.",
+      "saved": "Đã cập nhật tồn kho.",
+      "saveFailed": "Không thể cập nhật một số tồn kho. Vui lòng thử lại."
+    },
+    "lowStock": {
+      "title": "{name} sắp hết hàng",
+      "detail": "Còn {stock}, mức đặt hàng lại {level}.",
+      "many": "{count} sản phẩm sắp hết hàng",
+      "manyDetail": "Xem mức tồn kho trong danh mục.",
+      "update": "Cập nhật"
+    }
   },
   "QuantityStepper": {
     "decrease": "Giảm số lượng",

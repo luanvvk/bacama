@@ -36,7 +36,9 @@ test.describe('Clerk authentication UI', () => {
 
     await page.goto('/');
 
-    await page.getByRole('button', { name: 'Log in' }).click();
-    await expect(page.getByRole('menuitem', { name: 'Sign in / Create account' })).toBeVisible();
+    await page.getByRole('button', { name: /Log in|Đăng nhập/ }).click();
+    await expect(
+      page.getByRole('menuitem', { name: /Sign in \/ Create account|Đăng nhập \/ Tạo tài khoản/ }),
+    ).toBeVisible();
   });
 });
