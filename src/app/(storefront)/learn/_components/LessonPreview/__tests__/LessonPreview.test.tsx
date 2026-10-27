@@ -2,18 +2,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { LessonPreview } from '../index';
-import { toast } from '@/lib/toast';
 import type { CoursePreview } from '@/services/courses/get-preview-course';
-
-jest.mock('@/lib/toast', () => ({ toast: jest.fn() }));
 
 const MESSAGES: Record<string, string> = {
   freePreviewBold: "You're watching the free preview.",
   signInHint: 'Sign in to save your progress and unlock paid lessons.',
-  signInToWatch: 'Sign in to watch the full lesson.',
   logIn: 'Log in',
   allCourses: 'All courses →',
-  playAriaLabel: 'Play preview',
   tabOverview: 'Overview',
   tabDocuments: 'Documents',
   noOverview: 'No overview added for this lesson yet.',
@@ -24,6 +19,12 @@ const MESSAGES: Record<string, string> = {
   discussionTitle: 'Discussion',
   logInToJoin: 'Log in to join the discussion',
   teacherRoleLabel: 'Teacher',
+  videoComingSoon: 'Video coming soon.',
+  lessonNavLabel: 'Lesson navigation',
+  previousLesson: 'Previous',
+  nextLesson: 'Next',
+  lessonLocked: 'Locked',
+  lessonCompleted: 'Completed',
 };
 
 jest.mock('next-intl', () => ({
@@ -81,9 +82,19 @@ const PREVIEW: CoursePreview = {
   moduleLabel: 'Module 1 · Foundations · Lesson 03',
 };
 
+const EMBED_URL = 'https://www.youtube-nocookie.com/embed/jNQXAC9IVRw?rel=0';
+
+const guestProps = {
+  preview: PREVIEW,
+  embedUrl: EMBED_URL,
+  isGuest: true,
+  lockedLessonIds: ['lesson-1'],
+  completedLessonIds: [],
+};
+
 describe('LessonPreview', () => {
-  it('renders the free-preview banner and lesson content', () => {
-    render(<LessonPreview preview={PREVIEW} />);
+  it('renders the free-preview banner and lesson content for a guest', () => {
+    render(<LessonPreview {...guestProps} />);
 
     expect(screen.getByText(/watching the free preview/)).toBeInTheDocument();
     expect(
@@ -92,16 +103,32 @@ describe('LessonPreview', () => {
     expect(screen.getByRole('link', { name: 'Log in' })).toHaveAttribute('href', '/login');
   });
 
-  it('shows a sign-in toast instead of playing a real video', async () => {
-    render(<LessonPreview preview={PREVIEW} />);
+  it('embeds the player instead of a fake play button', () => {
+    render(<LessonPreview {...guestProps} />);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Play preview' }));
-
-    expect(toast).toHaveBeenCalledWith('Sign in to watch the full lesson.');
+    expect(screen.getByTitle('The heart — pour slow, finish clean')).toHaveAttribute(
+      'src',
+      EMBED_URL,
+    );
+    expect(screen.queryByRole('button', { name: 'Play preview' })).not.toBeInTheDocument();
   });
 
-  it('gates the documents tab behind sign-in', async () => {
-    render(<LessonPreview preview={PREVIEW} />);
+  it('says the video is coming soon when the lesson has none', () => {
+    render(<LessonPreview {...guestProps} embedUrl={null} />);
+
+    expect(screen.getByText('Video coming soon.')).toBeInTheDocument();
+    expect(document.querySelector('iframe')).toBeNull();
+  });
+
+  it('hides guest prompts for a signed-in learner', () => {
+    render(<LessonPreview {...guestProps} isGuest={false} lockedLessonIds={[]} />);
+
+    expect(screen.queryByText(/watching the free preview/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Log in to join the discussion' })).toBeNull();
+  });
+
+  it('gates the documents tab behind sign-in for a guest', async () => {
+    render(<LessonPreview {...guestProps} />);
 
     await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
 
@@ -114,20 +141,57 @@ describe('LessonPreview', () => {
       ...PREVIEW,
       lesson: { ...PREVIEW.lesson, documents: [] },
     };
-    render(<LessonPreview preview={noDocs} />);
+    render(<LessonPreview {...guestProps} preview={noDocs} />);
 
     await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
 
     expect(screen.getByText('No documents added for this lesson yet.')).toBeInTheDocument();
   });
 
-  it('renders the course outline with the current lesson marked', () => {
-    render(<LessonPreview preview={PREVIEW} />);
+  it('marks locked lessons as non-links and links the rest', () => {
+    render(<LessonPreview {...guestProps} />);
 
-    expect(screen.getByText('Milk and microfoam')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Log in to join the discussion' })).toHaveAttribute(
+    expect(screen.queryByRole('link', { name: /Milk and microfoam/ })).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Locked')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /The heart/, current: 'page' })).toHaveAttribute(
       'href',
-      '/login',
+      '/learn/latte-art/lesson-3',
+    );
+  });
+
+  it('marks completed lessons and links every lesson once unlocked', () => {
+    render(
+      <LessonPreview
+        {...guestProps}
+        isGuest={false}
+        lockedLessonIds={[]}
+        completedLessonIds={['lesson-1']}
+      />,
+    );
+
+    expect(screen.getByLabelText('Completed')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Milk and microfoam/ })).toHaveAttribute(
+      'href',
+      '/learn/latte-art/lesson-1',
+    );
+  });
+
+  it('renders previous and next links', () => {
+    render(
+      <LessonPreview
+        {...guestProps}
+        previousHref="/learn/latte-art/lesson-1"
+        nextHref="/learn/latte-art/lesson-4"
+      />,
+    );
+
+    expect(screen.getByRole('link', { name: 'Previous' })).toHaveAttribute(
+      'href',
+      '/learn/latte-art/lesson-1',
+    );
+    expect(screen.getByRole('link', { name: 'Next' })).toHaveAttribute(
+      'href',
+      '/learn/latte-art/lesson-4',
     );
   });
 });

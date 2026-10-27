@@ -238,19 +238,18 @@
     "enrolPending": "Đăng ký của bạn đã được lưu.",
     "alreadyEnrolled": "Bạn đã đăng ký khóa học này rồi.",
     "sessionJustFilled": "Buổi học này vừa hết chỗ — vui lòng chọn buổi khác.",
-    "enrolFailed": "Chưa thể đăng ký. Vui lòng thử lại."
+    "enrolFailed": "Chưa thể đăng ký. Vui lòng thử lại.",
+    "continueLearning": "Tiếp tục học",
+    "lessonLocked": "Bài học này dành cho học viên đã đăng ký. Hãy đăng ký bên dưới để mở khóa toàn bộ khóa học."
   },
   "Learn": {
     "breadcrumbHome": "Trang chủ",
     "breadcrumbWorkshops": "Khóa học",
-    "breadcrumbFallback": "Xem trước",
     "noPreview": "Hiện chưa có bài học xem trước miễn phí.",
     "freePreviewBold": "Bạn đang xem bài học miễn phí.",
     "signInHint": "Đăng nhập để lưu tiến trình và mở khóa các bài học trả phí.",
-    "signInToWatch": "Đăng nhập để xem toàn bộ bài học.",
     "logIn": "Đăng nhập",
     "allCourses": "Tất cả khóa học →",
-    "playAriaLabel": "Xem trước",
     "tabOverview": "Tổng quan",
     "tabDocuments": "Tài liệu",
     "noOverview": "Bài học này chưa có phần tổng quan.",
@@ -261,7 +260,14 @@
     "lessonCount": "{count} bài học",
     "discussionTitle": "Thảo luận",
     "logInToJoin": "Đăng nhập để tham gia thảo luận",
-    "teacherRoleLabel": "Giáo viên"
+    "teacherRoleLabel": "Giáo viên",
+    "videoComingSoon": "Video sắp ra mắt.",
+    "lessonNavLabel": "Chuyển bài học",
+    "previousLesson": "Bài trước",
+    "nextLesson": "Bài sau",
+    "lessonLocked": "Đã khóa",
+    "lessonCompleted": "Đã hoàn thành",
+    "lessonNumber": "Bài {number}"
   },
   "StaticPageShell": {
     "asideEyebrow": "Bacama · Đà Nẵng",

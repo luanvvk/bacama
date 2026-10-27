@@ -1241,6 +1241,8 @@ const COURSES = [
             titleVi: 'Sữa và microfoam',
             titleEn: 'Milk and microfoam',
             durationSec: 760,
+            // Placeholder public video until the owner supplies lesson content (BUILD-PLAN B4-c).
+            videoId: 'jNQXAC9IVRw',
             isFreePreview: false,
           },
           {
@@ -1253,6 +1255,7 @@ const COURSES = [
             titleVi: 'Trái tim — rót chậm, kết gọn',
             titleEn: 'The heart — pour slow, finish clean',
             durationSec: 665,
+            videoId: 'jNQXAC9IVRw',
             isFreePreview: true,
             bodyVi:
               'Trái tim học trước vì nó dạy ba thứ cùng lúc: độ cao khi rót, tốc độ dòng, và thời điểm cắt qua. Trái tim lệch gần như luôn do hạ bình quá muộn. Xem từ 4:10 để thấy hai kiểu rót cạnh nhau.',

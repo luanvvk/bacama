@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { getAuthProvider } from '@/lib/providers/auth';
 import { getCourseBySlug } from '@/services/courses/get-course-by-slug';
 import { getCourses } from '@/services/courses/get-courses';
+import { getLearnerEnrollment } from '@/services/enrollments/get-learner-enrollment';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 import { Badge } from '@/components/ui/Badge';
@@ -19,21 +21,34 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 
 import { EnrolPanel } from './_components/EnrolPanel';
 
-// Seats-left is a snapshot, same tradeoff the product page already makes for
-// stock (task 1.10) — real availability is re-checked when enrolment lands.
-export const revalidate = 3600;
-
 export const generateStaticParams = async () => {
   const courses = await getCourses();
 
   return courses.map((course) => ({ slug: course.slug }));
 };
 
-const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await params;
-  const [t, course] = await Promise.all([getTranslations('CourseDetail'), getCourseBySlug(slug)]);
+// Rendered per request: the enrol button becomes "Continue learning" for an
+// enrolled viewer, so the page can no longer be a shared static snapshot.
+const CourseDetailPage = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ locked?: string }>;
+}) => {
+  const [{ slug }, { locked }] = await Promise.all([params, searchParams]);
+  const [t, course, user] = await Promise.all([
+    getTranslations('CourseDetail'),
+    getCourseBySlug(slug),
+    getAuthProvider().getCurrentUser(),
+  ]);
 
   if (!course) notFound();
+
+  const enrollment = user ? await getLearnerEnrollment(user.id, course.id) : null;
+  const firstLesson = course.modules.flatMap((courseModule) => courseModule.lessons)[0];
+  const continueHref =
+    enrollment && firstLesson ? `/learn/${course.slug}/${firstLesson.id}` : undefined;
 
   return (
     <>
@@ -55,6 +70,15 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
             </BreadcrumbList>
           </Breadcrumb>
 
+          {locked && !enrollment && (
+            <p
+              role="status"
+              className="border-primary bg-primary/5 mt-6 rounded-lg border p-4 text-sm"
+            >
+              {t('lessonLocked')}
+            </p>
+          )}
+
           <div className="grid gap-10 py-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
             <CardMedia
               src={course.imageUrl}
@@ -71,7 +95,7 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
                 </div>
               }
             />
-            <EnrolPanel course={course} />
+            <EnrolPanel course={course} continueHref={continueHref} />
           </div>
 
           <Tabs defaultValue="outline" className="mt-4 border-t pt-8">
