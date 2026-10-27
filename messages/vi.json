@@ -1137,6 +1137,15 @@
     "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
   },
   "Admin": {
+    "overview": {
+      "allSites": "Tất cả cơ sở",
+      "kpis": {
+        "orders": { "label": "Đơn online", "detail": "so với hôm qua" },
+        "revenue": { "label": "Doanh thu online", "detail": "so với hôm qua" },
+        "awaiting": { "label": "Chờ giao đi", "detail": "giao tận nơi, chưa có vận đơn" },
+        "signUps": { "label": "Đăng ký khoá học", "detail": "so với 7 ngày trước" }
+      }
+    },
     "menu": {
       "title": "Thực đơn quán",
       "description": "Đồ uống hiển thị trên thực đơn công khai. Giá được đặt theo từng cơ sở.",

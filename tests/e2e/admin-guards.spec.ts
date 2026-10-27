@@ -5,7 +5,7 @@ test.beforeEach(async ({ context }) => {
 });
 
 test.describe('admin guards', () => {
-  for (const path of ['/admin/menu', '/admin/announcements']) {
+  for (const path of ['/admin', '/admin/menu', '/admin/announcements']) {
     test(`signed-out visit to ${path} ends on /login`, async ({ page }) => {
       await page.goto(path);
 

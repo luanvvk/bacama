@@ -1141,6 +1141,15 @@
     "successToast": "You are on the list. Newsletter delivery will be connected soon."
   },
   "Admin": {
+    "overview": {
+      "allSites": "All sites",
+      "kpis": {
+        "orders": { "label": "Online orders", "detail": "vs yesterday" },
+        "revenue": { "label": "Online revenue", "detail": "vs yesterday" },
+        "awaiting": { "label": "Awaiting despatch", "detail": "home delivery, no shipment yet" },
+        "signUps": { "label": "Course sign-ups", "detail": "vs previous 7 days" }
+      }
+    },
     "menu": {
       "title": "Café menu",
       "description": "Drinks shown on the public menu. Prices are per site.",
