@@ -11,6 +11,7 @@ import {
   PROVINCES,
   PAYMENT_METHODS,
   getPaymentMethod,
+  type PaymentMethodValue,
 } from '@/constants/checkout';
 import { formatVnd } from '@/lib/format-price';
 import { useCartStore, useCartTotalVnd } from '@/stores/cart';
@@ -28,7 +29,12 @@ import { buildCheckoutSchema, type CheckoutFormValues } from './schema';
 
 const PROVINCE_OPTIONS = PROVINCES.map((province) => ({ label: province, value: province }));
 
-export const CheckoutForm = () => {
+interface CheckoutFormProps {
+  /** Methods with a registered provider; tiles for the rest stay hidden. */
+  availableMethods: PaymentMethodValue[];
+}
+
+export const CheckoutForm = ({ availableMethods }: CheckoutFormProps) => {
   const t = useTranslations('Checkout');
   const tPaymentMethod = useTranslations('PaymentMethod');
   const tDeliveryOption = useTranslations('DeliveryOption');
@@ -38,7 +44,10 @@ export const CheckoutForm = () => {
   const items = useCartStore((state) => state.items);
   const subtotalVnd = useCartTotalVnd();
 
-  const paymentMethodOptions = PAYMENT_METHODS.map((method) => ({
+  const offeredMethods = PAYMENT_METHODS.filter((method) =>
+    availableMethods.includes(method.value),
+  );
+  const paymentMethodOptions = offeredMethods.map((method) => ({
     value: method.value,
     label: tPaymentMethod(`${method.value}.label`),
     description: tPaymentMethod(`${method.value}.description`),
@@ -76,7 +85,10 @@ export const CheckoutForm = () => {
       }),
     ),
     defaultValues: {
-      paymentMethod: existingOrder?.paymentMethod ?? 'zalopay',
+      paymentMethod:
+        existingOrder && availableMethods.includes(existingOrder.paymentMethod)
+          ? existingOrder.paymentMethod
+          : (offeredMethods[0]?.value ?? 'cod'),
       fullName: existingOrder?.shipping.fullName ?? '',
       phone: existingOrder?.shipping.phone ?? '',
       email: existingOrder?.shipping.email ?? '',

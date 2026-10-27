@@ -94,11 +94,11 @@ describe('getOrderByRef', () => {
   it.each([
     ['zalopay', 'zalopay'],
     ['momo', 'momo'],
-    ['vnpay_qr', 'vnpay'],
-    ['bank_transfer', 'bank'],
+    ['vnpay_qr', 'vnpay_qr'],
+    ['bank_transfer', 'bank_transfer'],
     ['card', 'card'],
     ['cod', 'cod'],
-  ] as const)('maps the Prisma payment enum %s back to %s', async (stored, expected) => {
+  ] as const)('returns the stored payment method %s as %s', async (stored, expected) => {
     mockFindUnique.mockResolvedValue({ ...ORDER, paymentProvider: stored });
 
     const result = await getOrderByRef('BCM-ABCD1234');

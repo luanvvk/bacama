@@ -36,15 +36,6 @@ export interface CreateOrderInput {
   locale: 'vi' | 'en';
 }
 
-const PAYMENT_METHOD_MAP: Record<PaymentMethodValue, $Enums.PaymentMethod> = {
-  zalopay: 'zalopay',
-  momo: 'momo',
-  vnpay: 'vnpay_qr',
-  bank: 'bank_transfer',
-  card: 'card',
-  cod: 'cod',
-};
-
 const generateOrderRef = () => `BCM-${randomBytes(4).toString('hex').toUpperCase()}`;
 
 /**
@@ -180,7 +171,7 @@ export const createOrder = async (
     shippingVnd: 0,
     totalVnd: subtotalVnd,
     locale: input.locale,
-    paymentProvider: PAYMENT_METHOD_MAP[input.paymentMethod],
+    paymentProvider: input.paymentMethod,
     items: { create: orderItems },
   };
 

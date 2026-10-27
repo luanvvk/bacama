@@ -1,3 +1,4 @@
+import type { PaymentMethodValue } from '@/constants/checkout';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -47,13 +48,13 @@ const MESSAGES: Record<string, Record<string, string>> = {
     meta: 'Free',
     cta: 'Pay with MoMo',
   },
-  'PaymentMethod.vnpay': {
+  'PaymentMethod.vnpay_qr': {
     label: 'VNPay QR',
     description: 'Scan with any banking app',
     meta: 'Free',
     cta: 'Generate a VNPay QR',
   },
-  'PaymentMethod.bank': {
+  'PaymentMethod.bank_transfer': {
     label: 'Bank transfer',
     description: 'Vietcombank · Techcombank · BIDV',
     meta: 'Free',
@@ -132,10 +133,29 @@ beforeEach(() => {
   });
 });
 
+const ALL_METHODS: PaymentMethodValue[] = [
+  'zalopay',
+  'momo',
+  'vnpay_qr',
+  'bank_transfer',
+  'card',
+  'cod',
+];
+
 describe('CheckoutForm', () => {
+  it('offers only the available methods and selects the first by default', () => {
+    render(<CheckoutForm availableMethods={['cod']} />);
+
+    expect(
+      screen.getAllByRole('radio', { name: /Cash on delivery|ZaloPay|MoMo|Card/ }),
+    ).toHaveLength(1);
+    expect(screen.getByRole('radio', { name: /Cash on delivery/ })).toBeChecked();
+    expect(screen.getByRole('button', { name: 'Place order · pay on delivery' })).toBeVisible();
+  });
+
   it('persists a real order via the API and routes to the pay step for an online method', async () => {
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     await fillShippingFields(user);
     await user.click(screen.getByRole('button', { name: 'Pay with ZaloPay' }));
@@ -155,7 +175,7 @@ describe('CheckoutForm', () => {
 
   it('persists a real order via the API and routes straight to done for cash on delivery', async () => {
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     await user.click(screen.getByRole('radio', { name: /Cash on delivery/ }));
     await fillShippingFields(user);
@@ -178,7 +198,7 @@ describe('CheckoutForm', () => {
   it('shows a persistent alert, keeps values and does not navigate when the order API call fails', async () => {
     mockFetch.mockResolvedValue({ ok: false, json: () => Promise.resolve({ message: 'nope' }) });
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     await user.click(screen.getByRole('radio', { name: /Cash on delivery/ }));
     await fillShippingFields(user);
@@ -194,7 +214,7 @@ describe('CheckoutForm', () => {
   it('shows the alert and moves focus to it when the network request throws', async () => {
     mockFetch.mockRejectedValue(new TypeError('Failed to fetch'));
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     await user.click(screen.getByRole('radio', { name: /Cash on delivery/ }));
     await fillShippingFields(user);
@@ -207,7 +227,7 @@ describe('CheckoutForm', () => {
 
   it('announces invalid fields and focuses the first one', async () => {
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     await user.click(screen.getByRole('button', { name: 'Pay with ZaloPay' }));
 
@@ -218,7 +238,7 @@ describe('CheckoutForm', () => {
 
   it('does not submit when required shipping fields are missing', async () => {
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     await user.click(screen.getByRole('button', { name: 'Pay with ZaloPay' }));
 
@@ -228,7 +248,7 @@ describe('CheckoutForm', () => {
 
   it('redirects to the shop when the cart is empty', () => {
     useCartStore.setState({ items: [], isOpen: false });
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     expect(replace).toHaveBeenCalledWith('/shop');
   });
@@ -244,7 +264,7 @@ describe('CheckoutForm', () => {
         return () => {};
       });
 
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
     expect(replace).not.toHaveBeenCalled();
 
     hasHydrated.mockReturnValue(true);
@@ -264,7 +284,7 @@ describe('CheckoutForm', () => {
       isOpen: false,
     });
     const user = userEvent.setup();
-    render(<CheckoutForm />);
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
 
     expect(screen.getByLabelText(/^How to receive/)).toHaveTextContent('Collect at a café');
     expect(screen.getByLabelText(/^How to receive/)).toHaveAttribute('data-disabled');

@@ -1,15 +1,5 @@
 import type { CheckoutOrder } from '@/stores/checkout';
-import type { PaymentMethodValue } from '@/constants/checkout';
-import type { $Enums, Prisma } from '@/generated/prisma/client';
-
-const REVERSE_PAYMENT_METHOD_MAP: Record<$Enums.PaymentMethod, PaymentMethodValue> = {
-  zalopay: 'zalopay',
-  momo: 'momo',
-  vnpay_qr: 'vnpay',
-  bank_transfer: 'bank',
-  card: 'card',
-  cod: 'cod',
-};
+import type { Prisma } from '@/generated/prisma/client';
 
 type OrderWithItems = Prisma.OrderGetPayload<{ include: { items: true } }>;
 
@@ -27,7 +17,7 @@ export const mapOrderToCheckoutOrder = (order: OrderWithItems): CheckoutOrder =>
   })),
   subtotalVnd: order.subtotalVnd,
   totalVnd: order.totalVnd,
-  paymentMethod: order.paymentProvider ? REVERSE_PAYMENT_METHOD_MAP[order.paymentProvider] : 'cod',
+  paymentMethod: order.paymentProvider ?? 'cod',
   shipping: {
     fullName: order.customerName,
     phone: order.phone,

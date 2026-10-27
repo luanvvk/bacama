@@ -39,7 +39,7 @@ const MESSAGES: Record<string, Record<string, string>> = {
     trackOrder: 'Check order status',
   },
   'PaymentMethod.zalopay': { label: 'ZaloPay' },
-  'PaymentMethod.bank': { label: 'Bank transfer' },
+  'PaymentMethod.bank_transfer': { label: 'Bank transfer' },
   OrderSummary: {
     yourOrder: 'Your order',
     total: 'Total',
@@ -171,7 +171,7 @@ describe('PaymentProcessing', () => {
   });
 
   it('shows bank details; the transfer button goes to order tracking, not done', () => {
-    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'bank' } });
+    useCheckoutStore.setState({ order: { ...ORDER, paymentMethod: 'bank_transfer' } });
 
     render(<PaymentProcessing orderRef="BCM-2419" />);
     expect(screen.getByText('BACAMA COFFEE')).toBeInTheDocument();

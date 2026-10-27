@@ -1,4 +1,6 @@
-export type PaymentMethodValue = 'zalopay' | 'momo' | 'vnpay' | 'bank' | 'card' | 'cod';
+import type { PaymentMethodValue } from '@/lib/providers/payment/types';
+
+export type { PaymentMethodValue };
 
 export interface PaymentMethod {
   value: PaymentMethodValue;
@@ -27,7 +29,7 @@ export const PAYMENT_METHODS: PaymentMethod[] = [
     cta: 'Pay with MoMo',
   },
   {
-    value: 'vnpay',
+    value: 'vnpay_qr',
     label: 'VNPay QR',
     description: 'Scan with any banking app',
     meta: 'Free',
@@ -35,7 +37,7 @@ export const PAYMENT_METHODS: PaymentMethod[] = [
     cta: 'Generate a VNPay QR',
   },
   {
-    value: 'bank',
+    value: 'bank_transfer',
     label: 'Bank transfer',
     description: 'Vietcombank · Techcombank · BIDV',
     meta: 'Free',

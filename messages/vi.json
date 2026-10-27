@@ -435,13 +435,13 @@
       "meta": "Miễn phí",
       "cta": "Thanh toán với MoMo"
     },
-    "vnpay": {
+    "vnpay_qr": {
       "label": "VNPay QR",
       "description": "Quét bằng bất kỳ app ngân hàng",
       "meta": "Miễn phí",
       "cta": "Tạo mã VNPay QR"
     },
-    "bank": {
+    "bank_transfer": {
       "label": "Chuyển khoản",
       "description": "Vietcombank · Techcombank · BIDV",
       "meta": "Miễn phí",
