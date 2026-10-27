@@ -187,7 +187,7 @@ describe('LessonPreview', () => {
       />,
     );
 
-    expect(screen.getByText('Completed')).toBeInTheDocument();
+    expect(screen.getByText('Completed')).toHaveClass('sr-only');
     expect(screen.getByRole('link', { name: /Milk and microfoam/ })).toHaveAttribute(
       'href',
       '/learn/latte-art/lesson-1',
