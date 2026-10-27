@@ -67,6 +67,9 @@ export const CheckoutForm = ({ availableMethods }: CheckoutFormProps) => {
   ).map((option) => ({ value: option.value, label: tDeliveryOption(option.value) }));
 
   const [submitError, setSubmitError] = useState(false);
+  // Stays true after a successful POST so the form can't re-submit while the
+  // next route loads (handleSubmit resets isSubmitting once onSubmit resolves).
+  const [submitted, setSubmitted] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -119,6 +122,7 @@ export const CheckoutForm = ({ availableMethods }: CheckoutFormProps) => {
   if (!hydrated || items.length === 0) return null;
 
   const onSubmit = async (values: CheckoutFormValues) => {
+    if (submitted) return;
     const { paymentMethod, fullName, phone, email, address, province, deliveryOption, note } =
       values;
     const shipping = { fullName, phone, email, address, province, deliveryOption, note };
@@ -157,6 +161,7 @@ export const CheckoutForm = ({ availableMethods }: CheckoutFormProps) => {
       return;
     }
 
+    setSubmitted(true);
     const { ref } = (await response.json()) as { id: string; ref: string };
     placeOrder({
       items,
@@ -276,7 +281,7 @@ export const CheckoutForm = ({ availableMethods }: CheckoutFormProps) => {
             <p className="text-muted-foreground text-xs">{t('totalLabel')}</p>
             <p className="font-heading text-2xl font-semibold">{formatVnd(subtotalVnd)}</p>
           </div>
-          <Button type="submit" size="lg" disabled={formState.isSubmitting}>
+          <Button type="submit" size="lg" disabled={formState.isSubmitting || submitted}>
             {tPaymentMethod(`${selectedMethod.value}.cta`)}
           </Button>
         </div>

@@ -195,6 +195,22 @@ describe('CheckoutForm', () => {
     expect(push).toHaveBeenCalledWith('/checkout/done?ref=BCM-ABCD1234');
   });
 
+  it('does not place a second order when submitted again after the first succeeded', async () => {
+    const user = userEvent.setup();
+    render(<CheckoutForm availableMethods={ALL_METHODS} />);
+
+    await user.click(screen.getByRole('radio', { name: /Cash on delivery/ }));
+    await fillShippingFields(user);
+    const button = screen.getByRole('button', { name: 'Place order · pay on delivery' });
+    await user.click(button);
+    await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
+    await user.click(button);
+    await user.type(screen.getByLabelText(/^Address/), '{Enter}');
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(button).toBeDisabled();
+  });
+
   it('shows a persistent alert, keeps values and does not navigate when the order API call fails', async () => {
     mockFetch.mockResolvedValue({ ok: false, json: () => Promise.resolve({ message: 'nope' }) });
     const user = userEvent.setup();
