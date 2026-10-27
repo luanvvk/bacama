@@ -15,9 +15,6 @@ import { StorySection } from './_components/StorySection';
 import { TodaysStockSection } from './_components/TodaysStockSection';
 import { WorkshopsSection } from './_components/WorkshopsSection';
 
-// Stock, roast freshness and active announcements all change during the day, so
-// this route must not be frozen at build time (docs/BUILD-PLAN.md task 1.10).
-
 const Home = async () => {
   const t = await getTranslations('Announcements');
   // Real announcements join the evergreen taglines, so a dated line ("Site 3
