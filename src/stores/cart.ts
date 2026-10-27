@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-const MAX_QUANTITY = 99;
+const MAX_QUANTITY = 20;
 
 const clampQuantity = (quantity: number) =>
   Number.isFinite(quantity) ? Math.min(MAX_QUANTITY, Math.max(1, Math.trunc(quantity))) : 1;
