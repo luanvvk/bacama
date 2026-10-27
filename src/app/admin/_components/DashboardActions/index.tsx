@@ -1,6 +1,7 @@
 'use client';
 
-import { toast } from '@/lib/toast';
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/Button';
 
 export const DashboardActions = () => (
@@ -8,14 +9,8 @@ export const DashboardActions = () => (
     <Button type="button" variant="outline" size="sm" onClick={() => window.print()}>
       Print today&rsquo;s orders
     </Button>
-    <Button
-      type="button"
-      size="sm"
-      onClick={() =>
-        toast("New product isn't wired up yet — coming with the Admin catalogue group.")
-      }
-    >
-      + New product
+    <Button asChild size="sm">
+      <Link href="/admin/catalog">Manage catalogue</Link>
     </Button>
   </div>
 );

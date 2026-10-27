@@ -8,6 +8,9 @@ const mockGetAdminKpis = jest.fn();
 jest.mock('@/lib/auth/guards', () => ({
   requireRoles: (...args: unknown[]) => mockRequireRoles(...args),
 }));
+jest.mock('@/services/orders/admin-orders', () => ({
+  listTodaysOrders: jest.fn().mockResolvedValue([]),
+}));
 jest.mock('@/services/orders/get-admin-kpis', () => ({
   getAdminKpis: () => mockGetAdminKpis(),
 }));

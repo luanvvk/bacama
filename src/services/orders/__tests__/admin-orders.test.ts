@@ -17,6 +17,7 @@ import {
   AdminOrderConflictError,
   AdminOrderNotFoundError,
   listAdminOrders,
+  listTodaysOrders,
   markCodCollected,
 } from '../admin-orders';
 
@@ -139,5 +140,23 @@ describe('markCodCollected', () => {
 
     await expect(markCodCollected(admin, 'BCM-1')).rejects.toBeInstanceOf(AdminOrderConflictError);
     expect(order.updateMany).not.toHaveBeenCalled();
+  });
+});
+
+describe('listTodaysOrders', () => {
+  it('bounds the query to the Vietnam day, newest first', async () => {
+    order.findMany.mockResolvedValue([]);
+
+    // 2026-10-26T18:00Z is 01:00 on 27 Oct in Vietnam
+    await listTodaysOrders(admin, new Date('2026-10-26T18:00:00Z'));
+
+    const args = order.findMany.mock.calls[0][0];
+    expect(args.orderBy).toEqual({ createdAt: 'desc' });
+    expect(args.where.AND[1]).toEqual({
+      createdAt: {
+        gte: new Date('2026-10-26T17:00:00Z'),
+        lt: new Date('2026-10-27T17:00:00Z'),
+      },
+    });
   });
 });
