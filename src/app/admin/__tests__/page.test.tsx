@@ -14,6 +14,9 @@ jest.mock('@/services/orders/get-admin-kpis', () => ({
 jest.mock('@/services/sites/get-admin-announcements', () => ({
   getAdminAnnouncements: jest.fn().mockResolvedValue([]),
 }));
+jest.mock('@/services/catalog/get-admin-products', () => ({
+  getAdminProducts: jest.fn().mockResolvedValue([]),
+}));
 jest.mock('@/services/sites/get-site-name', () => ({
   getSiteName: jest.fn().mockResolvedValue('Ngô Quyền'),
 }));
