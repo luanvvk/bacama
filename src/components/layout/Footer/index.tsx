@@ -18,7 +18,6 @@ const FOOTER_COLUMNS = [
     links: [
       { label: '250g Bag · 100% Arabica', href: '/product/bag-arabica-250g' },
       { label: '250g Bag · 100% Robusta', href: '/product/bag-robusta-250g' },
-      { label: 'Cold Brew Filter Bag', href: '/product/coldbrew-filter-arabica' },
       { label: 'All coffee', href: '/shop' },
     ],
   },
