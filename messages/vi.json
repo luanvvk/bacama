@@ -1186,6 +1186,40 @@
       "duplicate": "Món cùng tên đã tồn tại ở cơ sở này.",
       "deactivateFailed": "Không thể ngừng bán món. Vui lòng thử lại."
     },
+    "students": {
+      "title": "Học viên",
+      "eyebrow": "{count} học viên",
+      "description": "Mỗi dòng là một lượt đăng ký khoá học, kèm tiến độ.",
+      "searchPlaceholder": "Tìm học viên…",
+      "searchLabel": "Tìm học viên",
+      "empty": "Không tìm thấy học viên.",
+      "truncated": "Đang hiển thị {shown} lượt đăng ký đầu tiên.",
+      "columns": {
+        "name": "Tên",
+        "email": "Email",
+        "course": "Khoá học",
+        "progress": "Tiến độ",
+        "status": "Trạng thái"
+      },
+      "status": {
+        "pending": "Chờ xử lý",
+        "active": "Đang học",
+        "completed": "Hoàn thành",
+        "cancelled": "Đã huỷ"
+      }
+    },
+    "staff": {
+      "title": "Nhân viên & phân quyền",
+      "eyebrow": "{count} người · {admins} quản trị viên",
+      "description": "Mỗi người thuộc một cơ sở chính. Quản trị viên có thể làm việc ở mọi cơ sở.",
+      "rolesNote": "Vai trò được cấp trong bảng điều khiển Clerk.",
+      "searchPlaceholder": "Tìm nhân viên…",
+      "searchLabel": "Tìm nhân viên",
+      "empty": "Không tìm thấy nhân viên.",
+      "noSite": "Mọi cơ sở",
+      "columns": { "name": "Tên", "role": "Vai trò", "homeSite": "Cơ sở chính" },
+      "roles": { "staff": "Nhân viên", "instructor": "Giảng viên", "admin": "Quản trị viên" }
+    },
     "announcements": {
       "title": "Thông báo",
       "description": "Thông báo ngắn trên trang chủ, theo từng cơ sở hoặc toàn bộ cơ sở.",

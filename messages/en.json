@@ -1190,6 +1190,40 @@
       "duplicate": "An item with this name already exists at this site.",
       "deactivateFailed": "Could not deactivate the menu item. Try again."
     },
+    "students": {
+      "title": "Students",
+      "eyebrow": "{count} students",
+      "description": "One row per course enrolment, with progress.",
+      "searchPlaceholder": "Search students…",
+      "searchLabel": "Search students",
+      "empty": "No students found.",
+      "truncated": "Showing first {shown} enrolments.",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "course": "Course",
+        "progress": "Progress",
+        "status": "Status"
+      },
+      "status": {
+        "pending": "Pending",
+        "active": "Enrolled",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "staff": {
+      "title": "Staff & permissions",
+      "eyebrow": "{count} people · {admins} admins",
+      "description": "Each person is scoped to a home site. Admins can cross sites.",
+      "rolesNote": "Roles are granted in the Clerk dashboard.",
+      "searchPlaceholder": "Search staff…",
+      "searchLabel": "Search staff",
+      "empty": "No staff found.",
+      "noSite": "All sites",
+      "columns": { "name": "Name", "role": "Role", "homeSite": "Home site" },
+      "roles": { "staff": "Staff", "instructor": "Instructor", "admin": "Admin" }
+    },
     "announcements": {
       "title": "Announcements",
       "description": "Short notices on the home page, per site or across all sites.",
