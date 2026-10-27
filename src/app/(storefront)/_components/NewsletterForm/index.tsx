@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { ControlledInput } from '@/components/form';
 import { Button } from '@/components/ui/Button';
@@ -12,15 +12,36 @@ import { buildNewsletterSchema, type NewsletterFormValues } from './schema';
 
 export const NewsletterForm = () => {
   const t = useTranslations('NewsletterForm');
+  const locale = useLocale();
 
   const { control, handleSubmit, reset } = useForm<NewsletterFormValues>({
     resolver: zodResolver(buildNewsletterSchema({ email: t('emailValidation') })),
     defaultValues: { email: '' },
   });
 
-  const onSubmit = () => {
-    reset();
-    toast(t('successToast'));
+  const onSubmit = async ({ email }: NewsletterFormValues) => {
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, locale }),
+      });
+
+      if (res.status === 429) {
+        toast(t('rateLimitedToast'));
+        return;
+      }
+
+      if (!res.ok) {
+        toast(t('errorToast'));
+        return;
+      }
+
+      reset();
+      toast(t('successToast'));
+    } catch {
+      toast(t('errorToast'));
+    }
   };
 
   return (

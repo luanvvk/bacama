@@ -1098,18 +1098,8 @@
     "description": "Questions about a roast, a course, or a birthday cake? A real person reads every message.",
     "sendMessageHeading": "Send a message",
     "siteHeading": "{siteName} · Site 01",
-    "preferEmailHeading": "Prefer email?"
-  },
-  "ContactForm": {
-    "nameLabel": "Your name",
-    "emailLabel": "Email address",
-    "messageLabel": "Message",
-    "messagePlaceholder": "What can we help with?",
-    "submit": "Send message",
-    "nameValidation": "Enter your name.",
-    "emailValidation": "Enter a valid email address.",
-    "messageValidation": "Tell us a little more so we can help.",
-    "successToast": "Message received. We will reply during opening hours."
+    "preferEmailHeading": "Prefer email?",
+    "unavailableNotice": "Our contact form is temporarily unavailable. Please call us or email us directly instead."
   },
   "GiftCardsPage": {
     "eyebrow": "Gifts · coffee, bread, time",
@@ -1174,7 +1164,9 @@
     "emailLabel": "Email address",
     "subscribe": "Subscribe",
     "emailValidation": "Enter a valid email address.",
-    "successToast": "You are on the list. Newsletter delivery will be connected soon."
+    "successToast": "You are on the list. Thanks for subscribing.",
+    "errorToast": "We could not subscribe you right now. Please try again later.",
+    "rateLimitedToast": "Too many attempts. Please try again in a few minutes."
   },
   "Admin": {
     "overview": {

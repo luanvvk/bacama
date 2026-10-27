@@ -1094,18 +1094,8 @@
     "description": "Có câu hỏi về một lô cà phê, một khóa học, hay một chiếc bánh sinh nhật? Sẽ có một người thật đọc từng tin nhắn của bạn.",
     "sendMessageHeading": "Gửi tin nhắn",
     "siteHeading": "{siteName} · Cơ sở 01",
-    "preferEmailHeading": "Thích gửi email hơn?"
-  },
-  "ContactForm": {
-    "nameLabel": "Họ và tên",
-    "emailLabel": "Địa chỉ email",
-    "messageLabel": "Lời nhắn",
-    "messagePlaceholder": "Chúng tôi có thể giúp gì cho bạn?",
-    "submit": "Gửi tin nhắn",
-    "nameValidation": "Vui lòng nhập họ tên của bạn.",
-    "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
-    "messageValidation": "Hãy viết thêm một chút để chúng tôi hiểu và hỗ trợ tốt hơn.",
-    "successToast": "Đã nhận được tin nhắn của bạn. Chúng tôi sẽ phản hồi trong giờ mở cửa."
+    "preferEmailHeading": "Thích gửi email hơn?",
+    "unavailableNotice": "Biểu mẫu liên hệ tạm thời không khả dụng. Vui lòng gọi điện hoặc gửi email trực tiếp cho chúng tôi."
   },
   "GiftCardsPage": {
     "eyebrow": "Quà tặng · cà phê, bánh, thời gian",
@@ -1170,7 +1160,9 @@
     "emailLabel": "Địa chỉ email",
     "subscribe": "Đăng ký",
     "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ.",
-    "successToast": "Bạn đã có trong danh sách. Hệ thống gửi bản tin sẽ sớm được kết nối."
+    "successToast": "Bạn đã có trong danh sách. Cảm ơn bạn đã đăng ký.",
+    "errorToast": "Hiện chưa thể đăng ký cho bạn. Vui lòng thử lại sau.",
+    "rateLimitedToast": "Bạn đã thử quá nhiều lần. Vui lòng thử lại sau vài phút."
   },
   "Admin": {
     "overview": {

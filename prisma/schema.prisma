@@ -527,3 +527,10 @@ model RateLimitHit {
 
   @@index([key, createdAt])
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  locale    String
+  createdAt DateTime @default(now())
+}
