@@ -135,7 +135,16 @@ export const LessonPreview = ({
                       <Lock className="text-muted-foreground size-4 shrink-0" aria-hidden="true" />
                     )}
                     <div className="flex-1">
-                      <p className="text-sm font-medium">{document.name}</p>
+                      {isGuest ? (
+                        <p className="text-sm font-medium">{document.name}</p>
+                      ) : (
+                        <a
+                          href={`/api/attachments/${document.id}`}
+                          className="text-sm font-medium underline-offset-4 hover:underline"
+                        >
+                          {document.name}
+                        </a>
+                      )}
                       <p className="text-muted-foreground text-xs">{document.size}</p>
                     </div>
                     {isGuest && (
