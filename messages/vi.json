@@ -4,6 +4,28 @@
     "openMenu": "Mở menu",
     "menu": "Menu"
   },
+  "Nav": {
+    "coffeeBakery": "Cà phê & Bánh",
+    "coffee": "Cà phê",
+    "bakery": "Bánh",
+    "shopAllCoffee": "Xem tất cả cà phê",
+    "shopAllBakery": "Xem tất cả bánh",
+    "menu": "Menu",
+    "workshops": "Workshop",
+    "online": "Trực tuyến",
+    "inPerson": "Trực tiếp",
+    "baristaFoundations": "Nền tảng Barista",
+    "baristaFoundationsMeta": "6 tuần · 24 bài học",
+    "latteArt": "Latte Art",
+    "latteArtMeta": "9 bài học · bài đầu miễn phí",
+    "cupping": "Cupping & Nguồn gốc",
+    "viennoiserie": "Viennoiserie",
+    "viennoiserieMeta": "Hội An · còn 3 chỗ",
+    "weekendRoasting": "Rang cà phê cuối tuần",
+    "classCalendar": "Lịch lớp học",
+    "cafes": "Quán cà phê",
+    "family": "Gia đình Bacama"
+  },
   "AccountMenu": {
     "loadingAccount": "Đang tải tài khoản",
     "welcome": "Xin chào",
