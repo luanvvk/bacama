@@ -9,6 +9,7 @@ const cardMedia = cva('bg-muted relative block overflow-hidden rounded-lg', {
     aspect: {
       portrait: 'aspect-4/5',
       landscape: 'aspect-16/10',
+      standard: 'aspect-4/3',
       video: 'aspect-video',
     },
   },

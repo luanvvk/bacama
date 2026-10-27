@@ -30,16 +30,16 @@ export const MenuSections = ({ sections, sectionLabels }: MenuSectionsProps) => 
           <p className="text-primary font-mono text-xs tracking-widest uppercase">
             {sectionLabels[section] ?? section}
           </p>
-          <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-6">
             {items.map((item) => (
               <li key={item.id} className="group flex flex-col">
                 <CardMedia
                   src={item.imageUrl}
                   alt={item.name}
-                  aspect="landscape"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  aspect="standard"
+                  sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 100vw"
                   fallback={
-                    <span aria-hidden className="font-heading text-primary text-4xl">
+                    <span aria-hidden className="font-heading text-primary/60 text-xl">
                       {item.name.charAt(0)}
                     </span>
                   }
