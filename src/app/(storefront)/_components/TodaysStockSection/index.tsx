@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
+import { toAppLocale } from '@/lib/localize';
 import { getFeaturedProducts } from '@/services/catalog/get-featured-products';
 import { getProducts } from '@/services/catalog/get-products';
 import { getFeaturedCourses } from '@/services/courses/get-featured-courses';
@@ -11,8 +12,9 @@ import { ProductCard } from '@/components/shop/ProductCard';
 
 export const TodaysStockSection = async () => {
   const t = await getTranslations('TodaysStock');
-  const featured = await getFeaturedProducts();
-  const products = featured.length >= 2 ? featured : await getProducts();
+  const locale = toAppLocale(await getLocale());
+  const featured = await getFeaturedProducts(locale);
+  const products = featured.length >= 2 ? featured : await getProducts(locale);
   const [course] = await getFeaturedCourses(1);
 
   return (

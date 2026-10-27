@@ -1,5 +1,6 @@
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
+import { toAppLocale } from '@/lib/localize';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -17,10 +18,11 @@ import { BakeryCard } from '@/components/bakery/BakeryCard';
 export const revalidate = 3600;
 
 const BakeryPage = async () => {
+  const locale = toAppLocale(await getLocale());
   const [t, tAnnouncements, items] = await Promise.all([
     getTranslations('Bakery'),
     getTranslations('Announcements'),
-    getBakeryItems(),
+    getBakeryItems(locale),
   ]);
 
   return (

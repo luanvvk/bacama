@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
+import { toAppLocale } from '@/lib/localize';
 import { getProductBySlug } from '@/services/catalog/get-product-by-slug';
 import { getProducts } from '@/services/catalog/get-products';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
@@ -24,17 +25,18 @@ import { ProductTabs } from './_components/ProductTabs';
 export const revalidate = 3600;
 
 export const generateStaticParams = async () => {
-  const products = await getProducts();
+  const products = await getProducts('en');
 
   return products.map((product) => ({ slug: product.slug }));
 };
 
 const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
+  const locale = toAppLocale(await getLocale());
   const [t, tAnnouncements, product] = await Promise.all([
     getTranslations('Product'),
     getTranslations('Announcements'),
-    getProductBySlug(slug),
+    getProductBySlug(slug, locale),
   ]);
 
   if (!product) notFound();

@@ -1,5 +1,6 @@
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
+import { toAppLocale } from '@/lib/localize';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -35,10 +36,11 @@ const groupBySection = (items: MenuCatalogItem[]) => {
 };
 
 const MenuPage = async () => {
+  const locale = toAppLocale(await getLocale());
   const [t, tAnnouncements, items] = await Promise.all([
     getTranslations('Menu'),
     getTranslations('Announcements'),
-    getMenuItems(),
+    getMenuItems(locale),
   ]);
   const sections = groupBySection(items);
   const sectionLabels = t.raw('sections') as Record<string, string>;

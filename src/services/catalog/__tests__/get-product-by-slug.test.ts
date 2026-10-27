@@ -16,7 +16,7 @@ describe('getProductBySlug', () => {
   it('queries by slug, scoped to active products', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    await getProductBySlug('bag-arabica-250g');
+    await getProductBySlug('bag-arabica-250g', 'en');
 
     expect(mockFindFirst).toHaveBeenCalledWith(
       expect.objectContaining({ where: { slug: 'bag-arabica-250g', isActive: true } }),
@@ -26,7 +26,7 @@ describe('getProductBySlug', () => {
   it('returns null when no matching product exists', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    const result = await getProductBySlug('does-not-exist');
+    const result = await getProductBySlug('does-not-exist', 'en');
 
     expect(result).toBeNull();
   });
@@ -63,7 +63,7 @@ describe('getProductBySlug', () => {
       brewGuides: [],
     });
 
-    const result = await getProductBySlug('bag-arabica-250g');
+    const result = await getProductBySlug('bag-arabica-250g', 'en');
 
     expect(result).toEqual(expect.objectContaining({ slug: 'bag-arabica-250g', priceVnd: 185000 }));
   });

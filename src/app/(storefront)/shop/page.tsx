@@ -1,5 +1,6 @@
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
+import { toAppLocale } from '@/lib/localize';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -18,10 +19,11 @@ import { ShopBrowser } from './_components/ShopBrowser';
 export const revalidate = 3600;
 
 const ShopPage = async () => {
+  const locale = toAppLocale(await getLocale());
   const [t, tAnnouncements, products] = await Promise.all([
     getTranslations('Shop'),
     getTranslations('Announcements'),
-    getProducts(),
+    getProducts(locale),
   ]);
 
   return (

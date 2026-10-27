@@ -1,3 +1,4 @@
+import { pickLocalized, type AppLocale } from '@/lib/localize';
 import { prisma } from '@/lib/prisma';
 
 export interface BakeryCatalogItem {
@@ -15,7 +16,7 @@ export interface BakeryCatalogItem {
   handoffUrl: string | null;
 }
 
-export const getBakeryItems = async (): Promise<BakeryCatalogItem[]> => {
+export const getBakeryItems = async (locale: AppLocale): Promise<BakeryCatalogItem[]> => {
   const items = await prisma.bakeryItem.findMany({
     where: { isActive: true, site: { isActive: true } },
     include: { site: { select: { slug: true } } },
@@ -27,8 +28,8 @@ export const getBakeryItems = async (): Promise<BakeryCatalogItem[]> => {
     slug: item.slug,
     siteId: item.siteId,
     siteSlug: item.site.slug,
-    name: item.nameEn,
-    description: item.descriptionEn,
+    name: pickLocalized(locale, item.nameVi, item.nameEn),
+    description: pickLocalized(locale, item.descriptionVi, item.descriptionEn),
     imageUrl: item.imageUrl,
     priceVnd: item.priceVnd,
     bakesAt: item.bakesAt,

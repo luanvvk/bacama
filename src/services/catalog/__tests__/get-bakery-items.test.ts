@@ -16,7 +16,7 @@ describe('getBakeryItems', () => {
   it('queries active items at active sites, ordered by bake time', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getBakeryItems();
+    await getBakeryItems('en');
 
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -46,7 +46,7 @@ describe('getBakeryItems', () => {
       },
     ]);
 
-    const result = await getBakeryItems();
+    const result = await getBakeryItems('en');
 
     expect(result).toEqual([
       expect.objectContaining({

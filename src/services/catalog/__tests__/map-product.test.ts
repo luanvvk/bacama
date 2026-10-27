@@ -43,7 +43,7 @@ describe('mapProduct', () => {
       ],
     } satisfies Parameters<typeof mapProduct>[0];
 
-    expect(mapProduct(product)).toMatchObject({
+    expect(mapProduct(product, 'en')).toMatchObject({
       id: 'product-1',
       name: 'Arabica 250g',
       category: 'coffee',
@@ -55,6 +55,14 @@ describe('mapProduct', () => {
       tastingNotes: ['Honey'],
       brewGuide: [{ method: 'Phin', ratio: '25 g · 120 ml', detail: 'Medium-coarse' }],
       originStory: 'A coffee story',
+    });
+
+    expect(mapProduct(product, 'vi')).toMatchObject({
+      description: 'Mô tả',
+      origin: 'Đà Lạt',
+      tastingNotes: ['Mật ong'],
+      brewGuide: [{ method: 'Phin', ratio: '25 g · 120 ml', detail: 'Chi tiết' }],
+      originStory: 'A coffee story', // Vi empty → En fallback
     });
   });
 
@@ -90,6 +98,6 @@ describe('mapProduct', () => {
       brewGuides: [],
     } satisfies Parameters<typeof mapProduct>[0];
 
-    expect(mapProduct(product).images).toEqual(['https://example.com/robusta.jpg']);
+    expect(mapProduct(product, 'en').images).toEqual(['https://example.com/robusta.jpg']);
   });
 });

@@ -16,7 +16,7 @@ describe('getProducts', () => {
   it('queries active products, featured-then-newest first', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getProducts();
+    await getProducts('en');
 
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -60,7 +60,7 @@ describe('getProducts', () => {
       },
     ]);
 
-    const result = await getProducts();
+    const result = await getProducts('en');
 
     expect(result).toEqual([
       expect.objectContaining({ slug: 'bag-robusta-250g', priceVnd: 145000 }),
