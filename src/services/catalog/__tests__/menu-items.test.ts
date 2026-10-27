@@ -78,4 +78,18 @@ describe('getAdminMenuItems', () => {
     expect(findMany.mock.calls[0][0]?.where).toEqual({ siteId: 's1' });
     expect(findMany.mock.calls[1][0]?.where).toEqual({});
   });
+
+  it('pages with a cursor and reports the next cursor when more rows exist', async () => {
+    findMany.mockResolvedValue([
+      { id: 'm1', site: { nameEn: 'A' } },
+      { id: 'm2', site: { nameEn: 'A' } },
+      { id: 'm3', site: { nameEn: 'A' } },
+    ] as never);
+
+    const page = await getAdminMenuItems(user('admin', null), { take: 2, cursor: 'm0' });
+
+    expect(findMany.mock.calls[0][0]).toMatchObject({ take: 3, cursor: { id: 'm0' }, skip: 1 });
+    expect(page.items.map((i) => i.id)).toEqual(['m1', 'm2']);
+    expect(page.nextCursor).toBe('m2');
+  });
 });

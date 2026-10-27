@@ -15,7 +15,7 @@ const AdminMenuPage = async () => {
     return <Text variant="muted">{t('noSite')}</Text>;
   }
 
-  const [items, sites] = await Promise.all([
+  const [{ items, nextCursor }, sites] = await Promise.all([
     getAdminMenuItems(user),
     user.role === 'admin' ? getSites('en') : Promise.resolve(null),
   ]);
@@ -23,6 +23,7 @@ const AdminMenuPage = async () => {
   return (
     <MenuItemsManager
       items={items}
+      nextCursor={nextCursor}
       siteOptions={sites?.map((site) => ({ value: site.id, label: site.name }))}
       defaultSiteId={user.homeSiteId}
     />

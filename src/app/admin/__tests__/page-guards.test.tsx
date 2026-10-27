@@ -26,6 +26,7 @@ jest.mock('@/lib/auth/guards', () => ({
   requireRoles: jest.fn(),
 }));
 
+jest.mock('../sites/_components/SitesGrid', () => ({ SitesGrid: () => null }));
 jest.mock('@/components/admin/ProductsBrowser', () => ({ ProductsBrowser: () => null }));
 jest.mock('@/services/catalog/get-admin-products', () => ({
   getAdminProducts: jest.fn(),
@@ -70,7 +71,7 @@ describe('admin page guards', () => {
   it('limits the menu to staff and admin', async () => {
     jest.mocked(requireRoles).mockResolvedValue({ role: 'admin', homeSiteId: null } as never);
     (getSites as jest.Mock).mockResolvedValue([]);
-    (getAdminMenuItems as jest.Mock).mockResolvedValue([]);
+    (getAdminMenuItems as jest.Mock).mockResolvedValue({ items: [], nextCursor: null });
 
     await AdminMenuPage();
 
@@ -88,7 +89,7 @@ describe('admin page guards', () => {
   });
 
   it('limits sites to admin', async () => {
-    (getAdminSites as jest.Mock).mockResolvedValue([]);
+    (getAdminSites as jest.Mock).mockResolvedValue({ items: [], nextCursor: null });
     (getTranslations as jest.Mock).mockResolvedValue((key: string) => key);
 
     await AdminSitesPage();

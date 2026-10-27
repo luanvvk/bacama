@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import type { SiteValues } from '@/lib/schemas/site';
+import { pageArgs, toPage, type Page, type PageParams } from '@/services/paging';
 
 export interface AdminSite {
   id: string;
@@ -32,8 +33,15 @@ const ADMIN_SITE_SELECT = {
   todaysRoastProductId: true,
 } as const;
 
-export const getAdminSites = (): Promise<AdminSite[]> =>
-  prisma.site.findMany({ select: ADMIN_SITE_SELECT, orderBy: { createdAt: 'asc' } });
+export const getAdminSites = async (params: PageParams = {}): Promise<Page<AdminSite>> =>
+  toPage(
+    await prisma.site.findMany({
+      select: ADMIN_SITE_SELECT,
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+      ...pageArgs(params),
+    }),
+    params,
+  );
 
 export const getAdminSiteBySlug = (slug: string): Promise<AdminSite | null> =>
   prisma.site.findUnique({ where: { slug }, select: ADMIN_SITE_SELECT });
