@@ -1,6 +1,6 @@
 jest.mock('@/lib/prisma', () => ({
   prisma: {
-    order: { findUnique: jest.fn(), updateMany: jest.fn() },
+    order: { findUnique: jest.fn(), updateMany: jest.fn(), update: jest.fn() },
     product: { updateMany: jest.fn() },
     $transaction: jest.fn(),
   },
@@ -54,13 +54,31 @@ describe('markOrderPaid', () => {
     expect(mockProductUpdateMany).not.toHaveBeenCalled();
   });
 
-  it('keeps the order paid when stock is short', async () => {
+  it('flags a paid event for an expired order as needs_review without touching stock', async () => {
+    mockFindUnique.mockResolvedValue(orderWith([{ productId: 'p1', quantity: 1 }]));
+    mockOrderUpdateMany.mockResolvedValueOnce({ count: 0 }).mockResolvedValueOnce({ count: 1 });
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+    expect(await markOrderPaid('r')).toBe('needs_review');
+    expect(mockOrderUpdateMany).toHaveBeenLastCalledWith({
+      where: { id: 'o1', status: 'failed' },
+      data: { status: 'needs_review', paidAt: expect.any(Date) },
+    });
+    expect(mockProductUpdateMany).not.toHaveBeenCalled();
+    expect(error).toHaveBeenCalledTimes(1);
+    error.mockRestore();
+  });
+
+  it('flags the order needs_review when stock is short', async () => {
     mockFindUnique.mockResolvedValue(orderWith([{ productId: 'p1', quantity: 9 }]));
     mockProductUpdateMany.mockResolvedValue({ count: 0 });
-    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    expect(await markOrderPaid('r')).toBe('updated');
-    expect(warn).toHaveBeenCalledTimes(1);
-    warn.mockRestore();
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+    expect(await markOrderPaid('r')).toBe('needs_review');
+    expect(prisma.order.update).toHaveBeenCalledWith({
+      where: { id: 'o1' },
+      data: { status: 'needs_review' },
+    });
+    expect(error).toHaveBeenCalledTimes(1);
+    error.mockRestore();
   });
 
   it('returns not_found and amount_mismatch without writing', async () => {

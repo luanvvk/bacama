@@ -45,7 +45,7 @@ export const PaymentProcessing = ({ orderRef: refFromUrl }: PaymentProcessingPro
         if (stopped || !response.ok) return;
         const { status } = (await response.json()) as { status: string };
         if (stopped) return;
-        if (status === 'paid') {
+        if (status === 'paid' || status === 'needs_review') {
           setPollState('paid');
           router.push(`/checkout/done?ref=${orderRef}`);
         } else if (status === 'failed') setPollState('failed');

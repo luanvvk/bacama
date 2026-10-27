@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 
-export type PaymentOutcome = 'not_found' | 'amount_mismatch' | 'updated' | 'already_processed';
+export type PaymentOutcome =
+  'not_found' | 'amount_mismatch' | 'updated' | 'already_processed' | 'needs_review';
 
 const findOrder = (providerRef: string) =>
   prisma.order.findUnique({
@@ -16,7 +17,10 @@ const findOrder = (providerRef: string) =>
 /**
  * Moves a `pending` order to `paid` and commits stock. The status change is a
  * conditional update, so a replayed webhook affects 0 rows and never
- * decrements twice. `amountVnd` (from the gateway) is only compared with the
+ * decrements twice. A paid event for an order the sweep already failed, or for
+ * stock that ran out meanwhile, moves it to `needs_review` for a human (lines
+ * that did have stock stay decremented; restock by hand if it is refunded).
+ * `amountVnd` (from the gateway) is only compared with the
  * stored total, never written.
  */
 export const markOrderPaid = async (
@@ -37,17 +41,30 @@ export const markOrderPaid = async (
       where: { id: order.id, status: 'pending' },
       data: { status: 'paid', paidAt: new Date() },
     });
-    if (count !== 1) return 'already_processed';
+    if (count !== 1) {
+      const late = await tx.order.updateMany({
+        where: { id: order.id, status: 'failed' },
+        data: { status: 'needs_review', paidAt: new Date() },
+      });
+      if (late.count !== 1) return 'already_processed';
+      console.error(`Payment webhook: paid event for expired order ${order.ref}, needs review`);
+      return 'needs_review';
+    }
+
+    let short = false;
 
     for (const [productId, quantity] of quantities) {
       const result = await tx.product.updateMany({
         where: { id: productId, stock: { gte: quantity } },
         data: { stock: { decrement: quantity } },
       });
-      // Payment is already taken, so a short line must not undo the paid state.
-      if (result.count === 0) {
-        console.warn(`Payment webhook: insufficient stock for order ${order.ref}`);
-      }
+      if (result.count === 0) short = true;
+    }
+    if (short) {
+      // Payment is already taken: flag it for a human rather than ship what we can't.
+      await tx.order.update({ where: { id: order.id }, data: { status: 'needs_review' } });
+      console.error(`Payment webhook: insufficient stock for order ${order.ref}, needs review`);
+      return 'needs_review';
     }
     return 'updated';
   });
