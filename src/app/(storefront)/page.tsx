@@ -17,7 +17,6 @@ import { WorkshopsSection } from './_components/WorkshopsSection';
 
 // Stock, roast freshness and active announcements all change during the day, so
 // this route must not be frozen at build time (docs/BUILD-PLAN.md task 1.10).
-export const revalidate = 3600;
 
 const Home = async () => {
   const t = await getTranslations('Announcements');

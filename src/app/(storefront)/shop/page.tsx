@@ -16,8 +16,6 @@ import {
 
 import { ShopBrowser } from './_components/ShopBrowser';
 
-export const revalidate = 3600;
-
 const ShopPage = async () => {
   const locale = toAppLocale(await getLocale());
   const [t, tAnnouncements, products] = await Promise.all([

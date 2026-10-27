@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/Breadcrumb';
 import { BakeryCard } from '@/components/bakery/BakeryCard';
 
-export const revalidate = 3600;
-
 const BakeryPage = async () => {
   const locale = toAppLocale(await getLocale());
   const [t, tAnnouncements, items] = await Promise.all([

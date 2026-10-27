@@ -22,7 +22,6 @@ import { ProductTabs } from './_components/ProductTabs';
 
 // Prerendered per product, refreshed hourly — stock and roast freshness change
 // during the day, so it can't be baked once at build time (task 1.10).
-export const revalidate = 3600;
 
 export const generateStaticParams = async () => {
   const products = await getProducts('en');
