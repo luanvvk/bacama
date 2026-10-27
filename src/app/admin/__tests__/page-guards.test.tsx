@@ -1,8 +1,11 @@
+import { getTranslations } from 'next-intl/server';
+
 import { requireRoles } from '@/lib/auth/guards';
 import { getAdminAnnouncements } from '@/services/sites/get-admin-announcements';
 import { getAdminMenuItems } from '@/services/catalog/get-admin-menu-items';
 import { getAdminStudents } from '@/services/enrollments/get-admin-students';
 import { getSites } from '@/services/sites/get-sites';
+import { getAdminSites } from '@/services/sites/site-admin';
 import { getAdminStaff } from '@/services/users/get-admin-staff';
 
 import AdminAnnouncementsPage from '../announcements/page';
@@ -28,6 +31,7 @@ jest.mock('../announcements/_components/AnnouncementsManager', () => ({
   AnnouncementsManager: () => null,
 }));
 jest.mock('@/services/sites/get-sites', () => ({ getSites: jest.fn() }));
+jest.mock('@/services/sites/site-admin', () => ({ getAdminSites: jest.fn() }));
 jest.mock('../menu/_components/MenuItemsManager', () => ({ MenuItemsManager: () => null }));
 
 jest.mock('@/services/enrollments/get-admin-students', () => ({ getAdminStudents: jest.fn() }));
@@ -70,6 +74,9 @@ describe('admin page guards', () => {
   });
 
   it('limits sites to admin', async () => {
+    (getAdminSites as jest.Mock).mockResolvedValue([]);
+    (getTranslations as jest.Mock).mockResolvedValue((key: string) => key);
+
     await AdminSitesPage();
 
     expect(requireRoles).toHaveBeenCalledWith(['admin']);
