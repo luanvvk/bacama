@@ -41,6 +41,7 @@ const BakeryPage = async () => {
           </Breadcrumb>
 
           <div className="py-8">
+            <h1 className="sr-only">{t('breadcrumbCurrent')}</h1>
             <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t('itemsCount', { count: items.length })}
             </p>

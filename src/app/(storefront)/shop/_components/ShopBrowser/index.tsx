@@ -64,6 +64,7 @@ export const ShopBrowser = ({ products }: ShopBrowserProps) => {
             <div key={option.value} className="flex items-center gap-2">
               <Checkbox
                 id={`category-${option.value}`}
+                aria-label={option.label}
                 checked={categories.has(option.value)}
                 onCheckedChange={() => toggleCategory(option.value)}
               />
