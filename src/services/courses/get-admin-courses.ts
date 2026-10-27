@@ -49,7 +49,17 @@ export const getAdminCourses = async (
       sessions: {
         where: { startsAt: { gte: now } },
         orderBy: { startsAt: 'asc' },
-        select: { startsAt: true, capacity: true, seatsBooked: true },
+        select: {
+          startsAt: true,
+          capacity: true,
+          seatsBooked: true,
+          // Lapsed holds still count in `seatsBooked` until the daily sweep frees them.
+          _count: {
+            select: {
+              enrollments: { where: { status: 'pending', holdExpiresAt: { lt: now } } },
+            },
+          },
+        },
       },
       _count: { select: { enrollments: { where: { status: { not: 'cancelled' } } } } },
     },
@@ -67,7 +77,9 @@ export const getAdminCourses = async (
       instructorName: row.instructor?.name ?? null,
       enrolled: row._count.enrollments,
       seatCapacity: seatLimited ? row.sessions.reduce((sum, s) => sum + s.capacity, 0) : null,
-      seatsBooked: seatLimited ? row.sessions.reduce((sum, s) => sum + s.seatsBooked, 0) : null,
+      seatsBooked: seatLimited
+        ? row.sessions.reduce((sum, s) => sum + s.seatsBooked - s._count.enrollments, 0)
+        : null,
       nextStartsAt: seatLimited ? (row.sessions[0]?.startsAt ?? null) : null,
     };
   });

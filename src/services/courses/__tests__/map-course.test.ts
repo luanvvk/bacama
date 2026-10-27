@@ -182,6 +182,30 @@ describe('formatSessionDate', () => {
 });
 
 describe('mapCourseDetail', () => {
+  it('frees seats held by lapsed pending holds', () => {
+    const base = { ...courseRow, format: 'in_person' as const, modules: [] };
+    const result = mapCourseDetail(
+      {
+        ...base,
+        sessions: [
+          {
+            id: 'session-1',
+            courseId: 'course-1',
+            siteId: 'site-1',
+            startsAt: new Date('2026-09-14T02:00:00.000Z'),
+            capacity: 8,
+            seatsBooked: 8,
+            _count: { enrollments: 8 },
+            site: { nameVi: 'Hội An', nameEn: 'Hoi An', slug: 'hoi-an' },
+          },
+        ],
+      } as unknown as Parameters<typeof mapCourseDetail>[0],
+      'en',
+    );
+
+    expect(result.sessions[0].seatsLeft).toBe(8);
+  });
+
   it('computes seats left and never lets it go negative', () => {
     const result = mapCourseDetail(
       {
@@ -196,6 +220,7 @@ describe('mapCourseDetail', () => {
             startsAt: new Date('2026-09-14T02:00:00.000Z'),
             capacity: 8,
             seatsBooked: 5,
+            _count: { enrollments: 0 },
             site: {
               id: 'site-1',
               slug: 'hoi-an',
@@ -222,6 +247,7 @@ describe('mapCourseDetail', () => {
             startsAt: new Date('2026-09-21T02:00:00.000Z'),
             capacity: 8,
             seatsBooked: 9,
+            _count: { enrollments: 0 },
             site: {
               id: 'site-1',
               slug: 'hoi-an',
