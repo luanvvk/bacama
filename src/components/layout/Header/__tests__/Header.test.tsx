@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Header } from '../index';
@@ -9,6 +9,10 @@ const MESSAGES: Record<string, string> = {
   openMenu: 'Open menu',
   menu: 'Menu',
 };
+
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/',
+}));
 
 jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => MESSAGES[key],
@@ -59,5 +63,14 @@ describe('Header', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Open cart' }));
 
     expect(useCartStore.getState().isOpen).toBe(true);
+  });
+
+  it('closes the mobile menu after a link is tapped', async () => {
+    render(<Header navItems={[{ label: 'Shop', href: '/shop' }]} />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    await userEvent.click(within(screen.getByRole('dialog')).getByRole('link', { name: 'Shop' }));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

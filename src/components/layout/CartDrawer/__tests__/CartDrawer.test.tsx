@@ -20,6 +20,10 @@ const MESSAGES: Record<string, string> = {
   checkOut: 'Check out',
   decrease: 'Decrease quantity',
   increase: 'Increase quantity',
+  decreaseNamed: 'Decrease quantity of {name}',
+  increaseNamed: 'Increase quantity of {name}',
+  calculatedAtCheckout: 'Calculated at checkout',
+  pickupNoFee: 'No fee',
   paymentMethods: 'ZaloPay · MoMo · VNPay QR · COD',
 };
 
@@ -68,6 +72,25 @@ describe('CartDrawer', () => {
 
     expect(screen.getByText('Your basket is empty.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Check out' })).toBeDisabled();
+    expect(screen.queryByText(/free shipping/)).not.toBeInTheDocument();
+  });
+
+  it('labels shipping as calculated at checkout instead of showing 0', () => {
+    useCartStore.setState({ isOpen: true, items: [{ ...CROISSANT, quantity: 1 }] });
+    render(<CartDrawer />);
+
+    expect(screen.getByText('Calculated at checkout')).toBeInTheDocument();
+  });
+
+  it('does not call pickup carts free', () => {
+    useCartStore.setState({
+      isOpen: true,
+      items: [{ ...CROISSANT, kind: 'bakery', priceVnd: 600000, quantity: 1 }],
+    });
+    render(<CartDrawer />);
+
+    expect(screen.queryByText('Free')).not.toBeInTheDocument();
+    expect(screen.getByText('No fee')).toBeInTheDocument();
   });
 
   it('lists items and lets the user change quantity', async () => {
@@ -76,7 +99,7 @@ describe('CartDrawer', () => {
 
     expect(screen.getByText('Croissant')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Increase quantity' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Increase quantity of Croissant' }));
 
     expect(useCartStore.getState().items[0].quantity).toBe(2);
   });

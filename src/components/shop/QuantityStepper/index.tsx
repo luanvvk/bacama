@@ -8,9 +8,16 @@ export interface QuantityStepperProps {
   onChange: (value: number) => void;
   min?: number;
   max?: number;
+  name?: string;
 }
 
-export const QuantityStepper = ({ value, onChange, min = 1, max = 99 }: QuantityStepperProps) => {
+export const QuantityStepper = ({
+  value,
+  onChange,
+  min = 1,
+  max = 99,
+  name,
+}: QuantityStepperProps) => {
   const t = useTranslations('QuantityStepper');
 
   return (
@@ -19,18 +26,23 @@ export const QuantityStepper = ({ value, onChange, min = 1, max = 99 }: Quantity
         type="button"
         variant="ghost"
         size="icon-sm"
-        aria-label={t('decrease')}
+        aria-label={name ? t('decreaseNamed', { name }) : t('decrease')}
         disabled={value <= min}
         onClick={() => onChange(Math.max(min, value - 1))}
       >
         <Minus />
       </Button>
-      <span className="w-8 text-center font-mono text-sm font-semibold tabular-nums">{value}</span>
+      <span
+        aria-live="polite"
+        className="w-8 text-center font-mono text-sm font-semibold tabular-nums"
+      >
+        {value}
+      </span>
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
-        aria-label={t('increase')}
+        aria-label={name ? t('increaseNamed', { name }) : t('increase')}
         disabled={value >= max}
         onClick={() => onChange(Math.min(max, value + 1))}
       >

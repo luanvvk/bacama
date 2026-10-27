@@ -18,9 +18,10 @@ import { Button } from '@/components/ui/Button';
 export interface MobileNavProps {
   navItems?: NavItem[];
   role?: Role | null;
+  onNavigate?: () => void;
 }
 
-export const MobileNav = ({ navItems = NAV_ITEMS, role = null }: MobileNavProps) => {
+export const MobileNav = ({ navItems = NAV_ITEMS, role = null, onNavigate }: MobileNavProps) => {
   const t = useTranslations('AccountMenu');
   const { signOut } = useClerk();
   const isStaff = role != null && role !== 'customer';
@@ -42,7 +43,12 @@ export const MobileNav = ({ navItems = NAV_ITEMS, role = null }: MobileNavProps)
                       </p>
                       <div className="mt-2 flex flex-col gap-2">
                         {column.links.map((link) => (
-                          <Link key={link.label} href={link.href} className="text-sm">
+                          <Link
+                            key={link.label}
+                            href={link.href}
+                            className="text-sm"
+                            onClick={onNavigate}
+                          >
                             {link.label}
                           </Link>
                         ))}
@@ -58,7 +64,12 @@ export const MobileNav = ({ navItems = NAV_ITEMS, role = null }: MobileNavProps)
       {navItems
         .filter((item) => !item.columns)
         .map((item) => (
-          <Link key={item.href} href={item.href} className="font-heading border-b py-2.5 text-base">
+          <Link
+            key={item.href}
+            href={item.href}
+            className="font-heading border-b py-2.5 text-base"
+            onClick={onNavigate}
+          >
             {item.label}
           </Link>
         ))}
@@ -66,19 +77,25 @@ export const MobileNav = ({ navItems = NAV_ITEMS, role = null }: MobileNavProps)
       <div className="mt-6 flex flex-col gap-2">
         <Show when="signed-out">
           <Button asChild className="w-full">
-            <Link href="/login">{t('signIn')}</Link>
+            <Link href="/login" onClick={onNavigate}>
+              {t('signIn')}
+            </Link>
           </Button>
         </Show>
         <Show when="signed-in">
           {ACCOUNT_MENU_ITEMS.map(({ labelKey, href }) => (
             <Button key={href} asChild variant="outline" size="sm" className="w-full">
-              <Link href={href}>{t(labelKey)}</Link>
+              <Link href={href} onClick={onNavigate}>
+                {t(labelKey)}
+              </Link>
             </Button>
           ))}
           {isStaff &&
             STAFF_MENU_ITEMS.map(({ labelKey, href }) => (
               <Button key={href} asChild variant="outline" size="sm" className="w-full">
-                <Link href={href}>{t(labelKey)}</Link>
+                <Link href={href} onClick={onNavigate}>
+                  {t(labelKey)}
+                </Link>
               </Button>
             ))}
           <Button

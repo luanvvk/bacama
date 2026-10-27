@@ -31,6 +31,8 @@
     "pickup": "Nhận tại chỗ",
     "shippingGhn": "Giao hàng · GHN",
     "free": "Miễn phí",
+    "calculatedAtCheckout": "Tính khi thanh toán",
+    "pickupNoFee": "Không tính phí vận chuyển",
     "total": "Tổng cộng",
     "checkOut": "Thanh toán",
     "paymentMethods": "ZaloPay · MoMo · VNPay QR · COD"
@@ -1480,7 +1482,9 @@
   },
   "QuantityStepper": {
     "decrease": "Giảm số lượng",
-    "increase": "Tăng số lượng"
+    "increase": "Tăng số lượng",
+    "decreaseNamed": "Giảm số lượng {name}",
+    "increaseNamed": "Tăng số lượng {name}"
   },
   "SocialAuth": {
     "continueWithGoogle": "Tiếp tục với Google",

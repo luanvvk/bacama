@@ -34,7 +34,11 @@ export const CartDrawer = () => {
   // shipping copy below would be misleading.
   const requiresPickup = items.some((item) => item.kind === 'bakery' || item.kind === 'menu');
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD_VND - subtotalVnd);
-  const shippingValueLabel = remainingForFreeShipping === 0 ? t('free') : formatVnd(0);
+  const shippingValueLabel = requiresPickup
+    ? t('pickupNoFee')
+    : remainingForFreeShipping === 0
+      ? t('free')
+      : t('calculatedAtCheckout');
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => (open ? undefined : close())}>
@@ -45,16 +49,18 @@ export const CartDrawer = () => {
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto px-4">
-          <p className="bg-muted mb-4 rounded-lg px-3 py-2 text-sm">
-            {requiresPickup
-              ? t('pickupOnlyNotice')
-              : remainingForFreeShipping === 0
-                ? t('freeShippingQualified')
-                : t.rich('freeShippingRemaining', {
-                    amount: formatVnd(remainingForFreeShipping),
-                    b: (chunks) => <b>{chunks}</b>,
-                  })}
-          </p>
+          {items.length > 0 && (
+            <p className="bg-muted mb-4 rounded-lg px-3 py-2 text-sm">
+              {requiresPickup
+                ? t('pickupOnlyNotice')
+                : remainingForFreeShipping === 0
+                  ? t('freeShippingQualified')
+                  : t.rich('freeShippingRemaining', {
+                      amount: formatVnd(remainingForFreeShipping),
+                      b: (chunks) => <b>{chunks}</b>,
+                    })}
+            </p>
+          )}
 
           {items.length === 0 && (
             <p className="text-muted-foreground py-8 text-center text-sm">{t('emptyBasket')}</p>
@@ -78,6 +84,7 @@ export const CartDrawer = () => {
                   <div className="mt-1 flex items-center justify-between gap-2">
                     <QuantityStepper
                       value={item.quantity}
+                      name={item.name}
                       onChange={(quantity) => updateQuantity(item.id, quantity)}
                     />
                     <Button
