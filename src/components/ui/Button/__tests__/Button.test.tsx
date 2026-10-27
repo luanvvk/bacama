@@ -22,4 +22,15 @@ describe('Button', () => {
     render(<Button disabled>Click me</Button>);
     expect(screen.getByRole('button', { name: 'Click me' })).toBeDisabled();
   });
+
+  it.each([
+    ['touch-icon', 'size-11', 'lg:size-8'],
+    ['touch-icon-sm', 'size-11', 'lg:size-7'],
+    ['touch-sm', 'h-11', 'lg:h-7'],
+  ] as const)('%s is 44px on phones and compact from lg', (size, phone, desktop) => {
+    render(<Button size={size}>Tap</Button>);
+    const button = screen.getByRole('button', { name: 'Tap' });
+    expect(button).toHaveClass(phone);
+    expect(button).toHaveClass(desktop);
+  });
 });

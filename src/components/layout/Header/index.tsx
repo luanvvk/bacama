@@ -106,7 +106,7 @@ export const Header = ({ navItems = NAV_ITEMS, role = null }: HeaderProps) => {
           <Button
             type="button"
             variant="ghost"
-            size="icon"
+            size="touch-icon"
             aria-label={t('openCart')}
             className="relative"
             onClick={openCart}
@@ -131,7 +131,7 @@ export const Header = ({ navItems = NAV_ITEMS, role = null }: HeaderProps) => {
               <Button
                 type="button"
                 variant="ghost"
-                size="icon"
+                size="touch-icon"
                 aria-label={t('openMenu')}
                 className="lg:hidden"
               >
