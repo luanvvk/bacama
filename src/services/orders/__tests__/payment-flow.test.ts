@@ -64,6 +64,8 @@ jest.mock('@/lib/providers/payment', () => ({
 
 import { POST } from '@/app/api/webhooks/payment/[provider]/route';
 
+import { prisma } from '@/lib/prisma';
+
 import { createOrder } from '../create-order';
 
 const webhook = (body: Buffer) =>
@@ -98,4 +100,9 @@ it('a signed paid webhook finds the order created for the payment session', asyn
 
   const replay = await webhook(body);
   expect(await replay.json()).toEqual({ received: true, alreadyProcessed: true });
+  expect(prisma.product.updateMany).toHaveBeenCalledTimes(1);
+  expect(prisma.product.updateMany).toHaveBeenCalledWith({
+    where: { id: 'p1', stock: { gte: 2 } },
+    data: { stock: { decrement: 2 } },
+  });
 });
