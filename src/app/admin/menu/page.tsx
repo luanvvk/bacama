@@ -1,15 +1,30 @@
-import { CatalogBrowser } from '@/components/admin/CatalogBrowser';
+import { getTranslations } from 'next-intl/server';
+
+import { Text } from '@/components/ui/Typography';
 import { requireRoles } from '@/lib/auth/guards';
+import { getAdminMenuItems } from '@/services/catalog/get-admin-menu-items';
+import { getSites } from '@/services/sites/get-sites';
+
+import { MenuItemsManager } from './_components/MenuItemsManager';
 
 const AdminMenuPage = async () => {
-  await requireRoles(['staff', 'admin']);
+  const user = await requireRoles(['staff', 'admin']);
+
+  if (user.role !== 'admin' && !user.homeSiteId) {
+    const t = await getTranslations('Admin.menu');
+    return <Text variant="muted">{t('noSite')}</Text>;
+  }
+
+  const [items, sites] = await Promise.all([
+    getAdminMenuItems(user),
+    user.role === 'admin' ? getSites() : Promise.resolve(null),
+  ]);
 
   return (
-    <CatalogBrowser
-      title="Café menu"
-      description="The same product catalogue powers the café menu preview. Menu pricing and availability are not persisted yet."
-      filter="all"
-      newLabel="New menu item"
+    <MenuItemsManager
+      items={items}
+      siteOptions={sites?.map((site) => ({ value: site.id, label: site.name }))}
+      defaultSiteId={user.homeSiteId}
     />
   );
 };
