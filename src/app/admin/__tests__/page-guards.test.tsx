@@ -1,8 +1,15 @@
+import { getTranslations } from 'next-intl/server';
+
 import { requireRoles } from '@/lib/auth/guards';
 import { getAdminAnnouncements } from '@/services/sites/get-admin-announcements';
 import { getAdminMenuItems } from '@/services/catalog/get-admin-menu-items';
 import { getAdminStudents } from '@/services/enrollments/get-admin-students';
 import { getSites } from '@/services/sites/get-sites';
+import {
+  getActiveProductOptions,
+  getAdminSiteBySlug,
+  getAdminSites,
+} from '@/services/sites/site-admin';
 import { getAdminStaff } from '@/services/users/get-admin-staff';
 
 import AdminAnnouncementsPage from '../announcements/page';
@@ -10,6 +17,7 @@ import AdminCatalogPage from '../catalog/page';
 import AdminCoursesPage from '../courses/page';
 import AdminMenuPage from '../menu/page';
 import AdminSitesPage from '../sites/page';
+import AdminSiteEditPage from '../sites/[slug]/edit/page';
 import AdminStaffPage from '../staff/page';
 import AdminStudentsPage from '../students/page';
 
@@ -28,6 +36,12 @@ jest.mock('../announcements/_components/AnnouncementsManager', () => ({
   AnnouncementsManager: () => null,
 }));
 jest.mock('@/services/sites/get-sites', () => ({ getSites: jest.fn() }));
+jest.mock('@/services/sites/site-admin', () => ({
+  getAdminSites: jest.fn(),
+  getAdminSiteBySlug: jest.fn(),
+  getActiveProductOptions: jest.fn(),
+}));
+jest.mock('@/components/admin/SiteEditor', () => ({ SiteEditor: () => null }));
 jest.mock('../menu/_components/MenuItemsManager', () => ({ MenuItemsManager: () => null }));
 
 jest.mock('@/services/enrollments/get-admin-students', () => ({ getAdminStudents: jest.fn() }));
@@ -70,7 +84,20 @@ describe('admin page guards', () => {
   });
 
   it('limits sites to admin', async () => {
+    (getAdminSites as jest.Mock).mockResolvedValue([]);
+    (getTranslations as jest.Mock).mockResolvedValue((key: string) => key);
+
     await AdminSitesPage();
+
+    expect(requireRoles).toHaveBeenCalledWith(['admin']);
+  });
+
+  it('limits the site editor to admin', async () => {
+    (getAdminSiteBySlug as jest.Mock).mockResolvedValue({ nameEn: 'Ngo Quyen' });
+    (getActiveProductOptions as jest.Mock).mockResolvedValue([]);
+    (getTranslations as jest.Mock).mockResolvedValue((key: string) => key);
+
+    await AdminSiteEditPage({ params: Promise.resolve({ slug: 'ngo-quyen' }) });
 
     expect(requireRoles).toHaveBeenCalledWith(['admin']);
   });

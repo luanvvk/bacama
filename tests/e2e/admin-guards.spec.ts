@@ -11,6 +11,8 @@ test.describe('admin guards', () => {
     '/admin/catalog/dalat-washed/edit',
     '/admin/menu',
     '/admin/announcements',
+    '/admin/sites',
+    '/admin/sites/ly-tu-trong/edit',
     '/admin/students',
     '/admin/staff',
   ]) {
