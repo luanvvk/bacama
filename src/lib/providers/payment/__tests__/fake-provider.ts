@@ -10,8 +10,8 @@ export const signFakeWebhook = (rawBody: Buffer | string) =>
 
 /** Test-only adapter; deliberately not registered in the production factory. */
 export const fakeProvider: PaymentProvider = {
-  async pay() {
-    throw new Error('not used in tests');
+  async pay(_amountVnd, orderRef) {
+    return { provider: 'zalopay', providerRef: `fake-${orderRef}`, redirectUrl: '/pay' };
   },
   parseWebhook(rawBody, headers) {
     const expected = Buffer.from(signFakeWebhook(rawBody));
