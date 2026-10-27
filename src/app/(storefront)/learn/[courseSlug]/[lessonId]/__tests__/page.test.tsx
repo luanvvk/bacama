@@ -69,6 +69,7 @@ const render = async (lessonId: string) =>
 
 describe('lesson page access', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     (getCourseBySlug as jest.Mock).mockResolvedValue(COURSE);
     (getLearnerEnrollment as jest.Mock).mockResolvedValue(null);
     (getLessonVideoId as jest.Mock).mockResolvedValue('jNQXAC9IVRw');
