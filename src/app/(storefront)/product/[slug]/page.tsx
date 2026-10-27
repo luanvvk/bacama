@@ -25,7 +25,7 @@ import { ProductTabs } from './_components/ProductTabs';
 export const revalidate = 3600;
 
 export const generateStaticParams = async () => {
-  const products = await getProducts(toAppLocale(await getLocale()));
+  const products = await getProducts('en');
 
   return products.map((product) => ({ slug: product.slug }));
 };
