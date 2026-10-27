@@ -31,6 +31,8 @@
     "pickup": "Pickup",
     "shippingGhn": "Shipping · GHN",
     "free": "Free",
+    "calculatedAtCheckout": "Calculated at checkout",
+    "pickupNoFee": "No fee",
     "total": "Total",
     "checkOut": "Check out",
     "paymentMethods": "ZaloPay · MoMo · VNPay QR · COD"
@@ -1484,7 +1486,9 @@
   },
   "QuantityStepper": {
     "decrease": "Decrease quantity",
-    "increase": "Increase quantity"
+    "increase": "Increase quantity",
+    "decreaseNamed": "Decrease quantity of {name}",
+    "increaseNamed": "Increase quantity of {name}"
   },
   "SocialAuth": {
     "continueWithGoogle": "Continue with Google",

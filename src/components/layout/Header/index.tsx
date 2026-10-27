@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -33,6 +35,14 @@ export const Header = ({ navItems = NAV_ITEMS, role = null }: HeaderProps) => {
   const t = useTranslations('Header');
   const cartCount = useCartCount();
   const openCart = useCartStore((state) => state.open);
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPathname, setMenuPathname] = useState(pathname);
+
+  if (menuPathname !== pathname) {
+    setMenuPathname(pathname);
+    setMenuOpen(false);
+  }
 
   return (
     <header className="bg-background/90 sticky top-0 z-40 border-b backdrop-blur">
@@ -116,7 +126,7 @@ export const Header = ({ navItems = NAV_ITEMS, role = null }: HeaderProps) => {
             <AccountMenu role={role} />
           </div>
 
-          <Sheet>
+          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
               <Button
                 type="button"
@@ -133,7 +143,7 @@ export const Header = ({ navItems = NAV_ITEMS, role = null }: HeaderProps) => {
                 <SheetTitle>{t('menu')}</SheetTitle>
               </SheetHeader>
               <div className="px-4 pb-6">
-                <MobileNav navItems={navItems} role={role} />
+                <MobileNav navItems={navItems} role={role} onNavigate={() => setMenuOpen(false)} />
               </div>
             </SheetContent>
           </Sheet>

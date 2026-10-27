@@ -6,10 +6,13 @@ import { QuantityStepper } from '../index';
 const MESSAGES: Record<string, string> = {
   decrease: 'Decrease quantity',
   increase: 'Increase quantity',
+  decreaseNamed: 'Decrease quantity of {name}',
+  increaseNamed: 'Increase quantity of {name}',
 };
 
 jest.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => MESSAGES[key],
+  useTranslations: () => (key: string, params?: { name: string }) =>
+    MESSAGES[key].replace('{name}', params?.name ?? ''),
 }));
 
 describe('QuantityStepper', () => {
@@ -29,6 +32,14 @@ describe('QuantityStepper', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Decrease quantity' }));
 
     expect(onChange).toHaveBeenCalledWith(1);
+  });
+
+  it('names the buttons after the item and announces the count politely', () => {
+    render(<QuantityStepper value={3} onChange={jest.fn()} name="Croissant" />);
+
+    expect(screen.getByRole('button', { name: 'Decrease quantity of Croissant' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Increase quantity of Croissant' })).toBeVisible();
+    expect(screen.getByText('3')).toHaveAttribute('aria-live', 'polite');
   });
 
   it('disables the decrease button at the minimum', () => {
