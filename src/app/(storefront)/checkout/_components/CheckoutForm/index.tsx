@@ -87,9 +87,10 @@ export const CheckoutForm = () => {
 
   // The persisted cart rehydrates on the client; wait for it before treating
   // an empty list as an empty cart.
+  // `persist` is undefined on the server, where localStorage does not exist.
   const hydrated = useSyncExternalStore(
-    useCartStore.persist.onFinishHydration,
-    useCartStore.persist.hasHydrated,
+    (onChange) => useCartStore.persist?.onFinishHydration(onChange) ?? (() => {}),
+    () => useCartStore.persist?.hasHydrated() ?? false,
     () => false,
   );
 

@@ -118,4 +118,13 @@ describe('useCartStore quantity bounds and persistence', () => {
     await useCartStore.persist.rehydrate();
     expect(useCartStore.getState().items).toEqual([{ ...CROISSANT, quantity: 2 }]);
   });
+
+  it('clamps quantities restored from storage', async () => {
+    localStorage.setItem(
+      'bacama-cart-v1',
+      JSON.stringify({ state: { items: [{ ...CROISSANT, quantity: 500 }] }, version: 1 }),
+    );
+    await useCartStore.persist.rehydrate();
+    expect(useCartStore.getState().items[0].quantity).toBe(99);
+  });
 });

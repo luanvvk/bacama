@@ -70,7 +70,18 @@ export const useCartStore = create<CartState>()(
       open: () => set({ isOpen: true }),
       close: () => set({ isOpen: false }),
     }),
-    { name: 'bacama-cart-v1', version: 1, partialize: (state) => ({ items: state.items }) },
+    {
+      name: 'bacama-cart-v1',
+      merge: (persisted, current) => ({
+        ...current,
+        items: ((persisted as Pick<CartState, 'items'>)?.items ?? []).map((item) => ({
+          ...item,
+          quantity: clampQuantity(item.quantity),
+        })),
+      }),
+      version: 1,
+      partialize: (state) => ({ items: state.items }),
+    },
   ),
 );
 
