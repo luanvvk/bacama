@@ -3,14 +3,14 @@ import { z } from 'zod';
 
 import { getOrderForTracking } from '@/services/orders/get-order-for-tracking';
 
-const trackOrderSchema = z.object({ phone: z.string().min(8) });
+const trackOrderSchema = z.object({ phone: z.string().min(8).max(20) });
 
 export const POST = async (
   request: NextRequest,
   { params }: { params: Promise<{ ref: string }> },
 ) => {
   const { ref } = await params;
-  const parsed = trackOrderSchema.safeParse(await request.json());
+  const parsed = trackOrderSchema.safeParse(await request.json().catch(() => null));
 
   if (!parsed.success) {
     return NextResponse.json({ message: 'Invalid request.' }, { status: 400 });

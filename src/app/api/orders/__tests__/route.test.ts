@@ -58,3 +58,23 @@ describe('POST /api/orders userId', () => {
     expect(create.mock.calls.map(([input]) => input.userId)).toEqual([null, 'user-1']);
   });
 });
+
+describe('POST /api/orders body bounds', () => {
+  it('returns 400 for a malformed JSON body', async () => {
+    const res = await POST(
+      new NextRequest('http://localhost/api/orders', { method: 'POST', body: '{nope' }),
+    );
+    expect(res.status).toBe(400);
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it('rejects oversize quantity, item count and note', async () => {
+    const big = [
+      { ...VALID, items: [{ id: 'p1', quantity: 100 }] },
+      { ...VALID, items: Array.from({ length: 51 }, () => ({ id: 'p1', quantity: 1 })) },
+      { ...VALID, note: 'x'.repeat(1001) },
+    ];
+    for (const body of big) expect((await post(body)).status).toBe(400);
+    expect(create).not.toHaveBeenCalled();
+  });
+});

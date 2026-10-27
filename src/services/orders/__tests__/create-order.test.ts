@@ -115,6 +115,14 @@ describe('createOrder', () => {
     ).rejects.toThrow(OrderValidationError);
   });
 
+  it('throws when the order subtotal exceeds the ceiling', async () => {
+    mockBakeryFindMany.mockResolvedValue([{ ...BAKERY_ITEM, priceVnd: 20_000_000 }]);
+
+    await expect(
+      createOrder({ ...BASE_INPUT, items: [{ id: 'b1', kind: 'bakery', quantity: 99 }] }),
+    ).rejects.toThrow(OrderValidationError);
+  });
+
   it('forces pickup and derives pickupSiteId from a bakery item, regardless of the requested deliveryOption', async () => {
     mockBakeryFindMany.mockResolvedValue([BAKERY_ITEM]);
 
