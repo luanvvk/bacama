@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
-import { MENU_SECTIONS } from '@/constants/menu';
+import { isAllowedMenuImageUrl, MENU_SECTIONS } from '@/constants/menu';
 
 const name = z.string().trim().min(1).max(120);
 const priceVnd = z.number().int().positive().max(100_000_000);
+const imageUrl = z.string().trim().max(500).refine(isAllowedMenuImageUrl);
+const description = z.string().trim().max(160);
 const order = z.number().int().min(0).max(100_000);
 
 export const createMenuItemSchema = z
@@ -13,6 +15,9 @@ export const createMenuItemSchema = z
     nameVi: name,
     nameEn: name,
     priceVnd,
+    imageUrl: imageUrl.nullish(),
+    descriptionVi: description.nullish(),
+    descriptionEn: description.nullish(),
     order: order.default(0),
   })
   .strict();
@@ -23,6 +28,9 @@ export const updateMenuItemSchema = z
     nameVi: name,
     nameEn: name,
     priceVnd,
+    imageUrl: imageUrl.nullable(),
+    descriptionVi: description.nullable(),
+    descriptionEn: description.nullable(),
     order,
     isActive: z.boolean(),
   })

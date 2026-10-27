@@ -10,6 +10,9 @@ export interface AdminMenuItem {
   nameVi: string;
   nameEn: string;
   priceVnd: number;
+  imageUrl: string | null;
+  descriptionVi: string | null;
+  descriptionEn: string | null;
   order: number;
   isActive: boolean;
 }
@@ -29,6 +32,9 @@ export const getAdminMenuItems = async (user: AuthUser): Promise<AdminMenuItem[]
     nameVi: item.nameVi,
     nameEn: item.nameEn,
     priceVnd: item.priceVnd,
+    imageUrl: item.imageUrl,
+    descriptionVi: item.descriptionVi,
+    descriptionEn: item.descriptionEn,
     order: item.order,
     isActive: item.isActive,
   }));

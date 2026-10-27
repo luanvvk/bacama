@@ -1208,13 +1208,19 @@
         "nameEn": "Tên (tiếng Anh)",
         "priceVnd": "Giá (VND)",
         "order": "Thứ tự hiển thị",
+        "imageUrl": "Liên kết ảnh (https)",
+        "descriptionVi": "Mô tả (tiếng Việt)",
+        "descriptionEn": "Mô tả (tiếng Anh)",
         "isActive": "Đang bán trên thực đơn"
       },
       "validation": {
         "required": "Vui lòng nhập trường này.",
         "price": "Nhập giá là số nguyên lớn hơn 0.",
         "order": "Nhập số nguyên từ 0 trở lên.",
-        "maxLength": "Tối đa 120 ký tự."
+        "maxLength": "Tối đa 120 ký tự.",
+        "https": "Dùng liên kết https:// từ nguồn ảnh được phép (images.unsplash.com, huawei-food-cms.grab.com).",
+        "maxDescription": "Tối đa 160 ký tự.",
+        "maxUrl": "Tối đa 500 ký tự."
       },
       "save": "Lưu",
       "cancel": "Hủy",

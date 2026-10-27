@@ -978,6 +978,57 @@ const BAKERY_ITEMS = [
   },
 ];
 
+const unsplash = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=70`;
+
+// One photo and one-line blurb per section — every drink in a section shares
+// them until the owner uploads item-specific photos in the admin.
+const MENU_SECTION_DEFAULTS: Record<
+  string,
+  { imageUrl: string; descriptionVi: string; descriptionEn: string }
+> = {
+  phin: {
+    imageUrl: unsplash('1495474472287-4d71bcdd2085'),
+    descriptionVi: 'Cà phê pha phin truyền thống, đậm đà.',
+    descriptionEn: 'Traditional drip-filter coffee, rich and bold.',
+  },
+  espresso: {
+    imageUrl: unsplash('1610889556528-9a770e32642f'),
+    descriptionVi: 'Espresso đậm vị, pha máy tại quầy.',
+    descriptionEn: 'Bold espresso pulled fresh at the bar.',
+  },
+  hand_brew: {
+    imageUrl: unsplash('1514432324607-a09d9b4aefdd'),
+    descriptionVi: 'Pha tay từng ly, vị sạch và thơm.',
+    descriptionEn: 'Poured by hand, clean and aromatic.',
+  },
+  cold_brew: {
+    imageUrl: unsplash('1517701604599-bb29b565090c'),
+    descriptionVi: 'Ủ lạnh mượt mà, uống mát.',
+    descriptionEn: 'Smooth, slow-steeped and served cold.',
+  },
+  tea: {
+    imageUrl: unsplash('1556679343-c7306c1976bc'),
+    descriptionVi: 'Trà thanh mát, dùng lạnh.',
+    descriptionEn: 'Light, refreshing iced tea.',
+  },
+  matcha: {
+    imageUrl: unsplash('1515823064-d6e0c04616a7'),
+    descriptionVi: 'Matcha xanh mịn, béo nhẹ.',
+    descriptionEn: 'Smooth, lightly creamy green matcha.',
+  },
+  chocolate: {
+    imageUrl: unsplash('1542990253-0d0f5be5f0ed'),
+    descriptionVi: 'Sô-cô-la nóng đậm đà.',
+    descriptionEn: 'Rich, warming hot chocolate.',
+  },
+  juice: {
+    imageUrl: unsplash('1600271886742-f049cd451bba'),
+    descriptionVi: 'Nước ép trái cây tươi.',
+    descriptionEn: 'Freshly pressed fruit juice.',
+  },
+};
+
 // Real café menu (prepared drinks) — display-only, dine-in. Sourced from the
 // business's own printed menu board (photographed front/back), not GrabFood —
 // GrabFood's drink prices are delivery prices and run higher than the dine-in
@@ -1367,7 +1418,8 @@ const seed = async () => {
   }
   console.log(`bakery items: ${BAKERY_ITEMS.length}`);
 
-  for (const item of MENU_ITEMS) {
+  for (const baseItem of MENU_ITEMS) {
+    const item = { ...MENU_SECTION_DEFAULTS[baseItem.section], ...baseItem };
     await prisma.menuItem.upsert({
       where: { siteId_slug: { siteId: liveSiteId, slug: item.slug } },
       update: item,

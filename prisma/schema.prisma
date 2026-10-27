@@ -308,18 +308,21 @@ model BakeryItem {
 }
 
 model MenuItem {
-  id        String   @id @default(cuid())
-  siteId    String
-  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
-  slug      String
-  section   String
-  nameVi    String
-  nameEn    String
-  priceVnd  Int
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  siteId        String
+  site          Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  slug          String
+  section       String
+  nameVi        String
+  nameEn        String
+  priceVnd      Int
+  imageUrl      String?
+  descriptionVi String?
+  descriptionEn String?
+  order         Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   orderItems OrderItem[]
 
