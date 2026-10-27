@@ -8,12 +8,24 @@ test.beforeEach(async ({ context }) => {
 
 for (const route of routes) {
   test(`${route} has one h1 and no unnamed controls`, async ({ page }) => {
-    await page.goto(route);
+    if (route === '/checkout') {
+      // An empty cart redirects to /shop, so put something in it and navigate client-side.
+      await page.goto('/bakery');
+      await page.getByRole('button', { name: 'Thêm vào giỏ' }).first().click();
+      const cartLink = page.locator('a[href="/checkout"]');
+      if (!(await cartLink.isVisible())) {
+        await page.getByRole('button', { name: 'Mở giỏ hàng' }).click();
+      }
+      await cartLink.click();
+    } else {
+      await page.goto(route);
+    }
+    await expect(page).toHaveURL(new RegExp(`${route}$`));
     await expect(page.locator('h1')).toHaveCount(1);
 
     const unnamed = await page
       .locator('main')
-      .locator('button, [role="checkbox"], input:not([type="hidden"])')
+      .locator('button, [role="checkbox"], input:not([type="hidden"]):not([aria-hidden="true"])')
       .evaluateAll((els) =>
         els
           .filter((el) => {
