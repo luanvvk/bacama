@@ -18,8 +18,6 @@ import { Heading, Text } from '@/components/ui/Typography';
 
 import { MenuSections } from './_components/MenuSections';
 
-export const revalidate = 3600;
-
 // `section` is a locale-neutral key on MenuItem, not editorial copy — its
 // display heading comes from messages/{en,vi}.json's Menu.sections (see
 // ProductCard's CATEGORY_LABEL for the same category-key-to-label pattern).

@@ -26,8 +26,6 @@ import { formatOpening, getSites } from '@/services/sites/get-sites';
 
 import { SiteMap } from './_components/SiteMap';
 
-export const revalidate = 3600;
-
 export const generateStaticParams = async () => {
   const sites = await getSites('en');
 

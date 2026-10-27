@@ -21,8 +21,6 @@ import { Heading, Text } from '@/components/ui/Typography';
 
 import { CoursesBrowser } from './_components/CoursesBrowser';
 
-export const revalidate = 3600;
-
 const CoursesPage = async () => {
   const locale = toAppLocale(await getLocale());
   const [t, courses] = await Promise.all([getTranslations('Courses'), getCourses(locale)]);

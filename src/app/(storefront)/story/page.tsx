@@ -11,8 +11,6 @@ import { Button } from '@/components/ui/Button';
 import { Heading, Text } from '@/components/ui/Typography';
 import { getActiveAnnouncements } from '@/services/sites/get-active-announcements';
 
-export const revalidate = 3600;
-
 type Chapter = {
   year: string;
   label: string;
