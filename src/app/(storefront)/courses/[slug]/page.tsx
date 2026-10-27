@@ -62,7 +62,14 @@ const CourseDetailPage = async ({ params }: { params: Promise<{ slug: string }> 
               aspect="landscape"
               sizes="(min-width: 1024px) 55vw, 100vw"
               priority
-              fallback={<Badge variant="outline">{course.format}</Badge>}
+              fallback={
+                <div className="flex flex-col items-center gap-3">
+                  <span aria-hidden className="font-heading text-primary text-7xl">
+                    {course.name.charAt(0)}
+                  </span>
+                  <Badge variant="outline">{course.format}</Badge>
+                </div>
+              }
             />
             <EnrolPanel course={course} />
           </div>

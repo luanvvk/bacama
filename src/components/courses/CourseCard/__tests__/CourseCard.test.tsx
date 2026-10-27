@@ -49,3 +49,12 @@ describe('CourseCard', () => {
     expect(screen.getAllByText('Online')).not.toHaveLength(0);
   });
 });
+
+describe('CourseCard without a cover image', () => {
+  it('shows the course initial placeholder instead of an empty box', () => {
+    render(<CourseCard course={{ ...latteArt, imageUrl: '' }} />);
+
+    expect(screen.getByText('L')).toBeInTheDocument();
+    expect(screen.getByText('Online')).toBeInTheDocument();
+  });
+});
