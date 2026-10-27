@@ -27,55 +27,78 @@ const DEFAULT_BAKERY_LINKS: NavLink[] = [
   { label: 'Carrot Cake', href: '/bakery' },
 ];
 
-const STATIC_NAV_ITEMS: NavItem[] = [
-  { label: 'Menu', href: '/menu' },
-  {
-    label: 'Workshops',
-    href: '/courses',
-    columns: [
-      {
-        heading: 'Online',
-        links: [
-          { label: 'Barista Foundations', href: '/courses', description: '6 weeks · 24 lessons' },
-          { label: 'Latte Art', href: '/courses', description: '9 lessons · first one free' },
-          { label: 'Cupping & Origin', href: '/courses' },
-        ],
-      },
-      {
-        heading: 'In person',
-        links: [
-          { label: 'Viennoiserie', href: '/courses', description: 'Hội An · 3 seats left' },
-          { label: 'Weekend roasting', href: '/courses' },
-          { label: 'Class calendar', href: '/courses' },
-        ],
-      },
-    ],
-  },
-  { label: 'Cafés', href: '/#sites' },
-  { label: 'Our family', href: '/story' },
-];
+// Message-key lookup for the mega-menu copy; `undefined` keeps the English
+// defaults (component tests, `NAV_ITEMS`).
+export type NavTranslator = (key: string) => string;
 
 // Coffee/Bakery are the only columns backed by real catalog data — everything
 // else in the mega-menu (Workshops) is still hand-curated copy, unchanged.
 export const buildNavItems = (
   coffeeLinks: NavLink[] = DEFAULT_COFFEE_LINKS,
   bakeryLinks: NavLink[] = DEFAULT_BAKERY_LINKS,
-): NavItem[] => [
-  {
-    label: 'Coffee & Bakery',
-    href: '/shop',
-    columns: [
-      {
-        heading: 'Coffee',
-        links: [...coffeeLinks, { label: 'Shop all coffee', href: '/shop' }],
-      },
-      {
-        heading: 'Bakery',
-        links: [...bakeryLinks, { label: 'Shop all bakery', href: '/bakery' }],
-      },
-    ],
-  },
-  ...STATIC_NAV_ITEMS,
-];
+  t?: NavTranslator,
+): NavItem[] => {
+  const text = (key: string, fallback: string) => t?.(key) ?? fallback;
+
+  return [
+    {
+      label: text('coffeeBakery', 'Coffee & Bakery'),
+      href: '/shop',
+      columns: [
+        {
+          heading: text('coffee', 'Coffee'),
+          links: [
+            ...coffeeLinks,
+            { label: text('shopAllCoffee', 'Shop all coffee'), href: '/shop' },
+          ],
+        },
+        {
+          heading: text('bakery', 'Bakery'),
+          links: [
+            ...bakeryLinks,
+            { label: text('shopAllBakery', 'Shop all bakery'), href: '/bakery' },
+          ],
+        },
+      ],
+    },
+    { label: text('menu', 'Menu'), href: '/menu' },
+    {
+      label: text('workshops', 'Workshops'),
+      href: '/courses',
+      columns: [
+        {
+          heading: text('online', 'Online'),
+          links: [
+            {
+              label: text('baristaFoundations', 'Barista Foundations'),
+              href: '/courses',
+              description: text('baristaFoundationsMeta', '6 weeks · 24 lessons'),
+            },
+            {
+              label: text('latteArt', 'Latte Art'),
+              href: '/courses',
+              description: text('latteArtMeta', '9 lessons · first one free'),
+            },
+            { label: text('cupping', 'Cupping & Origin'), href: '/courses' },
+          ],
+        },
+        {
+          heading: text('inPerson', 'In person'),
+          links: [
+            {
+              label: text('viennoiserie', 'Viennoiserie'),
+              href: '/courses',
+              description: text('viennoiserieMeta', 'Hội An · 3 seats left'),
+            },
+            { label: text('weekendRoasting', 'Weekend roasting'), href: '/courses' },
+            { label: text('classCalendar', 'Class calendar'), href: '/courses' },
+          ],
+        },
+      ],
+    },
+    { label: text('cafes', 'Cafés'), href: '/#sites' },
+    { label: text('family', 'Our family'), href: '/story' },
+  ];
+};
 
 export const NAV_ITEMS: NavItem[] = buildNavItems();

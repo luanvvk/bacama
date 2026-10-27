@@ -1,4 +1,4 @@
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 import { buildNavItems } from '@/constants/nav';
 import { toAppLocale } from '@/lib/localize';
@@ -10,10 +10,11 @@ import { Header } from '@/components/layout/Header';
 
 const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => {
   const locale = toAppLocale(await getLocale());
-  const [products, bakeryItems, user] = await Promise.all([
+  const [products, bakeryItems, user, t] = await Promise.all([
     getFeaturedProducts(locale),
     getBakeryItems(locale),
     getAuthProvider().getCurrentUser(),
+    getTranslations('Nav'),
   ]);
 
   const navItems = buildNavItems(
@@ -22,6 +23,7 @@ const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => 
       href: `/product/${product.slug}`,
     })),
     bakeryItems.slice(0, 2).map((item) => ({ label: item.name, href: '/bakery' })),
+    (key) => t(key),
   );
 
   return (

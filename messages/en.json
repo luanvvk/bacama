@@ -4,6 +4,28 @@
     "openMenu": "Open menu",
     "menu": "Menu"
   },
+  "Nav": {
+    "coffeeBakery": "Coffee & Bakery",
+    "coffee": "Coffee",
+    "bakery": "Bakery",
+    "shopAllCoffee": "Shop all coffee",
+    "shopAllBakery": "Shop all bakery",
+    "menu": "Menu",
+    "workshops": "Workshops",
+    "online": "Online",
+    "inPerson": "In person",
+    "baristaFoundations": "Barista Foundations",
+    "baristaFoundationsMeta": "6 weeks · 24 lessons",
+    "latteArt": "Latte Art",
+    "latteArtMeta": "9 lessons · first one free",
+    "cupping": "Cupping & Origin",
+    "viennoiserie": "Viennoiserie",
+    "viennoiserieMeta": "Hội An · 3 seats left",
+    "weekendRoasting": "Weekend roasting",
+    "classCalendar": "Class calendar",
+    "cafes": "Cafés",
+    "family": "Our family"
+  },
   "AccountMenu": {
     "loadingAccount": "Loading account",
     "welcome": "Welcome",
