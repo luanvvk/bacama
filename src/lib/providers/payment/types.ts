@@ -17,7 +17,10 @@ export type PaymentWebhookStatus = 'paid' | 'failed' | 'pending';
 export interface PaymentWebhookResult {
   providerRef: string;
   status: PaymentWebhookStatus;
-  /** Compared with the stored order total; never persisted from the payload. */
+  /**
+   * Required for `paid`: compared with the stored order total (a missing value
+   * is a mismatch); never persisted from the payload.
+   */
   amountVnd?: number;
 }
 

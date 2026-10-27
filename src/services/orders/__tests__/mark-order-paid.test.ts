@@ -39,7 +39,7 @@ describe('markOrderPaid', () => {
         { productId: null, quantity: 5 },
       ]),
     );
-    expect(await markOrderPaid('r')).toBe('updated');
+    expect(await markOrderPaid('r', 100)).toBe('updated');
     expect(mockProductUpdateMany).toHaveBeenCalledTimes(2);
     expect(mockProductUpdateMany).toHaveBeenCalledWith({
       where: { id: 'p1', stock: { gte: 3 } },
@@ -50,7 +50,7 @@ describe('markOrderPaid', () => {
   it('does not decrement on replay', async () => {
     mockFindUnique.mockResolvedValue(orderWith([{ productId: 'p1', quantity: 1 }]));
     mockOrderUpdateMany.mockResolvedValue({ count: 0 });
-    expect(await markOrderPaid('r')).toBe('already_processed');
+    expect(await markOrderPaid('r', 100)).toBe('already_processed');
     expect(mockProductUpdateMany).not.toHaveBeenCalled();
   });
 
@@ -58,7 +58,7 @@ describe('markOrderPaid', () => {
     mockFindUnique.mockResolvedValue(orderWith([{ productId: 'p1', quantity: 1 }]));
     mockOrderUpdateMany.mockResolvedValueOnce({ count: 0 }).mockResolvedValueOnce({ count: 1 });
     const error = jest.spyOn(console, 'error').mockImplementation(() => {});
-    expect(await markOrderPaid('r')).toBe('needs_review');
+    expect(await markOrderPaid('r', 100)).toBe('needs_review');
     expect(mockOrderUpdateMany).toHaveBeenLastCalledWith({
       where: { id: 'o1', status: 'failed' },
       data: { status: 'needs_review', paidAt: expect.any(Date) },
@@ -72,7 +72,7 @@ describe('markOrderPaid', () => {
     mockFindUnique.mockResolvedValue(orderWith([{ productId: 'p1', quantity: 9 }]));
     mockProductUpdateMany.mockResolvedValue({ count: 0 });
     const error = jest.spyOn(console, 'error').mockImplementation(() => {});
-    expect(await markOrderPaid('r')).toBe('needs_review');
+    expect(await markOrderPaid('r', 100)).toBe('needs_review');
     expect(prisma.order.update).toHaveBeenCalledWith({
       where: { id: 'o1' },
       data: { status: 'needs_review' },
@@ -82,10 +82,14 @@ describe('markOrderPaid', () => {
   });
 
   it('returns not_found and amount_mismatch without writing', async () => {
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
     mockFindUnique.mockResolvedValueOnce(null);
-    expect(await markOrderPaid('r')).toBe('not_found');
+    expect(await markOrderPaid('r', 100)).toBe('not_found');
     mockFindUnique.mockResolvedValueOnce(orderWith([]));
     expect(await markOrderPaid('r', 99)).toBe('amount_mismatch');
+    mockFindUnique.mockResolvedValueOnce(orderWith([]));
+    expect(await markOrderPaid('r', undefined)).toBe('amount_mismatch');
     expect(mockTransaction).not.toHaveBeenCalled();
+    error.mockRestore();
   });
 });
