@@ -1,7 +1,7 @@
 /** @jest-environment node */
 jest.mock('@/lib/prisma', () => ({
   prisma: {
-    order: { findUnique: jest.fn(), updateMany: jest.fn() },
+    order: { findUnique: jest.fn(), updateMany: jest.fn(), update: jest.fn() },
     product: { updateMany: jest.fn() },
     $transaction: jest.fn(),
   },
@@ -22,6 +22,7 @@ import { POST } from '../route';
 
 const mockFindUnique = prisma.order.findUnique as jest.Mock;
 const mockOrderUpdateMany = prisma.order.updateMany as jest.Mock;
+const mockOrderUpdate = prisma.order.update as jest.Mock;
 const mockProductUpdateMany = prisma.product.updateMany as jest.Mock;
 const mockTransaction = prisma.$transaction as jest.Mock;
 
@@ -96,6 +97,16 @@ describe('POST /api/webhooks/payment/[provider]', () => {
     });
   });
 
+  it('flags a paid event for an expired order and still answers 200', async () => {
+    mockOrderUpdateMany.mockResolvedValueOnce({ count: 0 }).mockResolvedValueOnce({ count: 1 });
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const response = await send({ providerRef: 'r1', status: 'paid' });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ received: true, needsReview: true });
+    expect(mockProductUpdateMany).not.toHaveBeenCalled();
+    error.mockRestore();
+  });
+
   it('treats a replay as already processed and does not decrement', async () => {
     mockOrderUpdateMany.mockResolvedValue({ count: 0 });
     const response = await send({ providerRef: 'r1', status: 'paid' });
@@ -104,14 +115,18 @@ describe('POST /api/webhooks/payment/[provider]', () => {
     expect(mockProductUpdateMany).not.toHaveBeenCalled();
   });
 
-  it('keeps the order paid and warns with the ref only when stock is short', async () => {
+  it('flags the order for review and logs the ref only when stock is short', async () => {
     mockProductUpdateMany.mockResolvedValue({ count: 0 });
-    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
     const response = await send({ providerRef: 'r1', status: 'paid' });
     expect(response.status).toBe(200);
-    expect(warn).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(warn.mock.calls)).toContain('BCM-AAAA');
-    warn.mockRestore();
+    expect(await response.json()).toEqual({ received: true, needsReview: true });
+    expect(mockOrderUpdate).toHaveBeenCalledWith({
+      where: { id: 'o1' },
+      data: { status: 'needs_review' },
+    });
+    expect(JSON.stringify(error.mock.calls)).toContain('BCM-AAAA');
+    error.mockRestore();
   });
 
   it('rejects a mismatched amount and leaves the order unchanged', async () => {

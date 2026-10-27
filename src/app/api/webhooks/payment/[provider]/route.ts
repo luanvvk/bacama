@@ -47,6 +47,8 @@ export const POST = async (
   if (outcome === 'amount_mismatch') {
     return Response.json({ error: 'Amount mismatch' }, { status: 400 });
   }
+  // 200 so the gateway stops retrying; the order is flagged for a human.
+  if (outcome === 'needs_review') return Response.json({ received: true, needsReview: true });
   return Response.json(
     outcome === 'already_processed'
       ? { received: true, alreadyProcessed: true }

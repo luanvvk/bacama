@@ -64,6 +64,7 @@ enum OrderStatus {
   completed
   failed
   refunded
+  needs_review
 }
 
 enum DeliveryMode {
