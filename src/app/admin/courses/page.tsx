@@ -1,10 +1,12 @@
 import { AdminDirectory } from '@/components/admin/AdminDirectory';
 import { requireRoles } from '@/lib/auth/guards';
+import { getAdminCourses } from '@/services/courses/get-admin-courses';
 
 const AdminCoursesPage = async () => {
-  await requireRoles(['instructor', 'admin']);
+  const user = await requireRoles(['instructor', 'admin']);
+  const { courses, students } = await getAdminCourses(user);
 
-  return <AdminDirectory kind="courses" />;
+  return <AdminDirectory courses={courses} students={students} />;
 };
 
 export default AdminCoursesPage;

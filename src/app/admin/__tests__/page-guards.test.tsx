@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { requireRoles } from '@/lib/auth/guards';
 import { getAdminAnnouncements } from '@/services/sites/get-admin-announcements';
 import { getAdminMenuItems } from '@/services/catalog/get-admin-menu-items';
+import { getAdminCourses } from '@/services/courses/get-admin-courses';
 import { getAdminStudents } from '@/services/enrollments/get-admin-students';
 import { getSites } from '@/services/sites/get-sites';
 import {
@@ -49,6 +50,7 @@ jest.mock('@/services/users/get-admin-staff', () => ({ getAdminStaff: jest.fn() 
 jest.mock('../students/_components/StudentsDirectory', () => ({ StudentsDirectory: () => null }));
 jest.mock('../staff/_components/StaffDirectory', () => ({ StaffDirectory: () => null }));
 
+jest.mock('@/services/courses/get-admin-courses', () => ({ getAdminCourses: jest.fn() }));
 jest.mock('@/components/admin/AdminDirectory', () => ({ AdminDirectory: () => null }));
 
 beforeEach(() => {
@@ -118,8 +120,12 @@ describe('admin page guards', () => {
   });
 
   it('limits courses to instructor and admin', async () => {
+    jest.mocked(requireRoles).mockResolvedValue({ id: 'u1', role: 'instructor' } as never);
+    (getAdminCourses as jest.Mock).mockResolvedValue({ courses: [], students: 0 });
+
     await AdminCoursesPage();
 
     expect(requireRoles).toHaveBeenCalledWith(['instructor', 'admin']);
+    expect(getAdminCourses).toHaveBeenCalledWith({ id: 'u1', role: 'instructor' });
   });
 });

@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   Input,
@@ -16,41 +15,32 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui';
-import { COURSES } from '@/constants/courses';
-import { toast } from '@/lib/toast';
 import { formatVnd } from '@/lib/format-price';
+import type { AdminCourse } from '@/services/courses/get-admin-courses';
+import { formatSessionDate } from '@/services/courses/map-course';
 
-type DirectoryKind = 'courses';
+export interface AdminDirectoryProps {
+  courses: AdminCourse[];
+  students: number;
+}
 
-const SCREEN_COPY: Record<
-  DirectoryKind,
-  { title: string; eyebrow: string; description: string; action: string }
-> = {
-  courses: {
-    title: 'Courses',
-    eyebrow: '4 courses · 1 online full · 3 enrolling · 84 students',
-    description:
-      'Price, instructor, capacity and start date. Lesson editing lives in the teacher console.',
-    action: 'New course',
-  },
-};
-
-export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
-  const copy = SCREEN_COPY[kind];
+export const AdminDirectory = ({ courses, students }: AdminDirectoryProps) => {
   const [query, setQuery] = useState('');
-  const matches = (value: string) => value.toLowerCase().includes(query.toLowerCase());
-
-  const action = () => toast(`${copy.action} is not wired up yet.`);
+  const needle = query.trim().toLowerCase();
+  const visible = courses.filter((course) =>
+    `${course.name} ${course.format}`.toLowerCase().includes(needle),
+  );
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-primary font-mono text-xs tracking-widest uppercase">{copy.eyebrow}</p>
-          <h1 className="font-heading mt-2 text-2xl font-semibold">{copy.title}</h1>
-          <p className="text-muted-foreground mt-1 text-sm">{copy.description}</p>
-        </div>
-        <Button onClick={action}>+ {copy.action}</Button>
+      <div>
+        <p className="text-primary font-mono text-xs tracking-widest uppercase">
+          {courses.length} courses · {students} students
+        </p>
+        <h1 className="font-heading mt-2 text-2xl font-semibold">Courses</h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Price, instructor, capacity and start date. Lesson editing lives in the teacher console.
+        </p>
       </div>
 
       <Card>
@@ -63,12 +53,14 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={`Search ${kind}…`}
-              aria-label={`Search ${kind}`}
+              placeholder="Search courses…"
+              aria-label="Search courses"
               className="pl-9"
             />
           </div>
-          {kind === 'courses' && (
+          {visible.length === 0 ? (
+            <p className="text-muted-foreground text-sm">No courses found.</p>
+          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -78,48 +70,38 @@ export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
                   <TableHead>Instructor</TableHead>
                   <TableHead>Enrolled</TableHead>
                   <TableHead>Starts</TableHead>
-                  <TableHead>
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {COURSES.filter((course) => matches(`${course.name} ${course.format}`)).map(
-                  (course) => (
-                    <TableRow key={course.id}>
-                      <TableCell className="font-medium">
-                        {course.name}
+                {visible.map((course) => (
+                  <TableRow key={course.id}>
+                    <TableCell className="font-medium">
+                      {course.name}
+                      {course.meta && (
                         <p className="text-muted-foreground text-xs">{course.meta}</p>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={course.format === 'online' ? 'success' : 'outline'}>
-                          {course.format}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono">{formatVnd(course.priceVnd)}</TableCell>
-                      <TableCell>Anh Minh</TableCell>
-                      <TableCell className="font-mono">
-                        {course.id === 'latte-art'
-                          ? '42 / ∞'
-                          : course.id === 'viennoiserie'
-                            ? '5 / 8'
-                            : '18 / ∞'}
-                      </TableCell>
-                      <TableCell className="font-mono">
-                        {course.format === 'online'
-                          ? 'Anytime'
-                          : course.id === 'viennoiserie'
-                            ? '21 Sep'
-                            : '1 Oct'}
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="ghost" onClick={action}>
-                          Edit
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ),
-                )}
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={course.format === 'online' ? 'success' : 'outline'}>
+                        {course.format}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-mono">{formatVnd(course.priceVnd)}</TableCell>
+                    <TableCell>{course.instructorName ?? '—'}</TableCell>
+                    <TableCell className="font-mono">
+                      {course.seatCapacity === null
+                        ? `${course.enrolled} / ∞`
+                        : `${course.seatsBooked} / ${course.seatCapacity}`}
+                    </TableCell>
+                    <TableCell className="font-mono">
+                      {course.format === 'online'
+                        ? 'Anytime'
+                        : course.nextStartsAt
+                          ? formatSessionDate(course.nextStartsAt)
+                          : '—'}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           )}
