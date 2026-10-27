@@ -23,9 +23,15 @@ export interface UserEnrollment {
 export const getUserEnrollments = async (
   userId: string,
   locale: AppLocale,
+  now: Date = new Date(),
 ): Promise<UserEnrollment[]> => {
   const enrollments = await prisma.enrollment.findMany({
-    where: { userId, status: { not: 'cancelled' } },
+    // A pending hold past its deadline is lapsed even if the daily sweep hasn't cancelled it yet.
+    where: {
+      userId,
+      status: { not: 'cancelled' },
+      NOT: { status: 'pending', holdExpiresAt: { lt: now } },
+    },
     orderBy: { createdAt: 'desc' },
     select: {
       id: true,

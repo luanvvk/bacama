@@ -30,10 +30,15 @@ describe('getUserEnrollments', () => {
   it('filters on userId, excludes cancelled and orders newest first in the database call', async () => {
     findMany.mockResolvedValue([]);
 
-    await getUserEnrollments('user-1', 'en');
+    const now = new Date('2026-10-27T00:00:00Z');
+    await getUserEnrollments('user-1', 'en', now);
 
     const args = findMany.mock.calls[0][0];
-    expect(args.where).toEqual({ userId: 'user-1', status: { not: 'cancelled' } });
+    expect(args.where).toEqual({
+      userId: 'user-1',
+      status: { not: 'cancelled' },
+      NOT: { status: 'pending', holdExpiresAt: { lt: now } },
+    });
     expect(args.orderBy).toEqual({ createdAt: 'desc' });
   });
 

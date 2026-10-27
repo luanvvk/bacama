@@ -81,7 +81,15 @@ export const courseDetailInclude = (now: Date) =>
     sessions: {
       where: { startsAt: { gte: now } },
       orderBy: { startsAt: 'asc' as const },
-      include: { site: true },
+      include: {
+        site: true,
+        // Lapsed holds still count in `seatsBooked` until the daily sweep frees them.
+        _count: {
+          select: {
+            enrollments: { where: { status: 'pending' as const, holdExpiresAt: { lt: now } } },
+          },
+        },
+      },
     },
   }) satisfies Prisma.CourseInclude;
 
@@ -177,6 +185,6 @@ export const mapCourseDetail = (course: DatabaseCourseDetail, locale: AppLocale)
     siteName: pickLocalized(locale, session.site.nameVi, session.site.nameEn),
     siteSlug: session.site.slug,
     capacity: session.capacity,
-    seatsLeft: Math.max(session.capacity - session.seatsBooked, 0),
+    seatsLeft: Math.max(session.capacity - (session.seatsBooked - session._count.enrollments), 0),
   })),
 });

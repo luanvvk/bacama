@@ -61,8 +61,13 @@ describe('getAdminCourses', () => {
         format: 'in_person',
         instructor: null,
         sessions: [
-          { startsAt: first, capacity: 8, seatsBooked: 5 },
-          { startsAt: new Date('2026-10-01T02:00:00Z'), capacity: 8, seatsBooked: 1 },
+          { startsAt: first, capacity: 8, seatsBooked: 5, _count: { enrollments: 2 } },
+          {
+            startsAt: new Date('2026-10-01T02:00:00Z'),
+            capacity: 8,
+            seatsBooked: 1,
+            _count: { enrollments: 0 },
+          },
         ],
       }),
     ]);
@@ -72,7 +77,7 @@ describe('getAdminCourses', () => {
     expect(courses[0]).toMatchObject({
       format: 'in-person',
       seatCapacity: 16,
-      seatsBooked: 6,
+      seatsBooked: 4,
       nextStartsAt: first,
       instructorName: null,
     });
