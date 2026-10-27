@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { CheckoutForm } from '../index';
@@ -103,19 +103,16 @@ jest.mock('next-intl', () => ({
   useLocale: () => 'vi',
 }));
 
-const mockToast = jest.fn();
-jest.mock('@/lib/toast', () => ({ toast: (...args: unknown[]) => mockToast(...args) }));
-
 const mockFetch = jest.fn();
 global.fetch = mockFetch as unknown as typeof fetch;
 
 const DALAT_WASHED = { id: 'dalat-washed-250-g-phin', name: 'Đà Lạt Washed', priceVnd: 280000 };
 
 const fillShippingFields = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.type(screen.getByLabelText('Full name'), 'Lê Thị Ngọc');
-  await user.type(screen.getByLabelText('Phone'), '0905123456');
-  await user.type(screen.getByLabelText('Email'), 'ngoc@example.com');
-  await user.type(screen.getByLabelText('Address'), '27 Ngô Quyền, Hải Châu, Đà Nẵng');
+  await user.type(screen.getByLabelText(/^Full name/), 'Lê Thị Ngọc');
+  await user.type(screen.getByLabelText(/^Phone/), '0905123456');
+  await user.type(screen.getByLabelText(/^Email/), 'ngoc@example.com');
+  await user.type(screen.getByLabelText(/^Address/), '27 Ngô Quyền, Hải Châu, Đà Nẵng');
 };
 
 beforeAll(async () => {
@@ -128,7 +125,6 @@ beforeEach(() => {
   useCheckoutStore.setState({ order: null });
   push.mockClear();
   replace.mockClear();
-  mockToast.mockClear();
   mockFetch.mockReset();
   mockFetch.mockResolvedValue({
     ok: true,
@@ -179,7 +175,7 @@ describe('CheckoutForm', () => {
     expect(push).toHaveBeenCalledWith('/checkout/done?ref=BCM-ABCD1234');
   });
 
-  it('shows a toast and does not navigate when the order API call fails', async () => {
+  it('shows a persistent alert, keeps values and does not navigate when the order API call fails', async () => {
     mockFetch.mockResolvedValue({ ok: false, json: () => Promise.resolve({ message: 'nope' }) });
     const user = userEvent.setup();
     render(<CheckoutForm />);
@@ -188,11 +184,36 @@ describe('CheckoutForm', () => {
     await fillShippingFields(user);
     await user.click(screen.getByRole('button', { name: 'Place order · pay on delivery' }));
 
-    expect(mockToast).toHaveBeenCalledWith(
-      "We couldn't place your order — please check your basket and try again.",
-    );
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent("We couldn't place your order");
+    expect(screen.getByLabelText(/Full name/)).not.toHaveValue('');
     expect(useCheckoutStore.getState().order).toBeNull();
     expect(push).not.toHaveBeenCalled();
+  });
+
+  it('shows the alert and moves focus to it when the network request throws', async () => {
+    mockFetch.mockRejectedValue(new TypeError('Failed to fetch'));
+    const user = userEvent.setup();
+    render(<CheckoutForm />);
+
+    await user.click(screen.getByRole('radio', { name: /Cash on delivery/ }));
+    await fillShippingFields(user);
+    await user.click(screen.getByRole('button', { name: 'Place order · pay on delivery' }));
+
+    const alert = await screen.findByRole('alert');
+    await waitFor(() => expect(alert).toHaveFocus());
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it('announces invalid fields and focuses the first one', async () => {
+    const user = userEvent.setup();
+    render(<CheckoutForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Pay with ZaloPay' }));
+
+    expect((await screen.findAllByRole('alert')).length).toBeGreaterThan(0);
+    expect(screen.getByLabelText(/Full name/)).toHaveFocus();
+    expect(screen.getByLabelText(/Full name/)).toHaveAttribute('aria-required', 'true');
   });
 
   it('does not submit when required shipping fields are missing', async () => {
@@ -245,8 +266,8 @@ describe('CheckoutForm', () => {
     const user = userEvent.setup();
     render(<CheckoutForm />);
 
-    expect(screen.getByLabelText('How to receive')).toHaveTextContent('Collect at a café');
-    expect(screen.getByLabelText('How to receive')).toHaveAttribute('data-disabled');
+    expect(screen.getByLabelText(/^How to receive/)).toHaveTextContent('Collect at a café');
+    expect(screen.getByLabelText(/^How to receive/)).toHaveAttribute('data-disabled');
     expect(
       screen.getByText(/pickup-only, so the whole order will be collected/),
     ).toBeInTheDocument();

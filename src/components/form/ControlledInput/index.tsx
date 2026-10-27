@@ -23,6 +23,7 @@ export const ControlledInput = <
   name,
   label,
   id,
+  required,
   ...props
 }: ControlledInputProps<TFieldValues, TName>) => {
   const fieldId = id ?? name;
@@ -32,11 +33,12 @@ export const ControlledInput = <
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <FormField id={fieldId} label={label} error={fieldState.error?.message}>
+        <FormField id={fieldId} label={label} error={fieldState.error?.message} required={required}>
           <Input
             {...field}
             {...props}
             id={fieldId}
+            aria-required={required || undefined}
             aria-invalid={Boolean(fieldState.error)}
             aria-describedby={fieldState.error ? `${fieldId}-error` : undefined}
           />

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,6 @@ import {
   getPaymentMethod,
 } from '@/constants/checkout';
 import { formatVnd } from '@/lib/format-price';
-import { toast } from '@/lib/toast';
 import { useCartStore, useCartTotalVnd } from '@/stores/cart';
 import { useCheckoutStore } from '@/stores/checkout';
 import { Button } from '@/components/ui/Button';
@@ -57,6 +56,13 @@ export const CheckoutForm = () => {
       ? DELIVERY_OPTIONS.filter((option) => option.value === 'pickup')
       : DELIVERY_OPTIONS
   ).map((option) => ({ value: option.value, label: tDeliveryOption(option.value) }));
+
+  const [submitError, setSubmitError] = useState(false);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (submitError) errorRef.current?.focus();
+  }, [submitError]);
 
   const { control, handleSubmit, formState } = useForm<CheckoutFormValues>({
     resolver: zodResolver(
@@ -105,31 +111,37 @@ export const CheckoutForm = () => {
       values;
     const shipping = { fullName, phone, email, address, province, deliveryOption, note };
 
-    const response = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items: items.map((item) => ({
-          id: item.productId ?? item.id,
-          kind: item.kind,
-          quantity: item.quantity,
-          weight: item.weight,
-          grind: item.grind,
-        })),
-        customerName: fullName,
-        phone,
-        email,
-        note,
-        paymentMethod,
-        deliveryOption,
-        address,
-        province,
-        locale,
-      }),
-    });
+    setSubmitError(false);
+    let response: Response | null;
+    try {
+      response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map((item) => ({
+            id: item.productId ?? item.id,
+            kind: item.kind,
+            quantity: item.quantity,
+            weight: item.weight,
+            grind: item.grind,
+          })),
+          customerName: fullName,
+          phone,
+          email,
+          note,
+          paymentMethod,
+          deliveryOption,
+          address,
+          province,
+          locale,
+        }),
+      });
+    } catch {
+      response = null;
+    }
 
-    if (!response.ok) {
-      toast(t('orderFailed'));
+    if (!response?.ok) {
+      setSubmitError(true);
       return;
     }
 
@@ -155,6 +167,16 @@ export const CheckoutForm = () => {
       className="grid gap-8 pb-28 lg:grid-cols-[1.4fr_1fr] lg:gap-14"
     >
       <div className="flex flex-col gap-8">
+        {submitError && (
+          <p
+            ref={errorRef}
+            role="alert"
+            tabIndex={-1}
+            className="border-destructive text-destructive rounded-lg border p-3 text-sm"
+          >
+            {t('orderFailed')}
+          </p>
+        )}
         <div>
           <Heading as="h1" size="lg">
             {t('paymentHeading')}
@@ -177,24 +199,37 @@ export const CheckoutForm = () => {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <ControlledInput control={control} name="fullName" label={t('fullNameLabel')} />
-              <ControlledInput control={control} name="phone" label={t('phoneLabel')} />
+              <ControlledInput
+                control={control}
+                name="fullName"
+                required
+                label={t('fullNameLabel')}
+              />
+              <ControlledInput control={control} name="phone" required label={t('phoneLabel')} />
             </div>
-            <ControlledInput control={control} name="email" type="email" label={t('emailLabel')} />
+            <ControlledInput
+              control={control}
+              name="email"
+              type="email"
+              required
+              label={t('emailLabel')}
+            />
             <Text variant="muted" className="text-xs">
               {t('emailHint')}
             </Text>
-            <ControlledInput control={control} name="address" label={t('addressLabel')} />
+            <ControlledInput control={control} name="address" required label={t('addressLabel')} />
             <div className="grid gap-4 sm:grid-cols-2">
               <ControlledSelect
                 control={control}
                 name="province"
+                required
                 label={t('provinceLabel')}
                 options={PROVINCE_OPTIONS}
               />
               <ControlledSelect
                 control={control}
                 name="deliveryOption"
+                required
                 label={t('deliveryLabel')}
                 options={deliveryOptions}
                 disabled={requiresPickup}

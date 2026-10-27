@@ -27,6 +27,7 @@ export interface ControlledSelectProps<
   id?: string;
   placeholder?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 export const ControlledSelect = <
@@ -40,6 +41,7 @@ export const ControlledSelect = <
   id,
   placeholder,
   disabled,
+  required,
 }: ControlledSelectProps<TFieldValues, TName>) => {
   const fieldId = id ?? name;
 
@@ -48,10 +50,12 @@ export const ControlledSelect = <
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <FormField id={fieldId} label={label} error={fieldState.error?.message}>
+        <FormField id={fieldId} label={label} error={fieldState.error?.message} required={required}>
           <Select value={field.value} onValueChange={field.onChange} disabled={disabled}>
             <SelectTrigger
               id={fieldId}
+              ref={field.ref}
+              aria-required={required || undefined}
               className="w-full"
               aria-invalid={Boolean(fieldState.error)}
               aria-describedby={fieldState.error ? `${fieldId}-error` : undefined}
