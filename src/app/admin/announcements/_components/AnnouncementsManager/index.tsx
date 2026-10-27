@@ -28,6 +28,7 @@ import { ALL_SITES, AnnouncementForm } from '../AnnouncementForm';
 
 export interface AnnouncementsManagerProps {
   announcements: AdminAnnouncement[];
+  nextCursor: string | null;
   /** Present only for admin, who may pick any site. */
   siteOptions?: { value: string; label: string }[];
   defaultSiteId: string | null;
@@ -47,22 +48,52 @@ const STATUS_VARIANT = {
 const formatInstant = (date: Date) => toVietnamLocalInput(date).replace('T', ' ');
 
 export const AnnouncementsManager = ({
-  announcements,
+  announcements: initialAnnouncements,
+  nextCursor: initialCursor,
   siteOptions,
   defaultSiteId,
   canManageAllSites,
 }: AnnouncementsManagerProps) => {
   const t = useTranslations('Admin.announcements');
   const router = useRouter();
+  const [announcements, setAnnouncements] = useState(initialAnnouncements);
+  const [nextCursor, setNextCursor] = useState(initialCursor);
+  const [loading, setLoading] = useState(false);
   const [editor, setEditor] = useState<EditorState>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const canCreate = Boolean(siteOptions?.length || defaultSiteId);
   const now = new Date();
 
+  // router.refresh() re-renders the page with a fresh first page; adopt it.
+  const [seenAnnouncements, setSeenAnnouncements] = useState(initialAnnouncements);
+  if (seenAnnouncements !== initialAnnouncements) {
+    setSeenAnnouncements(initialAnnouncements);
+    setAnnouncements(initialAnnouncements);
+    setNextCursor(initialCursor);
+  }
+
   const formSiteOptions = siteOptions && [
     { value: ALL_SITES, label: t('allSites') },
     ...siteOptions,
   ];
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `/api/admin/announcements?cursor=${encodeURIComponent(nextCursor)}`,
+      );
+      if (!response.ok) throw new Error(String(response.status));
+      const page: { items: AdminAnnouncement[]; nextCursor: string | null } = await response.json();
+      setAnnouncements((current) => [...current, ...page.items]);
+      setNextCursor(page.nextCursor);
+    } catch {
+      toast.error(t('loadMoreFailed'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const remove = async (announcement: AdminAnnouncement) => {
     const response = await fetch(`/api/admin/announcements/${announcement.id}`, {
@@ -175,6 +206,19 @@ export const AnnouncementsManager = ({
             })}
           </TableBody>
         </Table>
+      )}
+      {nextCursor && (
+        <div className="flex justify-center pt-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 min-w-32"
+            onClick={loadMore}
+            disabled={loading}
+          >
+            {t('loadMore')}
+          </Button>
+        </div>
       )}
 
       <Dialog open={editor !== null} onOpenChange={(open) => !open && setEditor(null)}>

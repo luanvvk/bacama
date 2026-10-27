@@ -34,6 +34,7 @@ describe('AnnouncementsManager', () => {
   it('badges each announcement with its derived status', () => {
     render(
       <AnnouncementsManager
+        nextCursor={null}
         announcements={[
           announcement({ id: '1', titleEn: 'LiveOne' }),
           announcement({ id: '2', titleEn: 'SoonOne', startsAt: ago(-2) }),
@@ -54,6 +55,7 @@ describe('AnnouncementsManager', () => {
   it('hides edit and delete on all-sites rows for staff', () => {
     render(
       <AnnouncementsManager
+        nextCursor={null}
         announcements={[
           announcement({ id: '1', titleEn: 'Global', siteId: null, siteName: null }),
           announcement({ id: '2', titleEn: 'Local' }),
@@ -72,6 +74,7 @@ describe('AnnouncementsManager', () => {
   it('lets admin edit and delete all-sites rows', () => {
     render(
       <AnnouncementsManager
+        nextCursor={null}
         announcements={[announcement({ id: '1', titleEn: 'Global', siteId: null, siteName: null })]}
         siteOptions={[{ value: 's1', label: 'Hanoi' }]}
         defaultSiteId={null}
@@ -87,6 +90,7 @@ describe('AnnouncementsManager', () => {
     const user = userEvent.setup();
     render(
       <AnnouncementsManager
+        nextCursor={null}
         announcements={[]}
         siteOptions={[{ value: 's1', label: 'Hanoi' }]}
         defaultSiteId={null}
@@ -103,12 +107,43 @@ describe('AnnouncementsManager', () => {
   it('shows no site picker in the create form for staff', async () => {
     const user = userEvent.setup();
     render(
-      <AnnouncementsManager announcements={[]} defaultSiteId="s1" canManageAllSites={false} />,
+      <AnnouncementsManager
+        announcements={[]}
+        nextCursor={null}
+        defaultSiteId="s1"
+        canManageAllSites={false}
+      />,
     );
 
     await user.click(screen.getByRole('button', { name: 'new' }));
 
     expect(screen.getByLabelText('fields.titleEn')).toBeInTheDocument();
     expect(screen.queryByRole('combobox', { name: 'fields.siteId' })).not.toBeInTheDocument();
+  });
+
+  it('appends the next page and hides Load more on the last page', async () => {
+    const fetchMock = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        items: [announcement({ id: '9', titleEn: 'LateOne' })],
+        nextCursor: null,
+      }),
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+    render(
+      <AnnouncementsManager
+        announcements={[announcement({ titleEn: 'FirstOne' })]}
+        nextCursor="a1"
+        defaultSiteId="s1"
+        canManageAllSites={false}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: 'loadMore' }));
+
+    expect(await screen.findByText('LateOne')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/announcements?cursor=a1');
+    expect(screen.getByText('FirstOne')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'loadMore' })).not.toBeInTheDocument();
   });
 });

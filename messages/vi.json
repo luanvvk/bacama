@@ -1263,6 +1263,8 @@
       "searchLabel": "Tìm nhân viên",
       "empty": "Không tìm thấy nhân viên.",
       "noSite": "Mọi cơ sở",
+      "loadMore": "Tải thêm",
+      "loadMoreFailed": "Không thể tải thêm.",
       "columns": {
         "name": "Tên",
         "role": "Vai trò",
@@ -1322,6 +1324,8 @@
       "deleted": "Đã xóa thông báo.",
       "saveFailed": "Không thể lưu thông báo. Vui lòng thử lại.",
       "deleteFailed": "Không thể xóa thông báo. Vui lòng thử lại.",
+      "loadMore": "Tải thêm",
+      "loadMoreFailed": "Không thể tải thêm.",
       "forbidden": "Bạn không thể thay đổi thông báo của cơ sở này.",
       "notFound": "Thông báo này không còn tồn tại."
     },

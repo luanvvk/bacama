@@ -32,7 +32,9 @@ const AdminOverviewPage = async () => {
     year: 'numeric',
     timeZone: 'Asia/Ho_Chi_Minh',
   }).format(new Date());
-  const announcements = showAnnouncements ? (await getAdminAnnouncements(user)).slice(0, 3) : null;
+  const announcements = showAnnouncements
+    ? (await getAdminAnnouncements(user, { take: 3 })).items
+    : null;
   const [products, todaysOrders] = await Promise.all([getAdminProducts(), listTodaysOrders(user)]);
 
   return (

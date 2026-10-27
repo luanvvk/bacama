@@ -15,7 +15,7 @@ jest.mock('@/services/orders/get-admin-kpis', () => ({
   getAdminKpis: () => mockGetAdminKpis(),
 }));
 jest.mock('@/services/sites/get-admin-announcements', () => ({
-  getAdminAnnouncements: jest.fn().mockResolvedValue([]),
+  getAdminAnnouncements: jest.fn().mockResolvedValue({ items: [], nextCursor: null }),
 }));
 jest.mock('@/services/catalog/get-admin-products', () => ({
   getAdminProducts: jest.fn().mockResolvedValue([]),

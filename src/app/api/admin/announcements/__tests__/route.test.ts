@@ -2,7 +2,7 @@
 import { NextRequest } from 'next/server';
 import { revalidatePath } from 'next/cache';
 
-import { POST } from '../route';
+import { GET, POST } from '../route';
 import { getAuthProvider } from '@/lib/providers/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -11,6 +11,7 @@ jest.mock('@/lib/providers/auth', () => ({ getAuthProvider: jest.fn() }));
 jest.mock('@/lib/prisma', () => ({
   prisma: {
     announcement: {
+      findMany: jest.fn(),
       findUnique: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
@@ -129,5 +130,44 @@ describe('POST /api/admin/announcements', () => {
 
     expect((await post(body)).status).toBe(400);
     expectNoWriteOrRevalidate();
+  });
+});
+
+describe('GET /api/admin/announcements', () => {
+  const get = (query = '') =>
+    GET(new NextRequest(`http://localhost/api/admin/announcements${query}`));
+
+  it('returns 401 when signed out', async () => {
+    getCurrentUser.mockResolvedValue(null);
+
+    expect((await get()).status).toBe(401);
+  });
+
+  it('returns 403 for a customer', async () => {
+    signIn('customer');
+
+    expect((await get()).status).toBe(403);
+  });
+
+  it('passes the cursor to the query and returns the page', async () => {
+    signIn('admin', null);
+    jest.mocked(prisma.announcement.findMany).mockResolvedValue([
+      { id: 'a1', siteId: null, site: null },
+      { id: 'a2', siteId: null, site: null },
+    ] as never);
+
+    const response = await get('?cursor=a0');
+
+    expect(jest.mocked(prisma.announcement.findMany).mock.calls[0][0]).toMatchObject({
+      cursor: { id: 'a0' },
+      skip: 1,
+    });
+    expect(await response.json()).toEqual({
+      items: [
+        { id: 'a1', siteId: null, siteName: null },
+        { id: 'a2', siteId: null, siteName: null },
+      ],
+      nextCursor: null,
+    });
   });
 });

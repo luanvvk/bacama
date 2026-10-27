@@ -80,7 +80,7 @@ describe('admin page guards', () => {
   it('limits announcements to staff and admin', async () => {
     jest.mocked(requireRoles).mockResolvedValue({ role: 'admin', homeSiteId: null } as never);
     (getSites as jest.Mock).mockResolvedValue([]);
-    (getAdminAnnouncements as jest.Mock).mockResolvedValue([]);
+    (getAdminAnnouncements as jest.Mock).mockResolvedValue({ items: [], nextCursor: null });
 
     await AdminAnnouncementsPage();
 
@@ -115,7 +115,7 @@ describe('admin page guards', () => {
   });
 
   it('limits staff to admin', async () => {
-    (getAdminStaff as jest.Mock).mockResolvedValue([]);
+    (getAdminStaff as jest.Mock).mockResolvedValue({ items: [], nextCursor: null });
 
     await AdminStaffPage();
 
