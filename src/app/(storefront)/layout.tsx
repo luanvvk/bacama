@@ -6,6 +6,7 @@ import { getAuthProvider } from '@/lib/providers/auth';
 import { getBakeryItems } from '@/services/catalog/get-bakery-items';
 import { getFeaturedProducts } from '@/services/catalog/get-featured-products';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { CartHydrator } from '@/components/layout/CartHydrator';
 import { Header } from '@/components/layout/Header';
 
 const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -29,6 +30,7 @@ const StorefrontLayout = async ({ children }: { children: React.ReactNode }) => 
       <Header navItems={navItems} role={user?.role ?? null} />
       {children}
       <CartDrawer />
+      <CartHydrator />
     </>
   );
 };

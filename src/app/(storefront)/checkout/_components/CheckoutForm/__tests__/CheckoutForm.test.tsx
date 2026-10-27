@@ -118,6 +118,11 @@ const fillShippingFields = async (user: ReturnType<typeof userEvent.setup>) => {
   await user.type(screen.getByLabelText('Address'), '27 Ngô Quyền, Hải Châu, Đà Nẵng');
 };
 
+beforeAll(async () => {
+  // The store skips automatic hydration; <CartHydrator /> does this in the app.
+  await useCartStore.persist.rehydrate();
+});
+
 beforeEach(() => {
   useCartStore.setState({ items: [{ ...DALAT_WASHED, quantity: 1 }], isOpen: false });
   useCheckoutStore.setState({ order: null });

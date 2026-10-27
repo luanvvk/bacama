@@ -72,15 +72,20 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'bacama-cart-v1',
+      version: 1,
+      partialize: (state) => ({ items: state.items }),
+      // Rehydrated from <CartHydrator /> after mount, not at module load.
+      skipHydration: true,
       merge: (persisted, current) => ({
         ...current,
-        items: ((persisted as Pick<CartState, 'items'>)?.items ?? []).map((item) => ({
+        items: (Array.isArray((persisted as Pick<CartState, 'items'>)?.items)
+          ? (persisted as Pick<CartState, 'items'>).items
+          : []
+        ).map((item) => ({
           ...item,
           quantity: clampQuantity(item.quantity),
         })),
       }),
-      version: 1,
-      partialize: (state) => ({ items: state.items }),
     },
   ),
 );
