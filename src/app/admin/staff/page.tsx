@@ -5,9 +5,9 @@ import { StaffDirectory } from './_components/StaffDirectory';
 
 const AdminStaffPage = async () => {
   await requireRoles(['admin']);
-  const staff = await getAdminStaff();
+  const { items, nextCursor } = await getAdminStaff();
 
-  return <StaffDirectory staff={staff} />;
+  return <StaffDirectory staff={items} nextCursor={nextCursor} />;
 };
 
 export default AdminStaffPage;

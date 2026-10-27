@@ -1,5 +1,6 @@
 import type { AuthUser } from '@/lib/providers/auth/types';
 import { prisma } from '@/lib/prisma';
+import { pageArgs, toPage, type Page, type PageParams } from '@/services/paging';
 
 export interface AdminAnnouncement {
   id: string;
@@ -16,18 +17,26 @@ export interface AdminAnnouncement {
 }
 
 // Staff see their own site's announcements plus the all-sites ones (read-only for them).
-export const getAdminAnnouncements = async (user: AuthUser): Promise<AdminAnnouncement[]> => {
+export const getAdminAnnouncements = async (
+  user: AuthUser,
+  params: PageParams = {},
+): Promise<Page<AdminAnnouncement>> => {
   const where =
     user.role === 'admin' ? {} : { OR: [{ siteId: user.homeSiteId ?? '' }, { siteId: null }] };
 
-  const announcements = await prisma.announcement.findMany({
+  const rows = await prisma.announcement.findMany({
     where,
     include: { site: { select: { nameEn: true } } },
-    orderBy: { startsAt: 'desc' },
+    orderBy: [{ startsAt: 'desc' }, { id: 'asc' }],
+    ...pageArgs(params),
   });
+  const { items, nextCursor } = toPage(rows, params);
 
-  return announcements.map(({ site, createdAt: _createdAt, updatedAt: _updatedAt, ...rest }) => ({
-    ...rest,
-    siteName: site?.nameEn ?? null,
-  }));
+  return {
+    nextCursor,
+    items: items.map(({ site, createdAt: _createdAt, updatedAt: _updatedAt, ...rest }) => ({
+      ...rest,
+      siteName: site?.nameEn ?? null,
+    })),
+  };
 };

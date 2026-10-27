@@ -1267,6 +1267,8 @@
       "searchLabel": "Search staff",
       "empty": "No staff found.",
       "noSite": "All sites",
+      "loadMore": "Load more",
+      "loadMoreFailed": "Could not load more.",
       "columns": {
         "name": "Name",
         "role": "Role",
@@ -1326,6 +1328,8 @@
       "deleted": "Announcement deleted.",
       "saveFailed": "Could not save the announcement. Try again.",
       "deleteFailed": "Could not delete the announcement. Try again.",
+      "loadMore": "Load more",
+      "loadMoreFailed": "Could not load more.",
       "forbidden": "You cannot change announcements for this site.",
       "notFound": "This announcement no longer exists."
     },

@@ -15,7 +15,7 @@ const AdminAnnouncementsPage = async () => {
     return <Text variant="muted">{t('noSite')}</Text>;
   }
 
-  const [announcements, sites] = await Promise.all([
+  const [{ items: announcements, nextCursor }, sites] = await Promise.all([
     getAdminAnnouncements(user),
     user.role === 'admin' ? getSites('en') : Promise.resolve(null),
   ]);
@@ -23,6 +23,7 @@ const AdminAnnouncementsPage = async () => {
   return (
     <AnnouncementsManager
       announcements={announcements}
+      nextCursor={nextCursor}
       siteOptions={sites?.map((site) => ({ value: site.id, label: site.name }))}
       defaultSiteId={user.homeSiteId}
       canManageAllSites={user.role === 'admin'}
