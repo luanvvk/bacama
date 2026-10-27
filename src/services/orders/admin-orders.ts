@@ -1,3 +1,4 @@
+import { getVietnamDayRange } from '@/lib/vietnam-day';
 import { prisma } from '@/lib/prisma';
 import type { Prisma } from '@/generated/prisma/client';
 import type { AuthUser } from '@/lib/providers/auth/types';
@@ -25,7 +26,7 @@ export class AdminOrderConflictError extends Error {
  * their site or containing that site's bakery/menu items, plus online-only
  * orders (coffee, courses) that are not tied to any site. Admins see all.
  */
-const siteWhere = (user: AuthUser): Prisma.OrderWhereInput => {
+export const siteWhere = (user: AuthUser): Prisma.OrderWhereInput => {
   if (user.role === 'admin') return {};
   if (!user.homeSiteId) return { id: { in: [] } };
 
@@ -173,4 +174,30 @@ export const markCodCollected = async (user: AuthUser, ref: string): Promise<voi
     data: { status: 'completed', paidAt: now, acknowledgedAt: order.acknowledgedAt ?? now },
   });
   if (count === 0) throw new AdminOrderConflictError('Order is not awaiting COD');
+};
+
+const todaySelect = {
+  ref: true,
+  customerName: true,
+  paymentProvider: true,
+  totalVnd: true,
+  status: true,
+  acknowledgedAt: true,
+  items: { select: { nameSnapshot: true, quantity: true } },
+} satisfies Prisma.OrderSelect;
+
+export type AdminTodayOrder = Prisma.OrderGetPayload<{ select: typeof todaySelect }>;
+
+/** Orders created today (Asia/Ho_Chi_Minh), newest first, scoped to the user's site. */
+export const listTodaysOrders = async (
+  user: AuthUser,
+  now = new Date(),
+): Promise<AdminTodayOrder[]> => {
+  const { start, end } = getVietnamDayRange(now);
+
+  return prisma.order.findMany({
+    where: { AND: [siteWhere(user), { createdAt: { gte: start, lt: end } }] },
+    select: todaySelect,
+    orderBy: { createdAt: 'desc' },
+  });
 };

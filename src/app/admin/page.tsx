@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { requireRoles } from '@/lib/auth/guards';
+import { listTodaysOrders } from '@/services/orders/admin-orders';
 import { getAdminKpis } from '@/services/orders/get-admin-kpis';
 import { getAdminAnnouncements } from '@/services/sites/get-admin-announcements';
 
@@ -32,7 +33,7 @@ const AdminOverviewPage = async () => {
     timeZone: 'Asia/Ho_Chi_Minh',
   }).format(new Date());
   const announcements = showAnnouncements ? (await getAdminAnnouncements(user)).slice(0, 3) : null;
-  const products = await getAdminProducts();
+  const [products, todaysOrders] = await Promise.all([getAdminProducts(), listTodaysOrders(user)]);
 
   return (
     <div>
@@ -53,7 +54,7 @@ const AdminOverviewPage = async () => {
       {kpis && <KpiTiles kpis={kpis} />}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-        <TodaysOrdersTable />
+        <TodaysOrdersTable orders={todaysOrders} />
         <div className="flex flex-col gap-6">
           <StockPanel products={products} />
           {announcements && <AnnouncementsPanel announcements={announcements} />}
