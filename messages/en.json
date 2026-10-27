@@ -386,6 +386,9 @@
     "trackOrder": "Check order status"
   },
   "OrderConfirmation": {
+    "receivedTitle": "Order received",
+    "receivedBody": "Details are shown only on the device that placed the order. Use order tracking with your phone number to check progress.",
+    "receivedRef": "Order ref · {ref}",
     "thankYou": "Thank you, {name}.",
     "codPickupMsg": "We've received your order. Have the total ready when you collect it.",
     "codDeliveryMsg": "We've received your order. Have the total ready for the courier on delivery.",

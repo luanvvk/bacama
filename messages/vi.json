@@ -382,6 +382,9 @@
     "trackOrder": "Xem trạng thái đơn hàng"
   },
   "OrderConfirmation": {
+    "receivedTitle": "Đã nhận đơn hàng",
+    "receivedBody": "Chi tiết chỉ hiển thị trên thiết bị đã đặt đơn. Hãy dùng trang theo dõi đơn hàng với số điện thoại của bạn để xem tiến trình.",
+    "receivedRef": "Mã đơn · {ref}",
     "thankYou": "Cảm ơn {name}.",
     "codPickupMsg": "Chúng tôi đã nhận đơn của bạn. Vui lòng chuẩn bị đủ tiền khi đến nhận.",
     "codDeliveryMsg": "Chúng tôi đã nhận đơn của bạn. Vui lòng chuẩn bị đủ tiền cho người giao hàng.",

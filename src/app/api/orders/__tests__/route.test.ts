@@ -30,6 +30,10 @@ const post = (body: unknown) =>
     new NextRequest('http://localhost/api/orders', { method: 'POST', body: JSON.stringify(body) }),
   );
 
+beforeAll(() => {
+  process.env.CLERK_SECRET_KEY = 'test-secret';
+});
+
 beforeEach(() => {
   jest.mocked(getAuthProvider).mockReturnValue({ getCurrentUser } as never);
   create.mockResolvedValue({ id: 'o1', ref: 'BCM-1' });
@@ -76,5 +80,15 @@ describe('POST /api/orders body bounds', () => {
     ];
     for (const body of big) expect((await post(body)).status).toBe(400);
     expect(create).not.toHaveBeenCalled();
+  });
+});
+
+describe('POST /api/orders access cookie', () => {
+  it('sets an httpOnly signed cookie scoped to the order ref', async () => {
+    getCurrentUser.mockResolvedValue(null);
+    const response = await post(VALID);
+    const cookie = response.cookies.get('bcm_oa_BCM-1');
+    expect(cookie).toMatchObject({ httpOnly: true, path: '/checkout' });
+    expect(cookie?.value).toMatch(/^[0-9a-f]{64}$/);
   });
 });

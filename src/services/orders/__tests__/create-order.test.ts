@@ -281,6 +281,6 @@ describe('createOrder', () => {
 
     const result = await createOrder({ ...BASE_INPUT, items: [{ id: 'p1', quantity: 1 }] });
 
-    expect(result).toEqual({ id: 'order-1', ref: expect.stringMatching(/^BCM-[0-9A-F]{8}$/) });
+    expect(result).toEqual({ id: 'order-1', ref: expect.stringMatching(/^BCM-[0-9A-F]{16}$/) });
   });
 });
