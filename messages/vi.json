@@ -238,7 +238,9 @@
     "enrolPending": "Đăng ký của bạn đã được lưu.",
     "alreadyEnrolled": "Bạn đã đăng ký khóa học này rồi.",
     "sessionJustFilled": "Buổi học này vừa hết chỗ — vui lòng chọn buổi khác.",
-    "enrolFailed": "Chưa thể đăng ký. Vui lòng thử lại."
+    "enrolFailed": "Chưa thể đăng ký. Vui lòng thử lại.",
+    "continueLearning": "Tiếp tục học",
+    "lessonLocked": "Bài học này dành cho học viên đã đăng ký. Hãy đăng ký bên dưới để mở khóa toàn bộ khóa học."
   },
   "Learn": {
     "breadcrumbHome": "Trang chủ",
@@ -261,7 +263,14 @@
     "lessonCount": "{count} bài học",
     "discussionTitle": "Thảo luận",
     "logInToJoin": "Đăng nhập để tham gia thảo luận",
-    "teacherRoleLabel": "Giáo viên"
+    "teacherRoleLabel": "Giáo viên",
+    "videoComingSoon": "Video sắp ra mắt.",
+    "lessonNavLabel": "Chuyển bài học",
+    "previousLesson": "Bài trước",
+    "nextLesson": "Bài sau",
+    "lessonLocked": "Đã khóa",
+    "lessonCompleted": "Đã hoàn thành",
+    "lessonNumber": "Bài {number}"
   },
   "StaticPageShell": {
     "asideEyebrow": "Bacama · Đà Nẵng",

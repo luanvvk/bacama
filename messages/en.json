@@ -242,7 +242,9 @@
     "enrolPending": "Your enrolment is saved.",
     "alreadyEnrolled": "You're already enrolled in this course.",
     "sessionJustFilled": "That session just filled up — please choose another.",
-    "enrolFailed": "We couldn't enrol you. Please try again."
+    "enrolFailed": "We couldn't enrol you. Please try again.",
+    "continueLearning": "Continue learning",
+    "lessonLocked": "That lesson is for enrolled students. Enrol below to unlock the whole course."
   },
   "Learn": {
     "breadcrumbHome": "Home",
@@ -265,7 +267,14 @@
     "lessonCount": "{count, plural, one {# lesson} other {# lessons}}",
     "discussionTitle": "Discussion",
     "logInToJoin": "Log in to join the discussion",
-    "teacherRoleLabel": "Teacher"
+    "teacherRoleLabel": "Teacher",
+    "videoComingSoon": "Video coming soon.",
+    "lessonNavLabel": "Lesson navigation",
+    "previousLesson": "Previous",
+    "nextLesson": "Next",
+    "lessonLocked": "Locked",
+    "lessonCompleted": "Completed",
+    "lessonNumber": "Lesson {number}"
   },
   "StaticPageShell": {
     "asideEyebrow": "Bacama · Đà Nẵng",

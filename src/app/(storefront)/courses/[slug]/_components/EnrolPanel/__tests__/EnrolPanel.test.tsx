@@ -23,6 +23,7 @@ const MESSAGES: Record<string, string> = {
   sessionJustFilled: 'Session just filled.',
   enrolFailed: 'Enrolment failed.',
   soldOut: 'Sold out',
+  continueLearning: 'Continue learning',
 };
 
 jest.mock('next-intl', () => ({
@@ -171,5 +172,18 @@ describe('EnrolPanel', () => {
     );
 
     expect(screen.getByRole('button', { name: 'Sold out' })).toBeDisabled();
+  });
+});
+
+describe('EnrolPanel for an enrolled viewer', () => {
+  it('shows Continue learning instead of the enrol controls', () => {
+    signedIn = true;
+    render(<EnrolPanel course={course} continueHref="/learn/latte-art/lesson-1" />);
+
+    expect(screen.getByRole('link', { name: 'Continue learning' })).toHaveAttribute(
+      'href',
+      '/learn/latte-art/lesson-1',
+    );
+    expect(screen.queryByRole('button', { name: 'Enrol' })).not.toBeInTheDocument();
   });
 });

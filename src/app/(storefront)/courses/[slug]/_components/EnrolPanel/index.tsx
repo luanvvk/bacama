@@ -13,13 +13,15 @@ import { PriceTag } from '@/components/shop/PriceTag';
 
 export interface EnrolPanelProps {
   course: CourseDetail;
+  /** Set when the viewer is already enrolled; replaces the enrol controls. */
+  continueHref?: string;
 }
 
 type EnrolOutcome =
   | { kind: 'held'; holdExpiresAt: string }
   | { kind: 'active' | 'pending' | 'already-enrolled' | 'session-full' | 'failed' };
 
-export const EnrolPanel = ({ course }: EnrolPanelProps) => {
+export const EnrolPanel = ({ course, continueHref }: EnrolPanelProps) => {
   const t = useTranslations('CourseDetail');
   const format = useFormatter();
   const router = useRouter();
@@ -111,58 +113,66 @@ export const EnrolPanel = ({ course }: EnrolPanelProps) => {
         <PriceTag priceVnd={course.priceVnd} className="text-3xl" />
       </div>
 
-      <Show when="signed-out">
+      {continueHref ? (
         <Button asChild size="lg" className="w-full">
-          <Link href="/login">{t('loginToEnrol')}</Link>
+          <Link href={continueHref}>{t('continueLearning')}</Link>
         </Button>
-      </Show>
-      <Show when="signed-in">
-        {needsSession && course.sessions.length > 0 && (
-          <fieldset className="mb-4 space-y-2">
-            <legend className="mb-2 text-sm font-medium">{t('chooseSession')}</legend>
-            {course.sessions.map((session) => (
-              <label
-                key={session.id}
-                className="flex items-center gap-2 text-sm has-disabled:opacity-50"
-              >
-                <input
-                  type="radio"
-                  name="session"
-                  value={session.id}
-                  checked={sessionId === session.id}
-                  disabled={session.seatsLeft === 0}
-                  onChange={() => setSessionId(session.id)}
-                />
-                <span>
-                  {session.startsAt} · {session.siteName}
-                  {session.seatsLeft === 0 && ` · ${t('sessionFull')}`}
-                </span>
-              </label>
-            ))}
-          </fieldset>
-        )}
-        <Button
-          type="button"
-          size="lg"
-          className="w-full"
-          disabled={
-            isSoldOut ||
-            isSubmitting ||
-            (outcome !== undefined &&
-              outcome.kind !== 'failed' &&
-              outcome.kind !== 'session-full') ||
-            (needsSession && !sessionId)
-          }
-          onClick={enrol}
-        >
-          {isSoldOut ? t('soldOut') : ctaLabel}
-        </Button>
-        {outcome && (
-          <p role="status" className="mt-3 text-sm">
-            {outcomeMessage(outcome)}
-          </p>
-        )}
-      </Show>
+      ) : (
+        <>
+          <Show when="signed-out">
+            <Button asChild size="lg" className="w-full">
+              <Link href="/login">{t('loginToEnrol')}</Link>
+            </Button>
+          </Show>
+          <Show when="signed-in">
+            {needsSession && course.sessions.length > 0 && (
+              <fieldset className="mb-4 space-y-2">
+                <legend className="mb-2 text-sm font-medium">{t('chooseSession')}</legend>
+                {course.sessions.map((session) => (
+                  <label
+                    key={session.id}
+                    className="flex items-center gap-2 text-sm has-disabled:opacity-50"
+                  >
+                    <input
+                      type="radio"
+                      name="session"
+                      value={session.id}
+                      checked={sessionId === session.id}
+                      disabled={session.seatsLeft === 0}
+                      onChange={() => setSessionId(session.id)}
+                    />
+                    <span>
+                      {session.startsAt} · {session.siteName}
+                      {session.seatsLeft === 0 && ` · ${t('sessionFull')}`}
+                    </span>
+                  </label>
+                ))}
+              </fieldset>
+            )}
+            <Button
+              type="button"
+              size="lg"
+              className="w-full"
+              disabled={
+                isSoldOut ||
+                isSubmitting ||
+                (outcome !== undefined &&
+                  outcome.kind !== 'failed' &&
+                  outcome.kind !== 'session-full') ||
+                (needsSession && !sessionId)
+              }
+              onClick={enrol}
+            >
+              {isSoldOut ? t('soldOut') : ctaLabel}
+            </Button>
+            {outcome && (
+              <p role="status" className="mt-3 text-sm">
+                {outcomeMessage(outcome)}
+              </p>
+            )}
+          </Show>
+        </>
+      )}
     </div>
   );
 };
