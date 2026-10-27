@@ -54,7 +54,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
     heading: 'People',
     items: [
       { label: 'Staff', icon: Users, href: '/admin/staff' },
-      { label: 'Students', icon: UserRound, href: '/admin/students', count: 84 },
+      { label: 'Students', icon: UserRound, href: '/admin/students' },
     ],
   },
 ];
