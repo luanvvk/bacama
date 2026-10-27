@@ -516,3 +516,12 @@ model Certificate {
   issuedAt     DateTime   @default(now())
   pdfUrl       String?
 }
+
+// Database-backed rate limiter (src/lib/rate-limit.ts): one row per counted hit.
+model RateLimitHit {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}
