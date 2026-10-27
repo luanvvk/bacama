@@ -226,6 +226,7 @@ model Order {
   paymentProvider PaymentMethod?
   providerRef     String?        @unique
   paidAt          DateTime?
+  acknowledgedAt  DateTime?
   addressCountry  String         @default("VN")
 
   createdAt DateTime @default(now())
