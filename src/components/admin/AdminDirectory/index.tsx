@@ -8,8 +8,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Table,
   TableBody,
@@ -36,13 +34,6 @@ const SCREEN_COPY: Record<
     action: 'New course',
   },
 };
-
-const statusVariant = (status: string) =>
-  status === 'Active' || status === 'Certified' || status === 'Live'
-    ? 'success'
-    : status === 'Pending' || status === 'Awaiting start' || status === 'Scheduled'
-      ? 'warning'
-      : 'outline';
 
 export const AdminDirectory = ({ kind }: { kind: DirectoryKind }) => {
   const copy = SCREEN_COPY[kind];

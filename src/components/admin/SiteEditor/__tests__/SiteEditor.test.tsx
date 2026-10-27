@@ -16,7 +16,6 @@ jest.mock('next/navigation', () => ({ useRouter: () => ({ push, refresh }) }));
 const SITE: AdminSite = {
   id: 'site-1',
   slug: 'ngo-quyen',
-  city: 'Da Nang',
   nameVi: 'Ngô Quyền',
   nameEn: 'Ngo Quyen',
   addressVi: '27 Ngô Quyền',

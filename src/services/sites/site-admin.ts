@@ -4,7 +4,6 @@ import type { SiteValues } from '@/lib/schemas/site';
 export interface AdminSite {
   id: string;
   slug: string;
-  city: string;
   nameVi: string;
   nameEn: string;
   addressVi: string;
@@ -23,7 +22,6 @@ export interface RoastProductOption {
 const ADMIN_SITE_SELECT = {
   id: true,
   slug: true,
-  city: true,
   nameVi: true,
   nameEn: true,
   addressVi: true,
