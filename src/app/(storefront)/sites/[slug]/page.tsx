@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Container } from '@/components/layout/Container';
@@ -27,18 +29,19 @@ import { SiteMap } from './_components/SiteMap';
 export const revalidate = 3600;
 
 export const generateStaticParams = async () => {
-  const sites = await getSites();
+  const sites = await getSites('en');
 
   return sites.map((site) => ({ slug: site.slug }));
 };
 
 const SitePage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const [t, site] = await Promise.all([getTranslations('Site'), getSiteBySlug(slug)]);
+  const locale = toAppLocale(await getLocale());
+  const [t, site] = await Promise.all([getTranslations('Site'), getSiteBySlug(slug, locale)]);
 
   if (!site) notFound();
 
-  const announcements = await getActiveAnnouncements(slug);
+  const announcements = await getActiveAnnouncements(locale, slug);
   const hours = site.hoursTimes ? `${site.hoursDays} · ${site.hoursTimes}` : site.hoursDays;
   // Only a site that actually stocks something gets a map. The other two seeded
   // sites are roadmap placeholders with invented addresses (BUILD-PLAN.md D11) —

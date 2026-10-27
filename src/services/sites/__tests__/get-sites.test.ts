@@ -16,7 +16,7 @@ describe('getSites', () => {
   it('queries active sites in opening order', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getSites();
+    await getSites('en');
 
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -42,7 +42,7 @@ describe('getSites', () => {
       },
     ]);
 
-    const result = await getSites();
+    const result = await getSites('en');
 
     expect(result).toEqual([
       expect.objectContaining({ slug: 'ly-tu-trong', name: 'Ly Tu Trong', comingSoon: false }),

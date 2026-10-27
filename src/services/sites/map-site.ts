@@ -1,7 +1,9 @@
 import type { Prisma } from '@/generated/prisma/client';
 
+import { pickLocalized, type AppLocale } from '@/lib/localize';
+
 export const SITE_INCLUDE = {
-  todaysRoastProduct: { select: { slug: true, nameEn: true } },
+  todaysRoastProduct: { select: { slug: true, nameVi: true, nameEn: true } },
   _count: { select: { menuItems: true, bakeryItems: true } },
 } satisfies Prisma.SiteInclude;
 
@@ -46,15 +48,15 @@ const splitAside = (value: string) => {
   return { head, aside: aside || undefined };
 };
 
-export const mapSite = (site: DatabaseSite, now = new Date()): Site => {
-  const address = splitAside(site.addressEn);
-  const hours = splitAside(site.hoursEn);
+export const mapSite = (site: DatabaseSite, locale: AppLocale, now = new Date()): Site => {
+  const address = splitAside(pickLocalized(locale, site.addressVi, site.addressEn));
+  const hours = splitAside(pickLocalized(locale, site.hoursVi, site.hoursEn));
 
   return {
     id: site.id,
     slug: site.slug,
     city: site.city,
-    name: site.nameEn,
+    name: pickLocalized(locale, site.nameVi, site.nameEn),
     address: address.head,
     addressNote: address.aside,
     hoursDays: hours.head,
@@ -65,7 +67,14 @@ export const mapSite = (site: DatabaseSite, now = new Date()): Site => {
     servesMenu: site._count.menuItems > 0,
     servesBakery: site._count.bakeryItems > 0,
     todaysRoast: site.todaysRoastProduct
-      ? { slug: site.todaysRoastProduct.slug, name: site.todaysRoastProduct.nameEn }
+      ? {
+          slug: site.todaysRoastProduct.slug,
+          name: pickLocalized(
+            locale,
+            site.todaysRoastProduct.nameVi,
+            site.todaysRoastProduct.nameEn,
+          ),
+        }
       : undefined,
   };
 };

@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
@@ -9,7 +11,8 @@ export const revalidate = 3600;
 
 /** The free preview lives at its own lesson URL; this route just points there. */
 const LearnPage = async () => {
-  const preview = await getPreviewCourse();
+  const locale = toAppLocale(await getLocale());
+  const preview = await getPreviewCourse(locale);
 
   if (preview) redirect(`/learn/${preview.course.slug}/${preview.lesson.id}`);
 

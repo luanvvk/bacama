@@ -24,7 +24,7 @@ const courseRow = {
 
 describe('mapCourse', () => {
   it('maps the English copy and derives the enrol CTA', () => {
-    expect(mapCourse(courseRow)).toEqual({
+    expect(mapCourse(courseRow, 'en')).toEqual({
       id: 'course-1',
       slug: 'latte-art',
       name: 'Latte Art',
@@ -40,7 +40,7 @@ describe('mapCourse', () => {
   });
 
   it('hyphenates the in_person format and books a seat instead', () => {
-    const result = mapCourse({ ...courseRow, format: 'in_person' });
+    const result = mapCourse({ ...courseRow, format: 'in_person' }, 'en');
 
     expect(result).toMatchObject({
       format: 'in-person',
@@ -50,13 +50,16 @@ describe('mapCourse', () => {
   });
 
   it('treats a hybrid course as seat-limited but still enrollable', () => {
-    const result = mapCourse({ ...courseRow, format: 'hybrid' });
+    const result = mapCourse({ ...courseRow, format: 'hybrid' }, 'en');
 
     expect(result).toMatchObject({ format: 'hybrid', seatLimited: true, ctaLabel: 'Enrol' });
   });
 
   it('drops absent optional copy rather than passing null through', () => {
-    const result = mapCourse({ ...courseRow, metaEn: null, availabilityEn: null, imageUrl: null });
+    const result = mapCourse(
+      { ...courseRow, metaEn: null, availabilityEn: null, imageUrl: null },
+      'en',
+    );
 
     expect(result.meta).toBeUndefined();
     expect(result.availability).toBeUndefined();
@@ -80,27 +83,30 @@ describe('mapCourseWithOutline', () => {
   };
 
   it('numbers lessons continuously across modules', () => {
-    const result = mapCourseWithOutline({
-      ...courseRow,
-      modules: [
-        {
-          id: 'module-1',
-          courseId: 'course-1',
-          titleVi: 'A',
-          titleEn: 'Module 1',
-          order: 0,
-          lessons: [lesson, { ...lesson, id: 'lesson-2' }],
-        },
-        {
-          id: 'module-2',
-          courseId: 'course-1',
-          titleVi: 'B',
-          titleEn: 'Module 2',
-          order: 1,
-          lessons: [{ ...lesson, id: 'lesson-3' }],
-        },
-      ],
-    });
+    const result = mapCourseWithOutline(
+      {
+        ...courseRow,
+        modules: [
+          {
+            id: 'module-1',
+            courseId: 'course-1',
+            titleVi: 'A',
+            titleEn: 'Module 1',
+            order: 0,
+            lessons: [lesson, { ...lesson, id: 'lesson-2' }],
+          },
+          {
+            id: 'module-2',
+            courseId: 'course-1',
+            titleVi: 'B',
+            titleEn: 'Module 2',
+            order: 1,
+            lessons: [{ ...lesson, id: 'lesson-3' }],
+          },
+        ],
+      },
+      'en',
+    );
 
     expect(result.modules.flatMap((m) => m.lessons).map((l) => l.number)).toEqual([
       '01',
@@ -110,52 +116,58 @@ describe('mapCourseWithOutline', () => {
   });
 
   it('formats the duration and leaves it out when there is no video', () => {
-    const result = mapCourseWithOutline({
-      ...courseRow,
-      modules: [
-        {
-          id: 'module-1',
-          courseId: 'course-1',
-          titleVi: 'A',
-          titleEn: 'Module 1',
-          order: 0,
-          lessons: [lesson, { ...lesson, id: 'lesson-2', durationSec: null }],
-        },
-      ],
-    });
+    const result = mapCourseWithOutline(
+      {
+        ...courseRow,
+        modules: [
+          {
+            id: 'module-1',
+            courseId: 'course-1',
+            titleVi: 'A',
+            titleEn: 'Module 1',
+            order: 0,
+            lessons: [lesson, { ...lesson, id: 'lesson-2', durationSec: null }],
+          },
+        ],
+      },
+      'en',
+    );
 
     expect(result.modules[0].lessons[0].duration).toBe('12:40');
     expect(result.modules[0].lessons[1].duration).toBeUndefined();
   });
 
   it('exposes attachment names without leaking their urls', () => {
-    const result = mapCourseWithOutline({
-      ...courseRow,
-      modules: [
-        {
-          id: 'module-1',
-          courseId: 'course-1',
-          titleVi: 'A',
-          titleEn: 'Module 1',
-          order: 0,
-          lessons: [
-            {
-              ...lesson,
-              attachments: [
-                {
-                  id: 'file-1',
-                  lessonId: 'lesson-1',
-                  name: 'Milk ratio chart',
-                  url: 'https://example.test/secret.pdf',
-                  size: 'PDF · 240 KB',
-                  createdAt: new Date('2026-01-01'),
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
+    const result = mapCourseWithOutline(
+      {
+        ...courseRow,
+        modules: [
+          {
+            id: 'module-1',
+            courseId: 'course-1',
+            titleVi: 'A',
+            titleEn: 'Module 1',
+            order: 0,
+            lessons: [
+              {
+                ...lesson,
+                attachments: [
+                  {
+                    id: 'file-1',
+                    lessonId: 'lesson-1',
+                    name: 'Milk ratio chart',
+                    url: 'https://example.test/secret.pdf',
+                    size: 'PDF · 240 KB',
+                    createdAt: new Date('2026-01-01'),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      'en',
+    );
 
     expect(result.modules[0].lessons[0].documents).toEqual([
       { id: 'file-1', name: 'Milk ratio chart', size: 'PDF · 240 KB' },
@@ -171,65 +183,68 @@ describe('formatSessionDate', () => {
 
 describe('mapCourseDetail', () => {
   it('computes seats left and never lets it go negative', () => {
-    const result = mapCourseDetail({
-      ...courseRow,
-      format: 'in_person',
-      modules: [],
-      sessions: [
-        {
-          id: 'session-1',
-          courseId: 'course-1',
-          siteId: 'site-1',
-          startsAt: new Date('2026-09-14T02:00:00.000Z'),
-          capacity: 8,
-          seatsBooked: 5,
-          site: {
-            id: 'site-1',
-            slug: 'hoi-an',
-            city: 'Hoi An',
-            nameVi: 'Hội An',
-            nameEn: 'Hoi An',
-            addressVi: '',
-            addressEn: '',
-            hoursVi: '',
-            hoursEn: '',
-            timezone: 'Asia/Ho_Chi_Minh',
-            imageUrl: null,
-            opensAt: null,
-            isActive: true,
-            createdAt: new Date('2026-01-01'),
-            updatedAt: new Date('2026-01-01'),
-            todaysRoastProductId: null,
+    const result = mapCourseDetail(
+      {
+        ...courseRow,
+        format: 'in_person',
+        modules: [],
+        sessions: [
+          {
+            id: 'session-1',
+            courseId: 'course-1',
+            siteId: 'site-1',
+            startsAt: new Date('2026-09-14T02:00:00.000Z'),
+            capacity: 8,
+            seatsBooked: 5,
+            site: {
+              id: 'site-1',
+              slug: 'hoi-an',
+              city: 'Hoi An',
+              nameVi: 'Hội An',
+              nameEn: 'Hoi An',
+              addressVi: '',
+              addressEn: '',
+              hoursVi: '',
+              hoursEn: '',
+              timezone: 'Asia/Ho_Chi_Minh',
+              imageUrl: null,
+              opensAt: null,
+              isActive: true,
+              createdAt: new Date('2026-01-01'),
+              updatedAt: new Date('2026-01-01'),
+              todaysRoastProductId: null,
+            },
           },
-        },
-        {
-          id: 'session-2',
-          courseId: 'course-1',
-          siteId: 'site-1',
-          startsAt: new Date('2026-09-21T02:00:00.000Z'),
-          capacity: 8,
-          seatsBooked: 9,
-          site: {
-            id: 'site-1',
-            slug: 'hoi-an',
-            city: 'Hoi An',
-            nameVi: 'Hội An',
-            nameEn: 'Hoi An',
-            addressVi: '',
-            addressEn: '',
-            hoursVi: '',
-            hoursEn: '',
-            timezone: 'Asia/Ho_Chi_Minh',
-            imageUrl: null,
-            opensAt: null,
-            isActive: true,
-            createdAt: new Date('2026-01-01'),
-            updatedAt: new Date('2026-01-01'),
-            todaysRoastProductId: null,
+          {
+            id: 'session-2',
+            courseId: 'course-1',
+            siteId: 'site-1',
+            startsAt: new Date('2026-09-21T02:00:00.000Z'),
+            capacity: 8,
+            seatsBooked: 9,
+            site: {
+              id: 'site-1',
+              slug: 'hoi-an',
+              city: 'Hoi An',
+              nameVi: 'Hội An',
+              nameEn: 'Hoi An',
+              addressVi: '',
+              addressEn: '',
+              hoursVi: '',
+              hoursEn: '',
+              timezone: 'Asia/Ho_Chi_Minh',
+              imageUrl: null,
+              opensAt: null,
+              isActive: true,
+              createdAt: new Date('2026-01-01'),
+              updatedAt: new Date('2026-01-01'),
+              todaysRoastProductId: null,
+            },
           },
-        },
-      ],
-    });
+        ],
+      },
+      'en',
+    );
 
     expect(result.sessions).toEqual([
       {
@@ -249,5 +264,65 @@ describe('mapCourseDetail', () => {
         seatsLeft: 0,
       },
     ]);
+  });
+});
+
+describe('mapCourse locale', () => {
+  it('returns Vi fields on vi', () => {
+    expect(mapCourse(courseRow, 'vi')).toMatchObject({
+      meta: '9 bài',
+      description: 'Video kèm bình luận',
+      availability: 'Học thử miễn phí',
+    });
+  });
+
+  it('falls back to En only when the Vi value is empty', () => {
+    const result = mapCourse(
+      { ...courseRow, titleVi: 'Pha latte', metaVi: '', descriptionVi: '' },
+      'vi',
+    );
+
+    expect(result.name).toBe('Pha latte');
+    expect(result.meta).toBe('9 lessons');
+    expect(result.description).toBe('Video lessons with live discussion');
+  });
+
+  it('returns modules and lessons in Vi on vi', () => {
+    const result = mapCourseWithOutline(
+      {
+        ...courseRow,
+        modules: [
+          {
+            id: 'module-1',
+            courseId: 'course-1',
+            titleVi: 'Nền tảng',
+            titleEn: 'Foundations',
+            order: 0,
+            lessons: [
+              {
+                id: 'lesson-1',
+                moduleId: 'module-1',
+                titleVi: 'Sữa và microfoam',
+                titleEn: 'Milk and microfoam',
+                bodyVi: 'Nội dung',
+                bodyEn: 'Body',
+                order: 0,
+                videoId: null,
+                durationSec: null,
+                isFreePreview: false,
+                attachments: [],
+              },
+            ],
+          },
+        ],
+      },
+      'vi',
+    );
+
+    expect(result.modules[0].title).toBe('Nền tảng');
+    expect(result.modules[0].lessons[0]).toMatchObject({
+      title: 'Sữa và microfoam',
+      body: 'Nội dung',
+    });
   });
 });

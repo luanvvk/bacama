@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { toAppLocale } from '@/lib/localize';
 
 import { getAuthProvider } from '@/lib/providers/auth';
 import { getCourseBySlug } from '@/services/courses/get-course-by-slug';
@@ -22,7 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { EnrolPanel } from './_components/EnrolPanel';
 
 export const generateStaticParams = async () => {
-  const courses = await getCourses();
+  const courses = await getCourses('en');
 
   return courses.map((course) => ({ slug: course.slug }));
 };
@@ -37,9 +39,10 @@ const CourseDetailPage = async ({
   searchParams: Promise<{ locked?: string }>;
 }) => {
   const [{ slug }, { locked }] = await Promise.all([params, searchParams]);
+  const locale = toAppLocale(await getLocale());
   const [t, course, user] = await Promise.all([
     getTranslations('CourseDetail'),
-    getCourseBySlug(slug),
+    getCourseBySlug(slug, locale),
     getAuthProvider().getCurrentUser(),
   ]);
 

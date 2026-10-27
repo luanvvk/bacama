@@ -30,7 +30,7 @@ describe('getUserEnrollments', () => {
   it('filters on userId, excludes cancelled and orders newest first in the database call', async () => {
     findMany.mockResolvedValue([]);
 
-    await getUserEnrollments('user-1');
+    await getUserEnrollments('user-1', 'en');
 
     const args = findMany.mock.calls[0][0];
     expect(args.where).toEqual({ userId: 'user-1', status: { not: 'cancelled' } });
@@ -40,7 +40,7 @@ describe('getUserEnrollments', () => {
   it('does not filter in JavaScript: returns exactly what the query returns', async () => {
     findMany.mockResolvedValue([row([2], 0)]);
 
-    await expect(getUserEnrollments('user-1')).resolves.toHaveLength(1);
+    await expect(getUserEnrollments('user-1', 'en')).resolves.toHaveLength(1);
   });
 
   it.each([
@@ -50,7 +50,7 @@ describe('getUserEnrollments', () => {
   ])('computes progress for lessons %j with %i completed as %i%%', async (counts, done, pct) => {
     findMany.mockResolvedValue([row(counts, done)]);
 
-    const [result] = await getUserEnrollments('user-1');
+    const [result] = await getUserEnrollments('user-1', 'en');
 
     expect(result.progressPercent).toBe(pct);
   });
@@ -58,7 +58,7 @@ describe('getUserEnrollments', () => {
   it('returns null progress for a course without lessons', async () => {
     findMany.mockResolvedValue([row([], 0)]);
 
-    const [result] = await getUserEnrollments('user-1');
+    const [result] = await getUserEnrollments('user-1', 'en');
 
     expect(result.progressPercent).toBeNull();
   });
@@ -67,9 +67,35 @@ describe('getUserEnrollments', () => {
     const startsAt = new Date('2026-11-01T02:00:00Z');
     findMany.mockResolvedValue([row([], 0, { session: { startsAt, site: { nameEn: 'Saigon' } } })]);
 
-    const [result] = await getUserEnrollments('user-1');
+    const [result] = await getUserEnrollments('user-1', 'en');
 
     expect(result.sessionStartsAt).toEqual(startsAt);
     expect(result.siteName).toBe('Saigon');
+  });
+});
+
+describe('getUserEnrollments locale', () => {
+  it('returns Vi course and site names on vi', async () => {
+    const base = row([], 0);
+    findMany.mockResolvedValue([
+      row([], 0, {
+        course: { ...base.course, titleVi: 'Cà phê cơ bản' },
+        session: { startsAt: new Date(), site: { nameVi: 'Sài Gòn', nameEn: 'Saigon' } },
+      }),
+    ]);
+
+    const [result] = await getUserEnrollments('user-1', 'vi');
+
+    expect(result.course.name).toBe('Cà phê cơ bản');
+    expect(result.siteName).toBe('Sài Gòn');
+  });
+
+  it('falls back to En when the Vi title is empty', async () => {
+    const base = row([], 0);
+    findMany.mockResolvedValue([row([], 0, { course: { ...base.course, titleVi: '' } })]);
+
+    const [result] = await getUserEnrollments('user-1', 'vi');
+
+    expect(result.course.name).toBe('Espresso basics');
   });
 });

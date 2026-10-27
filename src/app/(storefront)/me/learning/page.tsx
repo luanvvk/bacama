@@ -1,14 +1,16 @@
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 import { Heading, Text } from '@/components/ui/Typography';
+import { toAppLocale } from '@/lib/localize';
 import { requireUser } from '@/lib/auth/guards';
 import { getUserEnrollments } from '@/services/enrollments/get-user-enrollments';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { EnrollmentList } from './_components/EnrollmentList';
 
 const MeLearningPage = async () => {
   const [user, t] = await Promise.all([requireUser(), getTranslations('MeLearning')]);
-  const enrollments = await getUserEnrollments(user.id);
+  const locale = toAppLocale(await getLocale());
+  const enrollments = await getUserEnrollments(user.id, locale);
 
   return (
     <>

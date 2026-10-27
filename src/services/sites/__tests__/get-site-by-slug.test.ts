@@ -16,7 +16,7 @@ describe('getSiteBySlug', () => {
   it('queries the slug scoped to active sites', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    await getSiteBySlug('ly-tu-trong');
+    await getSiteBySlug('ly-tu-trong', 'en');
 
     expect(mockFindFirst).toHaveBeenCalledWith(
       expect.objectContaining({ where: { slug: 'ly-tu-trong', isActive: true } }),
@@ -26,7 +26,7 @@ describe('getSiteBySlug', () => {
   it('returns null when no site matches', async () => {
     mockFindFirst.mockResolvedValue(null);
 
-    await expect(getSiteBySlug('nope')).resolves.toBeNull();
+    await expect(getSiteBySlug('nope', 'en')).resolves.toBeNull();
   });
 
   it('maps a found row to the storefront site shape', async () => {
@@ -43,7 +43,7 @@ describe('getSiteBySlug', () => {
       _count: { menuItems: 26, bakeryItems: 48 },
     });
 
-    const result = await getSiteBySlug('ly-tu-trong');
+    const result = await getSiteBySlug('ly-tu-trong', 'en');
 
     expect(result).toEqual(
       expect.objectContaining({

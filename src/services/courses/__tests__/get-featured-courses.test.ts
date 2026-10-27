@@ -16,7 +16,7 @@ describe('getFeaturedCourses', () => {
   it('takes three courses by default', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getFeaturedCourses();
+    await getFeaturedCourses('en');
 
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { isActive: true }, take: 3 }),
@@ -26,7 +26,7 @@ describe('getFeaturedCourses', () => {
   it('honours an explicit limit', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getFeaturedCourses(1);
+    await getFeaturedCourses('en', 1);
 
     expect(mockFindMany).toHaveBeenCalledWith(expect.objectContaining({ take: 1 }));
   });

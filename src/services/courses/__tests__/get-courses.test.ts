@@ -16,7 +16,7 @@ describe('getCourses', () => {
   it('queries active courses in catalogue order', async () => {
     mockFindMany.mockResolvedValue([]);
 
-    await getCourses();
+    await getCourses('en');
 
     expect(mockFindMany).toHaveBeenCalledWith({
       where: { isActive: true },
@@ -39,7 +39,7 @@ describe('getCourses', () => {
       },
     ]);
 
-    const result = await getCourses();
+    const result = await getCourses('en');
 
     expect(result).toEqual([
       expect.objectContaining({
