@@ -28,6 +28,8 @@ describe('expireAwaitingCodOrders', () => {
     await expireAwaitingCodOrders(now);
     expect(mockFindMany.mock.calls[0][0].where).toEqual({
       status: 'awaiting_cod',
+      acknowledgedAt: null,
+      shipment: null,
       createdAt: { lt: new Date(now.getTime() - DEFAULT_COD_ORDER_TTL_DAYS * DAY) },
     });
   });
@@ -56,7 +58,7 @@ describe('expireAwaitingCodOrders', () => {
     await expect(expireAwaitingCodOrders(now)).resolves.toEqual({ expired: 1 });
 
     expect(tx.order.updateMany).toHaveBeenCalledWith({
-      where: { id: 'o1', status: 'awaiting_cod' },
+      where: { id: 'o1', status: 'awaiting_cod', acknowledgedAt: null, shipment: null },
       data: { status: 'failed' },
     });
     expect(tx.product.update).toHaveBeenCalledTimes(1);

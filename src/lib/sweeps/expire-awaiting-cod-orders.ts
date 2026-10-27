@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 
-// COD orders commit stock at creation, so an order nobody confirms or collects
+// Only orders staff never acknowledged or shipped are swept. COD orders commit stock at creation, so an order nobody confirms or collects
 // must give it back. Override with COD_ORDER_TTL_DAYS.
 export const DEFAULT_COD_ORDER_TTL_DAYS = 3;
 
@@ -14,7 +14,12 @@ export const expireAwaitingCodOrders = async (
   ttlMs = codOrderTtlMs(),
 ): Promise<{ expired: number }> => {
   const stale = await prisma.order.findMany({
-    where: { status: 'awaiting_cod', createdAt: { lt: new Date(now.getTime() - ttlMs) } },
+    where: {
+      status: 'awaiting_cod',
+      acknowledgedAt: null,
+      shipment: null,
+      createdAt: { lt: new Date(now.getTime() - ttlMs) },
+    },
     select: { id: true, items: { select: { productId: true, quantity: true } } },
   });
 
@@ -23,7 +28,7 @@ export const expireAwaitingCodOrders = async (
     // The status guard makes a concurrent confirmation or a second sweep a no-op.
     const released = await prisma.$transaction(async (tx) => {
       const { count } = await tx.order.updateMany({
-        where: { id: order.id, status: 'awaiting_cod' },
+        where: { id: order.id, status: 'awaiting_cod', acknowledgedAt: null, shipment: null },
         data: { status: 'failed' },
       });
       if (count === 0) return false;
