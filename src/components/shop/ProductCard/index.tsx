@@ -8,6 +8,7 @@ import { PriceTag } from '@/components/shop/PriceTag';
 export interface ProductCardProps {
   product: Product;
   featured?: boolean;
+  headingAs?: 'h2' | 'h3';
 }
 
 const CATEGORY_LABEL: Record<Product['category'], string> = {
@@ -15,7 +16,11 @@ const CATEGORY_LABEL: Record<Product['category'], string> = {
   gift: 'Gift set',
 };
 
-export const ProductCard = ({ product, featured = false }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  featured = false,
+  headingAs: HeadingTag = 'h3',
+}: ProductCardProps) => {
   const href = `/product/${product.slug}`;
 
   return (
@@ -43,9 +48,9 @@ export const ProductCard = ({ product, featured = false }: ProductCardProps) => 
         <p className="text-primary font-mono text-xs tracking-widest uppercase">
           {CATEGORY_LABEL[product.category]}
         </p>
-        <h3 className="font-heading mt-1 text-lg">
+        <HeadingTag className="font-heading mt-1 text-lg">
           <Link href={href}>{product.name}</Link>
-        </h3>
+        </HeadingTag>
         <p className="text-muted-foreground mt-1 text-sm">{product.description}</p>
 
         {product.swatches && (

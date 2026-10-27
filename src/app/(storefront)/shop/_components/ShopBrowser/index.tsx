@@ -64,6 +64,7 @@ export const ShopBrowser = ({ products }: ShopBrowserProps) => {
             <div key={option.value} className="flex items-center gap-2">
               <Checkbox
                 id={`category-${option.value}`}
+                aria-label={option.label}
                 checked={categories.has(option.value)}
                 onCheckedChange={() => toggleCategory(option.value)}
               />
@@ -97,7 +98,7 @@ export const ShopBrowser = ({ products }: ShopBrowserProps) => {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} headingAs="h2" />
             ))}
           </div>
         )}

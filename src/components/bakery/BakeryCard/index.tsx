@@ -49,7 +49,7 @@ export const BakeryCard = ({ item }: BakeryCardProps) => {
 
       <div className="mt-3 flex flex-1 flex-col">
         <p className="text-primary font-mono text-xs tracking-widest uppercase">{t('eyebrow')}</p>
-        <h3 className="font-heading mt-1 text-lg">{item.name}</h3>
+        <h2 className="font-heading mt-1 text-lg">{item.name}</h2>
         <p className="text-muted-foreground mt-1 text-sm">{item.description}</p>
 
         <Badge variant="success" className="mt-2 w-fit">

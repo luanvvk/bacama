@@ -41,6 +41,7 @@ const ShopPage = async () => {
             </BreadcrumbList>
           </Breadcrumb>
 
+          <h1 className="sr-only">{t('breadcrumbCurrent')}</h1>
           <ShopBrowser products={products} />
         </Container>
       </main>
