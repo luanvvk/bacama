@@ -141,6 +141,18 @@ describe('LessonPreview', () => {
     expect(signedIn.container.querySelector('li svg.lucide-lock')).toBeNull();
   });
 
+  it('links documents to the gated download route only for signed-in viewers', async () => {
+    const name = 'Milk ratio & temperature chart';
+    const { unmount } = render(<LessonPreview {...guestProps} />);
+    await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
+    expect(screen.queryByRole('link', { name })).toBeNull();
+    unmount();
+
+    render(<LessonPreview {...guestProps} isGuest={false} lockedLessonIds={[]} />);
+    await userEvent.click(screen.getByRole('tab', { name: 'Documents' }));
+    expect(screen.getByRole('link', { name })).toHaveAttribute('href', '/api/attachments/doc-1');
+  });
+
   it('gates the documents tab behind sign-in for a guest', async () => {
     render(<LessonPreview {...guestProps} />);
 
