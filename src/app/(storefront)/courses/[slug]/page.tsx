@@ -7,6 +7,7 @@ import { getAuthProvider } from '@/lib/providers/auth';
 import { getCourseBySlug } from '@/services/courses/get-course-by-slug';
 import { getCourses } from '@/services/courses/get-courses';
 import { getLearnerEnrollment } from '@/services/enrollments/get-learner-enrollment';
+import { getNextLessonId } from '@/services/enrollments/get-next-lesson-id';
 import { Container } from '@/components/layout/Container';
 import { Footer } from '@/components/layout/Footer';
 import { Badge } from '@/components/ui/Badge';
@@ -49,9 +50,12 @@ const CourseDetailPage = async ({
   if (!course) notFound();
 
   const enrollment = user ? await getLearnerEnrollment(user.id, course.id) : null;
-  const firstLesson = course.modules.flatMap((courseModule) => courseModule.lessons)[0];
+  const nextLessonId = getNextLessonId(
+    course.modules.flatMap((courseModule) => courseModule.lessons.map((lesson) => lesson.id)),
+    enrollment?.completedLessonIds ?? [],
+  );
   const continueHref =
-    enrollment && firstLesson ? `/learn/${course.slug}/${firstLesson.id}` : undefined;
+    enrollment && nextLessonId ? `/learn/${course.slug}/${nextLessonId}` : undefined;
 
   return (
     <>

@@ -6,8 +6,16 @@ describe('youtube video provider', () => {
   it('returns a privacy-enhanced embed url for a video id', async () => {
     const token = await provider.getSignedPlayback('jNQXAC9IVRw', null);
 
-    expect(token.embedUrl).toBe('https://www.youtube-nocookie.com/embed/jNQXAC9IVRw?rel=0');
+    expect(token.embedUrl).toBe(
+      'https://www.youtube-nocookie.com/embed/jNQXAC9IVRw?rel=0&enablejsapi=1',
+    );
     expect(token.expiresAt.getTime()).toBeGreaterThan(Date.now());
+  });
+
+  it('starts at the saved position when one is given', async () => {
+    const token = await provider.getSignedPlayback('jNQXAC9IVRw', 'user-1', 75.6);
+
+    expect(token.embedUrl).toContain('&start=75');
   });
 
   it('rejects an id that could break out of the embed path', async () => {

@@ -5,6 +5,10 @@ export interface VideoToken {
 
 export interface VideoProvider {
   /** `userId` is null for a guest watching a free-preview lesson. */
-  getSignedPlayback(videoId: string, userId: string | null): Promise<VideoToken>;
+  getSignedPlayback(
+    videoId: string,
+    userId: string | null,
+    startSeconds?: number,
+  ): Promise<VideoToken>;
   isPreview(lesson: { isFreePreview: boolean }): boolean;
 }

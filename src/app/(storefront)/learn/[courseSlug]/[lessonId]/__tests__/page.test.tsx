@@ -19,6 +19,9 @@ jest.mock('next-intl/server', () => ({
 jest.mock('@/lib/providers/auth', () => ({ getAuthProvider: jest.fn() }));
 jest.mock('@/services/courses/get-course-by-slug', () => ({ getCourseBySlug: jest.fn() }));
 jest.mock('@/services/courses/get-lesson-video-id', () => ({ getLessonVideoId: jest.fn() }));
+jest.mock('@/services/enrollments/get-lesson-position', () => ({
+  getLessonPosition: jest.fn().mockResolvedValue(0),
+}));
 jest.mock('@/services/enrollments/get-learner-enrollment', () => ({
   getLearnerEnrollment: jest.fn(),
 }));
@@ -83,7 +86,7 @@ describe('lesson page access', () => {
     const preview = await render('free');
 
     expect(preview?.props.embedUrl).toBe(
-      'https://www.youtube-nocookie.com/embed/jNQXAC9IVRw?rel=0',
+      'https://www.youtube-nocookie.com/embed/jNQXAC9IVRw?rel=0&enablejsapi=1',
     );
     expect(preview?.props.isGuest).toBe(true);
     expect(preview?.props.lockedLessonIds).toEqual(['paid']);
