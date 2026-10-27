@@ -14,6 +14,7 @@ export interface ControlledCheckboxProps<
   label: string;
   id?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 export const ControlledCheckbox = <
@@ -25,6 +26,7 @@ export const ControlledCheckbox = <
   label,
   id,
   disabled,
+  required,
 }: ControlledCheckboxProps<TFieldValues, TName>) => {
   const fieldId = id ?? name;
 
@@ -37,6 +39,8 @@ export const ControlledCheckbox = <
           <div className="flex items-center gap-2">
             <Checkbox
               id={fieldId}
+              ref={field.ref}
+              aria-required={required || undefined}
               checked={field.value}
               onCheckedChange={field.onChange}
               onBlur={field.onBlur}
@@ -44,10 +48,17 @@ export const ControlledCheckbox = <
               aria-invalid={Boolean(fieldState.error)}
               aria-describedby={fieldState.error ? `${fieldId}-error` : undefined}
             />
-            <Label htmlFor={fieldId}>{label}</Label>
+            <Label htmlFor={fieldId}>
+              {label}
+              {required && (
+                <span aria-hidden="true" className="text-destructive">
+                  *
+                </span>
+              )}
+            </Label>
           </div>
           {fieldState.error && (
-            <p id={`${fieldId}-error`} className="text-destructive text-sm">
+            <p id={`${fieldId}-error`} role="alert" className="text-destructive text-sm">
               {fieldState.error.message}
             </p>
           )}

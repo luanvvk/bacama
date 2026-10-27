@@ -36,3 +36,21 @@ describe('ControlledInput', () => {
     expect(onSubmit).toHaveBeenCalledWith({ email: 'a@b.com' }, expect.anything());
   });
 });
+
+describe('ControlledInput required and error announcement', () => {
+  const RequiredHarness = () => {
+    const { control, handleSubmit } = useForm<{ name: string }>({ defaultValues: { name: '' } });
+    return (
+      <form onSubmit={handleSubmit(() => {})} noValidate>
+        <ControlledInput control={control} name="name" label="Name" required />
+        <button type="submit">Go</button>
+      </form>
+    );
+  };
+
+  it('sets aria-required and a visible marker', () => {
+    render(<RequiredHarness />);
+    expect(screen.getByLabelText(/Name/)).toHaveAttribute('aria-required', 'true');
+    expect(screen.getByText('*')).toBeInTheDocument();
+  });
+});

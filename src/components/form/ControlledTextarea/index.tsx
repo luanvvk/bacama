@@ -23,6 +23,7 @@ export const ControlledTextarea = <
   name,
   label,
   id,
+  required,
   ...props
 }: ControlledTextareaProps<TFieldValues, TName>) => {
   const fieldId = id ?? name;
@@ -32,11 +33,12 @@ export const ControlledTextarea = <
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <FormField id={fieldId} label={label} error={fieldState.error?.message}>
+        <FormField id={fieldId} label={label} error={fieldState.error?.message} required={required}>
           <Textarea
             {...field}
             {...props}
             id={fieldId}
+            aria-required={required || undefined}
             aria-invalid={Boolean(fieldState.error)}
             aria-describedby={fieldState.error ? `${fieldId}-error` : undefined}
           />
