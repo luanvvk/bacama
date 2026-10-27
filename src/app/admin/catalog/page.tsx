@@ -1,12 +1,12 @@
 import { ProductsBrowser } from '@/components/admin/ProductsBrowser';
 import { requireRoles } from '@/lib/auth/guards';
-import { getAdminProducts } from '@/services/catalog/get-admin-products';
+import { getAdminProductsPage } from '@/services/catalog/get-admin-products';
 
 const AdminCatalogPage = async () => {
   await requireRoles(['staff', 'admin']);
-  const products = await getAdminProducts();
+  const { items, nextCursor } = await getAdminProductsPage();
 
-  return <ProductsBrowser products={products} />;
+  return <ProductsBrowser products={items} nextCursor={nextCursor} />;
 };
 
 export default AdminCatalogPage;

@@ -19,20 +19,44 @@ import {
   TableRow,
 } from '@/components/ui';
 import { formatVnd } from '@/lib/format-price';
+import { toast } from '@/lib/toast';
 import { isLowStock, type AdminProduct } from '@/services/catalog/admin-product';
 
 interface ProductsBrowserProps {
   products: AdminProduct[];
+  nextCursor: string | null;
 }
 
 type StatusFilter = 'all' | 'live' | 'low';
 
 const isLive = (product: AdminProduct) => product.isActive && product.stock > 0;
 
-export const ProductsBrowser = ({ products }: ProductsBrowserProps) => {
+export const ProductsBrowser = ({
+  products: initialProducts,
+  nextCursor: initialCursor,
+}: ProductsBrowserProps) => {
   const t = useTranslations('Admin.catalog');
+  const [products, setProducts] = useState(initialProducts);
+  const [nextCursor, setNextCursor] = useState(initialCursor);
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/admin/products?cursor=${encodeURIComponent(nextCursor)}`);
+      if (!response.ok) throw new Error(String(response.status));
+      const page: { items: AdminProduct[]; nextCursor: string | null } = await response.json();
+      setProducts((current) => [...current, ...page.items]);
+      setNextCursor(page.nextCursor);
+    } catch {
+      toast.error(t('loadMoreFailed'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const live = products.filter(isLive);
   const low = live.filter(isLowStock);
@@ -189,6 +213,19 @@ export const ProductsBrowser = ({ products }: ProductsBrowserProps) => {
           </Table>
           {visible.length === 0 && (
             <p className="text-muted-foreground py-8 text-center text-sm">{t('noMatch')}</p>
+          )}
+          {nextCursor && (
+            <div className="flex justify-center pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11 min-w-32"
+                onClick={loadMore}
+                disabled={loading}
+              >
+                {t('loadMore')}
+              </Button>
+            </div>
           )}
         </CardContent>
       </Card>

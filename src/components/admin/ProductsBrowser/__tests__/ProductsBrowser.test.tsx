@@ -42,11 +42,37 @@ const PRODUCTS = [
   product({ id: 'p3', slug: 'paused', name: 'Paused Blend', origin: null, isActive: false }),
 ];
 
-const renderBrowser = () => render(<ProductsBrowser products={PRODUCTS} />);
+const renderBrowser = (nextCursor: string | null = null) =>
+  render(<ProductsBrowser products={PRODUCTS} nextCursor={nextCursor} />);
 
 const rowOf = (name: string) => screen.getByText(name).closest('tr') as HTMLElement;
 
 describe('ProductsBrowser', () => {
+  it('hides Load more when there is no next page', () => {
+    renderBrowser();
+
+    expect(screen.queryByRole('button', { name: 'Load more' })).not.toBeInTheDocument();
+  });
+
+  it('appends the next page and hides Load more on the last page', async () => {
+    const fetchMock = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        items: [product({ id: 'p4', slug: 'late', name: 'Late Arrival' })],
+        nextCursor: null,
+      }),
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+    renderBrowser('p3');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Load more' }));
+
+    expect(await screen.findByText('Late Arrival')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith('/api/admin/products?cursor=p3');
+    expect(screen.getByText('Sơn La Natural')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Load more' })).not.toBeInTheDocument();
+  });
+
   it('lists database products with stock, roast date and status', () => {
     renderBrowser();
 
