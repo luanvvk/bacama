@@ -20,16 +20,19 @@ const findOrder = (providerRef: string) =>
  * decrements twice. A paid event for an order the sweep already failed, or for
  * stock that ran out meanwhile, moves it to `needs_review` for a human (lines
  * that did have stock stay decremented; restock by hand if it is refunded).
- * `amountVnd` (from the gateway) is only compared with the
- * stored total, never written.
+ * `amountVnd` (from the gateway) is required: a missing or different amount is
+ * a mismatch. It is only compared with the stored total, never written.
  */
 export const markOrderPaid = async (
   providerRef: string,
-  amountVnd?: number,
+  amountVnd: number | undefined,
 ): Promise<PaymentOutcome> => {
   const order = await findOrder(providerRef);
   if (!order) return 'not_found';
-  if (amountVnd !== undefined && amountVnd !== order.totalVnd) return 'amount_mismatch';
+  if (amountVnd !== order.totalVnd) {
+    console.error(`Payment webhook: amount mismatch or missing for order ${order.ref}`);
+    return 'amount_mismatch';
+  }
 
   const quantities = new Map<string, number>();
   for (const { productId, quantity } of order.items) {

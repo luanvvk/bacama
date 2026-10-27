@@ -100,7 +100,7 @@ describe('POST /api/webhooks/payment/[provider]', () => {
   it('flags a paid event for an expired order and still answers 200', async () => {
     mockOrderUpdateMany.mockResolvedValueOnce({ count: 0 }).mockResolvedValueOnce({ count: 1 });
     const error = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const response = await send({ providerRef: 'r1', status: 'paid' });
+    const response = await send({ providerRef: 'r1', status: 'paid', amountVnd: 200000 });
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ received: true, needsReview: true });
     expect(mockProductUpdateMany).not.toHaveBeenCalled();
@@ -109,7 +109,7 @@ describe('POST /api/webhooks/payment/[provider]', () => {
 
   it('treats a replay as already processed and does not decrement', async () => {
     mockOrderUpdateMany.mockResolvedValue({ count: 0 });
-    const response = await send({ providerRef: 'r1', status: 'paid' });
+    const response = await send({ providerRef: 'r1', status: 'paid', amountVnd: 200000 });
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ received: true, alreadyProcessed: true });
     expect(mockProductUpdateMany).not.toHaveBeenCalled();
@@ -118,7 +118,7 @@ describe('POST /api/webhooks/payment/[provider]', () => {
   it('flags the order for review and logs the ref only when stock is short', async () => {
     mockProductUpdateMany.mockResolvedValue({ count: 0 });
     const error = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const response = await send({ providerRef: 'r1', status: 'paid' });
+    const response = await send({ providerRef: 'r1', status: 'paid', amountVnd: 200000 });
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ received: true, needsReview: true });
     expect(mockOrderUpdate).toHaveBeenCalledWith({
@@ -130,10 +130,21 @@ describe('POST /api/webhooks/payment/[provider]', () => {
   });
 
   it('rejects a mismatched amount and leaves the order unchanged', async () => {
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
     const response = await send({ providerRef: 'r1', status: 'paid', amountVnd: 1 });
+    error.mockRestore();
     expect(response.status).toBe(400);
     expect(mockTransaction).not.toHaveBeenCalled();
     expect(mockOrderUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it('rejects a paid event with no amount and leaves the order unchanged', async () => {
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const response = await send({ providerRef: 'r1', status: 'paid' });
+    expect(response.status).toBe(400);
+    expect(mockTransaction).not.toHaveBeenCalled();
+    expect(mockOrderUpdateMany).not.toHaveBeenCalled();
+    error.mockRestore();
   });
 
   it('moves pending to failed', async () => {
