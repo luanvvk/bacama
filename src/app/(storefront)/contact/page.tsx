@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
-import { ContactForm } from '@/app/(storefront)/_components/ContactForm';
 import { StaticPageShell } from '@/app/(storefront)/_components/StaticPageShell';
 import { Footer } from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -24,7 +23,7 @@ const ContactPage = async () => {
               <CardTitle>{t('sendMessageHeading')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <ContactForm />
+              <p className="text-muted-foreground text-sm">{t('unavailableNotice')}</p>
             </CardContent>
           </Card>
           <div className="space-y-5">
