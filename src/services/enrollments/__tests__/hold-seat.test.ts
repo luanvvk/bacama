@@ -10,7 +10,7 @@ jest.mock('@/lib/prisma', () => ({
       findUnique: jest.fn(),
       updateManyAndReturn: jest.fn(),
       create: jest.fn(),
-      update: jest.fn(),
+      count: jest.fn(),
     },
     $transaction: jest.fn(),
   },
@@ -21,9 +21,11 @@ import { prisma } from '@/lib/prisma';
 import {
   AlreadyEnrolledError,
   holdSeat,
+  MAX_ACTIVE_HOLDS,
   SEAT_HOLD_MINUTES,
   SessionFullError,
   SessionUnavailableError,
+  TooManyHoldsError,
 } from '../hold-seat';
 
 const session = prisma.courseSession as unknown as Record<string, jest.Mock>;
@@ -40,7 +42,7 @@ beforeEach(() => {
   enrollment.findMany.mockResolvedValue([]);
   enrollment.findUnique.mockResolvedValue(null);
   enrollment.create.mockResolvedValue({ id: 'e1' });
-  enrollment.update.mockResolvedValue({ id: 'e1' });
+  enrollment.count.mockResolvedValue(0);
 });
 
 describe('holdSeat', () => {
@@ -89,14 +91,41 @@ describe('holdSeat', () => {
     },
   );
 
-  it('reuses a cancelled enrolment row', async () => {
+  it('reuses a cancelled enrolment row with a conditional claim', async () => {
     enrollment.findUnique.mockResolvedValue({ id: 'e0', status: 'cancelled' });
-    await holdSeat(args);
+    enrollment.updateManyAndReturn.mockResolvedValue([{ id: 'e0' }]);
+    await expect(holdSeat(args)).resolves.toEqual({ id: 'e0' });
     expect(enrollment.create).not.toHaveBeenCalled();
-    expect(enrollment.update).toHaveBeenCalledWith({
-      where: { id: 'e0' },
+    expect(enrollment.updateManyAndReturn).toHaveBeenCalledWith({
+      where: { id: 'e0', status: 'cancelled' },
       data: expect.objectContaining({ sessionId: 's1', status: 'pending' }),
     });
+  });
+
+  it('treats a lost reactivation race as already enrolled and books no seat', async () => {
+    enrollment.findUnique.mockResolvedValue({ id: 'e0', status: 'cancelled' });
+    enrollment.updateManyAndReturn.mockResolvedValue([]);
+    await expect(holdSeat(args)).rejects.toBeInstanceOf(AlreadyEnrolledError);
+    expect(session.updateMany).not.toHaveBeenCalled();
+  });
+
+  it('lets only one of two parallel reactivations book a seat', async () => {
+    let cancelled = true;
+    enrollment.findUnique.mockResolvedValue({ id: 'e0', status: 'cancelled' });
+    enrollment.updateManyAndReturn.mockImplementation(async () => {
+      if (!cancelled) return [];
+      cancelled = false;
+      return [{ id: 'e0' }];
+    });
+    const results = await Promise.allSettled([holdSeat(args), holdSeat(args)]);
+    expect(results.map((r) => r.status).sort()).toEqual(['fulfilled', 'rejected']);
+    expect(session.updateMany).toHaveBeenCalledTimes(1);
+  });
+
+  it('refuses a new hold once the user has too many active holds', async () => {
+    enrollment.count.mockResolvedValue(MAX_ACTIVE_HOLDS);
+    await expect(holdSeat(args)).rejects.toBeInstanceOf(TooManyHoldsError);
+    expect(session.updateMany).not.toHaveBeenCalled();
   });
 
   it('releases expired holds before claiming a seat', async () => {
@@ -130,14 +159,16 @@ describe('holdSeat', () => {
     enrollment.findMany
       .mockResolvedValueOnce([])
       .mockResolvedValueOnce([{ id: 'e0', sessionId: 's0' }]);
-    enrollment.updateManyAndReturn.mockResolvedValue([{ sessionId: 's0' }]);
+    enrollment.updateManyAndReturn
+      .mockResolvedValueOnce([{ sessionId: 's0' }])
+      .mockResolvedValueOnce([{ id: 'e0' }]);
     await holdSeat(args);
     expect(session.updateMany).toHaveBeenCalledWith({
       where: { id: 's0', seatsBooked: { gte: 1 } },
       data: { seatsBooked: { decrement: 1 } },
     });
-    expect(enrollment.update).toHaveBeenCalledWith({
-      where: { id: 'e0' },
+    expect(enrollment.updateManyAndReturn).toHaveBeenCalledWith({
+      where: { id: 'e0', status: 'cancelled' },
       data: expect.objectContaining({ sessionId: 's1', status: 'pending' }),
     });
   });

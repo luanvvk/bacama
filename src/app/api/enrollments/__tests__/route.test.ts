@@ -13,9 +13,12 @@ import {
   AlreadyEnrolledError,
   SessionFullError,
   SessionUnavailableError,
+  TooManyHoldsError,
 } from '@/services/enrollments/hold-seat';
+import { hitRateLimit } from '@/lib/rate-limit';
 
 jest.mock('@/lib/providers/auth', () => ({ getAuthProvider: jest.fn() }));
+jest.mock('@/lib/rate-limit', () => ({ hitRateLimit: jest.fn() }));
 jest.mock('@/lib/prisma', () => ({ prisma: {} }));
 jest.mock('@/services/enrollments/enrol-in-course', () => ({
   ...jest.requireActual('@/services/enrollments/enrol-in-course'),
@@ -36,11 +39,32 @@ const post = (body: unknown) =>
 beforeEach(() => {
   jest.mocked(getAuthProvider).mockReturnValue({ getCurrentUser } as never);
   getCurrentUser.mockResolvedValue({ id: 'user-1' });
+  jest.mocked(hitRateLimit).mockResolvedValue({ allowed: true, hitId: 'h1' });
 });
 
 afterEach(() => jest.resetAllMocks());
 
 describe('POST /api/enrollments', () => {
+  it('returns 429 with Retry-After when the user is rate limited', async () => {
+    jest
+      .mocked(hitRateLimit)
+      .mockResolvedValue({ allowed: false, hitId: 'h1', retryAfterSeconds: 42 });
+
+    const response = await post({ courseId: 'c1' });
+
+    expect(response.status).toBe(429);
+    expect(response.headers.get('Retry-After')).toBe('42');
+    expect(enrol).not.toHaveBeenCalled();
+  });
+
+  it('returns 429 when the user holds too many seats', async () => {
+    enrol.mockRejectedValue(new TooManyHoldsError());
+
+    const response = await post({ courseId: 'c1', sessionId: 's1' });
+
+    expect(response.status).toBe(429);
+  });
+
   it('returns 401 for a guest without enrolling', async () => {
     getCurrentUser.mockResolvedValue(null);
 
