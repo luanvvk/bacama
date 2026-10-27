@@ -5,6 +5,8 @@ import { BUSINESS_CONTACT } from '@/constants/business';
 import type { PaymentMethodValue } from '@/constants/checkout';
 import type { $Enums, Prisma } from '@/generated/prisma/client';
 
+const MAX_ORDER_SUBTOTAL_VND = 1_000_000_000;
+
 export class OrderValidationError extends Error {
   constructor(message: string) {
     super(message);
@@ -128,6 +130,10 @@ export const createOrder = async (
       quantity: item.quantity,
       unitPriceVnd: menuItem.priceVnd,
     });
+  }
+
+  if (subtotalVnd > MAX_ORDER_SUBTOTAL_VND) {
+    throw new OrderValidationError('Order total is too large.');
   }
 
   if (pickupSiteIds.size > 1) {
