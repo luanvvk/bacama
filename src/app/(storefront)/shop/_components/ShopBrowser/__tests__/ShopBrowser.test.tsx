@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ShopBrowser } from '../index';
-import { PRODUCTS } from '@/constants/products';
+import { PRODUCTS } from '@/services/catalog/__fixtures__/products';
 
 const MESSAGES: Record<string, string> = {
   categoryLabel: 'Category',
@@ -22,13 +22,13 @@ jest.mock('next-intl', () => ({
 
 describe('ShopBrowser', () => {
   it('shows every product by default', () => {
-    render(<ShopBrowser />);
+    render(<ShopBrowser products={PRODUCTS} />);
 
     expect(screen.getByText(`${PRODUCTS.length} products`)).toBeInTheDocument();
   });
 
   it('filters to just the checked category', async () => {
-    render(<ShopBrowser />);
+    render(<ShopBrowser products={PRODUCTS} />);
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Gift sets' }));
 
@@ -38,7 +38,7 @@ describe('ShopBrowser', () => {
   });
 
   it('shows every product again once the category is unchecked', async () => {
-    render(<ShopBrowser />);
+    render(<ShopBrowser products={PRODUCTS} />);
 
     const giftCheckbox = screen.getByRole('checkbox', { name: 'Gift sets' });
     await userEvent.click(giftCheckbox);
@@ -48,7 +48,7 @@ describe('ShopBrowser', () => {
   });
 
   it('sorts by price low to high', async () => {
-    render(<ShopBrowser />);
+    render(<ShopBrowser products={PRODUCTS} />);
 
     await userEvent.click(screen.getByRole('combobox', { name: 'Sort by' }));
     await userEvent.click(await screen.findByRole('option', { name: 'Price: low to high' }));

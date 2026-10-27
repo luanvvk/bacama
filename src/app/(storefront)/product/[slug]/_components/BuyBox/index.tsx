@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Clock, CreditCard, MapPin, Truck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { type Product } from '@/constants/products';
+import { type Product } from '@/services/catalog/types';
 import { formatVnd } from '@/lib/format-price';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/stores/cart';

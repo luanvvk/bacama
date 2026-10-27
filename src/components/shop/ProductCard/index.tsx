@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { type Product } from '@/constants/products';
+import { type Product } from '@/services/catalog/types';
 import { Badge } from '@/components/ui/Badge';
 import { PriceTag } from '@/components/shop/PriceTag';
 

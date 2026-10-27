@@ -1,5 +1,5 @@
 import type { Prisma } from '@/generated/prisma/client';
-import type { Product } from '@/constants/products';
+import type { Product } from '@/services/catalog/types';
 import { formatFreshness } from '@/lib/format-freshness';
 
 export const PRODUCT_INCLUDE = {

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { BuyBox } from '../index';
-import { PRODUCTS } from '@/constants/products';
+import { PRODUCTS } from '@/services/catalog/__fixtures__/products';
 import { useCartStore } from '@/stores/cart';
 
 const MESSAGES: Record<string, string> = {

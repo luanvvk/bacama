@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { PRODUCTS, type Product, type ProductCategory } from '@/constants/products';
+import type { Product, ProductCategory } from '@/services/catalog/types';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Label } from '@/components/ui/Label';
 import {
@@ -24,10 +24,10 @@ const sortProducts = (products: Product[], order: SortOrder) => {
 };
 
 interface ShopBrowserProps {
-  products?: Product[];
+  products: Product[];
 }
 
-export const ShopBrowser = ({ products = PRODUCTS }: ShopBrowserProps) => {
+export const ShopBrowser = ({ products }: ShopBrowserProps) => {
   const t = useTranslations('Shop');
   const [categories, setCategories] = useState<Set<ProductCategory>>(new Set());
   const [sortOrder, setSortOrder] = useState<SortOrder>('featured');

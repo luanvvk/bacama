@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { type BrewGuide } from '@/constants/products';
+import { type BrewGuide } from '@/services/catalog/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 
 export interface ProductTabsProps {
