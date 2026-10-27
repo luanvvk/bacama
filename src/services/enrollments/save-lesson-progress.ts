@@ -16,7 +16,7 @@ interface SaveLessonProgressInput {
 /** Records how far the user got in a lesson. The enrolment is looked up from
  * the signed-in user and the lesson's course, never taken from the client, and
  * only a paid (`active`/`completed`) enrolment may write. Completion is
- * sticky: a later save never clears `completedAt`. */
+ * sticky: a save never clears `completedAt`, even when two saves race. */
 export const saveLessonProgress = async ({
   userId,
   lessonId,
@@ -37,13 +37,11 @@ export const saveLessonProgress = async ({
     throw new LessonAccessError();
   }
 
-  const key = { enrollmentId_lessonId: { enrollmentId: enrollment.id, lessonId } };
-  const existing = await prisma.progress.findUnique({ where: key, select: { completedAt: true } });
-  const completedAt = existing?.completedAt ?? (completed ? new Date() : null);
+  const completedAt = completed ? new Date() : null;
 
   await prisma.progress.upsert({
-    where: key,
+    where: { enrollmentId_lessonId: { enrollmentId: enrollment.id, lessonId } },
     create: { enrollmentId: enrollment.id, lessonId, secondsWatched, completedAt },
-    update: { secondsWatched, completedAt },
+    update: { secondsWatched, ...(completedAt && { completedAt }) },
   });
 };

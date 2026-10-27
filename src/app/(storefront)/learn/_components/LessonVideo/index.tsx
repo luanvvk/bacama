@@ -9,7 +9,6 @@ const YT_PAUSED = 2;
 
 interface YouTubePlayer {
   getCurrentTime(): number;
-  destroy(): void;
 }
 
 interface YouTubeApi {

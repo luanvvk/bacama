@@ -5,7 +5,7 @@ import { getAuthProvider } from '@/lib/providers/auth';
 import { LessonAccessError, saveLessonProgress } from '@/services/enrollments/save-lesson-progress';
 
 const progressSchema = z.object({
-  lessonId: z.string().min(1),
+  lessonId: z.string().min(1).max(64),
   secondsWatched: z.number().int().min(0).max(86_400),
   completed: z.boolean().default(false),
 });
