@@ -39,10 +39,16 @@ describe('Footer', () => {
 
 describe('Footer links', () => {
   const root = process.cwd();
+  // Only guards against links missing from the seed's PRODUCTS block; it can't
+  // see a dev database that hasn't been re-seeded. Non-product links are checked
+  // by their first path segment only.
+  const seedSource = readFileSync(join(root, 'prisma/seed.ts'), 'utf8');
+  const productsBlock = seedSource.slice(
+    seedSource.indexOf('const PRODUCTS = ['),
+    seedSource.indexOf('const BAKERY_ITEMS = ['),
+  );
   const seedSlugs = new Set(
-    [...readFileSync(join(root, 'prisma/seed.ts'), 'utf8').matchAll(/^\s{4}slug: '([^']+)'/gm)].map(
-      (match) => match[1],
-    ),
+    [...productsBlock.matchAll(/^ {4}slug: '([^']+)'/gm)].map((match) => match[1]),
   );
 
   it('points every internal link at an existing route or seeded product', () => {
