@@ -1219,6 +1219,8 @@ const MENU_ITEMS = [
 const COURSES = [
   {
     slug: 'latte-art',
+    imageUrl:
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=72',
     format: 'online' as const,
     titleVi: 'Latte Art',
     titleEn: 'Latte Art',
@@ -1296,6 +1298,8 @@ const COURSES = [
   },
   {
     slug: 'viennoiserie',
+    imageUrl:
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=72',
     format: 'in_person' as const,
     titleVi: 'Làm bánh Viennoiserie',
     titleEn: 'Viennoiserie Weekend',
@@ -1311,6 +1315,8 @@ const COURSES = [
   },
   {
     slug: 'cupping-origin',
+    imageUrl:
+      'https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=1200&q=72',
     format: 'online' as const,
     titleVi: 'Cupping & Origin',
     titleEn: 'Cupping & Origin',
@@ -1325,6 +1331,8 @@ const COURSES = [
   },
   {
     slug: 'barista-foundations',
+    imageUrl:
+      'https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1200&q=72',
     format: 'hybrid' as const,
     titleVi: 'Căn bản Pha chế',
     titleEn: 'Barista Foundations',

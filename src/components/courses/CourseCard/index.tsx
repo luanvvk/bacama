@@ -31,7 +31,14 @@ export const CourseCard = ({ course }: CourseCardProps) => {
           aspect="landscape"
           sizes="(min-width: 1024px) 33vw, 100vw"
           className="rounded-none"
-          fallback={<Badge variant="outline">{formatLabel}</Badge>}
+          fallback={
+            <div className="flex flex-col items-center gap-3">
+              <span aria-hidden className="font-heading text-primary text-6xl">
+                {course.name.charAt(0)}
+              </span>
+              <Badge variant="outline">{formatLabel}</Badge>
+            </div>
+          }
         />
       </Link>
 
