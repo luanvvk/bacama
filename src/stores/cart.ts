@@ -1,4 +1,10 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+const MAX_QUANTITY = 99;
+
+const clampQuantity = (quantity: number) =>
+  Number.isFinite(quantity) ? Math.min(MAX_QUANTITY, Math.max(1, Math.trunc(quantity))) : 1;
 
 export interface CartItem {
   id: string;
@@ -31,37 +37,42 @@ interface CartState {
   close: () => void;
 }
 
-export const useCartStore = create<CartState>((set) => ({
-  items: [],
-  isOpen: false,
-  addItem: (item, quantity = 1) =>
-    set((state) => {
-      const existing = state.items.find((cartItem) => cartItem.id === item.id);
+export const useCartStore = create<CartState>()(
+  persist(
+    (set) => ({
+      items: [],
+      isOpen: false,
+      addItem: (item, quantity = 1) =>
+        set((state) => {
+          const existing = state.items.find((cartItem) => cartItem.id === item.id);
 
-      if (existing) {
-        return {
+          if (existing) {
+            return {
+              items: state.items.map((cartItem) =>
+                cartItem.id === item.id
+                  ? { ...cartItem, quantity: clampQuantity(cartItem.quantity + quantity) }
+                  : cartItem,
+              ),
+            };
+          }
+
+          return { items: [...state.items, { ...item, quantity: clampQuantity(quantity) }] };
+        }),
+      removeItem: (id) =>
+        set((state) => ({ items: state.items.filter((cartItem) => cartItem.id !== id) })),
+      updateQuantity: (id, quantity) =>
+        set((state) => ({
           items: state.items.map((cartItem) =>
-            cartItem.id === item.id
-              ? { ...cartItem, quantity: cartItem.quantity + quantity }
-              : cartItem,
+            cartItem.id === id ? { ...cartItem, quantity: clampQuantity(quantity) } : cartItem,
           ),
-        };
-      }
-
-      return { items: [...state.items, { ...item, quantity }] };
+        })),
+      clearCart: () => set({ items: [] }),
+      open: () => set({ isOpen: true }),
+      close: () => set({ isOpen: false }),
     }),
-  removeItem: (id) =>
-    set((state) => ({ items: state.items.filter((cartItem) => cartItem.id !== id) })),
-  updateQuantity: (id, quantity) =>
-    set((state) => ({
-      items: state.items.map((cartItem) =>
-        cartItem.id === id ? { ...cartItem, quantity } : cartItem,
-      ),
-    })),
-  clearCart: () => set({ items: [] }),
-  open: () => set({ isOpen: true }),
-  close: () => set({ isOpen: false }),
-}));
+    { name: 'bacama-cart-v1', version: 1, partialize: (state) => ({ items: state.items }) },
+  ),
+);
 
 export const useCartCount = () =>
   useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));

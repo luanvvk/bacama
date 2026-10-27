@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { CheckoutForm } from '../index';
@@ -205,6 +205,28 @@ describe('CheckoutForm', () => {
     render(<CheckoutForm />);
 
     expect(replace).toHaveBeenCalledWith('/shop');
+  });
+
+  it('does not redirect until the persisted cart has rehydrated', () => {
+    useCartStore.setState({ items: [], isOpen: false });
+    const hasHydrated = jest.spyOn(useCartStore.persist, 'hasHydrated').mockReturnValue(false);
+    let finish: () => void = () => {};
+    const onFinish = jest
+      .spyOn(useCartStore.persist, 'onFinishHydration')
+      .mockImplementation((fn) => {
+        finish = () => fn(useCartStore.getState());
+        return () => {};
+      });
+
+    render(<CheckoutForm />);
+    expect(replace).not.toHaveBeenCalled();
+
+    hasHydrated.mockReturnValue(true);
+    act(() => finish());
+    expect(replace).toHaveBeenCalledWith('/shop');
+
+    hasHydrated.mockRestore();
+    onFinish.mockRestore();
   });
 
   it('forces pickup-only delivery when the cart has a bakery or drink item', async () => {
