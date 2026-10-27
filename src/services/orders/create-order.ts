@@ -85,11 +85,12 @@ export const createOrder = async (
     if (kind === 'product') {
       const product = productById.get(item.id);
       if (!product) throw new OrderValidationError(`Product "${item.id}" is no longer available.`);
-      if (product.stock < item.quantity) {
+      const requested = (productQuantities.get(product.id) ?? 0) + item.quantity;
+      if (product.stock < requested) {
         throw new OrderValidationError(`Only ${product.stock} left of "${product.nameEn}".`);
       }
       subtotalVnd += product.priceVnd * item.quantity;
-      productQuantities.set(product.id, (productQuantities.get(product.id) ?? 0) + item.quantity);
+      productQuantities.set(product.id, requested);
       orderItems.push({
         productId: product.id,
         nameSnapshot: input.locale === 'vi' ? product.nameVi : product.nameEn,

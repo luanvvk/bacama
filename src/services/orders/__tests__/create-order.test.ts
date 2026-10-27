@@ -129,6 +129,20 @@ describe('createOrder', () => {
     ).rejects.toThrow(OrderValidationError);
   });
 
+  it('checks stock against the combined quantity when a product is on two lines', async () => {
+    mockProductFindMany.mockResolvedValue([{ ...PRODUCT, stock: 5 }]);
+
+    await expect(
+      createOrder({
+        ...BASE_INPUT,
+        items: [
+          { id: 'p1', quantity: 3 },
+          { id: 'p1', quantity: 3 },
+        ],
+      }),
+    ).rejects.toThrow(/Only 5 left of/);
+  });
+
   it('throws when the order subtotal exceeds the ceiling', async () => {
     mockBakeryFindMany.mockResolvedValue([{ ...BAKERY_ITEM, priceVnd: 20_000_000 }]);
 
