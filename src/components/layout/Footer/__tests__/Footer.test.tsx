@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
+
 import { render, screen } from '@testing-library/react';
 
 import { Footer } from '../index';
@@ -31,5 +34,34 @@ describe('Footer', () => {
 
     expect(screen.queryByRole('heading', { name: 'Coffee' })).not.toBeInTheDocument();
     expect(screen.getByText(/2026 Bacama/)).toBeInTheDocument();
+  });
+});
+
+describe('Footer links', () => {
+  const root = process.cwd();
+  // Only guards against links missing from the seed's PRODUCTS block; it can't
+  // see a dev database that hasn't been re-seeded. Non-product links are checked
+  // by their first path segment only.
+  const seedSource = readFileSync(join(root, 'prisma/seed.ts'), 'utf8');
+  const productsBlock = seedSource.slice(
+    seedSource.indexOf('const PRODUCTS = ['),
+    seedSource.indexOf('const BAKERY_ITEMS = ['),
+  );
+  const seedSlugs = new Set(
+    [...productsBlock.matchAll(/^ {4}slug: '([^']+)'/gm)].map((match) => match[1]),
+  );
+
+  it('points every internal link at an existing route or seeded product', () => {
+    const { container } = render(<Footer />);
+    const hrefs = [...container.querySelectorAll('a')].map((a) => a.getAttribute('href') ?? '');
+
+    for (const href of hrefs.filter((h) => h.startsWith('/'))) {
+      const [, section, slug] = href.split('/');
+      if (section === 'product') {
+        expect(seedSlugs.has(slug)).toBe(true);
+      } else {
+        expect(existsSync(join(root, 'src/app/(storefront)', section, 'page.tsx'))).toBe(true);
+      }
+    }
   });
 });
