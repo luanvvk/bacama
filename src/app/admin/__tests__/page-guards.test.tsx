@@ -17,6 +17,8 @@ jest.mock('@/lib/auth/guards', () => ({
   requireRoles: jest.fn(),
 }));
 
+jest.mock('@/components/admin/ProductsBrowser', () => ({ ProductsBrowser: () => null }));
+jest.mock('@/services/catalog/get-admin-products', () => ({ getAdminProducts: jest.fn() }));
 jest.mock('next-intl/server', () => ({ getTranslations: jest.fn() }));
 jest.mock('@/services/catalog/get-admin-menu-items', () => ({ getAdminMenuItems: jest.fn() }));
 jest.mock('@/services/sites/get-admin-announcements', () => ({

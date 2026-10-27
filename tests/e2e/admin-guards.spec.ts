@@ -7,6 +7,8 @@ test.beforeEach(async ({ context }) => {
 test.describe('admin guards', () => {
   for (const path of [
     '/admin',
+    '/admin/catalog',
+    '/admin/catalog/dalat-washed/edit',
     '/admin/menu',
     '/admin/announcements',
     '/admin/students',

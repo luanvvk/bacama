@@ -12,6 +12,7 @@ import { KpiTiles } from './_components/KpiTiles';
 import { LowStockBanner } from './_components/LowStockBanner';
 import { StockPanel } from './_components/StockPanel';
 import { TodaysOrdersTable } from './_components/TodaysOrdersTable';
+import { getAdminProducts } from '@/services/catalog/get-admin-products';
 
 const AdminOverviewPage = async () => {
   const user = await requireRoles(['staff', 'instructor', 'admin']);
@@ -31,6 +32,7 @@ const AdminOverviewPage = async () => {
     timeZone: 'Asia/Ho_Chi_Minh',
   }).format(new Date());
   const announcements = showAnnouncements ? (await getAdminAnnouncements(user)).slice(0, 3) : null;
+  const products = await getAdminProducts();
 
   return (
     <div>
@@ -47,13 +49,13 @@ const AdminOverviewPage = async () => {
         <DashboardActions />
       </div>
 
-      <LowStockBanner />
+      <LowStockBanner products={products} />
       {kpis && <KpiTiles kpis={kpis} />}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <TodaysOrdersTable />
         <div className="flex flex-col gap-6">
-          <StockPanel />
+          <StockPanel products={products} />
           {announcements && <AnnouncementsPanel announcements={announcements} />}
         </div>
       </div>

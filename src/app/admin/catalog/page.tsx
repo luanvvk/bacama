@@ -1,17 +1,12 @@
-import { CatalogBrowser } from '@/components/admin/CatalogBrowser';
+import { ProductsBrowser } from '@/components/admin/ProductsBrowser';
 import { requireRoles } from '@/lib/auth/guards';
+import { getAdminProducts } from '@/services/catalog/get-admin-products';
 
 const AdminCatalogPage = async () => {
   await requireRoles(['staff', 'admin']);
+  const products = await getAdminProducts();
 
-  return (
-    <CatalogBrowser
-      title="Coffee & blends"
-      description="Price, stock and roast date for every coffee product. Changes are preview-only until a catalogue service is connected."
-      filter="all"
-      newLabel="New product"
-    />
-  );
+  return <ProductsBrowser products={products} />;
 };
 
 export default AdminCatalogPage;
