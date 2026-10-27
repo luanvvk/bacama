@@ -12,7 +12,7 @@ const IP_LIMIT: RateLimit = { max: 20, windowMs: 15 * 60_000 };
 
 // Vercel overwrites x-forwarded-for with the real client IP; behind another proxy this is spoofable.
 const clientIp = (request: NextRequest) =>
-  request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+  request.headers.get('x-forwarded-for')?.split(',')[0].trim().slice(0, 64) || 'unknown';
 
 export const POST = async (
   request: NextRequest,
@@ -33,6 +33,8 @@ export const POST = async (
   ]);
 
   if (!refHit.allowed || !ipHit.allowed) {
+    // No lookup ran, so don't let blocked requests extend the lockout.
+    await releaseRateLimitHit([refHit.hitId, ipHit.hitId]);
     const retryAfter = Math.max(
       refHit.allowed ? 0 : refHit.retryAfterSeconds,
       ipHit.allowed ? 0 : ipHit.retryAfterSeconds,

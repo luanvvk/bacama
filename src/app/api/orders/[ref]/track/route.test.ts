@@ -97,6 +97,7 @@ describe('POST /api/orders/[ref]/track', () => {
     expect(res.status).toBe(429);
     expect(res.headers.get('Retry-After')).toBe('120');
     expect(getOrderForTracking).not.toHaveBeenCalled();
+    expect(releaseRateLimitHit).toHaveBeenCalledWith(['r', 'i']);
   });
 
   it('returns 429 when the IP is locked', async () => {
