@@ -53,7 +53,7 @@ describe('ShopBrowser', () => {
     await userEvent.click(screen.getByRole('combobox', { name: 'Sort by' }));
     await userEvent.click(await screen.findByRole('option', { name: 'Price: low to high' }));
 
-    const headings = screen.getAllByRole('heading', { level: 3 }).map((el) => el.textContent);
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((el) => el.textContent);
     const cheapest = [...PRODUCTS].sort((a, b) => a.priceVnd - b.priceVnd)[0];
     expect(headings[0]).toBe(cheapest.name);
   });
