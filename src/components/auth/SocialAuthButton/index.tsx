@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { toast } from '@/lib/toast';
 import { Button } from '@/components/ui/Button';
 
@@ -25,14 +27,18 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export const SocialAuthButton = ({ onGoogleClick }: SocialAuthButtonProps) => (
-  <Button
-    type="button"
-    variant="outline"
-    className="w-full"
-    onClick={onGoogleClick ?? (() => toast("Google sign-in isn't wired up yet."))}
-  >
-    <GoogleIcon />
-    Continue with Google
-  </Button>
-);
+export const SocialAuthButton = ({ onGoogleClick }: SocialAuthButtonProps) => {
+  const t = useTranslations('SocialAuth');
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full"
+      onClick={onGoogleClick ?? (() => toast(t('googleNotWired')))}
+    >
+      <GoogleIcon />
+      {t('continueWithGoogle')}
+    </Button>
+  );
+};

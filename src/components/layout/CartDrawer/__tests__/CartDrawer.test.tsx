@@ -18,6 +18,8 @@ const MESSAGES: Record<string, string> = {
   free: 'Free',
   total: 'Total',
   checkOut: 'Check out',
+  decrease: 'Decrease quantity',
+  increase: 'Increase quantity',
   paymentMethods: 'ZaloPay · MoMo · VNPay QR · COD',
 };
 

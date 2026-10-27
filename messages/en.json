@@ -1445,5 +1445,18 @@
       "manyDetail": "Review stock levels in the catalogue.",
       "update": "Update"
     }
+  },
+  "QuantityStepper": {
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "SocialAuth": {
+    "continueWithGoogle": "Continue with Google",
+    "googleNotWired": "Google sign-in isn't wired up yet."
+  },
+  "ProfilePage": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProfile": "My profile",
+    "loading": "Loading profile"
   }
 }

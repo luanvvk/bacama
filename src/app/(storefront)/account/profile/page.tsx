@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server';
 import { ClerkLoaded, ClerkLoading, UserProfile } from '@clerk/nextjs';
 
 import { Container } from '@/components/layout/Container';
@@ -40,50 +41,54 @@ const clerkAppearance = {
   },
 };
 
-const ProfilePage = () => (
-  <>
-    <main>
-      <Container>
-        <Breadcrumb className="pt-6">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>My profile</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <div className="auth-surface-enter py-10">
-          <ClerkLoading>
-            <div
-              className="border-border bg-card shadow-brand flex min-h-96 w-full animate-pulse overflow-hidden rounded-lg border"
-              aria-label="Loading profile"
-            >
-              <div className="border-border bg-background hidden w-56 border-r p-5 sm:block">
-                <div className="bg-muted h-3 w-24 rounded" />
-                <div className="bg-muted mt-6 h-8 w-full rounded" />
-                <div className="bg-muted mt-3 h-8 w-full rounded" />
-                <div className="bg-muted mt-3 h-8 w-4/5 rounded" />
+const ProfilePage = async () => {
+  const t = await getTranslations('ProfilePage');
+
+  return (
+    <>
+      <main>
+        <Container>
+          <Breadcrumb className="pt-6">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">{t('breadcrumbHome')}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{t('breadcrumbProfile')}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <div className="auth-surface-enter py-10">
+            <ClerkLoading>
+              <div
+                className="border-border bg-card shadow-brand flex min-h-96 w-full animate-pulse overflow-hidden rounded-lg border"
+                aria-label={t('loading')}
+              >
+                <div className="border-border bg-background hidden w-56 border-r p-5 sm:block">
+                  <div className="bg-muted h-3 w-24 rounded" />
+                  <div className="bg-muted mt-6 h-8 w-full rounded" />
+                  <div className="bg-muted mt-3 h-8 w-full rounded" />
+                  <div className="bg-muted mt-3 h-8 w-4/5 rounded" />
+                </div>
+                <div className="flex flex-1 flex-col gap-4 p-6 sm:p-8">
+                  <div className="bg-muted h-6 w-40 rounded" />
+                  <div className="bg-muted h-3 w-64 rounded" />
+                  <div className="bg-muted mt-6 h-10 w-full rounded" />
+                  <div className="bg-muted h-10 w-full rounded" />
+                  <div className="bg-muted h-9 w-28 rounded" />
+                </div>
               </div>
-              <div className="flex flex-1 flex-col gap-4 p-6 sm:p-8">
-                <div className="bg-muted h-6 w-40 rounded" />
-                <div className="bg-muted h-3 w-64 rounded" />
-                <div className="bg-muted mt-6 h-10 w-full rounded" />
-                <div className="bg-muted h-10 w-full rounded" />
-                <div className="bg-muted h-9 w-28 rounded" />
-              </div>
-            </div>
-          </ClerkLoading>
-          <ClerkLoaded>
-            <UserProfile routing="path" path="/account/profile" appearance={clerkAppearance} />
-          </ClerkLoaded>
-        </div>
-      </Container>
-    </main>
-    <Footer variant="simple" />
-  </>
-);
+            </ClerkLoading>
+            <ClerkLoaded>
+              <UserProfile routing="path" path="/account/profile" appearance={clerkAppearance} />
+            </ClerkLoaded>
+          </div>
+        </Container>
+      </main>
+      <Footer variant="simple" />
+    </>
+  );
+};
 
 export default ProfilePage;

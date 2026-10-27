@@ -1,4 +1,5 @@
 import { Minus, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/Button';
 
@@ -9,28 +10,32 @@ export interface QuantityStepperProps {
   max?: number;
 }
 
-export const QuantityStepper = ({ value, onChange, min = 1, max = 99 }: QuantityStepperProps) => (
-  <div className="border-input inline-flex items-center rounded-lg border">
-    <Button
-      type="button"
-      variant="ghost"
-      size="icon-sm"
-      aria-label="Decrease quantity"
-      disabled={value <= min}
-      onClick={() => onChange(Math.max(min, value - 1))}
-    >
-      <Minus />
-    </Button>
-    <span className="w-8 text-center font-mono text-sm font-semibold tabular-nums">{value}</span>
-    <Button
-      type="button"
-      variant="ghost"
-      size="icon-sm"
-      aria-label="Increase quantity"
-      disabled={value >= max}
-      onClick={() => onChange(Math.min(max, value + 1))}
-    >
-      <Plus />
-    </Button>
-  </div>
-);
+export const QuantityStepper = ({ value, onChange, min = 1, max = 99 }: QuantityStepperProps) => {
+  const t = useTranslations('QuantityStepper');
+
+  return (
+    <div className="border-input inline-flex items-center rounded-lg border">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-label={t('decrease')}
+        disabled={value <= min}
+        onClick={() => onChange(Math.max(min, value - 1))}
+      >
+        <Minus />
+      </Button>
+      <span className="w-8 text-center font-mono text-sm font-semibold tabular-nums">{value}</span>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-label={t('increase')}
+        disabled={value >= max}
+        onClick={() => onChange(Math.min(max, value + 1))}
+      >
+        <Plus />
+      </Button>
+    </div>
+  );
+};

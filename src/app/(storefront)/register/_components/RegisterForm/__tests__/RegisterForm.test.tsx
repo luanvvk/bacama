@@ -3,6 +3,11 @@ import userEvent from '@testing-library/user-event';
 
 import { RegisterForm } from '../index';
 
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) =>
+    ({ continueWithGoogle: 'Continue with Google' })[key] ?? key,
+}));
+
 jest.mock('@clerk/nextjs/legacy', () => ({
   useSignUp: () => ({
     isLoaded: true,

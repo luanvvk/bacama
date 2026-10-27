@@ -6,6 +6,8 @@ import { PRODUCTS } from '@/constants/products';
 import { useCartStore } from '@/stores/cart';
 
 const MESSAGES: Record<string, string> = {
+  decrease: 'Decrease quantity',
+  increase: 'Increase quantity',
   weightLabel: 'Weight',
   grindLabel: 'Grind for',
   addToCart: 'Add to cart',

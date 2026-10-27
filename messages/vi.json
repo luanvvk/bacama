@@ -1441,5 +1441,18 @@
       "manyDetail": "Xem mức tồn kho trong danh mục.",
       "update": "Cập nhật"
     }
+  },
+  "QuantityStepper": {
+    "decrease": "Giảm số lượng",
+    "increase": "Tăng số lượng"
+  },
+  "SocialAuth": {
+    "continueWithGoogle": "Tiếp tục với Google",
+    "googleNotWired": "Đăng nhập bằng Google chưa được kết nối."
+  },
+  "ProfilePage": {
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbProfile": "Hồ sơ của tôi",
+    "loading": "Đang tải hồ sơ"
   }
 }
