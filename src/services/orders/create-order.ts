@@ -191,13 +191,11 @@ export const createOrder = async (
     items: { create: orderItems },
   };
 
-  // COD has no online payment gate — the order is accepted at creation, so
-  // stock is committed now rather than waiting for a "paid" webhook that
-  // will never come. Every other method stays a soft reservation: stock is
-  // only decremented once payment is actually confirmed (task 2.8).
+  // Online methods stay a soft reservation: stock is only decremented once
+  // payment is confirmed (task 2.8).
   if (paymentProvider) {
     const order = await prisma.order.create({ data: orderData, select: { id: true, ref: true } });
-    const session = await paymentProvider.pay(subtotalVnd, order.ref, {
+    const session = await paymentProvider.pay(orderData.totalVnd, order.ref, {
       locale: input.locale,
       addressCountry: 'VN',
       preferredMethod: input.paymentMethod,
@@ -209,6 +207,9 @@ export const createOrder = async (
     return order;
   }
 
+  // COD has no online payment gate — the order is accepted at creation, so
+  // stock is committed now rather than waiting for a "paid" webhook that
+  // will never come.
   return prisma.$transaction(async (tx) => {
     for (const [productId, quantity] of productQuantities) {
       const { count } = await tx.product.updateMany({

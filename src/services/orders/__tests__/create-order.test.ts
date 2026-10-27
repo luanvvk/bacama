@@ -296,7 +296,8 @@ describe('createOrder', () => {
     const order = await createOrder({ ...BASE_INPUT, items: [{ id: 'p1', quantity: 2 }] });
 
     expect(mockPay).toHaveBeenCalledWith(
-      370000,
+      370000, // totalVnd, the amount the webhook is compared with
+
       order.ref,
       expect.objectContaining({ preferredMethod: 'zalopay' }),
     );

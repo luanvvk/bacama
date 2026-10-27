@@ -1,4 +1,5 @@
-import { signFakeWebhook, fakeProvider } from '@/lib/providers/payment/__tests__/fake-provider';
+/** @jest-environment node */
+import { signFakeWebhook } from '@/lib/providers/payment/__tests__/fake-provider';
 
 interface StoredOrder {
   id: string;
@@ -56,20 +57,26 @@ jest.mock('@/lib/prisma', () => {
 });
 
 jest.mock('@/lib/providers/payment', () => ({
-  getPaymentProviderByMethod: () => ({
-    pay: async (_amount: number, orderRef: string) => ({
-      provider: 'zalopay',
-      providerRef: `gw-${orderRef}`,
-      redirectUrl: '/pay',
-    }),
-  }),
+  getPaymentProviderByMethod: () =>
+    jest.requireActual('@/lib/providers/payment/__tests__/fake-provider').fakeProvider,
   PaymentMethodUnavailableError: class extends Error {},
 }));
 
-import { createOrder } from '../create-order';
-import { markOrderPaid } from '../mark-order-paid';
+import { POST } from '@/app/api/webhooks/payment/[provider]/route';
 
-it('a paid webhook finds the order created for the payment session', async () => {
+import { createOrder } from '../create-order';
+
+const webhook = (body: Buffer) =>
+  POST(
+    new Request('http://localhost/api/webhooks/payment/zalopay', {
+      method: 'POST',
+      body: new Uint8Array(body),
+      headers: { 'x-signature': signFakeWebhook(body) },
+    }) as never,
+    { params: Promise.resolve({ provider: 'zalopay' }) },
+  );
+
+it('a signed paid webhook finds the order created for the payment session', async () => {
   const { ref } = await createOrder({
     items: [{ id: 'p1', quantity: 2 }],
     customerName: 'N',
@@ -81,13 +88,14 @@ it('a paid webhook finds the order created for the payment session', async () =>
     province: 'prov',
     locale: 'en',
   });
-
   const body = Buffer.from(
-    JSON.stringify({ providerRef: `gw-${ref}`, status: 'paid', amountVnd: 200 }),
+    JSON.stringify({ providerRef: `fake-${ref}`, status: 'paid', amountVnd: 200 }),
   );
-  const event = fakeProvider.parseWebhook(body, { 'x-signature': signFakeWebhook(body) });
 
-  expect(await markOrderPaid(event.providerRef, event.amountVnd)).toBe('updated');
+  const first = await webhook(body);
+  expect(first.status).toBe(200);
   expect(orders[0].status).toBe('paid');
-  expect(await markOrderPaid(event.providerRef, event.amountVnd)).toBe('already_processed');
+
+  const replay = await webhook(body);
+  expect(await replay.json()).toEqual({ received: true, alreadyProcessed: true });
 });
