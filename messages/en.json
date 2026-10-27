@@ -1222,7 +1222,7 @@
         "price": "Enter a whole price above 0.",
         "order": "Enter a whole number, 0 or more.",
         "maxLength": "Keep it under 120 characters.",
-        "https": "Enter an https:// link.",
+        "https": "Use an https:// link from an allowed image host (images.unsplash.com, huawei-food-cms.grab.com).",
         "maxDescription": "Keep it under 160 characters.",
         "maxUrl": "Keep it under 500 characters."
       },

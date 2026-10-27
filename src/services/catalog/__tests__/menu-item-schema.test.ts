@@ -15,13 +15,15 @@ describe('menu item image and description validation', () => {
     ).toBe(true);
   });
 
-  it.each(['http://example.com/a.jpg', 'javascript:alert(1)', 'not a url'])(
-    'rejects image url %s',
-    (imageUrl) => {
-      expect(createMenuItemSchema.safeParse({ ...base, imageUrl }).success).toBe(false);
-      expect(updateMenuItemSchema.safeParse({ imageUrl }).success).toBe(false);
-    },
-  );
+  it.each([
+    'http://images.unsplash.com/a.jpg',
+    'https://example.com/a.jpg',
+    'javascript:alert(1)',
+    'not a url',
+  ])('rejects image url %s', (imageUrl) => {
+    expect(createMenuItemSchema.safeParse({ ...base, imageUrl }).success).toBe(false);
+    expect(updateMenuItemSchema.safeParse({ imageUrl }).success).toBe(false);
+  });
 
   it('rejects descriptions over 160 characters and lets updates clear fields with null', () => {
     expect(

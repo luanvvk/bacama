@@ -9,7 +9,7 @@ import { z } from 'zod';
 
 import { ControlledCheckbox, ControlledInput, ControlledSelect } from '@/components/form';
 import { Button } from '@/components/ui/Button';
-import { MENU_SECTIONS } from '@/constants/menu';
+import { isAllowedMenuImageUrl, MENU_SECTIONS } from '@/constants/menu';
 import { toast } from '@/lib/toast';
 import type { AdminMenuItem } from '@/services/catalog/get-admin-menu-items';
 
@@ -31,7 +31,7 @@ const buildSchema = (t: (key: string) => string) =>
       .string()
       .trim()
       .max(500, t('validation.maxUrl'))
-      .refine((value) => value === '' || /^https:\/\/\S+$/.test(value), t('validation.https')),
+      .refine((value) => value === '' || isAllowedMenuImageUrl(value), t('validation.https')),
     descriptionVi: z.string().trim().max(160, t('validation.maxDescription')),
     descriptionEn: z.string().trim().max(160, t('validation.maxDescription')),
     order: z.string().regex(/^\d+$/, t('validation.order')),

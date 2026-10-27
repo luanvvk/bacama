@@ -1,15 +1,10 @@
 import { z } from 'zod';
 
-import { MENU_SECTIONS } from '@/constants/menu';
+import { isAllowedMenuImageUrl, MENU_SECTIONS } from '@/constants/menu';
 
 const name = z.string().trim().min(1).max(120);
 const priceVnd = z.number().int().positive().max(100_000_000);
-const imageUrl = z
-  .string()
-  .trim()
-  .max(500)
-  .url()
-  .refine((value) => value.startsWith('https://'));
+const imageUrl = z.string().trim().max(500).refine(isAllowedMenuImageUrl);
 const description = z.string().trim().max(160);
 const order = z.number().int().min(0).max(100_000);
 

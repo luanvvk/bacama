@@ -66,7 +66,7 @@ describe('MenuItemForm', () => {
     const user = userEvent.setup();
     render(<MenuItemForm defaultSiteId="s1" onDone={jest.fn()} />);
 
-    await user.type(screen.getByLabelText('fields.imageUrl'), 'http://example.com/a.jpg');
+    await user.type(screen.getByLabelText('fields.imageUrl'), 'https://example.com/a.jpg');
     await user.click(screen.getByRole('button', { name: 'save' }));
 
     expect(await screen.findByText('validation.https')).toBeInTheDocument();

@@ -1218,7 +1218,7 @@
         "price": "Nhập giá là số nguyên lớn hơn 0.",
         "order": "Nhập số nguyên từ 0 trở lên.",
         "maxLength": "Tối đa 120 ký tự.",
-        "https": "Nhập liên kết bắt đầu bằng https://.",
+        "https": "Dùng liên kết https:// từ nguồn ảnh được phép (images.unsplash.com, huawei-food-cms.grab.com).",
         "maxDescription": "Tối đa 160 ký tự.",
         "maxUrl": "Tối đa 500 ký tự."
       },
