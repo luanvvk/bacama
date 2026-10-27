@@ -2,7 +2,9 @@ import { randomBytes } from 'node:crypto';
 
 import { prisma } from '@/lib/prisma';
 import { BUSINESS_CONTACT } from '@/constants/business';
+import { getPaymentProviderByMethod, PaymentMethodUnavailableError } from '@/lib/providers/payment';
 import type { PaymentMethodValue } from '@/constants/checkout';
+import type { PaymentProvider } from '@/lib/providers/payment/types';
 import type { $Enums, Prisma } from '@/generated/prisma/client';
 
 const MAX_ORDER_SUBTOTAL_VND = 1_000_000_000;
@@ -41,8 +43,10 @@ const generateOrderRef = () => `BCM-${randomBytes(8).toString('hex').toUpperCase
 /**
  * Validates the cart against live prices/stock, enforces the §4.2 invariants
  * (exactly one item reference per line, pickup ⟹ pickupSiteId, home delivery
- * ⟹ address+province), and persists Order + OrderItem. Does not decrement
- * stock or touch payment providers — that happens once payment is confirmed.
+ * ⟹ address+province), and persists Order + OrderItem. Online-payment orders
+ * then open a payment session and store its `providerRef`, which the payment
+ * webhook uses to find the order. Stock is only decremented once payment is
+ * confirmed.
  */
 export const createOrder = async (
   input: CreateOrderInput,
@@ -154,6 +158,18 @@ export const createOrder = async (
     );
   }
 
+  let paymentProvider: PaymentProvider | null = null;
+  if (input.paymentMethod !== 'cod') {
+    try {
+      paymentProvider = getPaymentProviderByMethod(input.paymentMethod);
+    } catch (error) {
+      if (error instanceof PaymentMethodUnavailableError) {
+        throw new OrderValidationError('This payment method is not available right now.');
+      }
+      throw error;
+    }
+  }
+
   const status: $Enums.OrderStatus = input.paymentMethod === 'cod' ? 'awaiting_cod' : 'pending';
   const orderData: Prisma.OrderUncheckedCreateInput = {
     ref: generateOrderRef(),
@@ -179,8 +195,18 @@ export const createOrder = async (
   // stock is committed now rather than waiting for a "paid" webhook that
   // will never come. Every other method stays a soft reservation: stock is
   // only decremented once payment is actually confirmed (task 2.8).
-  if (status !== 'awaiting_cod') {
-    return prisma.order.create({ data: orderData, select: { id: true, ref: true } });
+  if (paymentProvider) {
+    const order = await prisma.order.create({ data: orderData, select: { id: true, ref: true } });
+    const session = await paymentProvider.pay(subtotalVnd, order.ref, {
+      locale: input.locale,
+      addressCountry: 'VN',
+      preferredMethod: input.paymentMethod,
+    });
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { providerRef: session.providerRef },
+    });
+    return order;
   }
 
   return prisma.$transaction(async (tx) => {

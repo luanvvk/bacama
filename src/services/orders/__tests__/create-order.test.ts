@@ -4,14 +4,25 @@ jest.mock('@/lib/prisma', () => ({
     bakeryItem: { findMany: jest.fn() },
     menuItem: { findMany: jest.fn() },
     site: { findFirst: jest.fn() },
-    order: { create: jest.fn() },
+    order: { create: jest.fn(), update: jest.fn() },
     $transaction: jest.fn(),
   },
 }));
 
+const mockPay = jest.fn();
+jest.mock('@/lib/providers/payment', () => ({
+  getPaymentProviderByMethod: jest.fn(),
+  PaymentMethodUnavailableError: class PaymentMethodUnavailableError extends Error {},
+}));
+
 import { prisma } from '@/lib/prisma';
 
+import { getPaymentProviderByMethod, PaymentMethodUnavailableError } from '@/lib/providers/payment';
+
 import { createOrder, OrderValidationError } from '../create-order';
+
+const mockGetProvider = getPaymentProviderByMethod as jest.Mock;
+const mockOrderUpdate = prisma.order.update as jest.Mock;
 
 const mockProductFindMany = prisma.product.findMany as jest.Mock;
 const mockProductUpdateMany = prisma.product.updateMany as jest.Mock;
@@ -49,6 +60,9 @@ const BASE_INPUT = {
 };
 
 beforeEach(() => {
+  mockPay.mockResolvedValue({ provider: 'zalopay', providerRef: 'gw-1', redirectUrl: '/pay' });
+  mockGetProvider.mockReturnValue({ pay: mockPay });
+  mockOrderUpdate.mockResolvedValue({});
   mockProductFindMany.mockResolvedValue([]);
   mockProductUpdateMany.mockResolvedValue({ count: 1 });
   mockBakeryFindMany.mockResolvedValue([]);
@@ -275,6 +289,43 @@ describe('createOrder', () => {
       );
     },
   );
+
+  it('opens a payment session and stores its providerRef on a non-COD order', async () => {
+    mockProductFindMany.mockResolvedValue([PRODUCT]);
+
+    const order = await createOrder({ ...BASE_INPUT, items: [{ id: 'p1', quantity: 2 }] });
+
+    expect(mockPay).toHaveBeenCalledWith(
+      370000,
+      order.ref,
+      expect.objectContaining({ preferredMethod: 'zalopay' }),
+    );
+    expect(mockOrderUpdate).toHaveBeenCalledWith({
+      where: { id: 'order-1' },
+      data: { providerRef: 'gw-1' },
+    });
+  });
+
+  it('does not open a payment session for COD', async () => {
+    mockProductFindMany.mockResolvedValue([PRODUCT]);
+
+    await createOrder({ ...BASE_INPUT, paymentMethod: 'cod', items: [{ id: 'p1', quantity: 1 }] });
+
+    expect(mockPay).not.toHaveBeenCalled();
+    expect(mockOrderUpdate).not.toHaveBeenCalled();
+  });
+
+  it('rejects before creating an order when the payment method has no provider', async () => {
+    mockProductFindMany.mockResolvedValue([PRODUCT]);
+    mockGetProvider.mockImplementation(() => {
+      throw new PaymentMethodUnavailableError('zalopay');
+    });
+
+    await expect(
+      createOrder({ ...BASE_INPUT, items: [{ id: 'p1', quantity: 1 }] }),
+    ).rejects.toThrow(OrderValidationError);
+    expect(mockOrderCreate).not.toHaveBeenCalled();
+  });
 
   it('returns the created order id and ref', async () => {
     mockProductFindMany.mockResolvedValue([PRODUCT]);
