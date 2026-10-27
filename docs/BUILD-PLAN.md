@@ -37,37 +37,39 @@ the conflict rather than silently picking.
 
 ---
 
-## 1. Current state (as of 2026-08-17)
+## 1. Current state (as of 2026-10-27)
 
-**The single most important thing to understand: the UI already exists.** All
-storefront, course, and admin pages are built and passing tests. They render
-**hardcoded data** from `src/constants/*.ts`, and every write action is a
-`toast()` placeholder. This project is _not_ "build the pages" — it is
-**"replace mock data with a real data layer, and replace placeholder writes
-with real provider calls."** An agent that starts building pages from scratch
-has misread the situation.
+**The UI is built and now runs on a real data layer.** Storefront, course and
+admin pages read from Neon Postgres through `src/services/*`; writes go through
+route handlers (`src/app/api/**/route.ts`) and the services behind them. Remaining
+hardcoded data in `src/constants/*.ts` is static copy and config (nav, routes,
+business info, wholesale), not catalog or order data.
 
 ### What exists and works
 
-| Area          | Routes                                                                                                                                                                                                                                             | Backed by                             |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| Storefront    | `/`, `/shop`, `/product/[slug]`, `/story`, `/contact`, `/subscribe`, `/wholesale`, `/faq`, `/gift-cards`, `/press`, `/careers`, legal pages                                                                                                        | `src/constants/products.ts`           |
-| Checkout      | `/checkout`, `/checkout/pay`, `/checkout/done`                                                                                                                                                                                                     | `src/constants/checkout.ts` + Zustand |
-| Courses       | `/courses`, `/learn`, `/teach`                                                                                                                                                                                                                     | `src/constants/courses.ts`            |
-| Account       | `/me`, `/account`, `/login`, `/register`                                                                                                                                                                                                           | `GuestGate` — honest "not signed in"  |
-| Admin         | `/admin` + `orders`, `orders/[ref]`, `shipments`, `shipments/[tracking]`, `catalog`, `catalog/[slug]/edit`, `bakery`, `menu`, `sites`, `staff`, `students`, `courses`, `announcements`                                                             | `src/constants/admin.ts`              |
-| Design system | `src/components/ui/*` (shadcn, folder-per-component), `src/components/form/Controlled*`, "paper & ink" tokens in `globals.css`, Fraunces + Be Vietnam Pro                                                                                          | —                                     |
-| Data layer    | Neon Postgres, **migrated and seeded with real business data** — 21 tables, 3 sites (1 real + 2 fictional-roadmap), 4 products, 7 bakery items, 8 menu items, 4 courses / 9 lessons. `prisma/schema.prisma`, `prisma/seed.ts`, `src/lib/prisma.ts` | Neon (`ap-southeast-1`)               |
-| Providers     | `src/lib/providers/{payment,courier,local-handoff,video,email,auth}/` — interfaces + factories that **throw**                                                                                                                                      | —                                     |
+| Area          | Routes / pieces                                                                                                                                           | Backed by                                                                |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Storefront    | `/`, `/shop`, `/product/[slug]`, story, contact, subscribe, wholesale, faq, gift cards, press, careers, legal pages                                       | `src/services/catalog`, `sites`; newsletter signups via `api/newsletter` |
+| Checkout      | `/checkout`, `/checkout/pay`, `/checkout/done`, guest order tracking                                                                                      | `src/services/orders`, `api/orders`, payment webhook, DB rate limiter    |
+| Courses       | `/courses`, `/learn`, `/teach`, enrolments with seat holds                                                                                                | `src/services/courses`, `enrollments`, `api/enrollments`, cron sweeps    |
+| Account       | `/me`, `/account`, `/login`, `/register`                                                                                                                  | Clerk + `src/services/account`; `api/webhooks/clerk` upserts `User`      |
+| Admin         | `/admin` + orders, shipments, catalog, bakery, menu, sites, staff, students, courses, announcements                                                       | `src/services/*` and `api/admin/*`, role-guarded                         |
+| i18n          | Vietnamese default, English toggle                                                                                                                        | `next-intl`, `src/i18n`                                                  |
+| Design system | `src/components/ui/*` (shadcn, folder-per-component), `src/components/form/Controlled*`, "paper & ink" tokens in `globals.css`, Fraunces + Be Vietnam Pro | —                                                                        |
+| Data layer    | Neon Postgres, migrated and seeded. `prisma/schema.prisma`, `prisma/seed.ts`, `src/lib/prisma.ts`                                                         | Neon (`ap-southeast-1`)                                                  |
+| Providers     | `src/lib/providers/{payment,courier,local-handoff,video,email,auth}/` — interface + factory per concern                                                   | see below                                                                |
 
-### What does not exist
+### Provider status
 
-- **Nothing reads the database yet.** The schema is migrated and seeded, but no page, service, or route handler queries it — every screen still renders from `src/constants/*.ts`. `src/services/` doesn't exist.
-- **No i18n.** `next-intl` not installed. Every string is English-only, hardcoded in JSX.
-- **No auth.** `@clerk/nextjs` not installed. No middleware, no session, no roles.
-- **No provider adapters.** All six factories throw `not implemented`.
-- **No route handlers.** `src/app/**/route.ts` — none exist. No `src/services/` either.
-- **No real writes anywhere.** Every admin/checkout mutation is a `toast()`.
+- **Real adapters:** payment COD (`payment/cod.ts`), auth Clerk (`auth/clerk.ts`), video YouTube (`video/youtube.ts`), local-handoff GrabFood (`local-handoff/grabfood.ts`).
+- **Stubs (factory throws `not implemented`):** courier, email.
+- **Payment gateways** (MoMo, ZaloPay, card) have no adapter yet; the payment factory throws `PaymentMethodUnavailableError` for them.
+
+### What does not exist yet
+
+- Courier and email adapters.
+- Online payment gateway adapters (only COD is live).
+- Anything marked open in §6 and the issue board.
 
 ---
 
