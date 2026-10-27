@@ -3,8 +3,20 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { requireApiRole } from '@/lib/auth/api-guards';
 import { createMenuItem } from '@/services/catalog/create-menu-item';
+import { getAdminMenuItems } from '@/services/catalog/get-admin-menu-items';
 import { SiteForbiddenError } from '@/services/catalog/menu-item-errors';
 import { createMenuItemSchema } from '@/services/catalog/menu-item-schema';
+
+export const GET = async (request: NextRequest) => {
+  const guard = await requireApiRole(['staff', 'admin']);
+  if (!guard.ok) return guard.response;
+
+  const page = await getAdminMenuItems(guard.user, {
+    cursor: request.nextUrl.searchParams.get('cursor'),
+  });
+
+  return NextResponse.json(page);
+};
 
 export const POST = async (request: NextRequest) => {
   const guard = await requireApiRole(['staff', 'admin']);

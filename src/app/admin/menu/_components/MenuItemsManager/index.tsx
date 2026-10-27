@@ -25,6 +25,7 @@ import { MenuItemForm } from '../MenuItemForm';
 
 export interface MenuItemsManagerProps {
   items: AdminMenuItem[];
+  nextCursor: string | null;
   /** Present only for admin, who may pick any site and sees the site column. */
   siteOptions?: { value: string; label: string }[];
   defaultSiteId: string | null;
@@ -32,11 +33,28 @@ export interface MenuItemsManagerProps {
 
 type EditorState = { mode: 'create' } | { mode: 'edit'; item: AdminMenuItem } | null;
 
-export const MenuItemsManager = ({ items, siteOptions, defaultSiteId }: MenuItemsManagerProps) => {
+export const MenuItemsManager = ({
+  items: initialItems,
+  nextCursor: initialCursor,
+  siteOptions,
+  defaultSiteId,
+}: MenuItemsManagerProps) => {
   const t = useTranslations('Admin.menu');
   const tSections = useTranslations('Menu.sections');
   const router = useRouter();
+  const [items, setItems] = useState(initialItems);
+  const [nextCursor, setNextCursor] = useState(initialCursor);
+  const [loading, setLoading] = useState(false);
   const [editor, setEditor] = useState<EditorState>(null);
+
+  // router.refresh() re-renders the page with a fresh first page; adopt it.
+  const [seenItems, setSeenItems] = useState(initialItems);
+  if (seenItems !== initialItems) {
+    setSeenItems(initialItems);
+    setItems(initialItems);
+    setNextCursor(initialCursor);
+  }
+
   const showSite = Boolean(siteOptions);
   const canCreate = Boolean(siteOptions?.length || defaultSiteId);
 
@@ -44,6 +62,24 @@ export const MenuItemsManager = ({ items, siteOptions, defaultSiteId }: MenuItem
     section,
     rows: items.filter((item) => item.section === section),
   })).filter((group) => group.rows.length > 0);
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `/api/admin/menu-items?cursor=${encodeURIComponent(nextCursor)}`,
+      );
+      if (!response.ok) throw new Error(String(response.status));
+      const page: { items: AdminMenuItem[]; nextCursor: string | null } = await response.json();
+      setItems((current) => [...current, ...page.items]);
+      setNextCursor(page.nextCursor);
+    } catch {
+      toast.error(t('loadMoreFailed'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const deactivate = async (item: AdminMenuItem) => {
     const response = await fetch(`/api/admin/menu-items/${item.id}`, { method: 'DELETE' });
@@ -121,6 +157,20 @@ export const MenuItemsManager = ({ items, siteOptions, defaultSiteId }: MenuItem
           </Table>
         </section>
       ))}
+
+      {nextCursor && (
+        <div className="flex justify-center">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 min-w-32"
+            onClick={loadMore}
+            disabled={loading}
+          >
+            {t('loadMore')}
+          </Button>
+        </div>
+      )}
 
       <Dialog open={editor !== null} onOpenChange={(open) => !open && setEditor(null)}>
         <DialogContent>

@@ -5,6 +5,7 @@ import { getAdminSites, type AdminSite } from '@/services/sites/site-admin';
 import AdminSitesPage from '../page';
 
 jest.mock('@/lib/auth/guards', () => ({ requireRoles: jest.fn() }));
+jest.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }));
 jest.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
@@ -26,12 +27,10 @@ const site = (overrides: Partial<AdminSite>): AdminSite => ({
 
 describe('AdminSitesPage', () => {
   it('lists each site with its status and an edit link', async () => {
-    jest
-      .mocked(getAdminSites)
-      .mockResolvedValue([
-        site({}),
-        site({ id: 'site-2', slug: 'hoi-an', nameEn: 'Hoi An', isActive: false }),
-      ]);
+    jest.mocked(getAdminSites).mockResolvedValue({
+      items: [site({}), site({ id: 'site-2', slug: 'hoi-an', nameEn: 'Hoi An', isActive: false })],
+      nextCursor: null,
+    });
 
     render(await AdminSitesPage());
 
@@ -47,7 +46,7 @@ describe('AdminSitesPage', () => {
   });
 
   it('shows the empty state when there are no sites', async () => {
-    jest.mocked(getAdminSites).mockResolvedValue([]);
+    jest.mocked(getAdminSites).mockResolvedValue({ items: [], nextCursor: null });
 
     render(await AdminSitesPage());
 

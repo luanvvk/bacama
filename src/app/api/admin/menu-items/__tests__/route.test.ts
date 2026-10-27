@@ -2,7 +2,7 @@
 import { NextRequest } from 'next/server';
 import { revalidatePath } from 'next/cache';
 
-import { POST } from '../route';
+import { GET, POST } from '../route';
 import { getAuthProvider } from '@/lib/providers/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -106,5 +106,33 @@ describe('POST /api/admin/menu-items', () => {
 
     expect((await post(valid)).status).toBe(409);
     expect(revalidatePath).not.toHaveBeenCalled();
+  });
+});
+
+describe('GET /api/admin/menu-items', () => {
+  const get = (query = '') => GET(new NextRequest(`http://localhost/api/admin/menu-items${query}`));
+
+  afterEach(() => jest.resetAllMocks());
+
+  it('returns 401 when signed out', async () => {
+    jest.mocked(getAuthProvider).mockReturnValue({ getCurrentUser } as never);
+    getCurrentUser.mockResolvedValue(null);
+
+    expect((await get()).status).toBe(401);
+  });
+
+  it('scopes staff to their site, applies the cursor and returns a page', async () => {
+    jest.mocked(getAuthProvider).mockReturnValue({ getCurrentUser } as never);
+    getCurrentUser.mockResolvedValue({ id: 'u1', role: 'staff', homeSiteId: 's1' });
+    findMany.mockResolvedValue([] as never);
+
+    const response = await get('?cursor=m5');
+
+    expect(findMany.mock.calls[0][0]).toMatchObject({
+      where: { siteId: 's1' },
+      cursor: { id: 'm5' },
+      skip: 1,
+    });
+    expect(await response.json()).toEqual({ items: [], nextCursor: null });
   });
 });
